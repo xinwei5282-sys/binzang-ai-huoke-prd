@@ -1,0 +1,434 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>礼承获客 · 运营后台（精简版）</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Sora:wght@400;500;600;700&display=swap" rel="stylesheet" />
+<style>
+:root{
+  --bg:oklch(0.984 0.004 200);--surface:oklch(1 0 0);--surface-2:oklch(0.975 0.006 200);
+  --rail:oklch(0.255 0.022 215);--rail-tx:oklch(0.82 0.015 210);--rail-tx-2:oklch(0.62 0.02 210);
+  --line:oklch(0.915 0.008 210);--line-2:oklch(0.86 0.01 210);
+  --ink:oklch(0.27 0.022 225);--ink-2:oklch(0.46 0.018 220);--ink-3:oklch(0.62 0.014 215);
+  --brand:oklch(0.52 0.072 200);--brand-d:oklch(0.44 0.075 202);--brand-sft:oklch(0.95 0.022 200);
+  --accent:oklch(0.66 0.11 62);--accent-sft:oklch(0.95 0.04 70);
+  --ok:oklch(0.6 0.09 155);--ok-sft:oklch(0.95 0.03 155);
+  --warn:oklch(0.7 0.13 65);--warn-sft:oklch(0.955 0.045 72);
+  --danger:oklch(0.58 0.15 25);--danger-sft:oklch(0.955 0.035 28);
+  --r:12px;
+  --sh-1:0 1px 2px oklch(0.4 0.03 220 /.06),0 1px 3px oklch(0.4 0.03 220 /.05);
+  --sh-2:0 4px 14px oklch(0.4 0.03 220 /.08),0 1px 3px oklch(0.4 0.03 220 /.05);
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html{-webkit-font-smoothing:antialiased}
+body{font-family:"PingFang SC","HarmonyOS Sans SC","Microsoft YaHei",system-ui,sans-serif;background:var(--bg);color:var(--ink);font-size:14px;line-height:1.55}
+.num,.num-c{font-family:"Sora",system-ui,sans-serif;font-variant-numeric:tabular-nums}
+::-webkit-scrollbar{width:9px;height:9px}::-webkit-scrollbar-thumb{background:var(--line-2);border-radius:6px}
+.app{display:grid;grid-template-columns:228px 1fr;min-height:100vh}
+.rail{background:var(--rail);color:var(--rail-tx);display:flex;flex-direction:column;position:sticky;top:0;height:100vh}
+.brand{display:flex;align-items:center;gap:10px;padding:20px 18px 18px;border-bottom:1px solid oklch(1 0 0 /.07)}
+.brand .mk{width:30px;height:30px;border-radius:9px;background:linear-gradient(150deg,var(--brand),var(--brand-d));display:grid;place-items:center;color:#fff;font-weight:700;font-size:15px;box-shadow:0 2px 8px oklch(0.4 0.07 200 /.4)}
+.brand b{color:#fff;font-size:15px;font-weight:600;letter-spacing:.2px}
+.brand small{display:block;color:var(--rail-tx-2);font-size:11px;font-weight:400;letter-spacing:.4px}
+.nav{flex:1;overflow-y:auto;padding:14px 12px}
+.nav .grp{color:var(--rail-tx-2);font-size:11px;letter-spacing:1.2px;padding:14px 10px 7px;text-transform:uppercase}
+.nav a{display:flex;align-items:center;gap:11px;padding:9px 11px;border-radius:9px;color:var(--rail-tx);text-decoration:none;font-size:13.5px;cursor:pointer;transition:background .15s,color .15s}
+.nav a svg{width:17px;height:17px;stroke-width:1.7;opacity:.85;flex:none}
+.nav a:hover{background:oklch(1 0 0 /.06);color:#fff}
+.nav a.on{background:linear-gradient(100deg,var(--brand-d),oklch(0.4 0.06 205));color:#fff}
+.nav a.on svg{opacity:1}
+.rail .foot{padding:13px 16px;border-top:1px solid oklch(1 0 0 /.07);display:flex;align-items:center;gap:9px;font-size:12.5px;color:var(--rail-tx-2)}
+.rail .foot .av{width:26px;height:26px;border-radius:50%;background:var(--accent);color:#fff;display:grid;place-items:center;font-size:12px;font-weight:600}
+.main{display:flex;flex-direction:column;min-width:0}
+.top{position:sticky;top:0;z-index:5;background:oklch(1 0 0 /.82);backdrop-filter:blur(10px);border-bottom:1px solid var(--line);display:flex;align-items:center;gap:16px;padding:0 26px;height:58px}
+.top h1{font-size:16px;font-weight:600;letter-spacing:.2px}
+.top .crumb{color:var(--ink-3);font-size:12.5px}
+.spacer{flex:1}
+.co{display:inline-flex;align-items:center;gap:8px;background:var(--surface);border:1px solid var(--line-2);border-radius:9px;padding:5px 11px;font-size:13px;font-weight:500;cursor:pointer}
+.page{padding:24px 28px 60px;display:none;animation:in .35s cubic-bezier(.2,.7,.2,1);max-width:1360px;margin:0 auto;width:100%}
+.page.show{display:block}
+@keyframes in{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
+.lead{display:flex;align-items:flex-end;justify-content:space-between;gap:16px;margin-bottom:18px}
+.lead .t{font-size:20px;font-weight:600;letter-spacing:.2px}.lead .s{color:var(--ink-3);font-size:13px;margin-top:3px}
+.btn{display:inline-flex;align-items:center;gap:7px;border:1px solid var(--line-2);background:var(--surface);color:var(--ink);padding:8px 14px;border-radius:9px;font-size:13px;font-weight:500;cursor:pointer;transition:.15s;font-family:inherit}
+.btn:hover{border-color:var(--ink-3);background:var(--surface-2)}
+.btn:active{transform:scale(.97)}
+.btn svg{width:15px;height:15px;stroke-width:1.8}
+.btn.pri{background:linear-gradient(160deg,var(--brand),var(--brand-d));border-color:transparent;color:#fff;box-shadow:0 2px 9px oklch(0.45 0.07 200 /.28)}
+.btn.pri:hover{filter:brightness(1.06)}
+.btn.gho{background:transparent;border-color:transparent;color:var(--ink-2)}.btn.gho:hover{background:var(--surface-2);color:var(--ink)}
+.btn.dng{color:var(--danger);border-color:var(--danger-sft)}.btn.dng:hover{background:var(--danger-sft);border-color:var(--danger)}
+.btn.sm{padding:5px 10px;font-size:12px}
+.card{background:var(--surface);border:1px solid var(--line);border-radius:var(--r);box-shadow:var(--sh-1)}
+.card.pad{padding:18px 20px}
+.head{display:flex;align-items:center;gap:10px;margin-bottom:14px}
+.head h3{font-size:14.5px;font-weight:600}.head .more{margin-left:auto;font-size:12.5px;color:var(--brand-d);cursor:pointer}
+.bdg{display:inline-flex;align-items:center;gap:5px;padding:2px 9px;border-radius:20px;font-size:11.5px;font-weight:500;line-height:1.7}
+.bdg::before{content:"";width:6px;height:6px;border-radius:50%}
+.bdg.np::before{display:none}.bdg.np{padding:2px 8px}
+.bdg.ok{background:var(--ok-sft);color:oklch(0.4 0.09 155)}.bdg.ok::before{background:var(--ok)}
+.bdg.warn{background:var(--warn-sft);color:oklch(0.5 0.12 60)}.bdg.warn::before{background:var(--warn)}
+.bdg.dng{background:var(--danger-sft);color:var(--danger)}.bdg.dng::before{background:var(--danger)}
+.bdg.mut{background:var(--surface-2);color:var(--ink-3)}.bdg.mut::before{background:var(--ink-3)}
+.bdg.brd{background:var(--brand-sft);color:var(--brand-d)}.bdg.brd::before{background:var(--brand)}
+table{width:100%;border-collapse:collapse}
+thead th{text-align:left;font-size:11.5px;letter-spacing:.5px;color:var(--ink-3);font-weight:500;padding:11px 14px;border-bottom:1px solid var(--line);text-transform:uppercase}
+tbody td{padding:12px 14px;border-bottom:1px solid var(--line);font-size:13px;vertical-align:middle}
+tbody tr:last-child td{border-bottom:none}tbody tr:hover{background:var(--surface-2)}
+.tt{font-weight:500;color:var(--ink)}.tm{color:var(--ink-3);font-size:12px}
+.rowact{text-align:right;white-space:nowrap}
+.rowact .btn{display:inline-flex;vertical-align:middle}.rowact .btn+.btn{margin-left:5px}
+.toolbar{display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin-bottom:14px}
+.toolbar select,.toolbar input{width:auto}
+.field{margin-bottom:16px}.field label{display:block;font-size:12.5px;font-weight:500;color:var(--ink-2);margin-bottom:7px}.field label .req{color:var(--danger)}
+.inp,textarea,select{width:100%;border:1px solid var(--line-2);border-radius:9px;padding:10px 12px;font-size:13px;font-family:inherit;color:var(--ink);background:var(--surface)}
+textarea{resize:vertical;line-height:1.6}
+.inp:focus,textarea:focus,select:focus{outline:none;border-color:var(--brand);box-shadow:0 0 0 3px var(--brand-sft)}
+.split{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+.note{font-size:12px;color:var(--ink-3);margin-top:10px;display:flex;gap:6px;align-items:flex-start}.note svg{width:14px;height:14px;flex:none;margin-top:1px}
+.alert{display:flex;gap:10px;align-items:flex-start;background:var(--warn-sft);border:1px solid oklch(0.85 0.06 70);border-radius:10px;padding:11px 13px;font-size:12.5px;color:oklch(0.45 0.1 55);margin-bottom:14px}
+.alert svg{width:17px;height:17px;flex:none;margin-top:1px}
+/* login */
+.login{position:fixed;inset:0;z-index:200;display:grid;grid-template-columns:1.05fr .95fr}
+.login .lpanel{background:linear-gradient(160deg,var(--rail),oklch(0.31 0.045 205));color:#fff;padding:52px 56px;display:flex;flex-direction:column}
+.login .lbrand{display:flex;align-items:center;gap:11px}
+.login .lbrand .mk{width:34px;height:34px;border-radius:10px;background:linear-gradient(150deg,var(--brand),var(--brand-d));display:grid;place-items:center;color:#fff;font-weight:700;font-size:16px}
+.login .lbrand b{color:#fff;font-size:16px}.login .lbrand small{display:block;color:var(--rail-tx-2);font-size:11px}
+.login .lhero{margin-top:auto}
+.login .lhero h1{font-size:30px;font-weight:600;line-height:1.4;letter-spacing:.5px}
+.login .lhero p{color:var(--rail-tx);margin-top:16px;font-size:14px;line-height:1.8}
+.login .lfeat{list-style:none;margin:26px 0 0;display:flex;flex-direction:column;gap:10px}
+.login .lfeat li{color:var(--rail-tx);font-size:13px}
+.login .lfoot{margin-top:auto;padding-top:40px;color:var(--rail-tx-2);font-size:12px}
+.login .lform{display:grid;place-items:center;padding:40px;background:var(--surface)}
+.login .lcard{width:340px;max-width:100%}
+.login .lcard h2{font-size:24px;font-weight:600}
+.login .lsub{color:var(--ink-3);font-size:13px;margin:8px 0 26px}
+.login .lrow{display:flex;align-items:center;justify-content:space-between;margin:2px 0 22px;font-size:12.5px}
+.login .lcheck{display:flex;align-items:center;gap:7px;color:var(--ink-2);cursor:pointer}
+.login .lbtn{width:100%;justify-content:center;padding:11px;font-size:14px}
+.login .lnote{text-align:center;color:var(--ink-3);font-size:12px;margin-top:18px}
+.mini{color:var(--ink-3);font-size:12px}
+@media(max-width:760px){.login{grid-template-columns:1fr}.login .lpanel{display:none}}
+.toast-wrap{position:fixed;top:18px;right:18px;z-index:120;display:flex;flex-direction:column;gap:10px}
+.toast{background:var(--ink);color:#fff;padding:11px 15px;border-radius:10px;font-size:13px;box-shadow:var(--sh-2);display:flex;align-items:center;gap:9px;max-width:340px;animation:tin .3s cubic-bezier(.2,.7,.2,1)}
+.toast svg{width:16px;height:16px;flex:none}
+.toast.ok{background:oklch(0.42 0.09 155)}.toast.warn{background:oklch(0.5 0.12 60)}.toast.dng{background:var(--danger)}
+@keyframes tin{from{opacity:0;transform:translateX(24px)}to{opacity:1}}
+.mask{position:fixed;inset:0;background:oklch(0.2 0.02 220 /.45);z-index:100;display:none;place-items:center;backdrop-filter:blur(2px)}
+.mask.show{display:grid}
+.modal{background:var(--surface);border-radius:16px;width:460px;max-width:92vw;box-shadow:var(--sh-2);overflow:hidden;animation:in .25s}
+.modal.wide{width:600px}
+.modal h4{padding:18px 20px;font-size:15px;border-bottom:1px solid var(--line)}
+.modal .mb{padding:18px 20px;max-height:70vh;overflow:auto}.modal .mf{padding:14px 20px;border-top:1px solid var(--line);display:flex;justify-content:flex-end;gap:9px;background:var(--surface-2)}
+.ovl{position:fixed;inset:0;z-index:110;background:oklch(1 0 0 /.62);backdrop-filter:blur(3px);display:none;flex-direction:column;align-items:center;justify-content:center}
+.ovl.show{display:flex}
+.spin{width:40px;height:40px;border:3px solid var(--brand-sft);border-top-color:var(--brand);border-radius:50%;animation:sp .8s linear infinite}
+@keyframes sp{to{transform:rotate(360deg)}}
+.ovl .ot{margin-top:15px;font-size:13.5px;color:var(--ink-2)}
+.navtog{display:none}
+@media(max-width:880px){
+  .app{grid-template-columns:1fr}
+  .rail{position:fixed;left:0;top:0;width:228px;z-index:90;transform:translateX(-100%);transition:transform .25s ease;box-shadow:var(--sh-2)}
+  .rail.open{transform:none}
+  .navmask{position:fixed;inset:0;background:oklch(0.2 0.02 220/.4);z-index:80;display:none}
+  .navmask.show{display:block}
+  .navtog{display:inline-flex!important}
+  .top{padding:0 14px}.top .crumb{display:none}
+  .page{padding:18px 14px 48px}
+  .lead{flex-wrap:wrap;align-items:flex-start}
+  .split{grid-template-columns:1fr}
+  .card>table,.card.pad>table{display:block;overflow-x:auto;white-space:nowrap;-webkit-overflow-scrolling:touch}
+  .toolbar input,.toolbar select{flex:1 1 auto;min-width:120px}
+}
+</style>
+</head>
+<body>
+<!-- LOGIN -->
+<div class="login" id="login">
+  <div class="lpanel">
+    <div class="lbrand"><div class="mk">运</div><div><b>礼承获客 · 运营后台</b><small>OPERATOR · 内部</small></div></div>
+    <div class="lhero"><h1>开通账号、配置套餐、<br>维护合规词库</h1>
+      <p>商家端自助生产内容，运营后台管住开通与合规基线（精简版）</p></div>
+    <ul class="lfeat">
+      <li>✓ 商家无注册，账号由此开通</li>
+      <li>✓ 套餐与配额统一配置</li>
+      <li>✓ 殡葬合规词库版本化下发</li>
+    </ul>
+    <div class="lfoot">© 2026 礼承获客 · 仅限内部团队 · 演示原型</div>
+  </div>
+  <div class="lform"><div class="lcard">
+    <h2>运营登录</h2><div class="lsub">内部团队账号</div>
+    <div class="field"><label>账号</label><input class="inp" value="ranwei@licheng.ai"></div>
+    <div class="field"><label>密码</label><input class="inp" type="password" value="demo1234"></div>
+    <div class="lrow"><label class="lcheck"><input type="checkbox" checked> 记住登录</label></div>
+    <button class="btn pri lbtn" data-act="do-login">登录</button>
+    <div class="lnote">超级管理员 · 蔚然</div>
+  </div></div>
+</div>
+
+<div class="app">
+  <aside class="rail">
+    <div class="brand"><div class="mk">运</div><div><b>礼承 · 运营后台</b><small>殡葬 SaaS · 精简版</small></div></div>
+    <nav class="nav" id="nav">
+      <div class="grp">运营</div>
+      <a data-v="tenants" class="on"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M3 21V8l9-5 9 5v13M9 21v-6h6v6"/></svg>账号开通</a>
+      <a data-v="packages"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M21 8l-9-5-9 5 9 5 9-5zM3 8v8l9 5 9-5V8M3 16l9 5 9-5"/></svg>套餐配置</a>
+      <a data-v="videocfg"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><rect x="2" y="4" width="14" height="16" rx="2"/><path d="M16 9l6-3v12l-6-3z"/></svg>视频生成配置</a>
+      <a data-v="prompts"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M7 8h10M7 12h6M5 3h14a2 2 0 012 2v10a2 2 0 01-2 2H9l-4 4z"/></svg>提示词管理</a>
+      <a data-v="lexicon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M4 5a2 2 0 012-2h12v18H6a2 2 0 01-2-2z"/><path d="M8 7h7M8 11h5"/></svg>合规词库</a>
+    </nav>
+    <div class="foot" data-act="logout" style="cursor:pointer"><div class="av">蔚</div><div>蔚然 · 超级管理员</div><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" style="width:15px;height:15px;margin-left:auto;stroke-width:1.7"><path d="M16 17l5-5-5-5M21 12H9M9 21H5a2 2 0 01-2-2V5a2 2 0 012-2h4"/></svg></div>
+  </aside>
+
+  <div class="main">
+    <header class="top">
+      <button class="btn gho navtog" data-act="navtog" style="padding:6px 9px"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 6h18M3 12h18M3 18h18"/></svg></button>
+      <h1 id="ptitle">账号开通</h1><span class="crumb" id="pcrumb">客户租户</span><span class="spacer"></span>
+      <span class="co" data-act="toast" data-msg="行业固定：殡葬（V1 不做多行业切换）">殡葬 · V1 <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg></span>
+    </header>
+
+    <!-- ===================== 账号开通 ===================== -->
+    <section class="page show" data-p="tenants">
+      <div class="lead"><div><div class="t">账号开通</div><div class="s">商家端无自助注册 · 客户由这里开公司账号、配套餐、建管理员</div></div>
+        <button class="btn pri" data-act="new-tenant"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M12 5v14M5 12h14"/></svg>开通新公司</button></div>
+      <div class="card pad">
+        <div class="toolbar">
+          <select class="inp"><option>全部状态</option><option>已开通</option><option>待开通</option><option>已停用</option><option>已到期</option></select>
+          <select class="inp"><option>全部套餐</option><option>标准版</option><option>旗舰版</option></select>
+          <input class="inp" placeholder="搜索公司名 / 账号" style="flex:1;min-width:160px">
+          <span class="spacer"></span><span class="mini">共 6 家 · 已开通 4 · 待开通 1</span>
+        </div>
+        <table id="tenantTbl"><thead><tr><th>公司</th><th>套餐</th><th>状态</th><th>成员</th><th>管理员账号</th><th>到期</th><th></th></tr></thead><tbody>
+          <tr><td><b class="tt">福寿堂礼仪</b><div class="tm">福州</div></td><td><span class="bdg brd np">旗舰版</span></td><td><span class="bdg ok np">已开通</span></td><td class="num-c">3</td><td class="tm num-c">138****6021</td><td class="tm num-c">2026-09-22</td><td class="rowact"><button class="btn sm gho dng" data-act="toggle-tenant">停用</button></td></tr>
+          <tr><td><b class="tt">安然殡葬服务</b><div class="tm">厦门</div></td><td><span class="bdg mut np">标准版</span></td><td><span class="bdg ok np">已开通</span></td><td class="num-c">2</td><td class="tm num-c">137****0098</td><td class="tm num-c">2026-08-10</td><td class="rowact"><button class="btn sm gho dng" data-act="toggle-tenant">停用</button></td></tr>
+          <tr><td><b class="tt">永怀纪念</b><div class="tm">泉州</div></td><td><span class="bdg brd np">旗舰版</span></td><td><span class="bdg ok np">已开通</span></td><td class="num-c">4</td><td class="tm num-c">135****3380</td><td class="tm num-c">2026-11-03</td><td class="rowact"><button class="btn sm gho dng" data-act="toggle-tenant">停用</button></td></tr>
+          <tr><td><b class="tt">西园寿衣</b><div class="tm">漳州</div></td><td><span class="bdg mut np">标准版</span></td><td><span class="bdg ok np">已开通</span></td><td class="num-c">1</td><td class="tm num-c">139****5512</td><td class="tm num-c">2026-07-28</td><td class="rowact"><button class="btn sm gho dng" data-act="toggle-tenant">停用</button></td></tr>
+          <tr><td><b class="tt">松鹤堂</b><div class="tm">莆田 · 待客户确认资料</div></td><td><span class="bdg mut np">标准版</span></td><td><span class="bdg warn np">待开通</span></td><td class="num-c tm">—</td><td class="tm">—</td><td class="tm">—</td><td class="rowact"><button class="btn sm pri" data-act="new-tenant">继续开通</button></td></tr>
+          <tr><td><b class="tt">归园殡仪</b><div class="tm">宁德 · 已到期未续</div></td><td><span class="bdg mut np">标准版</span></td><td><span class="bdg dng np">已到期</span></td><td class="num-c">2</td><td class="tm num-c">130****7765</td><td class="tm num-c">2026-06-01</td><td class="rowact"><button class="btn sm" data-act="toast" data-msg="已发起续期，套餐已重新激活" data-type="ok">续期</button></td></tr>
+        </tbody></table>
+      </div>
+      <div class="note"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><circle cx="12" cy="12" r="9"/><path d="M12 8v5M12 16h.01"/></svg><span>「开通公司」= 建公司账号 + 选套餐 + 建管理员账号并下发登录凭证；商家端凭此登录，无自助注册。</span></div>
+    </section>
+
+    <!-- ===================== 套餐配置 ===================== -->
+    <section class="page" data-p="packages">
+      <div class="lead"><div><div class="t">套餐配置</div><div class="s">定义套餐与各配额项 · 保存时校验「套餐价 ≥ 满额成本」防越用越亏</div></div>
+        <button class="btn pri" data-act="new-package"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M12 5v14M5 12h14"/></svg>新建套餐</button></div>
+      <div class="alert"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M12 9v4M12 17h.01M10.3 3.9l-8 14A2 2 0 004 21h16a2 2 0 001.7-3l-8-14a2 2 0 00-3.4 0z"/></svg><div><b>套餐月费待定</b>：需等蝉镜 / 蝉妈妈最终报价反推单价后填实数。当前为结构占位。</div></div>
+      <div class="card pad" style="margin-bottom:16px"><div class="head"><h3>套餐</h3></div>
+        <table id="pkgTbl"><thead><tr><th>套餐</th><th>月费</th><th>爆款</th><th>转写</th><th>生成</th><th>成片(分)</th><th>形象</th><th>满额成本</th><th>状态</th><th></th></tr></thead><tbody>
+          <tr><td><b class="tt">标准版</b></td><td class="num-c">¥—</td><td class="num-c">2000</td><td class="num-c">100</td><td class="num-c">300</td><td class="num-c">60</td><td class="num-c">1</td><td class="num-c"><span class="bdg warn np">≈¥420</span></td><td><span class="bdg ok np">上架</span></td><td class="rowact"><button class="btn sm gho" data-act="toast" data-msg="编辑套餐（演示）">编辑</button></td></tr>
+          <tr><td><b class="tt">旗舰版</b></td><td class="num-c">¥—</td><td class="num-c">不限</td><td class="num-c">1000</td><td class="num-c">1000</td><td class="num-c">200</td><td class="num-c">2</td><td class="num-c"><span class="bdg warn np">≈¥1,180</span></td><td><span class="bdg ok np">上架</span></td><td class="rowact"><button class="btn sm gho" data-act="toast" data-msg="编辑套餐（演示）">编辑</button></td></tr>
+        </tbody></table>
+      </div>
+      <div class="card pad"><div class="head"><h3>增购项</h3><span class="more" data-act="toast" data-msg="配置增购项（演示）">配置</span></div>
+        <table><thead><tr><th>项目</th><th>计量</th><th>单价</th><th>适用套餐</th></tr></thead><tbody>
+          <tr><td>生成形象</td><td class="tm">个</td><td class="num-c">¥199</td><td class="tm">全部</td></tr>
+          <tr><td>成片分钟包</td><td class="tm">分钟</td><td class="num-c">¥—</td><td class="tm">全部</td></tr>
+          <tr><td>视频生成·i2v 段</td><td class="tm">秒</td><td class="num-c">≈¥0.6</td><td class="tm">按量计入成本</td></tr>
+          <tr><td>视频生成·数字人段</td><td class="tm">秒</td><td class="num-c">≈¥0.5</td><td class="tm">按量计入成本</td></tr>
+          <tr><td>视频生成·文生视频段</td><td class="tm">秒</td><td class="num-c">≈¥1</td><td class="tm">最贵·模板限用</td></tr>
+          <tr><td>爆款调用包</td><td class="tm">次</td><td class="num-c">¥—</td><td class="tm">标准版</td></tr>
+        </tbody></table>
+      </div>
+    </section>
+
+    <!-- ===================== 视频生成配置 ===================== -->
+    <section class="page" data-p="videocfg">
+      <div class="lead"><div><div class="t">视频生成配置</div><div class="s">模板平台内置由我方维护，商家端只选用；供应商走 Provider 隔离可切换比价 · 各段单价计入套餐成本</div></div>
+        <button class="btn pri" data-act="new-tpl"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M12 5v14M5 12h14"/></svg>新增内置模板</button></div>
+
+      <!-- 内置模板库 -->
+      <div class="card pad" style="margin-bottom:16px"><div class="head"><h3>内置视频模板</h3><span class="mini" style="margin-left:auto">商家端 内容创作/批量再生产 选用；效果好的可置顶</span></div>
+        <table id="tplTbl"><thead><tr><th>模板</th><th>类型</th><th>分段构成（每段用哪种 AI）</th><th>预估成本/条</th><th>状态</th><th></th></tr></thead><tbody>
+          <tr><td><b class="tt">产品讲解</b><div class="tm">换数字人+产品</div></td><td><span class="bdg brd np">挂素材</span></td><td class="tm">数字人讲解 · 产品图 i2v · 字幕套壳</td><td class="num-c">≈¥6</td><td><span class="bdg ok np">上架</span></td><td class="rowact"><button class="btn sm gho" data-act="play-demo">▶ 案例</button><button class="btn sm gho" data-act="tpl-prompt" data-tpl="产品讲解">约束提示词</button><button class="btn sm gho" data-act="toast" data-msg="上传/替换案例视频（演示）">案例上传</button></td></tr>
+          <tr><td><b class="tt">数字人+混剪</b><div class="tm">参考硅基结构</div></td><td><span class="bdg brd np">挂素材</span></td><td class="tm">数字人口播 · 素材切片混剪 · 字幕</td><td class="num-c">≈¥7</td><td><span class="bdg ok np">上架</span></td><td class="rowact"><button class="btn sm gho" data-act="play-demo">▶ 案例</button><button class="btn sm gho" data-act="tpl-prompt" data-tpl="数字人混剪">约束提示词</button><button class="btn sm gho" data-act="toast" data-msg="上传/替换案例视频（演示）">案例上传</button></td></tr>
+          <tr><td><b class="tt">Seedance 生成视频</b><div class="tm">纯 AI 文生视频</div></td><td><span class="bdg mut np">纯 AI</span></td><td class="tm">数字人开场（可选）· Seedance 文生视频 · 字幕</td><td class="num-c">≈¥12</td><td><span class="bdg ok np">上架</span></td><td class="rowact"><button class="btn sm gho" data-act="play-demo">▶ 案例</button><button class="btn sm gho" data-act="tpl-prompt" data-tpl="Seedance">约束提示词</button><button class="btn sm gho" data-act="toast" data-msg="上传/替换案例视频（演示）">案例上传</button></td></tr>
+        </tbody></table>
+      </div>
+
+      <!-- 视频供应商 -->
+      <div class="card pad" style="margin-bottom:16px"><div class="head"><h3>生成供应商（Provider 隔离 · 可切换比价）</h3><span class="mini" style="margin-left:auto">候选据调研，单价签约前控制台核实</span></div>
+        <table id="provTbl"><thead><tr><th>能力</th><th>当前供应商</th><th>接入</th><th>参考单价</th><th>1.0 自部署降本</th><th>状态</th></tr></thead><tbody>
+          <tr><td>数字人口播（换人）</td><td class="tm">阿里百炼 wan2.2-s2v</td><td><span class="bdg ok np">注册即用</span></td><td class="num-c tm">≈¥0.5/秒</td><td class="tm">MuseTalk(MIT)</td><td><span class="bdg ok np">启用</span></td></tr>
+          <tr><td>换主角（保场景）</td><td class="tm">阿里 animate-mix / 腾讯 IVH</td><td><span class="bdg ok np">注册即用</span></td><td class="num-c tm">需核实</td><td class="tm">—</td><td><span class="bdg mut np">备用</span></td></tr>
+          <tr><td>产品 i2v（换产品主线）</td><td class="tm">阿里 wan2.6-i2v / 可灵</td><td><span class="bdg ok np">注册即用</span></td><td class="num-c tm">≈¥0.6/秒</td><td class="tm">Wan2.2(Apache)</td><td><span class="bdg ok np">启用</span></td></tr>
+          <tr><td>文生视频（场景段）</td><td class="tm">阿里 i2v / 即梦 Seedance</td><td><span class="bdg warn np">实名</span></td><td class="num-c tm">≈¥1/秒</td><td class="tm">Wan2.2</td><td><span class="bdg ok np">启用·限用</span></td></tr>
+          <tr><td>保场景真换物（前沿）</td><td class="tm">可灵 O1 / 阿里 VACE(≤5s)</td><td><span class="bdg warn np">需打样</span></td><td class="num-c tm">需核实</td><td class="tm">—</td><td><span class="bdg mut np">未开放</span></td></tr>
+          <tr><td>拼装 / 字幕套壳</td><td class="tm">Revideo(MIT) / FFmpeg</td><td><span class="bdg ok np">自部署</span></td><td class="num-c tm">≈¥0</td><td class="tm">同左</td><td><span class="bdg ok np">启用</span></td></tr>
+        </tbody></table>
+      </div>
+
+      <div class="note"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><circle cx="12" cy="12" r="9"/><path d="M12 8v5M12 16h.01"/></svg><span>演示版全用商业 API 求稳（阿里百炼一套 Key 打通 s2v+i2v）；1.0 高频量产切自部署开源降本。🔴 供应商须确认算法备案、成片加 AI 生成标识、仅授权形象换人。各段单价计入套餐「满额成本」校验，防越用越亏。</span></div>
+    </section>
+
+    <!-- ===================== 提示词管理（生成类，运营维护，客户端不可改）===================== -->
+    <section class="page" data-p="prompts">
+      <div class="lead"><div><div class="t">提示词管理</div><div class="s">全链路生成类提示词由运营统一维护、下发全租户；客户端只选「风格」、不开放编辑（技术 know-how 不外露）</div></div>
+        <button class="btn pri" data-act="toast" data-msg="新建提示词（演示）"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M12 5v14M5 12h14"/></svg>新建</button></div>
+      <div class="alert"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M12 9v4M12 17h.01M10.3 3.9l-8 14A2 2 0 004 21h16a2 2 0 001.7-3l-8-14a2 2 0 00-3.4 0z"/></svg><div>这些提示词决定生成质量与合规，<b>客户端不可见/不可改</b>；客户端仅暴露「风格」供其选用。</div></div>
+      <div class="card pad"><table><thead><tr><th>提示词</th><th>环节</th><th>客户端</th><th>状态</th><th></th></tr></thead><tbody>
+        <tr><td><b class="tt">爆款拆解规则</b></td><td class="tm">拆解（八维度+公式）</td><td><span class="bdg mut np">不可见</span></td><td><span class="bdg ok np">已下发</span></td><td class="rowact"><button class="btn sm gho" data-act="toast" data-msg="编辑（演示）">编辑</button></td></tr>
+        <tr><td><b class="tt">口播脚本提示词</b></td><td class="tm">仿写</td><td><span class="bdg mut np">不可见</span></td><td><span class="bdg ok np">已下发</span></td><td class="rowact"><button class="btn sm gho" data-act="toast" data-msg="编辑（演示）">编辑</button></td></tr>
+        <tr><td><b class="tt">标题 / 字幕 / CTA 提示词</b></td><td class="tm">仿写</td><td><span class="bdg mut np">不可见</span></td><td><span class="bdg ok np">已下发</span></td><td class="rowact"><button class="btn sm gho" data-act="toast" data-msg="编辑（演示）">编辑</button></td></tr>
+        <tr><td><b class="tt">数字人口播提示词</b></td><td class="tm">视频·口播段</td><td><span class="bdg mut np">不可见</span></td><td><span class="bdg ok np">已下发</span></td><td class="rowact"><button class="btn sm gho" data-act="toast" data-msg="编辑（演示）">编辑</button></td></tr>
+        <tr><td><b class="tt">产品 i2v 提示词</b></td><td class="tm">视频·产品段</td><td><span class="bdg mut np">不可见</span></td><td><span class="bdg ok np">已下发</span></td><td class="rowact"><button class="btn sm gho" data-act="toast" data-msg="编辑（演示）">编辑</button></td></tr>
+        <tr><td><b class="tt">Seedance 画面提示词</b></td><td class="tm">视频·文生段</td><td><span class="bdg mut np">不可见</span></td><td><span class="bdg ok np">已下发</span></td><td class="rowact"><button class="btn sm gho" data-act="toast" data-msg="编辑（演示）">编辑</button></td></tr>
+        <tr><td><b class="tt">风格 · 温情风 / 专业风</b></td><td class="tm">口吻</td><td><span class="bdg brd np">客户可选/微调</span></td><td><span class="bdg ok np">已下发</span></td><td class="rowact"><button class="btn sm gho" data-act="toast" data-msg="编辑（演示）">编辑</button></td></tr>
+      </tbody></table></div>
+      <div class="note"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><circle cx="12" cy="12" r="9"/><path d="M12 8v5M12 16h.01"/></svg><span>模板的「约束提示词」（镜头/人物/动作/台词/语气）在「视频生成配置」里按模板维护；本页是通用生成提示词。两者都不向客户端开放编辑。</span></div>
+    </section>
+
+    <!-- ===================== 合规词库 ===================== -->
+    <section class="page" data-p="lexicon">
+      <div class="lead"><div><div class="t">合规词库 / 规则集</div><div class="s">殡葬命门 · 违禁词 + 改写建议人工持续维护 · 版本化发布，下发全租户</div></div>
+        <button class="btn pri" data-act="add-word"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M12 5v14M5 12h14"/></svg>新增词条</button></div>
+      <div class="card pad" style="margin-bottom:14px;display:flex;align-items:center;gap:14px;flex-wrap:wrap">
+        <div><span class="mini">当前生效版本</span><div style="font-weight:600;margin-top:2px">v12 <span class="bdg ok np">已发布</span> <span class="mini">· 2026-06-20 · 142 词条 · 生效 6 租户</span></div></div>
+        <span class="spacer"></span>
+        <div><span class="mini">编辑中草稿</span><div style="font-weight:600;margin-top:2px">v13 <span class="bdg warn np">草稿</span> <span class="mini">· +3 / 改2</span></div></div>
+        <button class="btn" data-act="toast" data-msg="对比 v12 → v13：新增 3 词、修改 2 词">对比 v12</button>
+        <button class="btn pri" data-act="pub-lexicon">发布 v13 → 下发全租户</button>
+      </div>
+      <div class="card pad"><table id="lexTbl"><thead><tr><th>违禁词 / 正则</th><th>类别</th><th>命中范围</th><th>改写建议</th><th>风险</th><th></th></tr></thead><tbody>
+        <tr><td><b class="tt">最便宜 / 全网最低</b></td><td><span class="bdg dng np">绝对化</span></td><td class="tm">全文</td><td class="tm">"高性价比"</td><td><span class="bdg dng np">高</span></td><td class="rowact"><button class="btn sm gho" data-act="toast" data-msg="编辑词条（演示）">编辑</button><button class="btn sm gho dng" data-act="del-word">删除</button></td></tr>
+        <tr><td><b class="tt">包治 / 一定有效</b></td><td><span class="bdg dng np">虚假承诺</span></td><td class="tm">全文</td><td class="tm">删除 / 弱化</td><td><span class="bdg dng np">高</span></td><td class="rowact"><button class="btn sm gho" data-act="toast" data-msg="编辑词条（演示）">编辑</button><button class="btn sm gho dng" data-act="del-word">删除</button></td></tr>
+        <tr><td><b class="tt">灵堂</b></td><td><span class="bdg warn np">敏感用词</span></td><td class="tm">标题 / 口播</td><td class="tm">"告别厅"</td><td><span class="bdg warn np">中</span></td><td class="rowact"><button class="btn sm gho" data-act="toast" data-msg="编辑词条（演示）">编辑</button><button class="btn sm gho dng" data-act="del-word">删除</button></td></tr>
+        <tr><td><b class="tt">死 / 死人 <span class="bdg brd np">v13 新增</span></b></td><td><span class="bdg warn np">敏感用词</span></td><td class="tm">全文</td><td class="tm">"逝者 / 过世"</td><td><span class="bdg warn np">中</span></td><td class="rowact"><button class="btn sm gho" data-act="toast" data-msg="编辑词条（演示）">编辑</button><button class="btn sm gho dng" data-act="del-word">删除</button></td></tr>
+      </tbody></table></div>
+    </section>
+
+  </div>
+</div>
+
+<div class="navmask" data-act="navtog"></div>
+<div class="toast-wrap" id="toasts"></div>
+<div class="mask" id="mask"><div class="modal" id="modal"></div></div>
+<div class="ovl" id="ovl"><div class="spin"></div><div class="ot" id="ovlTxt">处理中…</div></div>
+
+<script>
+const $=s=>document.querySelector(s),$$=s=>document.querySelectorAll(s);
+const titles={tenants:['账号开通','客户租户'],packages:['套餐配置','计费'],videocfg:['视频生成配置','模板 + 供应商 + 计费'],prompts:['提示词管理','生成类提示词 · 运营维护下发'],lexicon:['合规词库 / 规则集','合规']};
+
+function go(v){
+  $$('#nav a').forEach(a=>a.classList.toggle('on',a.dataset.v===v));
+  $$('.page').forEach(p=>p.classList.toggle('show',p.dataset.p===v));
+  if(titles[v]){$('#ptitle').textContent=titles[v][0];$('#pcrumb').textContent=titles[v][1];}
+  const r=$('.rail');if(r)r.classList.remove('open');const m=$('.navmask');if(m)m.classList.remove('show');
+  window.scrollTo(0,0);
+}
+$$('#nav a').forEach(a=>a.addEventListener('click',()=>go(a.dataset.v)));
+
+function toast(msg,type){
+  const ic={ok:'M20 6L9 17l-5-5',warn:'M12 9v4M12 17h.01M10.3 3.9l-8 14A2 2 0 004 21h16a2 2 0 001.7-3l-8-14a2 2 0 00-3.4 0z',dng:'M18 6L6 18M6 6l12 12'}[type]||'M12 8v.01M11 12h1v4h1';
+  const t=document.createElement('div');t.className='toast '+(type||'');
+  t.innerHTML='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="'+ic+'"/></svg>'+msg;
+  $('#toasts').appendChild(t);setTimeout(()=>{t.style.opacity=0;t.style.transform='translateX(24px)';t.style.transition='.3s';setTimeout(()=>t.remove(),300);},2600);
+}
+function overlay(msg,ms,cb){$('#ovlTxt').textContent=msg;$('#ovl').classList.add('show');setTimeout(()=>{$('#ovl').classList.remove('show');cb&&cb();},ms||1300);}
+function modal(title,body,okText,onOk,wide){
+  $('#modal').className='modal'+(wide?' wide':'');
+  $('#modal').innerHTML='<h4>'+title+'</h4><div class="mb">'+body+'</div><div class="mf"><button class="btn" data-mc>取消</button><button class="btn pri" data-mo>'+(okText||'确定')+'</button></div>';
+  $('#mask').classList.add('show');
+  $('#modal [data-mc]').onclick=closeModal;
+  $('#modal [data-mo]').onclick=()=>{onOk&&onOk();};
+}
+function closeModal(){$('#mask').classList.remove('show');}
+$('#mask').addEventListener('click',e=>{if(e.target.id==='mask')closeModal();});
+// 模板「约束提示词」：模板内置的锁定约束，换数字人/换产品时这套不变，只替换形象与产品
+function blk(t,c,tag){return '<div style="margin-bottom:12px"><div style="font-size:12.5px;font-weight:600;color:var(--ink);margin-bottom:5px">'+t+' '+(tag||'')+'</div><div class="mini" style="line-height:1.7">'+c+'</div></div>';}
+const _lk='<span class="bdg dng np" style="font-size:10px">锁定·不可改</span>',_vr='<span class="bdg warn np" style="font-size:10px">换人/换产品时替换</span>';
+const TPL_PROMPT={
+  '产品讲解':{title:'产品讲解 · 换数字人+产品',tip:'换数字人/换产品时，「锁定」项不变，只替换「人物形象」与「产品+台词」。',blocks:[
+    ['① 镜头 / 质感 / 口型','全程口型与台词100%对上。禁止多余的手、动作不自然、任何多余字幕/特效。手机居家自拍质感，暖色调，画质细腻高清。开篇轻柔推镜，推镜后固定镜头，画面稳定干净，人物居中。肢体语言克制，无刻意摆拍、无急促推销感。',_lk],
+    ['② 人物形象','长发偏分柔顺精致；轻淡贵气妆水光肌、棕色美瞳、全包眼线、睫毛纤长、豆沙色口红、细闪高光；极小珍珠耳钉+细金锁骨链。',_vr],
+    ['③ 场景 / 服装','浅米色布艺单人沙发椅，姿态慵懒优雅松弛；香槟金真丝缎面吊带裙；日式奶油风居家客厅，窗边白纱柔光，暖调家具。',_lk],
+    ['④ 动作编排','开篇双手托产品于胸前浅笑直视；随后单手持品、另手食指轻点标签、眼神在镜头与产品间流转、轻点头；末尾双手握品颔首致意。',_lk],
+    ['⑤ 产品 + 台词','产品 + 卖点 + 口播台词（换产品时整体替换此项）。硬事实（价格/规格）只取知识库，未命中留空不编造。',_vr],
+    ['⑥ 语气 / 语速','温柔笃定专业种草→真诚共情→温暖安利→克制走心；语速舒缓，开篇轻快、中段放缓、尾音上扬带邀请、收尾利落。',_lk]]},
+  '数字人混剪':{title:'数字人+混剪 · 硅基同款结构',tip:'参考硅基大司马「数字人口播 + 素材混剪」结构。换选题/换产品时只替换「口播脚本」与「混剪素材」，结构/节奏/质量红线锁定。',blocks:[
+    ['① 整体结构（爆款公式）','震撼数字钩子（前3秒抛反差数据/反常识）→ 痛点铺垫 → 黑科技/卖点揭秘 → 价值升华（行业/家国/趋势）→ 自报家门转化（品牌+引导）。按此五段骨架展开。',_lk],
+    ['② 画面构成','数字人口播开场1-2s后转主体；主体由素材切片混剪卡点拼接（实拍/新闻/产品素材，从素材库或免费源匹配）；数字人以小窗/画中画穿插，非全程占屏。',_lk],
+    ['③ 节奏 / 字幕 / BGM','快节奏高信息密度，画面随口播卡点切换；全程字幕同步口播；BGM 情绪烘托，由弱渐强配合升华段。',_lk],
+    ['④ 口播脚本','按五段结构写口播（换选题/产品时替换）。硬事实只取知识库、未命中留空。',_vr],
+    ['⑤ 混剪素材','按脚本节奏从素材库/免费源匹配切片（换产品/选题时替换）。',_vr],
+    ['⑥ 🔴 质量红线','禁止文案整段重复（硅基原片有此 bug，必须去重）；画面与口播语义对齐；混剪片段来源合规（不自爬他人受版权素材）；成片加 AI 生成标识。',_lk]]},
+  'Seedance':{title:'Seedance 生成视频 · 纯 AI',tip:'完全 AI 生成（火山 Seedance 文生视频），无需客户素材。换选题时替换「画面提示词」与「口播」。',blocks:[
+    ['① 整体','数字人开场口播（可选）→ Seedance 文生视频生成主体画面 → 字幕。最贵段，模板约束 Seedance 段用量。',_lk],
+    ['② Seedance 画面提示词','镜头/光线/色调/主体/运镜的文生视频提示词（换选题时替换）。暖色调、自然光、东方素雅意境；避免人脸违禁元素。',_vr],
+    ['③ 口播 / 字幕','开场口播脚本 + 全程字幕（换选题时替换口播）。',_vr],
+    ['④ 🔴 质量红线','文生视频成本最高，按模板约束用量；成片加 AI 生成标识；避免违禁画面。',_lk]]}
+};
+function tplPrompt(tpl){const d=TPL_PROMPT[tpl]||TPL_PROMPT['产品讲解'];
+  modal('约束提示词 · '+d.title,
+    '<div class="alert"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M12 9v4M12 17h.01M10.3 3.9l-8 14A2 2 0 004 21h16a2 2 0 001.7-3l-8-14a2 2 0 00-3.4 0z"/></svg><div>模板内置这套约束，保证出片风格统一。<b>'+d.tip+'</b></div></div>'+
+    d.blocks.map(b=>blk(b[0],b[1],b[2])).join(''),
+    '保存约束',()=>{closeModal();toast('约束提示词已保存（演示）','ok');},true);
+}
+
+document.addEventListener('click',e=>{
+  const el=e.target.closest('[data-act]');if(!el)return;
+  const a=el.dataset.act;
+  switch(a){
+    case 'go': go(el.dataset.v);break;
+    case 'navtog':{const r=$('.rail');if(r)r.classList.toggle('open');const m=$('.navmask');if(m)m.classList.toggle('show');}break;
+    case 'toast': toast(el.dataset.msg,el.dataset.type);break;
+    case 'do-login': $('#login').style.display='none';go('tenants');toast('登录成功','ok');break;
+    case 'logout': $('#login').style.display='grid';break;
+    case 'new-tenant': modal('开通新公司',
+      '<div class="split"><div class="field"><label>公司名 <span class="req">*</span></label><input class="inp" id="ntName" placeholder="如：松鹤堂礼仪"></div><div class="field"><label>行业</label><input class="inp" value="殡葬（固定）" disabled style="color:var(--ink-3)"></div></div>'+
+      '<div class="split"><div class="field"><label>套餐 <span class="req">*</span></label><select class="inp" id="ntPkg"><option>标准版</option><option>旗舰版</option></select></div><div class="field"><label>到期时间</label><input class="inp" value="2027-06-25"></div></div>'+
+      '<div class="split"><div class="field"><label>管理员姓名 <span class="req">*</span></label><input class="inp" id="ntAdmin" placeholder="老板姓名"></div><div class="field"><label>管理员账号（手机）</label><input class="inp" id="ntPhone" placeholder="138…"></div></div>'+
+      '<div class="field" style="margin:0"><label>初始密码</label><div style="display:flex;gap:8px"><input class="inp" id="ntPwd" value="Lc@2026xZ"><button class="btn" data-act="gen-pwd">重新生成</button></div></div>',
+      '生成账号并下发',()=>{
+        const nm=($('#ntName').value||'').trim()||'新公司',pkg=$('#ntPkg').value,admin=($('#ntAdmin').value||'').trim()||'管理员',phone=($('#ntPhone').value||'').trim()||'—';
+        const tr=document.createElement('tr');
+        tr.innerHTML='<td><b class="tt">'+nm+'</b><div class="tm">新开通</div></td><td><span class="bdg '+(pkg==='旗舰版'?'brd':'mut')+' np">'+pkg+'</span></td><td><span class="bdg ok np">已开通</span></td><td class="num-c">1</td><td class="tm num-c">'+phone+'</td><td class="tm num-c">2027-06-25</td><td class="rowact"><button class="btn sm gho dng" data-act="toggle-tenant">停用</button></td>';
+        $('#tenantTbl tbody').prepend(tr);closeModal();toast('已开通「'+nm+'」并下发登录凭证（管理员 '+admin+'）','ok');
+      });break;
+    case 'gen-pwd': if($('#ntPwd')){const c='ABCDEFGHJKMNPQRSTUVWXYZ23456789';let s='';for(let i=0;i<6;i++)s+=c[Math.floor(Math.random()*c.length)];$('#ntPwd').value='Lc@'+s;toast('已生成新密码');}break;
+    case 'toggle-tenant':{const tr=el.closest('tr'),b=tr.querySelector('.bdg.ok,.bdg.mut,.bdg.dng');
+      if(el.textContent.includes('停用')){if(b){b.className='bdg mut np';b.textContent='已停用';}el.textContent='启用';toast('已停用该租户','warn');}
+      else{if(b){b.className='bdg ok np';b.textContent='已开通';}el.textContent='停用';toast('已启用该租户','ok');}}break;
+    case 'new-package': modal('新建套餐',
+      '<div class="split"><div class="field"><label>套餐名 <span class="req">*</span></label><input class="inp" placeholder="如：尊享版"></div><div class="field"><label>月费</label><input class="inp" placeholder="¥（待报价）"></div></div>'+
+      '<div class="split"><div class="field"><label>爆款配额</label><input class="inp" value="3000"></div><div class="field"><label>转写配额</label><input class="inp" value="500"></div></div>'+
+      '<div class="split"><div class="field"><label>生成配额</label><input class="inp" value="600"></div><div class="field"><label>成片分钟</label><input class="inp" value="120"></div></div>'+
+      '<div class="field" style="margin:0"><label>形象个数</label><input class="inp" value="2"></div>'+
+      '<div class="alert" style="margin-top:14px"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M12 9v4M12 17h.01"/></svg><div>保存时校验「月费 ≥ 满额成本」，未达将拦截并提示亏损风险。</div></div>',
+      '保存套餐',()=>{closeModal();toast('套餐已保存（月费待报价后补）','ok');},true);break;
+    case 'add-word': modal('新增合规词条',
+      '<div class="field"><label>违禁词 / 正则 <span class="req">*</span></label><input class="inp" id="awWord" placeholder="如：全网独家"></div>'+
+      '<div class="split"><div class="field"><label>类别</label><select class="inp" id="awCat"><option>绝对化</option><option>虚假承诺</option><option>敏感用词</option><option>其他</option></select></div><div class="field"><label>风险级</label><select class="inp" id="awRisk"><option>高</option><option>中</option><option>低</option></select></div></div>'+
+      '<div class="field" style="margin:0"><label>改写建议</label><input class="inp" id="awFix" placeholder="如：弱化 / 删除 / 替换词"></div>',
+      '加入 v13 草稿',()=>{
+        const w=($('#awWord').value||'').trim()||'新词条',cat=$('#awCat').value,risk=$('#awRisk').value,fix=($('#awFix').value||'').trim()||'—';
+        const rc=risk==='高'?'dng':(risk==='中'?'warn':'mut');
+        const tr=document.createElement('tr');
+        tr.innerHTML='<td><b class="tt">'+w+' <span class="bdg brd np">v13 新增</span></b></td><td><span class="bdg '+rc+' np">'+cat+'</span></td><td class="tm">全文</td><td class="tm">'+fix+'</td><td><span class="bdg '+rc+' np">'+risk+'</span></td><td class="rowact"><button class="btn sm gho" data-act="toast" data-msg="编辑词条（演示）">编辑</button><button class="btn sm gho dng" data-act="del-word">删除</button></td>';
+        $('#lexTbl tbody').prepend(tr);closeModal();toast('已加入 v13 草稿，发布后下发','ok');
+      });break;
+    case 'del-word':{const tr=el.closest('tr');tr.style.opacity=.4;setTimeout(()=>tr.remove(),200);toast('已从草稿移除该词条','warn');}break;
+    case 'tpl-prompt': tplPrompt(el.dataset.tpl);break;
+    case 'play-demo':{const nm=(el.closest('tr')&&el.closest('tr').querySelector('.tt'))?el.closest('tr').querySelector('.tt').textContent:'模板案例';
+      const src=nm.indexOf('Seedance')>=0?'../prototype/assets/demo/ai-gen.mp4':nm.indexOf('混剪')>=0?'../prototype/assets/demo/hunjian.mp4':'../prototype/assets/demo/daihuo.mp4';
+      modal('案例视频 · '+nm,'<div style="position:relative;border-radius:10px;overflow:hidden;background:#1a1a1a;display:grid;place-items:center;max-height:60vh"><video src="'+src+'#t=0.1" controls muted playsinline preload="metadata" style="width:auto;max-width:100%;max-height:60vh;display:block;object-fit:contain" onerror="this.style.display=\'none\';this.nextElementSibling.style.display=\'grid\'"></video><div style="display:none;position:absolute;inset:0;place-items:center;color:#fff;text-align:center;min-height:280px"><div><div style="font-size:28px">▶</div><div style="opacity:.85;font-size:12px;margin-top:4px">数字人介绍产品 · 样片</div></div></div></div><div class="mini" style="margin-top:10px">每个内置模板配一条案例视频，商家端选用前可预览；运营把真实样片放入 prototype/assets/demo/（命名见该目录 README）。</div>','关闭',closeModal);}break;
+    case 'new-tpl': modal('新增内置视频模板',
+      '<div class="split"><div class="field"><label>模板名 <span class="req">*</span></label><input class="inp" id="ntpName" placeholder="如：节日促销"></div><div class="field"><label>类型</label><select class="inp" id="ntpType"><option>挂素材（需客户产品图）</option><option>纯 AI（无需素材）</option></select></div></div>'+
+      '<div class="field"><label>分段构成（每段用哪种 AI）</label><input class="inp" id="ntpSeg" value="数字人口播 1-2s · 产品图 i2v · 字幕套壳"></div>'+
+      '<div class="field" style="margin:0"><label>预估成本/条</label><input class="inp" id="ntpCost" placeholder="¥（按各段单价估）"></div>'+
+      '<div class="note"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M12 9v4M12 17h.01"/></svg><span>文生视频段最贵，建议 ≤1；商家端按此模板逐段生成。</span></div>',
+      '上架模板',()=>{const nm=($('#ntpName').value||'').trim()||'新模板',ty=$('#ntpType').value.startsWith('纯')?'纯 AI':'挂素材',seg=($('#ntpSeg').value||'').trim(),cost=($('#ntpCost').value||'').trim()||'≈¥—';
+        const tr=document.createElement('tr');
+        tr.innerHTML='<td><b class="tt">'+nm+'</b></td><td><span class="bdg '+(ty==='挂素材'?'brd':'mut')+' np">'+ty+'</span></td><td class="tm">'+seg+'</td><td class="num-c">'+cost+'</td><td><span class="bdg ok np">上架</span></td><td class="rowact"><button class="btn sm gho" data-act="play-demo">▶ 案例</button><button class="btn sm gho" data-act="toast" data-msg="上传/替换案例视频（演示）">案例上传</button><button class="btn sm gho" data-act="toast" data-msg="编辑模板（演示）">编辑</button></td>';
+        $('#tplTbl tbody').prepend(tr);closeModal();toast('已上架内置模板「'+nm+'」，商家端可选用','ok');});break;
+    case 'pub-lexicon': modal('发布合规词库 v13','即将把 <b>v13</b>（+3 词 / 改2 词）发布并<b>下发到全部租户</b>，立即生效于商家端生成 / 导出预审。<br><br>此操作可回滚至 v12。','确认发布并下发',()=>{closeModal();overlay('正在下发 v13 到全部租户…',1400,()=>toast('合规词库 v13 已发布并下发全租户','ok'));});break;
+  }
+});
+</script>
+</body>
+</html>

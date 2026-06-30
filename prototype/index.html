@@ -1,0 +1,1016 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>殡葬 AI 获客 · 控制台原型</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Sora:wght@400;500;600;700&display=swap" rel="stylesheet" />
+<script>function avFb(im){im.onerror=null;im.src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 48 48'%3E%3Crect width='48' height='48' fill='%23d7e6e3'/%3E%3Ccircle cx='24' cy='18' r='8' fill='%239bb8b2'/%3E%3Cpath d='M7 46c0-10 8-15 17-15s17 5 17 15z' fill='%239bb8b2'/%3E%3C/svg%3E";}</script>
+<style>
+:root{
+  --bg:oklch(0.984 0.004 200);--surface:oklch(1 0 0);--surface-2:oklch(0.975 0.006 200);
+  --rail:oklch(0.255 0.022 215);--rail-2:oklch(0.225 0.022 215);--rail-tx:oklch(0.82 0.015 210);--rail-tx-2:oklch(0.62 0.02 210);
+  --line:oklch(0.915 0.008 210);--line-2:oklch(0.86 0.01 210);
+  --ink:oklch(0.27 0.022 225);--ink-2:oklch(0.46 0.018 220);--ink-3:oklch(0.62 0.014 215);
+  --brand:oklch(0.52 0.072 200);--brand-d:oklch(0.44 0.075 202);--brand-sft:oklch(0.95 0.022 200);
+  --accent:oklch(0.66 0.11 62);--accent-sft:oklch(0.95 0.04 70);
+  --ok:oklch(0.6 0.09 155);--ok-sft:oklch(0.95 0.03 155);
+  --warn:oklch(0.7 0.13 65);--warn-sft:oklch(0.955 0.045 72);
+  --danger:oklch(0.58 0.15 25);--danger-sft:oklch(0.955 0.035 28);
+  --r:12px;--r-s:8px;--r-l:16px;
+  --sh-1:0 1px 2px oklch(0.4 0.03 220 /.06),0 1px 3px oklch(0.4 0.03 220 /.05);
+  --sh-2:0 4px 14px oklch(0.4 0.03 220 /.08),0 1px 3px oklch(0.4 0.03 220 /.05);
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html{-webkit-font-smoothing:antialiased}
+body{font-family:"PingFang SC","HarmonyOS Sans SC","Microsoft YaHei",system-ui,sans-serif;background:var(--bg);color:var(--ink);font-size:14px;line-height:1.55}
+.num,.disp{font-family:"Sora",system-ui,sans-serif;font-variant-numeric:tabular-nums}
+::-webkit-scrollbar{width:9px;height:9px}::-webkit-scrollbar-thumb{background:var(--line-2);border-radius:6px}
+.app{display:grid;grid-template-columns:228px 1fr;min-height:100vh}
+.rail{background:var(--rail);color:var(--rail-tx);display:flex;flex-direction:column;position:sticky;top:0;height:100vh}
+.brand{display:flex;align-items:center;gap:10px;padding:20px 18px 18px;border-bottom:1px solid oklch(1 0 0 /.07)}
+.brand .mk{width:30px;height:30px;border-radius:9px;background:linear-gradient(150deg,var(--brand),var(--brand-d));display:grid;place-items:center;color:#fff;font-weight:700;font-size:15px;box-shadow:0 2px 8px oklch(0.4 0.07 200 /.4)}
+.brand b{color:#fff;font-size:15px;font-weight:600;letter-spacing:.2px}
+.brand small{display:block;color:var(--rail-tx-2);font-size:11px;font-weight:400;letter-spacing:.4px}
+.nav{flex:1;overflow-y:auto;padding:14px 12px}
+.nav .grp{color:var(--rail-tx-2);font-size:11px;letter-spacing:1.2px;padding:14px 10px 7px;text-transform:uppercase}
+.nav a{display:flex;align-items:center;gap:11px;padding:9px 11px;border-radius:9px;color:var(--rail-tx);text-decoration:none;font-size:13.5px;cursor:pointer;transition:background .15s,color .15s}
+.nav a svg{width:17px;height:17px;stroke-width:1.7;opacity:.85;flex:none}
+.nav a:hover{background:oklch(1 0 0 /.06);color:#fff}
+.nav a.on{background:linear-gradient(100deg,var(--brand-d),oklch(0.4 0.06 205));color:#fff}
+.nav a.on svg{opacity:1}
+.nav a .dot{margin-left:auto;background:var(--accent);color:oklch(0.28 0.04 60);font-size:10.5px;font-weight:600;padding:1px 6px;border-radius:20px;font-family:Sora}
+.rail .foot{padding:13px 16px;border-top:1px solid oklch(1 0 0 /.07);display:flex;align-items:center;gap:9px;font-size:12.5px;color:var(--rail-tx-2)}
+.rail .foot .av{width:26px;height:26px;border-radius:50%;background:var(--accent);color:#fff;display:grid;place-items:center;font-size:12px;font-weight:600}
+.main{display:flex;flex-direction:column;min-width:0}
+.top{position:sticky;top:0;z-index:5;background:oklch(1 0 0 /.82);backdrop-filter:blur(10px);border-bottom:1px solid var(--line);display:flex;align-items:center;gap:16px;padding:0 26px;height:58px}
+.top h1{font-size:16px;font-weight:600;letter-spacing:.2px}
+.top .crumb{color:var(--ink-3);font-size:12.5px}
+.spacer{flex:1}
+.chip{display:inline-flex;align-items:center;gap:7px;background:var(--surface-2);border:1px solid var(--line);border-radius:20px;padding:5px 12px;font-size:12.5px;color:var(--ink-2);cursor:pointer}
+.chip b{color:var(--ink);font-weight:600}.chip.usage b{color:var(--brand-d)}
+.co{display:inline-flex;align-items:center;gap:8px;background:var(--surface);border:1px solid var(--line-2);border-radius:9px;padding:5px 11px;font-size:13px;font-weight:500;cursor:pointer}
+.co .lg{width:22px;height:22px;border-radius:6px;background:var(--brand-sft);color:var(--brand-d);display:grid;place-items:center;font-size:11px;font-weight:700}
+.page{padding:26px 28px 60px;display:none;animation:in .35s cubic-bezier(.2,.7,.2,1);max-width:1360px;margin:0 auto;width:100%}
+.page.show{display:block}
+@keyframes in{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
+.lead{display:flex;align-items:flex-end;justify-content:space-between;gap:16px;margin-bottom:20px}
+.lead .t{font-size:20px;font-weight:600;letter-spacing:.2px}.lead .s{color:var(--ink-3);font-size:13px;margin-top:3px}
+.btn{display:inline-flex;align-items:center;gap:7px;border:1px solid var(--line-2);background:var(--surface);color:var(--ink);padding:8px 14px;border-radius:9px;font-size:13px;font-weight:500;cursor:pointer;transition:.15s;font-family:inherit}
+.btn:hover{border-color:var(--ink-3);background:var(--surface-2)}
+.btn:active{transform:scale(.97)}
+.btn svg{width:15px;height:15px;stroke-width:1.8}
+.btn.pri{background:linear-gradient(160deg,var(--brand),var(--brand-d));border-color:transparent;color:#fff;box-shadow:0 2px 9px oklch(0.45 0.07 200 /.28)}
+.btn.pri:hover{filter:brightness(1.06)}
+.btn.gho{background:transparent;border-color:transparent;color:var(--ink-2)}.btn.gho:hover{background:var(--surface-2);color:var(--ink)}
+.btn.sm{padding:5px 10px;font-size:12px}
+.card{background:var(--surface);border:1px solid var(--line);border-radius:var(--r);box-shadow:var(--sh-1)}
+.card.pad{padding:18px 20px}
+.grid{display:grid;gap:16px}
+.head{display:flex;align-items:center;gap:10px;margin-bottom:14px}
+.head h3{font-size:14.5px;font-weight:600}.head .more{margin-left:auto;font-size:12.5px;color:var(--brand-d);cursor:pointer}
+.stats{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin-bottom:18px}
+.stat{background:var(--surface);border:1px solid var(--line);border-radius:var(--r);padding:16px 18px;position:relative;overflow:hidden}
+.stat .k{color:var(--ink-3);font-size:12.5px;display:flex;align-items:center;gap:6px}
+.stat .v{font-size:27px;font-weight:600;margin-top:7px;letter-spacing:-.5px}
+.stat .v small{font-size:13px;color:var(--ink-3);font-weight:400;margin-left:3px}
+.stat .tr{position:absolute;right:14px;top:15px;font-size:11.5px;font-weight:600;color:var(--ok);font-family:Sora}
+.stat .bar{position:absolute;left:0;bottom:0;height:3px;width:100%;background:var(--line)}.stat .bar i{display:block;height:100%;background:var(--brand)}
+.bdg{display:inline-flex;align-items:center;gap:5px;padding:2px 9px;border-radius:20px;font-size:11.5px;font-weight:500;line-height:1.7}
+.bdg::before{content:"";width:6px;height:6px;border-radius:50%}
+.bdg.ok{background:var(--ok-sft);color:oklch(0.4 0.09 155)}.bdg.ok::before{background:var(--ok)}
+.bdg.warn{background:var(--warn-sft);color:oklch(0.5 0.12 60)}.bdg.warn::before{background:var(--warn)}
+.bdg.dng{background:var(--danger-sft);color:var(--danger)}.bdg.dng::before{background:var(--danger)}
+.bdg.mut{background:var(--surface-2);color:var(--ink-3)}.bdg.mut::before{background:var(--ink-3)}
+.bdg.brd{background:var(--brand-sft);color:var(--brand-d)}.bdg.brd::before{background:var(--brand)}
+.bdg.run::before{animation:pulse 1.2s infinite}
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:.3}}
+table{width:100%;border-collapse:collapse}
+thead th{text-align:left;font-size:11.5px;letter-spacing:.5px;color:var(--ink-3);font-weight:500;padding:11px 14px;border-bottom:1px solid var(--line);text-transform:uppercase}
+tbody td{padding:13px 14px;border-bottom:1px solid var(--line);font-size:13px;vertical-align:middle}
+tbody tr:last-child td{border-bottom:none}tbody tr:hover{background:var(--surface-2)}
+.tt{font-weight:500;color:var(--ink)}.tm{color:var(--ink-3);font-size:12px}
+.plat{display:inline-flex;align-items:center;gap:5px;font-size:12px;color:var(--ink-2)}
+.plat i{width:16px;height:16px;border-radius:4px;display:grid;place-items:center;font-size:9px;color:#fff;font-style:normal;font-weight:600}
+.dy{background:oklch(0.3 0.02 280)}.xhs{background:oklch(0.6 0.18 18)}.sph{background:oklch(0.62 0.13 150)}.ks{background:oklch(0.68 0.17 45)}
+.rowact{text-align:right;white-space:nowrap}
+.rowact .btn{display:inline-flex;vertical-align:middle}
+.rowact .btn+.btn{margin-left:5px}
+.tbl-tight td:first-child,.tbl-tight th:first-child{width:auto;min-width:260px;max-width:520px}
+.tbl-tight th:not(:first-child),.tbl-tight td:not(:first-child){white-space:nowrap;padding-left:28px}
+.steps{display:flex;align-items:center;gap:0;margin-bottom:22px;background:var(--surface);border:1px solid var(--line);border-radius:var(--r);padding:6px}
+.steps .st{flex:1;display:flex;align-items:center;gap:10px;padding:10px 14px;border-radius:9px;cursor:pointer;color:var(--ink-3)}
+.steps .st .n{width:24px;height:24px;border-radius:50%;border:1.5px solid var(--line-2);display:grid;place-items:center;font-size:12px;font-weight:600;flex:none;font-family:Sora}
+.steps .st .lb{font-size:13px;font-weight:500;white-space:nowrap}.steps .st .lb small{display:block;font-size:11px;color:var(--ink-3);font-weight:400}
+.steps .st.on{background:var(--brand-sft);color:var(--brand-d)}
+.steps .st.on .n{background:var(--brand);border-color:var(--brand);color:#fff}
+.steps .st.done .n{background:var(--ok);border-color:var(--ok);color:#fff}.steps .st.done{color:var(--ink-2)}
+.steps .sep{width:18px;height:1.5px;background:var(--line-2);flex:none}
+.wz{display:none}.wz.show{display:block}
+.wzgrid{display:grid;grid-template-columns:1fr 320px;gap:18px;align-items:start}
+.field{margin-bottom:16px}.field label{display:block;font-size:12.5px;font-weight:500;color:var(--ink-2);margin-bottom:7px}.field label .req{color:var(--danger)}
+.inp,textarea,select{width:100%;border:1px solid var(--line-2);border-radius:9px;padding:10px 12px;font-size:13px;font-family:inherit;color:var(--ink);background:var(--surface)}
+textarea{resize:vertical;line-height:1.6}
+.inp:focus,textarea:focus,select:focus{outline:none;border-color:var(--brand);box-shadow:0 0 0 3px var(--brand-sft)}
+.seg{display:inline-flex;background:var(--surface-2);border:1px solid var(--line);border-radius:9px;padding:3px;gap:3px}
+.seg button{border:none;background:transparent;padding:6px 14px;border-radius:7px;font-size:12.5px;cursor:pointer;color:var(--ink-2);font-family:inherit}
+.seg button.on{background:var(--surface);color:var(--ink);box-shadow:var(--sh-1);font-weight:500}
+.chks{display:flex;flex-wrap:wrap;gap:8px}
+.chk{display:inline-flex;align-items:center;gap:7px;border:1px solid var(--line-2);border-radius:8px;padding:7px 12px;font-size:12.5px;cursor:pointer;user-select:none}
+.chk.on{border-color:var(--brand);background:var(--brand-sft);color:var(--brand-d);font-weight:500}
+.dissect{display:flex;flex-direction:column;gap:12px}
+.dis{border:1px solid var(--line);border-radius:10px;padding:13px 15px;background:var(--surface)}
+.dis .dh{display:flex;align-items:center;gap:8px;margin-bottom:7px}
+.dis .dh b{font-size:13px}.dis .dh .tag{font-size:11px;color:var(--ink-3);background:var(--surface-2);padding:1px 7px;border-radius:5px}
+.dis .dh .ed{margin-left:auto;color:var(--brand-d);font-size:12px;cursor:pointer}
+.dis p{font-size:13px;color:var(--ink-2);line-height:1.65}
+.dis.edit p{border:1px solid var(--brand);border-radius:7px;padding:8px;background:var(--brand-sft);color:var(--ink)}
+[contenteditable]{outline:none}
+.aside{position:sticky;top:80px}.aside .card{padding:16px}
+.kv{display:flex;justify-content:space-between;align-items:center;padding:9px 0;border-bottom:1px dashed var(--line);font-size:12.5px}
+.kv:last-child{border:none}.kv .k{color:var(--ink-3)}.kv .v{font-weight:500}
+.tabs{display:flex;gap:4px;border-bottom:1px solid var(--line);margin-bottom:16px}
+.tabs button{border:none;background:transparent;padding:9px 14px;font-size:13px;cursor:pointer;color:var(--ink-3);border-bottom:2px solid transparent;font-family:inherit;margin-bottom:-1px}
+.tabs button.on{color:var(--brand-d);border-color:var(--brand);font-weight:500}
+.alert{display:flex;gap:10px;align-items:flex-start;background:var(--warn-sft);border:1px solid oklch(0.85 0.06 70);border-radius:10px;padding:11px 13px;font-size:12.5px;color:oklch(0.45 0.1 55);margin:14px 0}
+.alert.done{background:var(--ok-sft);border-color:oklch(0.8 0.05 155);color:oklch(0.4 0.09 155)}
+.alert svg{width:17px;height:17px;flex:none;margin-top:1px}.alert .ac{margin-left:auto;white-space:nowrap;display:flex;gap:6px}
+.wzbar{display:flex;justify-content:space-between;align-items:center;margin-top:20px;padding-top:18px;border-top:1px solid var(--line)}
+.drop{border:1.5px dashed var(--line-2);border-radius:12px;padding:30px;text-align:center;color:var(--ink-3);background:var(--surface-2);cursor:pointer;transition:.15s}
+.drop:hover{border-color:var(--brand);background:var(--brand-sft)}
+.drop b{color:var(--ink-2);font-weight:500}.drop .fmt{margin-top:8px;font-size:12px}
+.flist .fi{display:flex;align-items:center;gap:12px;padding:12px 6px;border-bottom:1px solid var(--line)}
+.flist .fi:last-child{border:none}
+.fi .ic{width:34px;height:34px;border-radius:8px;background:var(--brand-sft);color:var(--brand-d);display:grid;place-items:center;font-size:12px;font-weight:600}
+.fi .meta{flex:1}.fi .meta b{font-size:13px;font-weight:500;display:block}.fi .meta small{color:var(--ink-3);font-size:11.5px}
+.bursts{display:grid;grid-template-columns:repeat(3,1fr);gap:14px}
+.burst{border:1px solid var(--line);border-radius:12px;overflow:hidden;background:var(--surface);transition:.18s}
+.burst:hover{box-shadow:var(--sh-2);transform:translateY(-2px)}
+.burst .cv{height:120px;background:linear-gradient(135deg,var(--surface-2),var(--brand-sft));display:flex;align-items:flex-end;justify-content:space-between;padding:10px}
+.burst .cv .mult{background:oklch(0.25 0.02 30 /.85);color:oklch(0.92 0.08 70);font-family:Sora;font-weight:600;font-size:12px;padding:3px 8px;border-radius:7px;backdrop-filter:blur(3px)}
+.burst .bd{padding:12px 14px}
+.burst .bd .bt{font-size:13px;font-weight:500;line-height:1.4;height:2.8em;overflow:hidden;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical}
+.burst .bd .mt{display:flex;align-items:center;gap:12px;margin-top:9px;color:var(--ink-3);font-size:11.5px;font-family:Sora}
+.burst .ba{display:flex;gap:6px;padding:0 14px 13px}.burst .ba .btn{flex:1;justify-content:center}
+.tiles{display:grid;grid-template-columns:repeat(auto-fill,minmax(230px,1fr));gap:14px}
+.tile{border:1px solid var(--line);border-radius:12px;padding:16px;background:var(--surface)}
+.tile .th{display:flex;align-items:center;gap:10px;margin-bottom:10px}
+.tile .av{width:40px;height:40px;border-radius:10px;background:linear-gradient(150deg,var(--brand-sft),var(--accent-sft));display:grid;place-items:center;font-size:16px}
+.ava{width:52px;height:52px;border-radius:12px;object-fit:cover;flex:none;display:block;background:var(--brand-sft)}
+.tile .th{align-items:center}
+.tile b{font-size:13.5px}.tile p{font-size:12.5px;color:var(--ink-2);line-height:1.6;min-height:3.2em}
+.tile.add{border-style:dashed;display:grid;place-items:center;color:var(--ink-3);cursor:pointer;min-height:130px}
+.tile.add:hover{border-color:var(--brand);color:var(--brand-d);background:var(--brand-sft)}
+.lock{display:inline-flex;align-items:center;gap:5px;font-size:11.5px;color:var(--ink-3)}
+.empty{text-align:center;padding:46px 20px;color:var(--ink-3)}
+.empty .ei{width:54px;height:54px;border-radius:14px;background:var(--brand-sft);color:var(--brand-d);display:grid;place-items:center;margin:0 auto 14px}
+.empty b{color:var(--ink);font-size:15px;display:block;margin-bottom:5px}.empty p{font-size:13px;max-width:340px;margin:0 auto 16px}
+.ub{margin-bottom:16px}.ub .ul{display:flex;justify-content:space-between;font-size:12.5px;margin-bottom:7px}.ub .ul b{font-weight:500}.ub .ul span{color:var(--ink-3);font-family:Sora}
+.ub .ut{height:9px;border-radius:6px;background:var(--surface-2);overflow:hidden}.ub .ut i{display:block;height:100%;border-radius:6px}
+.mini{color:var(--ink-3);font-size:12px}
+.split{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+.note{font-size:12px;color:var(--ink-3);margin-top:10px;display:flex;gap:6px;align-items:flex-start}.note svg{width:14px;height:14px;flex:none;margin-top:1px}
+.kbwrap{display:grid;grid-template-columns:208px 1fr;gap:16px;align-items:start}
+.glist{background:var(--surface);border:1px solid var(--line);border-radius:var(--r);padding:8px;box-shadow:var(--sh-1)}
+.gitem{display:flex;align-items:center;gap:9px;padding:9px 11px;border-radius:8px;cursor:pointer;font-size:13px;color:var(--ink-2)}
+.gitem:hover{background:var(--surface-2)}
+.gitem.on{background:var(--brand-sft);color:var(--brand-d);font-weight:500}
+.gitem .gi{width:7px;height:7px;border-radius:2px;background:var(--ink-3);flex:none}
+.gitem.on .gi{background:var(--brand)}
+.gitem .ct{margin-left:auto;color:var(--ink-3);font-size:11.5px;font-family:Sora}
+.gitem.on .ct{color:var(--brand-d)}
+.gitem.addg{color:var(--ink-3);border-top:1px dashed var(--line);margin-top:5px;padding-top:11px}
+.gitem.addg:hover{color:var(--brand-d);background:transparent}
+.tp{display:inline-flex;align-items:center;gap:4px;font-size:11px;padding:2px 8px;border-radius:6px;font-weight:500;white-space:nowrap}
+.tp.s{background:var(--brand-sft);color:var(--brand-d)}
+.tp.u{background:var(--accent-sft);color:oklch(0.5 0.1 60)}
+.tp.a{background:oklch(0.93 0.05 150);color:oklch(0.45 0.12 150)}
+.tpl-pick{display:flex;gap:12px;flex-wrap:wrap}
+.tpl{border:1.5px solid var(--line-2);border-radius:11px;overflow:hidden;width:172px;cursor:pointer;background:var(--surface);transition:.15s}
+.tpl:hover{border-color:var(--ink-3)}
+.tpl.on{border-color:var(--brand);box-shadow:0 0 0 3px var(--brand-sft)}
+.tpl-poster{height:170px;display:grid;place-items:center;position:relative;color:#fff;background:#1a1a1a;overflow:hidden}
+.tpl-poster .cover{position:absolute;inset:0;width:100%;height:100%;object-fit:contain}
+.atile{border:1px solid var(--line);border-radius:10px;overflow:hidden;background:var(--surface)}
+.atile .ath{position:relative;height:120px;background:#1a1a1a}
+.atile .ath img,.atile .ath video{width:100%;height:100%;object-fit:cover;display:block}
+.atile .ath .adur{position:absolute;bottom:5px;right:6px;font-size:10px;color:#fff;background:oklch(0 0 0 /.55);padding:1px 6px;border-radius:4px}
+.atile .ai{padding:8px 10px}.atile .ai b{font-size:12.5px}
+.tpl-poster .ply{width:34px;height:34px;border-radius:50%;background:oklch(1 0 0 /.25);display:grid;place-items:center;font-size:13px;backdrop-filter:blur(2px)}
+.tpl-poster .dur{position:absolute;bottom:5px;right:6px;font-size:10px;background:oklch(0 0 0 /.5);padding:1px 5px;border-radius:4px}
+.tpl-poster .cor{position:absolute;top:5px;left:6px;font-size:10px;background:oklch(0 0 0 /.4);padding:1px 6px;border-radius:4px}
+.tpl-i{padding:8px 10px}.tpl-i b{font-size:12.5px}
+.modal table th{padding:8px 12px}.modal table td{padding:9px 12px}
+.sw{position:relative;width:38px;height:21px;border-radius:20px;background:var(--line-2);cursor:pointer;transition:.2s;flex:none}
+.sw.on{background:var(--brand)}
+.sw::after{content:"";position:absolute;top:2px;left:2px;width:17px;height:17px;border-radius:50%;background:#fff;transition:.2s;box-shadow:var(--sh-1)}
+.sw.on::after{transform:translateX(17px)}
+.sw.dis{background:var(--line);cursor:not-allowed;opacity:.55}
+.swrow{display:flex;align-items:center;gap:8px;margin-top:12px;padding-top:11px;border-top:1px solid var(--line);font-size:12.5px;color:var(--ink-2)}
+/* login */
+.login{position:fixed;inset:0;z-index:200;display:grid;grid-template-columns:1.05fr .95fr}
+.login .lpanel{background:linear-gradient(160deg,var(--rail),oklch(0.31 0.045 205));color:#fff;padding:52px 56px;display:flex;flex-direction:column}
+.login .lbrand{display:flex;align-items:center;gap:11px}
+.login .lbrand .mk{width:34px;height:34px;border-radius:10px;background:linear-gradient(150deg,var(--brand),var(--brand-d));display:grid;place-items:center;color:#fff;font-weight:700;font-size:16px}
+.login .lbrand b{color:#fff;font-size:16px}.login .lbrand small{display:block;color:var(--rail-tx-2);font-size:11px}
+.login .lhero{margin-top:auto}
+.login .lhero h1{font-size:31px;font-weight:600;line-height:1.4;letter-spacing:.5px}
+.login .lhero p{color:var(--rail-tx);margin-top:16px;font-size:14px;line-height:1.8}
+.login .lfeat{list-style:none;margin:26px 0 0;display:flex;flex-direction:column;gap:10px}
+.login .lfeat li{color:var(--rail-tx);font-size:13px}
+.login .lfoot{margin-top:auto;padding-top:40px;color:var(--rail-tx-2);font-size:12px}
+.login .lform{display:grid;place-items:center;padding:40px;background:var(--surface)}
+.login .lcard{width:340px;max-width:100%}
+.login .lcard h2{font-size:24px;font-weight:600}
+.login .lsub{color:var(--ink-3);font-size:13px;margin:8px 0 26px}
+.login .lrow{display:flex;align-items:center;justify-content:space-between;margin:2px 0 22px;font-size:12.5px}
+.login .lcheck{display:flex;align-items:center;gap:7px;color:var(--ink-2);cursor:pointer}
+.login .llink{color:var(--brand-d);cursor:pointer}
+.login .lbtn{width:100%;justify-content:center;padding:11px;font-size:14px}
+.login .lnote{text-align:center;color:var(--ink-3);font-size:12px;margin-top:18px}
+@media(max-width:760px){.login{grid-template-columns:1fr}.login .lpanel{display:none}}
+/* toast / modal / overlay */
+.toast-wrap{position:fixed;top:18px;right:18px;z-index:120;display:flex;flex-direction:column;gap:10px}
+.toast{background:var(--ink);color:#fff;padding:11px 15px;border-radius:10px;font-size:13px;box-shadow:var(--sh-2);display:flex;align-items:center;gap:9px;max-width:340px;animation:tin .3s cubic-bezier(.2,.7,.2,1)}
+.toast svg{width:16px;height:16px;flex:none}
+.toast.ok{background:oklch(0.42 0.09 155)}.toast.warn{background:oklch(0.5 0.12 60)}.toast.dng{background:var(--danger)}
+@keyframes tin{from{opacity:0;transform:translateX(24px)}to{opacity:1}}
+.mask{position:fixed;inset:0;background:oklch(0.2 0.02 220 /.45);z-index:100;display:none;place-items:center;backdrop-filter:blur(2px)}
+.mask.show{display:grid}
+.modal{background:var(--surface);border-radius:16px;width:440px;max-width:92vw;box-shadow:var(--sh-2);overflow:hidden;animation:in .25s}
+.modal.wide{width:680px}
+.modal.xwide{width:960px;max-width:94vw}
+.resfilm{display:grid;grid-template-columns:minmax(0,1.1fr) minmax(0,1fr);gap:16px;align-items:start}
+.resfilm .rscroll{max-height:64vh;overflow-y:auto;padding-right:6px}
+@media(max-width:820px){.resfilm{grid-template-columns:1fr}.resfilm .rscroll{max-height:42vh}}
+.dhcards{display:grid;grid-template-columns:repeat(auto-fill,minmax(190px,1fr));gap:16px}
+.dhcard{position:relative;border-radius:14px;overflow:hidden;aspect-ratio:3/4;background:var(--surface-2);border:1px solid var(--line);box-shadow:var(--sh-1);transition:.18s}
+.dhcard:hover{box-shadow:var(--sh-2);transform:translateY(-2px)}
+.dhcard>img,.dhcard>video{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;display:block}
+.dhcard .tl{position:absolute;top:10px;left:10px;z-index:2;background:oklch(0.18 0.02 30/.62);color:#fff;font-size:11px;font-weight:600;padding:3px 9px;border-radius:7px;backdrop-filter:blur(3px)}
+.dhcard .tl.run{background:oklch(0.5 0.12 60/.88)}
+.dhcard .fav{position:absolute;top:8px;right:8px;z-index:2;width:30px;height:30px;border-radius:50%;background:oklch(1 0 0/.92);display:grid;place-items:center;cursor:pointer;box-shadow:var(--sh-1)}
+.dhcard .fav svg{width:15px;height:15px;stroke:var(--ink-2);fill:none;stroke-width:2}
+.dhcard .fav.on svg{fill:var(--danger);stroke:var(--danger)}
+.dhcard .ov{position:absolute;left:0;right:0;bottom:0;z-index:2;padding:30px 12px 12px;background:linear-gradient(to top,oklch(0.14 0.02 30/.86),oklch(0.14 0.02 30/.32) 55%,transparent);color:#fff}
+.dhcard .ov .nm{display:flex;align-items:center;justify-content:space-between;gap:8px;margin-bottom:9px}
+.dhcard .ov .nm b{font-size:13.5px;font-weight:600;text-shadow:0 1px 2px oklch(0 0 0/.35)}
+.dhcard .ov .nm span{font-size:11.5px;opacity:.9;white-space:nowrap;font-family:Sora}
+.dhcard .ov .cta{display:block;width:100%;border:none;border-radius:10px;padding:9px;font-size:13px;font-weight:600;font-family:inherit;cursor:pointer;background:linear-gradient(160deg,var(--accent),oklch(0.58 0.13 52));color:#fff}
+.dhcard .ov .cta:active{transform:scale(.98)}
+.dhcard .ov .cta.dis{background:oklch(1 0 0/.22);cursor:default}
+.modal h4{padding:18px 20px;font-size:15px;border-bottom:1px solid var(--line)}
+.modal .mb{padding:18px 20px}.modal .mf{padding:14px 20px;border-top:1px solid var(--line);display:flex;justify-content:flex-end;gap:9px;background:var(--surface-2)}
+.ovl{position:fixed;inset:0;z-index:110;background:oklch(1 0 0 /.62);backdrop-filter:blur(3px);display:none;flex-direction:column;align-items:center;justify-content:center}
+.ovl.show{display:flex}
+.spin{width:40px;height:40px;border:3px solid var(--brand-sft);border-top-color:var(--brand);border-radius:50%;animation:sp .8s linear infinite}
+@keyframes sp{to{transform:rotate(360deg)}}
+.ovl .ot{margin-top:15px;font-size:13.5px;color:var(--ink-2)}
+.navtog{display:none}
+@media(max-width:1100px){.stats{grid-template-columns:repeat(2,1fr)}}
+@media(max-width:880px){
+  .app{grid-template-columns:1fr}
+  .rail{position:fixed;left:0;top:0;width:228px;z-index:90;transform:translateX(-100%);transition:transform .25s ease;box-shadow:var(--sh-2)}
+  .rail.open{transform:none}
+  .navmask{position:fixed;inset:0;background:oklch(0.2 0.02 220/.4);z-index:80;display:none}
+  .navmask.show{display:block}
+  .navtog{display:inline-flex!important}
+  .top{padding:0 14px}
+  .top .chip.usage,.top .crumb{display:none}
+  .page{padding:18px 14px 48px}
+  .lead{flex-wrap:wrap;align-items:flex-start}
+  .split,.wzgrid,.kbwrap{grid-template-columns:1fr}
+  .aside{position:static}
+  .card>table,.card.pad>table{display:block;overflow-x:auto;white-space:nowrap;-webkit-overflow-scrolling:touch}
+  .toolbar input,.toolbar select{flex:1 1 auto;min-width:120px}
+}
+@media(max-width:560px){.stats{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
+<div class="login" id="login">
+  <div class="lpanel">
+    <div class="lbrand"><div class="mk">礼</div><div><b>礼承获客</b><small>殡葬 · AI 获客台</small></div></div>
+    <div class="lhero"><h1>把成交经验，<br>变成可复用的获客内容</h1>
+      <p>参考拆解 · 行业知识库 · 多平台生成 · 合规预审 · 数字人成片</p></div>
+    <ul class="lfeat">
+      <li>✓ 殡葬行业逻辑自动适配</li>
+      <li>✓ 发布前合规预审，降限流 / 下架</li>
+      <li>✓ 抖音 / 小红书 / 视频号 / 快手 多平台分版</li>
+    </ul>
+    <div class="lfoot">© 2026 礼承获客 · 内部演示原型</div>
+  </div>
+  <div class="lform"><div class="lcard">
+    <h2>登录</h2><div class="lsub">账号由服务方开通，请用分配的账号登录</div>
+    <div class="field"><label>账号</label><input class="inp" id="liAcc" value="138****6021"></div>
+    <div class="field"><label>密码</label><input class="inp" type="password" id="liPwd" value="demo1234"></div>
+    <div class="lrow"><label class="lcheck"><input type="checkbox" checked> 记住登录</label><span class="llink" data-act="forgot">忘记密码？</span></div>
+    <button class="btn pri lbtn" data-act="do-login">登录</button>
+    <div class="lnote">没有账号？请联系服务方开通</div>
+  </div></div>
+</div>
+<div class="app">
+  <aside class="rail">
+    <div class="brand"><div class="mk">礼</div><div><b>礼承获客</b><small>殡葬 · AI 获客台</small></div></div>
+    <nav class="nav" id="nav">
+      <div class="grp">创作</div>
+      <a data-v="home" class="on"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M3 12l9-9 9 9M5 10v10h14V10"/></svg>工作台</a>
+      <a data-v="create"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M12 20h9M16.5 3.5a2.1 2.1 0 013 3L7 19l-4 1 1-4z"/></svg>内容创作</a>
+      <a data-v="burst"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M13 2L3 14h7l-1 8 11-13h-8z"/></svg>爆款抓取<span class="dot">新</span></a>
+      <div class="grp">资产</div>
+      <a data-v="kb"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M4 5a2 2 0 012-2h12v18H6a2 2 0 01-2-2z"/><path d="M8 7h7M8 11h7"/></svg>知识库</a>
+      <a data-v="avatar"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><circle cx="12" cy="8" r="4"/><path d="M4 21a8 8 0 0116 0"/></svg>数字人</a>
+      <div class="grp">发布</div>
+      <a data-v="works"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><rect x="3" y="3" width="18" height="14" rx="2"/><path d="M3 17l4-4 4 4 4-5 6 6"/></svg>作品库<span class="dot">5</span></a>
+      <div class="grp">管理</div>
+      <a data-v="usage"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M3 3v18h18"/><path d="M7 14l3-4 3 3 4-6"/></svg>用量</a>
+      <a data-v="member"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><circle cx="9" cy="8" r="3"/><path d="M3 20a6 6 0 0112 0M16 6a3 3 0 010 6M21 20a5 5 0 00-4-5"/></svg>成员管理</a>
+      <a data-v="bind"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M10 13a5 5 0 007 0l3-3a5 5 0 00-7-7l-1 1M14 11a5 5 0 00-7 0l-3 3a5 5 0 007 7l1-1"/></svg>平台绑定</a>
+    </nav>
+    <div class="foot" data-act="logout" style="cursor:pointer"><div class="av">蔚</div><div>蔚然 · 管理员</div><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" style="width:15px;height:15px;margin-left:auto;stroke-width:1.7"><path d="M16 17l5-5-5-5M21 12H9M9 21H5a2 2 0 01-2-2V5a2 2 0 012-2h4"/></svg></div>
+  </aside>
+
+  <div class="main">
+    <header class="top">
+      <button class="btn gho navtog" data-act="navtog" style="padding:6px 9px"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 6h18M3 12h18M3 18h18"/></svg></button>
+      <h1 id="ptitle">工作台</h1><span class="crumb" id="pcrumb">总览</span><span class="spacer"></span>
+      <span class="chip usage" data-act="toast" data-msg="本月已用 1,240 次（各项总和）；按套餐配额计，接近上限会提醒、超额可增购，不静默硬断">本月用量 <b>1,240</b> 次</span>
+      <span class="co" data-act="toast" data-msg="演示账号：仅「福恩寿衣」一个公司">福恩寿衣 <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg></span>
+    </header>
+
+    <!-- HOME -->
+    <section class="page show" data-p="home">
+      <div class="lead"><div><div class="t">下午好，蔚然</div><div class="s">本周已产出 12 条内容，3 条待你处理合规提醒</div></div>
+        <button class="btn pri" data-act="go" data-v="create"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M12 5v14M5 12h14"/></svg>开始创作</button></div>
+      <div class="stats">
+        <div class="stat"><div class="k">本月产能</div><div class="v num">32<small>条</small></div><div class="tr">▲ 28%</div><div class="bar"><i style="width:64%"></i></div></div>
+        <div class="stat"><div class="k">本月播放（回收）</div><div class="v num">21.3<small>w</small></div><div class="tr">▲ 35%</div><div class="bar"><i style="width:58%"></i></div></div>
+        <div class="stat" data-act="go" data-v="works" style="cursor:pointer"><div class="k">本月线索</div><div class="v num">42<small>条</small></div><div class="tr">▲ 19%</div><div class="bar"><i style="width:42%;background:var(--accent)"></i></div></div>
+        <div class="stat" data-act="go" data-v="works" style="cursor:pointer"><div class="k">★赢家内容</div><div class="v num">3<small>条</small></div><div class="bar"><i style="width:30%"></i></div><div class="mini" style="margin-top:2px">效果靠前的内容</div></div>
+      </div>
+      <div class="grid" style="grid-template-columns:1.4fr 1fr">
+        <div class="card pad"><div class="head"><h3>最近作品</h3><span class="more" data-act="go" data-v="works">全部 →</span></div>
+          <table id="recentTbl" class="tbl-tight"><tbody>
+            <tr><td><div class="tt">老人寿衣有什么讲究</div><div class="tm">脚本 · 2 小时前</div></td><td><span class="plat"><i class="dy">抖</i>抖音</span></td><td><span class="bdg warn">1 条合规提醒</span></td><td class="rowact"><button class="btn sm gho" data-act="go" data-v="works">编辑</button></td></tr>
+            <tr><td><div class="tt">骨灰盒怎么选不踩坑</div><div class="tm">图文 · 5 小时前</div></td><td><span class="plat"><i class="xhs">书</i>小红书</span></td><td><span class="bdg ok">已通过</span></td><td class="rowact"><button class="btn sm gho" data-act="toast" data-msg="已导出 骨灰盒怎么选不踩坑.zip" data-type="ok">导出</button></td></tr>
+            <tr><td><div class="tt">寿衣为什么要单数</div><div class="tm">成片 · 昨天</div></td><td><span class="plat"><i class="dy">抖</i>抖音</span></td><td><span class="bdg brd run">成片中</span></td><td class="rowact"><button class="btn sm gho" data-act="go" data-v="works">查看</button></td></tr>
+          </tbody></table>
+        </div>
+        <div class="card pad"><div class="head"><h3>待办</h3></div>
+          <div style="display:flex;flex-direction:column;gap:11px">
+            <div class="alert" style="margin:0"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M12 9v4M12 17h.01M10.3 3.9l-8 14A2 2 0 004 21h16a2 2 0 001.7-3l-8-14a2 2 0 00-3.4 0z"/></svg><div><b>3 条内容含合规提醒</b> 待处理</div><span class="ac"><button class="btn sm" data-act="go" data-v="works">去处理</button></span></div>
+            <div class="alert" style="margin:0;background:var(--surface-2);border-color:var(--line);color:var(--ink-2)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M3 3v5h5M3 8a9 9 0 119 13"/></svg><div><b>2 条草稿</b> 未生成，可恢复</div><span class="ac"><button class="btn sm gho" data-act="go" data-v="create">恢复</button></span></div>
+          </div>
+          <div class="head" style="margin-top:18px"><h3>快速开始</h3></div>
+          <div style="display:flex;gap:10px"><button class="btn" style="flex:1;justify-content:center" data-act="go" data-v="create">粘贴参考</button><button class="btn" style="flex:1;justify-content:center" data-act="go" data-v="burst">逛爆款库</button></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- CREATE：配置一屏 → 提交 → 后台自动「拆解→仿写→按模板生成」→ 等结果 -->
+    <section class="page" data-p="create">
+      <div class="lead"><div><div class="t">内容创作</div><div class="s">默认看历史记录；点「新建」配置后提交，后台自动「拆解 → 仿写 → 按模板生成」，等结果即可</div></div>
+        <button class="btn pri" id="newCreateBtn" data-act="new-create"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M12 5v14M5 12h14"/></svg>新建内容创作</button></div>
+
+      <!-- 新建视图：配置一屏（默认隐藏） -->
+      <div id="createForm" style="display:none">
+      <div class="card pad" style="max-width:760px;margin-bottom:14px;padding:13px 20px;display:flex;align-items:center;justify-content:space-between"><b>新建内容创作 · 配置</b><button class="btn gho" data-act="back-create-list">← 返回列表</button></div>
+      <div class="card pad" style="max-width:760px">
+        <div class="field"><label>参考来源</label><div class="seg" id="srcSeg"><button class="on">粘贴链接</button><button>粘贴文案</button><button>来自爆款库</button></div></div>
+        <div class="field" id="fLink"><label>参考视频链接</label><input class="inp" id="refLink" value="https://v.douyin.com/iRxK8aQ/ 老人寿衣的讲究…"></div>
+        <div class="field" id="fText" style="display:none"><label>直接粘贴文案</label><textarea rows="3" placeholder="把对标内容的文案粘到这里…"></textarea></div>
+        <div class="field" id="fBurst" style="display:none"><label>从爆款库选一条作为参考</label>
+          <select class="inp" id="burstSelect" data-act="burst-select">
+            <option value="">— 选择爆款库中的内容 —</option>
+            <option value="老人寿衣有什么讲究？作为子女一定要懂" data-bp="抖音" data-bm="热度 8.5×">老人寿衣有什么讲究？作为子女一定要懂 · 抖音 · 热度 8.5×</option>
+            <option value="骨灰盒怎么选不踩坑，价格差在哪" data-bp="小红书" data-bm="热度 5.2×">骨灰盒怎么选不踩坑，价格差在哪 · 小红书 · 热度 5.2×</option>
+            <option value="为什么寿衣要单数？老规矩里的讲究" data-bp="抖音" data-bm="热度 4.1×">为什么寿衣要单数？老规矩里的讲究 · 抖音 · 热度 4.1×</option>
+          </select>
+          <div id="burstPicked" style="display:none;margin-top:10px"></div>
+          <div class="mini" style="margin-top:8px">下拉选一条即回显；想抓更多爆款去<span data-act="go" data-v="burst" style="color:var(--brand-d);cursor:pointer">爆款抓取 →</span></div></div>
+        <div class="field"><label>提示词风格</label><select class="inp" style="max-width:320px"><option>温情风</option><option>专业风</option></select></div>
+        <div class="field"><label>套用爆款公式 <span class="mini">（选公式 = 套内容结构；会软推荐适配的视频模板，可改）</span></label>
+          <select class="inp" id="formulaSelect">
+            <option value="">— 不套用（自由生成）—</option>
+            <option value="禁忌钩子 + 习俗科普 + 体面叙事 + 评论区钩子" data-rec="产品讲解">禁忌钩子+习俗科普+体面叙事+评论钩子 · 荐「产品讲解」</option>
+            <option value="价格揭秘 + 避坑清单 + 收藏引导" data-rec="产品讲解">价格揭秘+避坑清单+收藏引导 · 荐「产品讲解」</option>
+            <option value="老规矩科普 + 情感共鸣 + 单数讲究" data-rec="数字人混剪">老规矩科普+情感共鸣 · 荐「数字人+混剪」</option>
+          </select>
+          <div id="formulaPicked" class="mini" style="margin-top:6px;display:none"></div>
+        </div>
+        <div class="field"><label>目标平台 <span class="req">*</span> <span class="mini">（各平台自动分版）</span></label><div class="chks" id="genPlats"><span class="chk on">抖音</span><span class="chk on">小红书</span><span class="chk">视频号</span><span class="chk">快手</span></div></div>
+        <div class="field"><label>合规规避</label><div style="display:flex;align-items:center;gap:10px"><span class="bdg ok">● 锁定开 · 全链路预审</span><span class="mini">系统殡葬规则自动规避违禁表达</span></div></div>
+        <div class="field"><label>产出视频？ <span class="mini">（开：先出脚本+预审，确认后再按模板出片；关：只产脚本 / 图文）</span></label>
+          <div style="display:flex;align-items:center;gap:10px"><span class="sw" id="mkVideo" data-act="toggle-mkvideo"></span><span class="mini" id="mkVideoTip">已关：只产脚本 / 图文（默认）</span></div></div>
+        <div id="tplBlock" style="display:none">
+          <div class="field" style="margin-bottom:4px"><label>选用视频模板 <span class="mini">（平台内置 · 点「▶案例」看样片）</span></label>
+            <div class="tpl-pick" id="tplPick">
+              <div class="tpl on" data-tpl="产品讲解"><div class="tpl-poster"><video src="assets/demo/daihuo.mp4#t=0.1" muted playsinline preload="metadata" class="cover"></video><span class="cor" data-act="play-demo" data-name="产品讲解 · 换数字人+产品">▶ 案例</span><span class="dur">0:10</span></div><div class="tpl-i"><b>产品讲解 · 换数字人+产品</b><div class="mini">数字人讲解 · 产品 i2v · 字幕</div></div></div>
+              <div class="tpl" data-tpl="数字人混剪"><div class="tpl-poster"><video src="assets/demo/hunjian.mp4#t=0.1" muted playsinline preload="metadata" class="cover"></video><span class="cor" data-act="play-demo" data-name="数字人+混剪">▶ 案例</span><span class="dur">2:49</span></div><div class="tpl-i"><b>数字人+混剪</b><div class="mini">数字人口播 · 素材混剪 · 字幕</div></div></div>
+              <div class="tpl" data-tpl="Seedance"><div class="tpl-poster"><video src="assets/demo/ai-gen.mp4#t=0.1" muted playsinline preload="metadata" class="cover"></video><span class="cor" data-act="play-demo" data-name="Seedance 生成视频">▶ 案例</span><span class="dur">0:15</span></div><div class="tpl-i"><b>Seedance 生成视频</b><div class="mini">纯 AI · 文生视频 · 字幕</div></div></div>
+            </div>
+            <div class="mini" style="margin-top:8px">模板规定每段用哪种 AI（贵的文生视频默认≤1段），产品素材 AI 从知识库匹配。</div></div>
+          <div class="field" id="dhBlock" style="margin-top:4px">
+            <label>数字人形象 + 声音 <span class="req">*</span> <span class="mini">（该模板含数字人口播，需指定出镜形象与声音）</span></label>
+            <div class="split">
+              <select class="inp" id="dhAvatar"><optgroup label="我的生成形象"><option>老板克隆形象</option></optgroup><optgroup label="默认公模（不占额度）"><option>主播 A</option><option>知性女主播</option><option>温和长者形象</option></optgroup></select>
+              <select class="inp" id="dhVoice"><option>温情女声（公模）</option><option>老板声音（5 秒复刻）</option></select>
+            </div>
+            <div class="mini" style="margin-top:6px">🔴 仅可用已授权的本人/数字人形象；没有合适的去<span data-act="go" data-v="avatar" style="color:var(--brand-d);cursor:pointer">数字人 →</span>生成或复刻声音。</div>
+          </div>
+        </div>
+        <div class="wzbar"><span class="mini">提交后后台自动跑（约 2-3 分钟），完成通知；可继续其他操作</span><button class="btn pri" data-act="auto-gen"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M5 3l14 9-14 9z"/></svg>开始自动生成</button></div>
+      </div>
+      </div><!-- /createForm -->
+
+      <!-- 列表视图（默认）：生成任务 + 历史记录 -->
+      <div id="createList">
+
+      <!-- 生成任务（后台进度） -->
+      <div class="card pad" id="genTasksCard" style="margin-top:14px"><div class="head"><h3>生成任务</h3><span class="mini" style="margin-left:auto">后台：转写拆解 → 仿写（填知识库事实）→ 按模板生成；完成后查看结果</span></div><div class="flist" id="genTasks">
+        <div class="fi" data-name="花圈挽联怎么选"><div class="ic">⚙</div><div class="meta"><b>花圈挽联怎么选</b><small class="gst">按模板逐段生成视频中…</small></div><span class="bdg brd run gstb">出片中</span></div>
+        <div class="fi" data-name="头七有什么讲究"><div class="ic">⚙</div><div class="meta"><b>头七有什么讲究</b><small class="gst">脚本就绪 · 合规预审通过 · 待确认出片</small></div><button class="btn sm" data-act="view-result" data-mode="script" style="margin-right:5px">看脚本</button><button class="btn sm pri" data-act="confirm-film">确认出片 →</button></div>
+      </div></div>
+
+      <!-- 历史生成记录 -->
+      <div class="card pad" style="margin-top:14px"><div class="head"><h3>历史生成记录</h3></div>
+        <table class="tbl-tight"><thead><tr><th>内容</th><th>形态</th><th>平台</th><th>状态</th><th style="text-align:right">操作</th></tr></thead><tbody id="histBody">
+          <tr><td><div class="tt">老人寿衣的讲究</div><div class="tm">2 小时前 · 蔚然</div></td><td>图文</td><td><span class="plat"><i class="dy">抖</i>抖音</span></td><td><span class="bdg ok">已生成</span></td><td class="rowact"><button class="btn sm gho" data-act="view-result">查看结果</button><button class="btn sm gho" data-act="reuse-cfg">复用配置</button></td></tr>
+          <tr><td><div class="tt">骨灰盒怎么选不踩坑</div><div class="tm">5 小时前 · 蔚然</div></td><td>脚本</td><td><span class="plat"><i class="xhs">书</i>小红书</span></td><td><span class="bdg mut">草稿</span></td><td class="rowact"><button class="btn sm gho" data-act="view-result">查看结果</button><button class="btn sm gho" data-act="reuse-cfg">复用配置</button></td></tr>
+          <tr><td><div class="tt">寿衣为什么要单数</div><div class="tm">昨天 · 蔚然</div></td><td>成片</td><td><span class="plat"><i class="dy">抖</i>抖音</span></td><td><span class="bdg ok">已生成</span></td><td class="rowact"><button class="btn sm gho" data-act="view-result">查看结果</button><button class="btn sm gho" data-act="go" data-v="works">作品库</button></td></tr>
+        </tbody></table>
+      </div>
+      </div><!-- /createList -->
+    </section>
+
+    <!-- BURST -->
+    <section class="page" data-p="burst">
+      <div class="lead"><div><div class="t">爆款抓取</div><div class="s">对标同行爆款，相对基线判定，挑一条直接拆解</div></div>
+        <button class="btn" data-act="cfg-burst"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M12 5v14M5 12h14"/></svg>配置对标源</button></div>
+      <div class="card pad" style="margin-bottom:16px;display:flex;flex-direction:column;gap:12px">
+        <div class="seg" id="burstMode" style="align-self:flex-start"><button class="on" data-m="kw">按关键词搜索</button><button data-m="acc">按对标账号</button><button data-m="rank">热门榜单</button></div>
+        <div id="burstKwBar" style="display:flex;align-items:center;gap:10px">
+          <input class="inp" id="burstKw" placeholder="输入关键词抓取爆款，如：寿衣 / 骨灰盒 / 殡葬讲究" style="flex:1" value="寿衣">
+          <button class="btn pri" data-act="fetch-burst">搜索抓取</button>
+        </div>
+        <div id="burstAccBar" style="display:none;align-items:center;gap:10px;flex-wrap:wrap">
+          <span class="mini">对标账号</span><span class="bdg mut">殡仪服务·老李</span><span class="bdg mut">福寿堂</span>
+          <button class="btn sm gho" data-act="cfg-burst">+ 添加账号</button>
+          <span class="spacer"></span><button class="btn pri sm" data-act="fetch-burst">抓取该账号爆款</button>
+        </div>
+        <div id="burstRankBar" style="display:none;align-items:center;gap:10px;flex-wrap:wrap">
+          <span class="mini">行业分类</span>
+          <select class="inp" style="width:auto"><option>殡葬 · 寿衣</option><option>殡葬 · 骨灰盒</option><option>殡葬 · 一条龙服务</option><option>殡葬 · 习俗科普</option></select>
+          <span class="spacer"></span><button class="btn pri sm" data-act="fetch-burst">出热门榜</button>
+        </div>
+        <div style="display:flex;align-items:center;gap:10px;flex-wrap:wrap;border-top:1px solid var(--line);padding-top:11px">
+          <span class="mini">平台</span><select class="inp" style="width:auto"><option>抖音（数据最全）</option><option>小红书（覆盖有限）</option></select>
+          <span class="mini">时间</span><select class="inp" style="width:auto"><option>近 7 天</option><option>近 30 天</option><option>近 90 天</option></select>
+          <span class="mini">排序</span><select class="inp" style="width:auto"><option>按点赞</option><option>按播放</option><option>按评论</option><option>按涨粉</option></select>
+          <span class="spacer"></span><button class="btn sm" data-act="cfg-burst">配置对标源</button>
+        </div>
+      </div>
+      <div class="bursts" id="burstList">
+        <div class="burst"><div class="cv"><span></span><span class="mult">热度 8.5×</span></div><div class="bd"><div class="bt">老人寿衣有什么讲究？作为子女一定要懂</div><div class="mt"><span>▶ 12.4w</span><span>♥ 3.2w</span><span class="plat"><i class="dy">抖</i></span></div></div><div class="ba"><button class="btn pri sm" data-act="burst-dissect">仿写</button><button class="btn sm" data-act="fav">收藏</button></div></div>
+        <div class="burst"><div class="cv"><span></span><span class="mult">热度 5.2×</span></div><div class="bd"><div class="bt">骨灰盒怎么选不踩坑，价格差在哪</div><div class="mt"><span>♥ 1.1w</span><span>💬 860</span><span class="plat"><i class="xhs">书</i></span></div></div><div class="ba"><button class="btn pri sm" data-act="burst-dissect">仿写</button><button class="btn sm" data-act="fav">收藏</button></div></div>
+        <div class="burst"><div class="cv"><span></span><span class="mult">热度 4.1×</span></div><div class="bd"><div class="bt">为什么寿衣要单数？老规矩里的讲究</div><div class="mt"><span>▶ 8.7w</span><span>♥ 9.4k</span><span class="plat"><i class="dy">抖</i></span></div></div><div class="ba"><button class="btn pri sm" data-act="burst-dissect">仿写</button><button class="btn sm" data-act="fav">收藏</button></div></div>
+      </div>
+      <div class="note"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><circle cx="12" cy="12" r="9"/><path d="M12 8v5M12 16h.01"/></svg><span>数据来自蝉妈妈（厦门蝉语，合规取数非自爬）· 抖音数据最全、小红书覆盖有限 · 「热度倍数」为按账号基线<b>自算</b>（蝉妈妈给原始指标，非直接给爆款标签）· 接口 / 调用量 / 价格以商务对接为准。</span></div>
+    </section>
+
+    <!-- KB -->
+    <section class="page" data-p="kb">
+      <div class="lead"><div><div class="t">知识库</div><div class="s">多模态营销底座：事实（结构化/非结构化）+ 图片/视频素材，AI 自动分类 + 人工分组，供内容生成与视频调用</div></div>
+        <div style="display:flex;gap:8px">
+          <button class="btn" data-act="new-group">+ 新建分组</button>
+          <button class="btn" data-act="new-struct">+ 录入结构化</button>
+          <button class="btn pri" data-act="pick-file"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M12 5v14M5 12h14"/></svg>傻瓜上传（资料 / 素材）</button>
+        </div></div>
+      <input type="file" id="kbFile" hidden multiple accept=".doc,.docx,.txt,.xls,.xlsx,.csv,.pdf,image/*,audio/*,video/*">
+      <div class="kbwrap">
+        <div class="glist" id="groupList">
+          <div class="gitem on" data-act="kb-group" data-group=""><span class="gi"></span>全部<span class="ct">6</span></div>
+          <div class="gitem" data-act="kb-group" data-group="产品价格"><span class="gi"></span>产品价格<span class="ct">2</span></div>
+          <div class="gitem" data-act="kb-group" data-group="习俗讲究"><span class="gi"></span>习俗讲究<span class="ct">2</span></div>
+          <div class="gitem" data-act="kb-group" data-group="承接话术"><span class="gi"></span>承接话术<span class="ct">1</span></div>
+          <div class="gitem" data-act="kb-group" data-group="门店信息"><span class="gi"></span>门店信息<span class="ct">1</span></div>
+          <div class="gitem" data-act="kb-group" data-group="产品素材"><span class="gi"></span>产品素材<span class="ct">3</span></div>
+          <div class="gitem addg" data-act="new-group"><span class="gi"></span>+ 新建分组</div>
+        </div>
+        <div>
+          <div class="card pad" style="margin-bottom:14px;display:flex;align-items:center;gap:12px;flex-wrap:wrap">
+            <div class="seg" id="kbType"><button class="on" data-t="">全部类型</button><button data-t="struct">结构化</button><button data-t="unstruct">非结构化</button><button data-t="asset">素材（图/视）</button></div>
+            <span class="spacer"></span><span class="mini">结构化＝表格事实精确填充 · 非结构化＝文档/转写走检索 · 素材库＝图/视，AI 打标后供视频按段匹配</span>
+          </div>
+          <div class="card pad"><div class="head"><h3>资料</h3><span class="mini" id="kbCount" style="margin-left:auto"></span></div>
+            <div class="flist" id="kbList2">
+              <div class="fi" data-group="产品价格" data-type="struct"><div class="ic">XLS</div><div class="meta"><b>2026 价目表.xlsx</b><small>120 条事实 · 8 字段</small></div><span class="tp s">⊞ 结构化</span><span class="bdg mut" style="margin:0 4px">产品价格</span><span class="bdg ok stb">已结构化</span><button class="btn sm gho" data-act="view-struct">查看</button></div>
+              <div class="fi" data-group="产品价格" data-type="struct"><div class="ic">XLS</div><div class="meta"><b>骨灰盒规格价格.xlsx</b><small>36 条 · 6 字段</small></div><span class="tp s">⊞ 结构化</span><span class="bdg mut" style="margin:0 4px">产品价格</span><span class="bdg ok stb">已结构化</span><button class="btn sm gho" data-act="view-struct">查看</button></div>
+              <div class="fi" data-group="习俗讲究" data-type="unstruct"><div class="ic">DOC</div><div class="meta"><b>各地殡葬习俗.docx</b><small>45 段 · 已分段入库</small></div><span class="tp u">≣ 非结构化</span><span class="bdg mut" style="margin:0 4px">习俗讲究</span><span class="bdg ok stb">已入库</span><button class="btn sm gho" data-act="toast" data-msg="查看文档分段（演示）">查看</button></div>
+              <div class="fi" data-group="习俗讲究" data-type="unstruct"><div class="ic">MP3</div><div class="meta"><b>老板口述-选购讲究.mp3</b><small>转写中 · 预计 1 分钟</small></div><span class="tp u">≣ 非结构化</span><span class="bdg mut" style="margin:0 4px">习俗讲究</span><span class="bdg brd run stb">转写中</span><button class="btn sm gho" data-act="toast" data-msg="转写完成后可查看">查看</button></div>
+              <div class="fi" data-group="承接话术" data-type="unstruct"><div class="ic">DOC</div><div class="meta"><b>承接话术整理.docx</b><small>28 段 · 已分段入库</small></div><span class="tp u">≣ 非结构化</span><span class="bdg mut" style="margin:0 4px">承接话术</span><span class="bdg ok stb">已入库</span><button class="btn sm gho" data-act="toast" data-msg="查看文档分段（演示）">查看</button></div>
+              <div class="fi" data-group="门店信息" data-type="unstruct"><div class="ic">TXT</div><div class="meta"><b>门店与服务介绍.txt</b><small>已分段入库</small></div><span class="tp u">≣ 非结构化</span><span class="bdg mut" style="margin:0 4px">门店信息</span><span class="bdg ok stb">已入库</span><button class="btn sm gho" data-act="toast" data-msg="查看文档分段（演示）">查看</button></div>
+              <div class="fi" data-group="产品素材" data-type="asset"><img src="https://picsum.photos/seed/shouyi/80/80" style="width:34px;height:34px;border-radius:6px;object-fit:cover;flex:none"><div class="meta"><b>真丝七件套-产品图.jpg</b><small>AI 标签：产品·寿衣·真丝·特写 · 供混剪召回</small></div><span class="tp a">▣ 素材</span><span class="bdg mut" style="margin:0 4px">产品素材</span><span class="bdg ok stb">已打标</span><button class="btn sm gho" data-act="view-asset" data-name="真丝七件套-产品图.jpg" data-kind="product">查看</button></div>
+              <div class="fi" data-group="产品素材" data-type="asset"><img src="https://picsum.photos/seed/guhe/80/80" style="width:34px;height:34px;border-radius:6px;object-fit:cover;flex:none"><div class="meta"><b>金丝楠骨灰盒-产品图.jpg</b><small>AI 标签：产品·骨灰盒·特写 · 供混剪召回</small></div><span class="tp a">▣ 素材</span><span class="bdg mut" style="margin:0 4px">产品素材</span><span class="bdg ok stb">已打标</span><button class="btn sm gho" data-act="view-asset" data-name="金丝楠骨灰盒-产品图.jpg" data-kind="product">查看</button></div>
+              <div class="fi" data-group="产品素材" data-type="asset"><video src="assets/demo/daihuo.mp4#t=1" muted preload="metadata" style="width:34px;height:34px;border-radius:6px;object-fit:cover;flex:none"></video><div class="meta"><b>门店实拍-空镜.mp4</b><small>AI 标签：场景·门店·空镜 · 可切 4 段</small></div><span class="tp a">▣ 素材</span><span class="bdg mut" style="margin:0 4px">产品素材</span><span class="bdg ok stb">已打标</span><button class="btn sm gho" data-act="view-asset" data-name="门店实拍-空镜.mp4" data-kind="product">查看</button></div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="note"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><circle cx="12" cy="12" r="9"/><path d="M12 8v5M12 16h.01"/></svg><span>一个知识库，傻瓜上传，AI 自动判类：Excel/CSV→结构化（精确填价格/规格）、Word/TXT/音频→非结构化（转写检索）、<b>图片/视频→素材</b>（AI 打标，供视频混剪按分镜相似召回）。两类检索分治：硬事实精确召回不进向量库、画面相似匹配。</span></div>
+    </section>
+
+
+    <!-- AVATAR -->
+    <section class="page" data-p="avatar">
+      <div class="lead"><div><div class="t">数字人</div><div class="s">接入蝉镜：上传视频生成专属形象（限 2 个），或直接用默认公模形象生成，用于口播成片</div></div>
+        <div style="display:flex;gap:8px"><button class="btn" data-act="custom-avatar">申请定制</button><button class="btn pri" data-act="upload-avatar"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M12 5v14M5 12h14"/></svg>上传视频生成形象</button></div></div>
+      <input type="file" id="avatarFile" hidden accept="video/*">
+      <input type="file" id="voiceFile" hidden accept="audio/*">
+      <div class="head"><h3>我的生成形象</h3><span id="avQuota" class="bdg brd">已生成 2 / 2</span><button class="btn sm" data-act="buy-avatar" style="margin-left:8px">增购形象</button><span class="mini" style="margin-left:auto">克隆/定制形象，每企业限 2 个，单独计费</span></div>
+      <div class="dhcards" id="avatarList" style="margin-bottom:24px">
+        <div class="dhcard" data-gen="1">
+          <img src="https://i.pravatar.cc/500?img=13" onerror="avFb(this)">
+          <span class="tl">● 可用 · 已复刻声音</span>
+                    <div class="ov"><div class="nm"><b>老板克隆形象</b></div><button class="cta" data-act="go" data-v="create">用它生成</button></div>
+        </div>
+        <div class="dhcard" data-gen="1">
+          <img src="https://i.pravatar.cc/500?img=11" onerror="avFb(this)">
+          <span class="tl run avst">训练中 68%</span>
+          <div class="ov"><div class="nm"><b>门店实拍形象</b></div><button class="cta dis">训练中…</button></div>
+        </div>
+      </div>
+      <div class="head"><h3>默认形象</h3><span class="mini" style="margin-left:auto">蝉镜公模，可直接用于生成 · 不占额度、不单独收费</span></div>
+      <div class="dhcards" style="margin-bottom:24px">
+        <div class="dhcard">
+          <img src="https://i.pravatar.cc/500?img=5" onerror="avFb(this)">
+          <span class="tl">公模 · 不占额度</span>
+                    <div class="ov"><div class="nm"><b>主播 A</b></div><button class="cta" data-act="go" data-v="create">用它生成</button></div>
+        </div>
+        <div class="dhcard">
+          <img src="https://i.pravatar.cc/500?img=9" onerror="avFb(this)">
+          <span class="tl">公模 · 不占额度</span>
+                    <div class="ov"><div class="nm"><b>知性女主播</b></div><button class="cta" data-act="go" data-v="create">用它生成</button></div>
+        </div>
+        <div class="dhcard">
+          <img src="https://i.pravatar.cc/500?img=52" onerror="avFb(this)">
+          <span class="tl">公模 · 不占额度</span>
+                    <div class="ov"><div class="nm"><b>温和长者形象</b></div><button class="cta" data-act="go" data-v="create">用它生成</button></div>
+        </div>
+      </div>
+      <div class="head"><h3>声音</h3><button class="btn sm" data-act="clone-voice" style="margin-left:auto">+ 复刻声音（5 秒样本）</button></div>
+      <div class="tiles" id="voiceList">
+        <div class="tile"><div class="th"><div class="av">🔊</div><div><b>温情女声</b><div class="mini">蝉镜音色库</div></div></div><button class="btn sm" data-act="audition" data-tone="660">▶ 试听</button></div>
+        <div class="tile"><div class="th"><div class="av">🔊</div><div><b>老板声音</b><div class="mini">5 秒样本复刻</div></div></div><button class="btn sm" data-act="audition" data-tone="440">▶ 试听</button></div>
+      </div>
+      <div class="note"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><circle cx="12" cy="12" r="9"/><path d="M12 8v5M12 16h.01"/></svg><span>形象/声音由数字人 API 生成（演示走阿里 wan-s2v / 腾讯数智人 IVH，1.0 可自部署 MuseTalk 降本）：上传视频克隆、5 秒复刻声音、公模不占额度；克隆/定制每企业限 2 个、单独计费。🔴 仅可用<b>已授权的本人/数字人形象</b>，禁任意换脸；用于视频时成片自动加 AI 生成标识。</span></div>
+    </section>
+
+    <!-- WORKS -->
+    <section class="page" data-p="works">
+      <div class="lead"><div><div class="t">作品库</div><div class="s">脚本 / 图文 / 成片 / 公式统一归集——成品导出自己发或绑定账号自动发；公式可「用它新建」复用</div></div></div>
+      <div class="card pad" style="margin-bottom:16px;display:flex;gap:10px;flex-wrap:wrap">
+        <select class="inp" style="width:auto" id="fPlat" data-act="filter"><option value="">全部平台</option><option value="抖音">抖音</option><option value="小红书">小红书</option><option value="视频号">视频号</option></select>
+        <select class="inp" style="width:auto" id="fForm" data-act="filter"><option value="">全部形态</option><option value="脚本">脚本</option><option value="图文">图文</option><option value="成片">成片</option><option value="公式">公式</option></select>
+        <select class="inp" style="width:auto" id="fCmp" data-act="filter"><option value="">合规状态</option><option value="warn">有未处理提醒</option><option value="ok">已通过</option></select>
+        <select class="inp" style="width:auto" id="fPub" data-act="filter"><option value="">发布状态</option><option value="草稿">草稿</option><option value="已导出">已导出</option><option value="已发布">已发布</option><option value="待手动发">待手动发</option><option value="发布失败">发布失败</option></select>
+        <span class="spacer"></span><span class="mini" id="workCount" style="align-self:center"></span>
+      </div>
+      <div class="card">
+        <table class="tbl-tight"><thead><tr><th>内容</th><th>平台</th><th>形态</th><th>合规</th><th>发布状态</th><th>效果数据</th><th style="text-align:right">操作</th></tr></thead>
+          <tbody id="workBody">
+            <tr data-plat="抖音" data-form="脚本" data-cmp="warn" data-pub="草稿"><td><div class="tt">老人寿衣有什么讲究</div><div class="tm">2 小时前 · 蔚然</div></td><td><span class="plat"><i class="dy">抖</i>抖音</span></td><td>脚本</td><td><span class="bdg warn">1 提醒</span></td><td><span class="bdg mut">草稿</span></td><td class="tm">—</td><td class="rowact"><button class="btn sm gho" data-act="go" data-v="create">编辑</button><button class="btn sm" data-act="toast" data-msg="已导出 老人寿衣有什么讲究.txt" data-type="ok">导出</button></td></tr>
+            <tr data-plat="小红书" data-form="图文" data-cmp="ok" data-pub="已导出"><td><div class="tt">骨灰盒怎么选不踩坑</div><div class="tm">5 小时前 · 蔚然</div></td><td><span class="plat"><i class="xhs">书</i>小红书</span></td><td>图文</td><td><span class="bdg ok">通过</span></td><td><span class="bdg ok">已导出</span></td><td class="tm">待回收</td><td class="rowact"><button class="btn sm gho" data-act="toast" data-msg="已重新导出" data-type="ok">导出</button><button class="btn sm" data-act="toast" data-msg="小红书无开放接口，已生成内容请手动发布" data-type="warn">手动发</button></td></tr>
+            <tr data-plat="抖音" data-form="成片" data-cmp="ok" data-pub="已发布"><td><div class="tt">寿衣为什么要单数 <span class="bdg ok np" title="效果靠前的内容">★赢家</span></div><div class="tm">昨天 · 运营小王</div></td><td><span class="plat"><i class="dy">抖</i>抖音</span></td><td>成片</td><td><span class="bdg ok">通过</span></td><td><span class="bdg brd">已发布</span></td><td class="tm" style="line-height:1.5">▶8.7w ♥9.4k<br>线索 <b>26</b></td><td class="rowact"><button class="btn sm gho" data-act="view-result">查看</button><button class="btn sm" data-act="toast" data-msg="已下载成片 mp4" data-type="ok">下载</button></td></tr>
+            <tr data-plat="视频号" data-form="图文" data-cmp="ok" data-pub="待手动发"><td><div class="tt">殡葬一条龙都包含什么</div><div class="tm">2 天前 · 蔚然</div></td><td><span class="plat"><i class="sph">视</i>视频号</span></td><td>图文</td><td><span class="bdg ok">通过</span></td><td><span class="bdg warn">待手动发</span></td><td class="tm">—</td><td class="rowact"><button class="btn sm gho" data-act="toast" data-msg="已导出，请在视频号手动发布" data-type="ok">导出</button></td></tr>
+            <tr data-plat="抖音" data-form="成片" data-cmp="ok" data-pub="已发布"><td><div class="tt">真丝寿衣和棉的区别</div><div class="tm">3 天前 · 运营小王</div></td><td><span class="plat"><i class="dy">抖</i>抖音</span></td><td>成片</td><td><span class="bdg ok">通过</span></td><td><span class="bdg brd">已发布</span></td><td class="tm" style="line-height:1.5">▶1.2w ♥430<br>线索 <b>3</b></td><td class="rowact"><button class="btn sm gho" data-act="view-result">查看</button><button class="btn sm gho" data-act="toast" data-msg="效果一般，可换钩子重做" data-type="warn">优化重做</button></td></tr>
+            <tr data-plat="" data-form="公式" data-cmp="" data-pub=""><td><div class="tt">禁忌钩子 + 习俗科普 + 体面叙事 + 评论区钩子 <span class="bdg ok np" title="效果靠前">★赢家</span></div><div class="tm">拆解沉淀 · 源：老人寿衣的讲究</div></td><td class="tm">—</td><td>公式</td><td class="tm">—</td><td><span class="bdg mut np">公式</span></td><td class="tm">用过 8 次</td><td class="rowact"><button class="btn sm gho" data-act="toast" data-msg="钩子=禁忌制造紧迫 · 结构=痛点→科普→方案→引导 · 情绪=愧疚→安心 · CTA=评论扣1">查看</button><button class="btn sm pri" data-act="use-formula" data-formula="禁忌钩子 + 习俗科普 + 体面叙事 + 评论区钩子">用它新建</button></td></tr>
+            <tr data-plat="" data-form="公式" data-cmp="" data-pub=""><td><div class="tt">价格揭秘 + 避坑清单 + 收藏引导</div><div class="tm">拆解沉淀 · 源：骨灰盒怎么选不踩坑</div></td><td class="tm">—</td><td>公式</td><td class="tm">—</td><td><span class="bdg mut np">公式</span></td><td class="tm">用过 5 次</td><td class="rowact"><button class="btn sm gho" data-act="toast" data-msg="钩子=信息差 · 结构=痛点→对比→清单 · CTA=收藏/私信领清单">查看</button><button class="btn sm pri" data-act="use-formula" data-formula="价格揭秘 + 避坑清单 + 收藏引导">用它新建</button></td></tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="note"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><circle cx="12" cy="12" r="9"/><path d="M12 8v5M12 16h.01"/></svg><span>效果数据：有开放 API 的平台（抖音/企业号）自动回收播放/点赞/线索，回灌后自动标「★赢家」，作为后续选题/复制的依据；无 API 平台（小红书/视频号）手动回填或导出后自行跟踪。效果回流是「获客闭环」的关键，不止于生产。</span></div>
+    </section>
+
+    <!-- USAGE -->
+    <section class="page" data-p="usage">
+      <div class="lead"><div><div class="t">用量</div><div class="s">本月各能力消耗（先计数，暂不扣费）</div></div>
+        <span class="co" data-act="toast" data-msg="演示数据：2026 年 6 月">2026 年 6 月 <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg></span></div>
+      <div class="stats">
+        <div class="stat"><div class="k">爆款抓取</div><div class="v num">86<small>次</small></div></div>
+        <div class="stat"><div class="k">参考转写</div><div class="v num">54<small>次</small></div></div>
+        <div class="stat"><div class="k">内容生成</div><div class="v num">1,020<small>次</small></div></div>
+        <div class="stat"><div class="k">数字人成片</div><div class="v num">80<small>次</small></div></div>
+      </div>
+      <div class="card pad"><div class="head"><h3>用量分布</h3><span class="mini" style="margin-left:auto">额度结构已预留，当前不限制</span></div>
+        <div class="ub"><div class="ul"><b>内容生成</b><span>1,020 / 2,000</span></div><div class="ut"><i style="width:51%;background:var(--brand)"></i></div></div>
+        <div class="ub"><div class="ul"><b>数字人成片</b><span>80 / 150</span></div><div class="ut"><i style="width:53%;background:var(--accent)"></i></div></div>
+        <div class="ub"><div class="ul"><b>爆款抓取</b><span>86 / 300</span></div><div class="ut"><i style="width:29%;background:var(--ok)"></i></div></div>
+        <div class="ub" style="margin-bottom:0"><div class="ul"><b>参考转写</b><span>54 / 300</span></div><div class="ut"><i style="width:18%;background:var(--brand-d)"></i></div></div>
+      </div>
+      <div class="card pad" style="margin-top:16px;display:flex;align-items:center;gap:12px;flex-wrap:wrap">
+        <b style="font-size:14px">数字人形象额度</b><span class="bdg brd">已生成 2 / 2</span>
+        <span class="mini">形象为<b>单独计费</b>项 · 增购 ¥199 / 个（示例待定，与口播 ~2.36 元/分钟分开计）</span>
+        <span class="spacer"></span><button class="btn sm" data-act="go" data-v="avatar">管理形象</button>
+      </div>
+    </section>
+
+    <!-- MEMBER -->
+    <section class="page" data-p="member">
+      <div class="lead"><div><div class="t">成员管理</div><div class="s">福恩寿衣 · 殡葬 · 2026-06 开通</div></div>
+        <button class="btn pri" data-act="add-member"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M12 5v14M5 12h14"/></svg>添加成员</button></div>
+      <div class="card"><table class="tbl-tight"><thead><tr><th>成员</th><th>账号</th><th>角色</th><th>状态</th><th style="text-align:right">操作</th></tr></thead>
+        <tbody id="memberBody">
+          <tr><td><div style="display:flex;align-items:center;gap:10px"><div class="co" style="width:30px;height:30px;padding:0;border-radius:8px;background:var(--accent);color:#fff;justify-content:center;font-weight:600;border:none">蔚</div><b>蔚然</b></div></td><td class="tm">138****6021</td><td><span class="bdg brd">老板 · 管理员</span></td><td><span class="bdg ok">启用</span></td><td class="rowact"><button class="btn sm gho" disabled style="opacity:.4">—</button></td></tr>
+          <tr><td><div style="display:flex;align-items:center;gap:10px"><div class="co" style="width:30px;height:30px;padding:0;border-radius:8px;background:var(--brand-sft);color:var(--brand-d);justify-content:center;font-weight:600;border:none">王</div><b>运营小王</b></div></td><td class="tm">152****3380</td><td><span class="bdg mut">运营</span></td><td><span class="bdg ok st">启用</span></td><td class="rowact"><button class="btn sm gho" data-act="toggle-member">停用</button></td></tr>
+          <tr><td><div style="display:flex;align-items:center;gap:10px"><div class="co" style="width:30px;height:30px;padding:0;border-radius:8px;background:var(--brand-sft);color:var(--brand-d);justify-content:center;font-weight:600;border:none">李</div><b>客服小李</b></div></td><td class="tm">177****9912</td><td><span class="bdg mut">运营</span></td><td><span class="bdg mut st">已停用</span></td><td class="rowact"><button class="btn sm gho" data-act="toggle-member">启用</button></td></tr>
+        </tbody></table>
+      </div>
+    </section>
+
+    <!-- BIND -->
+    <section class="page" data-p="bind">
+      <div class="lead"><div><div class="t">平台账号绑定</div><div class="s">在此控制每个平台「是否自动发布」；无开放 API 的平台不能自动发，仅手动</div></div></div>
+      <div class="tiles" id="bindList">
+        <div class="tile"><div class="th"><div class="av" style="background:oklch(0.3 0.02 280);color:#fff;font-size:13px">抖</div><div><b>抖音 · 福恩寿衣</b><div class="mini">官方 API 授权 · 自有 2C</div></div></div><div style="display:flex;align-items:center;gap:8px"><span class="bdg ok">已授权</span></div><div class="swrow">自动发布<span class="spacer"></span><span class="sw on" data-act="toggle-auto"></span></div></div>
+        <div class="tile"><div class="th"><div class="av" style="background:oklch(0.6 0.18 18);color:#fff;font-size:13px">书</div><div><b>小红书 · 福恩</b><div class="mini">无 API · 仅手动</div></div></div><div style="display:flex;align-items:center;gap:8px"><span class="bdg mut">仅记录</span></div><div class="swrow">自动发布<span class="spacer"></span><span class="mini">无接口，仅手动</span><span class="sw dis" data-act="auto-na"></span></div></div>
+        <div class="tile"><div class="th"><div class="av" style="background:oklch(0.62 0.13 150);color:#fff;font-size:13px">视</div><div><b>视频号</b><div class="mini">无 API · 仅手动</div></div></div><div style="display:flex;align-items:center;gap:8px"><span class="bdg warn stt">待授权</span><button class="btn sm" data-act="auth-bind">授权</button></div><div class="swrow">自动发布<span class="spacer"></span><span class="mini">无接口，仅手动</span><span class="sw dis" data-act="auto-na"></span></div></div>
+        <div class="tile add" data-act="bind-new" style="min-height:96px">+ 绑定新账号</div>
+      </div>
+      <div class="note"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><circle cx="12" cy="12" r="9"/><path d="M12 8v5M12 16h.01"/></svg><span>「自动发布」开启后，作品库点「发布」即自动发到该账号；仅抖音 / 企业号等有开放 API 的平台可开，小红书 / 视频号只能导出后手动发。</span></div>
+    </section>
+  </div>
+</div>
+
+<div class="navmask" data-act="navtog"></div>
+<input type="file" id="segUpload" hidden accept="image/*,video/*">
+<div class="toast-wrap" id="toasts"></div>
+<div class="mask" id="mask"><div class="modal" id="modal"></div></div>
+<div class="ovl" id="ovl"><div class="spin"></div><div class="ot" id="ovlTxt">处理中…</div></div>
+
+<script>
+const $=s=>document.querySelector(s),$$=s=>document.querySelectorAll(s);
+const titles={home:['工作台','总览'],create:['内容创作','参考 → 拆解 → 配置 → 生成 → 成片'],burst:['爆款抓取','对标 · 第三方数据'],kb:['知识库','文字事实 + 画面素材 · 一个库'],avatar:['数字人','形象 / 声音'],works:['作品库','导出 / 发布'],usage:['用量','本月消耗'],member:['成员管理','公司账号'],bind:['平台账号绑定','发布授权']};
+
+function go(v){
+  $$('#nav a').forEach(a=>a.classList.toggle('on',a.dataset.v===v));
+  $$('.page').forEach(p=>p.classList.toggle('show',p.dataset.p===v));
+  $('#ptitle').textContent=titles[v][0];$('#pcrumb').textContent=titles[v][1];
+  if(v==='create')showCreate('list');
+  const r=$('.rail');if(r)r.classList.remove('open');const m=$('.navmask');if(m)m.classList.remove('show');
+  window.scrollTo(0,0);
+}
+function step(n){
+  $$('#steps .st').forEach(s=>{const i=+s.dataset.s;s.classList.toggle('on',i===n);s.classList.toggle('done',i<n);});
+  $$('.wz').forEach(w=>w.classList.toggle('show',+w.dataset.w===n));
+  window.scrollTo(0,0);
+}
+$$('#steps .st').forEach(s=>s.addEventListener('click',()=>step(+s.dataset.s)));
+function toast(msg,type){
+  const ic={ok:'M20 6L9 17l-5-5',warn:'M12 9v4M12 17h.01M10.3 3.9l-8 14A2 2 0 004 21h16a2 2 0 001.7-3l-8-14a2 2 0 00-3.4 0z',dng:'M18 6L6 18M6 6l12 12'}[type]||'M12 8v.01M11 12h1v4h1';
+  const t=document.createElement('div');t.className='toast '+(type||'');
+  t.innerHTML='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="'+ic+'"/></svg>'+msg;
+  $('#toasts').appendChild(t);setTimeout(()=>{t.style.opacity=0;t.style.transform='translateX(24px)';t.style.transition='.3s';setTimeout(()=>t.remove(),300);},2600);
+}
+function overlay(msg,ms,cb){$('#ovlTxt').textContent=msg;$('#ovl').classList.add('show');setTimeout(()=>{$('#ovl').classList.remove('show');cb&&cb();},ms||1300);}
+function modal(title,body,okText,onOk,wide){
+  $('#modal').className='modal'+(wide?' wide':'');
+  $('#modal').innerHTML='<h4>'+title+'</h4><div class="mb">'+body+'</div><div class="mf"><button class="btn" data-mc>取消</button><button class="btn pri" data-mo>'+(okText||'确定')+'</button></div>';
+  $('#mask').classList.add('show');
+  $('#modal [data-mc]').onclick=closeModal;
+  $('#modal [data-mo]').onclick=()=>{onOk&&onOk();};
+}
+function closeModal(){$('#mask').classList.remove('show');}
+$('#mask').addEventListener('click',e=>{if(e.target.id==='mask')closeModal();});
+
+// 作品库筛选
+function filterWorks(){
+  const p=$('#fPlat').value,f=$('#fForm').value,c=$('#fCmp').value,u=$('#fPub').value;let n=0;
+  $$('#workBody tr').forEach(r=>{
+    if(r.id==='workEmpty')return;
+    const ok=(!p||r.dataset.plat===p)&&(!f||r.dataset.form===f)&&(!c||r.dataset.cmp===c)&&(!u||r.dataset.pub===u);
+    r.style.display=ok?'':'none';if(ok)n++;
+  });
+  let er=$('#workEmpty');
+  if(n===0){if(!er){er=document.createElement('tr');er.id='workEmpty';er.innerHTML='<td colspan="7" style="text-align:center;color:var(--ink-3);padding:34px">没有符合筛选条件的作品，换个条件试试</td>';$('#workBody').appendChild(er);}er.style.display='';}
+  else if(er){er.style.display='none';}
+  $('#workCount').textContent='共 '+n+' 条';
+}
+// 拆解异步任务：提交后进任务列表后台跑，完成出现"去编辑"，不用守着等
+function addDissectTask(name){const c=$('#dissectTasksCard');if(c)c.style.display='';if(!$('#dissectTasks'))return;
+  const row=document.createElement('div');row.className='fi';
+  row.innerHTML='<div class="ic">▶</div><div class="meta"><b>'+name+'</b><small>转写 + AI 拆解中…</small></div><span class="bdg brd run dst">拆解中</span>';
+  $('#dissectTasks').prepend(row);
+  setTimeout(()=>{const b=row.querySelector('.dst');if(b)b.outerHTML='<button class="btn sm pri" data-act="open-dissect">去编辑 →</button>';const s=row.querySelector('small');if(s)s.textContent='拆解完成 · 可编辑';},3000);}
+// 成片落库：生成后在作品库出现"成片中"行 → 2.6s 转"已生成"，并可"再生产"
+function addWork(title){if(!$('#workBody'))return;const tr=document.createElement('tr');
+  tr.dataset.plat='抖音';tr.dataset.form='成片';tr.dataset.cmp='ok';tr.dataset.pub='草稿';
+  tr.innerHTML='<td><div class="tt">'+(title||'模板成片')+'</div><div class="tm">成片 · 刚刚</div></td><td><span class="plat"><i class="dy">抖</i>抖音</span></td><td>成片</td><td><span class="bdg ok">已通过</span></td><td><span class="bdg brd run wst">成片中</span></td><td class="tm">发布后回收</td><td class="rowact"><button class="btn sm gho" data-act="view-result">查看</button></td></tr>';
+  $('#workBody').prepend(tr);filterWorks();
+  setTimeout(()=>{const b=tr.querySelector('.wst');if(b){b.className='bdg ok wst';b.textContent='已生成';}},2600);
+}
+// 内容创作历史
+function addHist(title,form){if(!$('#histBody'))return;const tr=document.createElement('tr');
+  tr.innerHTML='<td><div class="tt">'+(title||'新内容')+'</div><div class="tm">刚刚 · 蔚然</div></td><td>'+(form||'图文')+'</td><td><span class="plat"><i class="dy">抖</i>抖音</span></td><td><span class="bdg ok">已生成</span></td><td class="rowact"><button class="btn sm gho" data-act="view-result">查看结果</button><button class="btn sm gho" data-act="reuse-cfg">复用配置</button></td>';
+  $('#histBody').prepend(tr);}
+// 内容创作：列表视图（默认） / 新建配置视图 切换
+function showCreate(view){if($('#createList'))$('#createList').style.display=view==='form'?'none':'';if($('#createForm'))$('#createForm').style.display=view==='form'?'':'none';if($('#newCreateBtn'))$('#newCreateBtn').style.display=view==='form'?'none':'';}
+// 内容创作：配置→提交→后台自动多阶段→完成进历史/作品库
+function addGenTask(name,withVideo){const c=$('#genTasksCard');if(c)c.style.display='';if(!$('#genTasks'))return;
+  const row=document.createElement('div');row.className='fi';row.dataset.name=name;
+  row.innerHTML='<div class="ic">⚙</div><div class="meta"><b>'+name+'</b><small class="gst">转写 + 拆解中…</small></div><span class="bdg brd run gstb">进行中</span>';
+  $('#genTasks').prepend(row);const s=row.querySelector('.gst');
+  setTimeout(()=>{if(s)s.textContent='仿写中（套公式 + 填知识库事实）…';},1400);
+  if(withVideo){
+    // 出视频：先跑到"脚本+预审就绪"停下，人工确认后才烧钱出片（不可逆步骤前置确认门）
+    setTimeout(()=>{if(s)s.textContent='脚本就绪 · 合规预审通过 · 待确认出片';const b=row.querySelector('.gstb');if(b)b.outerHTML='<button class="btn sm" data-act="view-result" data-mode="script" style="margin-right:5px">看脚本</button><button class="btn sm pri" data-act="confirm-film">确认出片 →</button>';},2800);
+  }else{
+    setTimeout(()=>{if(s)s.textContent='生成多平台图文中…';},2800);
+    setTimeout(()=>{const b=row.querySelector('.gstb');if(b)b.outerHTML='<button class="btn sm pri" data-act="view-result">查看结果 →</button>';if(s)s.textContent='已完成 · 已存历史 / 作品库';addHist(name,'图文');},4200);
+  }}
+// 确认出片：脚本确认后才触发成片（贵且不可逆那一段）
+function confirmFilm(row){const s=row.querySelector('.gst');row.querySelector('.gstb')&&row.querySelector('.gstb').remove();
+  const badge=document.createElement('span');badge.className='bdg brd run gstb';badge.textContent='出片中';row.querySelector('.meta').after(badge);
+  if(s)s.textContent='按模板逐段生成视频中…';
+  setTimeout(()=>{badge.outerHTML='<button class="btn sm pri" data-act="view-result">查看结果 →</button>';if(s)s.textContent='已完成 · 已存历史 / 作品库';const nm=row.dataset.name||'模板成片';addHist(nm,'成片');addWork(nm);},2200);}
+// 查看结果 / 看脚本：Tab 分区。mode='script' 只到脚本（确认门前，未出片）；默认 full（已出片，含成片素材）
+const RES_TAB={
+  decon:'<div class="mini" style="line-height:1.8"><b>八维度拆解</b><br>钩子=禁忌制造紧迫 ｜ 结构=痛点→科普→方案→引导 ｜ 情绪=愧疚→安心 ｜ 选题=习俗禁忌系列 ｜ 视觉=面料特写+素雅暖光 ｜ CTA=评论扣1 ｜ 评论区=高频问价<br><br><b>可迁移公式</b><br>禁忌钩子 + 习俗科普 + 体面叙事 + 评论区钩子</div>',
+  script:'<div class="field" style="margin:0 0 12px"><label>仿写脚本 / 口播（可改）</label><textarea rows="4" class="inp">很多人不知道，老人的寿衣讲究单数……真丝是对老人最后的体面。评论区扣「1」领选购清单。</textarea></div>'+
+    '<div style="background:var(--surface-2);border:1px dashed var(--line-2);border-radius:10px;padding:11px 13px"><div class="mini" style="font-weight:600;margin-bottom:7px">🔎 仿写溯源 · 防编造</div><div style="display:flex;flex-wrap:wrap;gap:6px"><span class="bdg ok">¥2,880 ← 价目表.xlsx</span><span class="bdg ok">单数讲究 ← 习俗.docx</span><span class="bdg ok">真丝 ← 价目表.xlsx</span><span class="bdg mut">口吻 ← 温情风</span></div><div class="mini" style="margin-top:7px">硬事实只取知识库、未命中留空不编造；正文数字与知识库回检不一致会标红。</div></div>',
+  film:'<div class="resfilm"><div>'+videoBox(null,60)+'<div class="mini" style="margin-top:8px">成片预览 · 可下载 / 存作品库</div></div>'+
+    '<div class="rscroll"><div class="mini" style="margin:0 0 8px;font-weight:600;color:var(--ink)">口播文案 ↔ 画面 · 逐段对应（文字可改、画面可换：本地上传 / 素材库）</div>'+
+    // 段① 口播
+    '<div style="border:1px solid var(--line-2);border-radius:10px;padding:11px 13px;margin-bottom:10px">'+
+    '<div style="display:flex;align-items:center;gap:8px;margin-bottom:7px"><b style="font-size:13px">① 开场口播</b><span class="bdg mut">数字人</span></div>'+
+    '<textarea rows="2" class="inp" style="margin-bottom:8px">很多人不知道，老人的寿衣讲究单数，一般五件、七件。</textarea>'+
+    '<div class="fi" style="padding:6px 8px;background:var(--surface-2)"><img src="https://i.pravatar.cc/80?img=13" style="width:40px;height:40px;border-radius:6px;object-fit:cover;flex:none"><div class="meta"><b>画面：老板克隆形象（数字人）</b><small>已授权</small></div><button class="btn sm gho" data-act="swap-seg">换画面</button></div></div>'+
+    // 段② 产品展示
+    '<div style="border:1px solid var(--line-2);border-radius:10px;padding:11px 13px;margin-bottom:10px">'+
+    '<div style="display:flex;align-items:center;gap:8px;margin-bottom:7px"><b style="font-size:13px">② 产品展示</b><span class="bdg brd">产品图 i2v</span></div>'+
+    '<textarea rows="2" class="inp" style="margin-bottom:8px">真丝面料透气，是对老人最后的体面，价格 ¥2,880。</textarea>'+
+    '<div class="fi" style="padding:6px 8px;background:var(--surface-2)"><img src="https://picsum.photos/seed/shouyi/120/120" style="width:40px;height:40px;border-radius:6px;object-fit:cover;flex:none"><div class="meta"><b>画面：真丝七件套-产品图.jpg</b><small>i2v · AI 从知识库匹配</small></div><button class="btn sm gho" data-act="swap-seg">换画面</button></div></div>'+
+    // 段③ 字幕CTA
+    '<div style="border:1px solid var(--line-2);border-radius:10px;padding:11px 13px">'+
+    '<div style="display:flex;align-items:center;gap:8px;margin-bottom:7px"><b style="font-size:13px">③ 字幕 CTA</b><span class="bdg mut">套壳 · 零成本</span></div>'+
+    '<textarea rows="2" class="inp" style="margin-bottom:8px">为家里老人准备的，评论区扣「1」，我把选购清单发你。</textarea>'+
+    '<div class="fi" style="padding:6px 8px;background:var(--surface-2)"><div class="ic" style="flex:none">▣</div><div class="meta"><b>画面：素雅字幕模板 A</b><small>套壳渲染</small></div><button class="btn sm gho" data-act="swap-seg">换画面</button></div></div>'+
+    '</div></div>'
+};
+function viewResult(mode,title){const isScript=mode==='script';const t0=title||'老人寿衣的讲究';
+  const tabs=isScript?[['script','脚本 + 溯源'],['decon','拆解 + 公式']]:[['film','成片 + 素材'],['script','脚本 + 溯源'],['decon','拆解 + 公式']];
+  const body='<div class="tabs" id="resTabs" style="margin-bottom:14px">'+tabs.map((t,i)=>'<button'+(i===0?' class="on"':'')+' data-rtab="'+t[0]+'">'+t[1]+'</button>').join('')+'</div>'+
+    '<div id="resBody" style="min-height:120px">'+RES_TAB[tabs[0][0]]+'</div>';
+  modal((isScript?'看脚本 · ':'生成结果 · ')+t0,body,isScript?'确认脚本':'微调后重生成',()=>{closeModal();toast(isScript?'脚本已确认':'已按微调重新生成（演示）','ok');},true);
+  if(!isScript)$('#modal').classList.add('xwide');
+  $('#resTabs')&&$('#resTabs').addEventListener('click',ev=>{const b=ev.target.closest('button');if(!b)return;$('#resTabs').querySelectorAll('button').forEach(x=>x.classList.remove('on'));b.classList.add('on');$('#resBody').innerHTML=RES_TAB[b.dataset.rtab];});}
+// 换素材：弹素材库候选，选一个替换当前分镜的缩略图
+function swapSegModal(){const cands=[
+  {src:'https://picsum.photos/seed/shouyi/200/200',label:'真丝七件套-产品图'},
+  {src:'https://picsum.photos/seed/guhe/200/200',label:'金丝楠骨灰盒-产品图'},
+  {src:'https://picsum.photos/seed/mendian/200/200',label:'门店实拍-空镜'},
+  {src:'https://picsum.photos/seed/changjing/200/200',label:'素雅意境-AI空镜'}];
+  modal('换画面 · 该分镜','<div style="display:flex;align-items:center;gap:8px;margin-bottom:10px"><button class="btn sm pri" data-act="upload-seg"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M12 5v14M5 12h14"/></svg>本地上传</button><span class="mini">本地上传的图/视频会<b>默认存入素材库</b>，下次可复用</span></div>'+
+    '<div class="mini" style="margin-bottom:8px">或从素材库选（按该分镜需求召回：产品ID+标签+画面相似）：</div><div class="tiles" style="grid-template-columns:repeat(2,1fr)">'+
+    cands.map(c=>'<div class="atile" data-act="do-swap" data-src="'+c.src+'" data-label="'+c.label+'" style="cursor:pointer"><div class="ath" style="height:90px"><img src="'+c.src+'"></div><div class="ai"><b style="font-size:12px">'+c.label+'</b><div class="mini">已授权 · 可商用</div></div></div>').join('')+
+    '</div>','关闭',closeModal,true);}
+// 查看单个素材（按类型显示真实图：人像 / 产品图 / 字幕示意）
+function viewAsset(name,kind){let body;
+  if(kind==='avatar')body='<img src="https://i.pravatar.cc/640?img=13" style="width:100%;border-radius:10px;display:block">';
+  else if(kind==='caption')body='<div style="aspect-ratio:16/9;border-radius:10px;background:linear-gradient(160deg,oklch(0.97 0.01 200),oklch(0.92 0.02 200));display:grid;place-items:center;border:1px solid var(--line)"><div style="text-align:center"><div style="font-size:15px;font-weight:600;color:var(--ink)">老人寿衣的讲究</div><div style="margin-top:6px;color:var(--ink-2);font-size:12px">评论区扣「1」领选购清单</div><div style="margin-top:8px;font-size:11px;color:var(--ink-3)">素雅字幕模板 A · 套壳渲染示意</div></div></div>';
+  else body='<img src="https://picsum.photos/seed/'+encodeURIComponent(name)+'/640/360" style="width:100%;border-radius:10px;display:block;aspect-ratio:16/9;object-fit:cover">';
+  modal('素材预览 · '+name,body+'<div class="mini" style="margin-top:10px">该素材来自知识库素材库，AI 已打标；可在知识库管理或在成片处「换素材」后重生成。</div>','关闭',closeModal);}
+// 案例/成片视频：指向本地真实样片（assets/demo/，运营按 README 放入；未放则降级海报）
+const DEMO_VIDS={
+  '产品讲解 · 换数字人+产品':{src:'assets/demo/daihuo.mp4',desc:'真实样片：数字人讲解产品 + 产品展示，支持换数字人 / 换产品批量复制。'},
+  '数字人+混剪':{src:'assets/demo/hunjian.mp4',desc:'真实样片（硅基大司马同款）：数字人口播 + 素材切片混剪，结构=震撼数字钩子→痛点→黑科技→价值升华→自报家门。'},
+  'Seedance 生成视频':{src:'assets/demo/ai-gen.mp4',desc:'完全 AI 生成（火山 Seedance 文生视频），无需客户素材。'}
+};
+function videoBox(src,mvh){const v=src||'assets/demo/daihuo.mp4';const h=(mvh||62);
+  return '<div style="position:relative;border-radius:10px;overflow:hidden;background:#1a1a1a;display:grid;place-items:center;max-height:'+h+'vh">'+
+  '<video src="'+v+'#t=0.1" controls muted playsinline preload="metadata" style="width:auto;max-width:100%;max-height:'+h+'vh;display:block;object-fit:contain" onerror="this.style.display=\'none\';this.nextElementSibling.style.display=\'grid\'"></video>'+
+  '<div style="display:none;position:absolute;inset:0;place-items:center;color:#fff;text-align:center;min-height:300px"><div><div style="font-size:28px">▶</div><div style="opacity:.85;font-size:12px;margin-top:4px">数字人介绍产品 · 样片（把 mp4 放入 assets/demo/ 即可播放）</div></div></div></div>';}
+function playDemo(name){const d=DEMO_VIDS[name]||{};modal('案例视频 · '+name,videoBox(d.src)+'<div class="mini" style="margin-top:10px">'+(d.desc||'该模板样片效果，企业选用前可预览。案例由我方运营在后台上传维护。')+'</div>','关闭',closeModal);}
+
+// 动作分发
+document.addEventListener('click',e=>{
+  const el=e.target.closest('[data-act]');if(!el)return;
+  const a=el.dataset.act;
+  switch(a){
+    case 'go': go(el.dataset.v);break;
+    case 'navtog':{const r=$('.rail');if(r)r.classList.toggle('open');const m=$('.navmask');if(m)m.classList.toggle('show');}break;
+    case 'step': step(+el.dataset.s);break;
+    case 'toast': toast(el.dataset.msg,el.dataset.type);break;
+    case 'dissect': addDissectTask('老人寿衣的讲究（参考视频）');toast('拆解任务已提交：后台转写 + AI 拆解约 1-2 分钟，完成后通知，可继续其他操作','ok');break;
+    case 'open-dissect': step(1);break;
+    case 'reuse-cfg': go('create');showCreate('form');toast('已复用该记录的配置，可直接调整后重新生成','ok');break;
+    case 'toggle-mkvideo':{const sw=$('#mkVideo');sw.classList.toggle('on');const on=sw.classList.contains('on');if($('#tplBlock'))$('#tplBlock').style.display=on?'':'none';if(on)updateDH(selectedTpl());if($('#mkVideoTip'))$('#mkVideoTip').textContent=on?'已开：先出脚本+预审，确认后再出片':'已关：只产脚本 / 图文（默认）';toast(on?'已开启出视频（含确认门）':'已关闭出视频（只产图文）');}break;
+    case 'auto-gen':{const plats=[...$$('#genPlats .chk.on')].map(c=>c.textContent);if(!plats.length){toast('请至少选一个目标平台','warn');break;}const withVideo=$('#mkVideo')&&$('#mkVideo').classList.contains('on');addGenTask('老人寿衣的讲究',withVideo);showCreate('list');toast('已提交：后台 拆解 → 仿写 → '+(withVideo?'出脚本+预审，待你确认后再出片':'生成图文')+'（'+plats.join('/')+'）；可继续其他操作','ok');}break;
+    case 'view-result':{const row=el.closest('tr')||el.closest('.fi');const tt=row&&row.querySelector('.tt,b');viewResult(el.dataset.mode,tt?tt.textContent.replace(/★赢家/,'').trim():'');}break;
+    case 'view-asset': viewAsset(el.dataset.name||'素材',el.dataset.kind);break;
+    case 'confirm-film':{const row=el.closest('.fi');modal('确认出片','成片是<b>按分钟付费、不可逆</b>的一段。确认前请已核对脚本与价格无误（合规已预审通过）。<br><br>确认后系统按模板逐段生成视频。','确认出片',()=>{closeModal();confirmFilm(row);toast('已确认，开始按模板出片','ok');});}break;
+    case 'new-create': showCreate('form');break;
+    case 'back-create-list': showCreate('list');break;
+    case 'use-formula':{const nm=el.dataset.formula||'';go('create');showCreate('form');const sel=$('#formulaSelect');if(sel){const op=[...sel.options].find(x=>x.value===nm);if(op){sel.value=op.value;sel.dispatchEvent(new Event('change'));}}toast('已带入公式到新建配置（已选中、软推荐模板），可调整后生成','ok');}break;
+    case 'edit-decon':{const p=$('#deconRuleText');modal('编辑拆解规则','<div class="field" style="margin:0"><label>八维度拆解规则（平台维护·按行业适配，客户不写）</label><textarea rows="5" class="inp" id="edRule">'+(p?p.textContent:'')+'</textarea></div>','保存',()=>{if(p&&$('#edRule'))p.textContent=$('#edRule').value;closeModal();toast('拆解规则已保存','ok');});}break;
+    case 'gen': overlay('正在为所选平台分别生成…',1600,()=>{step(3);const ps=renderGenTabs();toast('已生成 '+ps.join(' / ')+' 共 '+ps.length+' 版','ok');});break;
+    case 'film': overlay('按模板逐段成片中（数字人口播 + 产品 i2v + 字幕拼装，约 1 分钟）…',2000,()=>{addWork($('#gTitle')?$('#gTitle').value:'模板成片');toast('成片已生成，存入作品库','ok');go('works');});break;
+    case 'play-demo': playDemo(el.dataset.name||'模板案例');break;
+    case 'adopt':{$('#gBody').value=$('#gBody').value.replace('灵堂','告别厅');const al=$('#cmpAlert');al.classList.add('done');al.querySelector('div').innerHTML='<b>已采纳改写</b>：「灵堂」→「告别厅」';al.querySelector('.ac').innerHTML='<span class="bdg ok">已处理</span>';toast('已采纳合规改写','ok');}break;
+    case 'ignore':{const al=$('#cmpAlert');al.style.display='none';toast('已忽略该提醒','warn');}break;
+    case 'edit-dis':{const dis=el.closest('.dis'),p=dis.querySelector('p');
+      if(!dis.classList.contains('edit')){dis.classList.add('edit');p.setAttribute('contenteditable','true');p.focus();el.textContent='保存';}
+      else{dis.classList.remove('edit');p.removeAttribute('contenteditable');el.textContent='编辑';toast('已保存修改','ok');}}break;
+    case 'save-work': toast(el.dataset.msg||'已存入作品库','ok');setTimeout(()=>go('works'),600);break;
+    case 'upload-kb': overlay('上传中…',900,()=>{
+      const row=document.createElement('div');row.className='fi';
+      row.innerHTML='<div class="ic">DOC</div><div class="meta"><b>新上传资料.docx</b><small>结构化中…</small></div><span class="bdg brd run">处理中</span>';
+      $('#kbList').prepend(row);toast('已上传，正在结构化','ok');
+      setTimeout(()=>{row.querySelector('.bdg').className='bdg ok';row.querySelector('.bdg').textContent='已结构化';row.querySelector('small').textContent='18 条事实 · 待分类';},2200);
+    });break;
+    case 'new-prompt': modal('新建风格提示词',
+      '<div class="field"><label>名称</label><input class="inp" id="npName" placeholder="如：故事化风"></div><div class="field" style="margin:0"><label>提示词内容</label><textarea rows="4" id="npTxt" placeholder="描述希望的口吻、视角、禁忌…"></textarea></div>','创建',
+      ()=>{const nm=$('#npName').value||'新风格';const t=document.createElement('div');t.className='tile';
+        t.innerHTML='<div class="th"><div class="av">✨</div><div><b>'+nm+'</b><div class="mini">启用中</div></div></div><p>'+($('#npTxt').value||'（自定义提示词）')+'</p><div style="margin-top:6px"><button class="btn sm gho" data-act="edit-prompt">编辑</button></div>';
+        $('#promptList').insertBefore(t,$('#promptList .add'));closeModal();toast('已创建风格「'+nm+'」','ok');});break;
+    case 'edit-prompt': modal('编辑风格提示词',
+      '<div class="field" style="margin:0"><label>提示词内容</label><textarea rows="5" id="epTxt">'+(el.closest('.tile').querySelector('p').textContent)+'</textarea></div>','保存',
+      ()=>{el.closest('.tile').querySelector('p').textContent=$('#epTxt').value;closeModal();toast('已保存','ok');});break;
+    case 'upload-avatar': if(genAvatarCount()>=MAX_AVATAR){buyAvatar();}else{$('#avatarFile').click();}break;
+    case 'buy-avatar': buyAvatar();break;
+    case 'pick-preset': modal('蝉镜公模形象库','<div class="tiles" style="grid-template-columns:1fr 1fr">'+['知性女主播','沉稳男声形象','温和长者形象','职业女性'].map(n=>'<div class="tile" style="margin:0"><div class="th"><div class="av">🧑</div><div><b>'+n+'</b><div class="mini">公模 · 不占额度</div></div></div><button class="btn sm" data-act="toast" data-msg="已选用公模形象「'+n+'」" data-type="ok">选用</button></div>').join('')+'</div>','关闭',closeModal);break;
+    case 'clone-voice': $('#voiceFile').click();break;
+    case 'audition': audition(+el.dataset.tone||500);toast('正在试听音色…','ok');break;
+    case 'custom-avatar': modal('申请数字人定制','<div class="field" style="margin:0"><label>需求描述</label><textarea rows="4" placeholder="形象风格、是否克隆老板、使用场景…"></textarea></div>','提交申请',()=>{closeModal();toast('定制申请已提交，我方将联系你','ok');});break;
+    case 'add-member': modal('添加成员',
+      '<div class="split"><div class="field"><label>姓名</label><input class="inp" id="amName"></div><div class="field"><label>手机号</label><input class="inp" id="amPhone"></div></div><div class="field" style="margin:0"><label>角色</label><select class="inp" id="amRole"><option>运营</option><option>老板 · 管理员</option></select></div>','添加',
+      ()=>{const nm=$('#amName').value||'新成员',ph=$('#amPhone').value||'—',ro=$('#amRole').value;
+        const tr=document.createElement('tr');
+        tr.innerHTML='<td><div style="display:flex;align-items:center;gap:10px"><div class="co" style="width:30px;height:30px;padding:0;border-radius:8px;background:var(--brand-sft);color:var(--brand-d);justify-content:center;font-weight:600;border:none">'+nm[0]+'</div><b>'+nm+'</b></div></td><td class="tm">'+ph+'</td><td><span class="bdg mut">'+ro+'</span></td><td><span class="bdg ok st">启用</span></td><td class="rowact"><button class="btn sm gho" data-act="toggle-member">停用</button></td>';
+        $('#memberBody').appendChild(tr);closeModal();toast('已添加成员「'+nm+'」','ok');});break;
+    case 'toggle-member':{const tr=el.closest('tr'),b=tr.querySelector('.st');
+      if(el.textContent==='停用'){b.className='bdg mut st';b.textContent='已停用';el.textContent='启用';toast('已停用','warn');}
+      else{b.className='bdg ok st';b.textContent='启用';el.textContent='停用';toast('已启用','ok');}}break;
+    case 'auth-bind':{const tile=el.closest('.tile'),b=tile.querySelector('.stt');b.className='bdg ok';b.textContent='已授权';el.remove();toast('视频号已授权','ok');}break;
+    case 'toggle-auto':{el.classList.toggle('on');toast(el.classList.contains('on')?'已开启自动发布':'已关闭自动发布',el.classList.contains('on')?'ok':'warn');}break;
+    case 'auto-na': toast('该平台无开放接口，不支持自动发布，只能导出后手动发','warn');break;
+    case 'bind-new': modal('绑定新账号','<div class="field"><label>平台</label><select class="inp"><option>抖音</option><option>小红书</option><option>视频号</option><option>快手</option></select></div><div class="field" style="margin:0"><label>账号名 / ID</label><input class="inp" placeholder="账号名称"></div>','绑定',()=>{closeModal();toast('已发起授权绑定','ok');});break;
+    case 'do-login': $('#login').style.display='none';go('home');toast('登录成功，欢迎回来','ok');break;
+    case 'logout': $('#login').style.display='grid';break;
+    case 'forgot': modal('找回密码','<div class="field"><label>账号</label><input class="inp" placeholder="手机号 / 邮箱"></div><div class="field" style="margin:0"><label>验证码</label><div style="display:flex;gap:8px"><input class="inp" placeholder="6 位验证码"><button class="btn" data-act="toast" data-msg="验证码已发送">获取验证码</button></div></div>','重置密码',()=>{closeModal();toast('重置链接已发送，请按提示设置新密码','ok');});break;
+    case 'pick-file': $('#kbFile').click();break;
+    case 'swap-seg': window._swapRow=el.closest('.fi');swapSegModal();break;
+    case 'upload-seg': $('#segUpload').click();break;
+    case 'do-swap':{const r=window._swapRow;if(r){let img=r.querySelector('img');if(!img){const ic=r.querySelector('.ic');if(ic){img=document.createElement('img');img.style.cssText='width:36px;height:36px;border-radius:6px;object-fit:cover;flex:none';ic.replaceWith(img);}}if(img)img.src=el.dataset.src;const sm=r.querySelector('small');if(sm)sm.textContent='已改用素材库「'+el.dataset.label+'」(手动选 · 已授权)';const bg=r.querySelector('.bdg');if(bg){bg.className='bdg ok';bg.style.flex='none';bg.textContent='✓用素材库';}}closeModal();toast('已替换为「'+el.dataset.label+'」','ok');}break;
+    case 'kb-group': $$('#groupList .gitem').forEach(x=>x.classList.remove('on'));el.classList.add('on');filterKB();break;
+    case 'new-group': modal('新建分组','<div class="field" style="margin:0"><label>分组名称</label><input class="inp" id="ngName" placeholder="如：套餐服务 / 花圈挽联"></div>','创建',()=>{
+      const nm=$('#ngName').value.trim()||'新分组';const gi=document.createElement('div');gi.className='gitem';gi.dataset.act='kb-group';gi.dataset.group=nm;
+      gi.innerHTML='<span class="gi"></span>'+nm+'<span class="ct">0</span>';$('#groupList').insertBefore(gi,$('#groupList .addg'));closeModal();kbCounts();toast('已创建分组「'+nm+'」','ok');});break;
+    case 'new-struct': modal('录入结构化内容','<div class="field"><label>名称</label><input class="inp" id="nsName" placeholder="如：花圈挽联价格表"></div><div class="field"><label>所属分组</label><select class="inp" id="nsGroup">'+groupOptions()+'</select></div><div class="field" style="margin:0"><label>字段（逗号分隔）</label><input class="inp" id="nsFields" value="名称, 材质, 规格, 价格"></div>','创建',()=>{
+      const nm=$('#nsName').value.trim()||'新结构化表';const g=$('#nsGroup').value;const f=$('#nsFields').value.split(/[,，]/).filter(x=>x.trim()).length;
+      addKbItem({name:nm,type:'struct',group:g,ic:'XLS',sub:'0 条 · '+f+' 字段',status:'已结构化'});closeModal();toast('已创建结构化内容「'+nm+'」','ok');});break;
+    case 'view-struct': modal('结构化内容预览 · 价目表','<div style="border:1px solid var(--line);border-radius:8px;overflow:hidden"><table><thead><tr><th>产品</th><th>材质</th><th>规格</th><th>价格</th></tr></thead><tbody><tr><td>寿衣套装</td><td>真丝</td><td>七件套</td><td>¥2,880</td></tr><tr><td>寿衣套装</td><td>纯棉</td><td>五件套</td><td>¥980</td></tr><tr><td>骨灰盒</td><td>金丝楠木</td><td>标准</td><td>¥6,800</td></tr></tbody></table></div><div class="mini" style="margin-top:10px">结构化数据按字段入库，生成时可被精确填充（如「七件套真丝寿衣 ¥2,880」）。</div>','关闭',closeModal);break;
+    case 'fav':{el.textContent=el.textContent==='收藏'?'已收藏 ✓':'收藏';toast(el.textContent==='收藏'?'已取消收藏':'已加入收藏','ok');}break;
+    case 'burst-dissect':{const b=el.closest('.burst');const tn=b&&b.querySelector('.bt');const nm=tn?tn.textContent:'选中的爆款';const plat=b&&b.querySelector('.xhs')?'小红书':'抖音';const mult=b&&b.querySelector('.mult')?b.querySelector('.mult').textContent:'';
+      go('create');showCreate('form');
+      // 切到"来自爆款库"来源模式并回显选中
+      const segs=$('#srcSeg').querySelectorAll('button');segs.forEach(x=>x.classList.remove('on'));segs[2].classList.add('on');$('#fLink').style.display='none';$('#fText').style.display='none';if($('#fBurst'))$('#fBurst').style.display='';
+      pickBurst({bt:nm,bp:plat,bm:mult});}break;
+    case 'fetch-burst': overlay('正在从第三方数据抓取爆款…',1500,()=>toast('已更新 3 条新爆款','ok'));break;
+    case 'cfg-burst': modal('配置对标源','<div class="field"><label>关键词（按词搜索爆款，逗号分隔）</label><input class="inp" value="寿衣, 骨灰盒, 殡葬讲究"></div><div class="field"><label>对标账号（粘账号链接或名称，逗号分隔）</label><input class="inp" value="殡仪服务·老李, 福寿堂" placeholder="抓这些账号发布的爆款"></div><div class="field" style="margin:0"><label>平台</label><div class="chks"><span class="chk on">抖音</span><span class="chk on">小红书</span><span class="chk">视频号</span><span class="chk">快手</span></div></div>','保存',()=>{closeModal();toast('对标源已更新（关键词 + 对标账号）','ok');});break;
+  }
+});
+// 知识库：分组 + 结构化/非结构化 + 真实文件选择
+function groupOptions(){return [...$$('#groupList .gitem')].filter(g=>g.dataset.act==='kb-group'&&g.dataset.group).map(g=>'<option>'+g.dataset.group+'</option>').join('');}
+function firstGroup(){const g=[...$$('#groupList .gitem')].find(g=>g.dataset.act==='kb-group'&&g.dataset.group);return g?g.dataset.group:'未分组';}
+function filterKB(){const gEl=$('#groupList .gitem.on'),g=gEl?gEl.dataset.group:'';const tEl=$('#kbType .on'),t=tEl?tEl.dataset.t:'';let n=0;
+  $$('#kbList2 .fi').forEach(r=>{const ok=(!g||r.dataset.group===g)&&(!t||r.dataset.type===t);r.style.display=ok?'':'none';if(ok)n++;});
+  if($('#kbCount'))$('#kbCount').textContent='共 '+n+' 项';}
+function kbCounts(){const items=[...$$('#kbList2 .fi')];$$('#groupList .gitem').forEach(gi=>{if(gi.dataset.act!=='kb-group')return;const ct=gi.querySelector('.ct');if(!ct)return;const g=gi.dataset.group;ct.textContent=g===''?items.length:items.filter(i=>i.dataset.group===g).length;});}
+function fileType(n){const e=n.split('.').pop().toLowerCase();if(['xls','xlsx','csv'].includes(e))return 'struct';if(['jpg','jpeg','png','webp','gif','mp4','mov','avi','mkv'].includes(e))return 'asset';return 'unstruct';}
+function fileIc(n){const e=n.split('.').pop().toLowerCase();if(['xls','xlsx','csv'].includes(e))return 'XLS';if(['jpg','jpeg','png','webp','gif'].includes(e))return 'IMG';if(['mp3','wav','m4a','aac'].includes(e))return 'MP3';if(['mp4','mov','avi','mkv'].includes(e))return 'MP4';if(e==='txt')return 'TXT';if(e==='pdf')return 'PDF';return 'DOC';}
+function addKbItem(o){const row=document.createElement('div');row.className='fi';row.dataset.group=o.group;row.dataset.type=o.type;
+  const tp=o.type==='struct'?'<span class="tp s">⊞ 结构化</span>':o.type==='asset'?'<span class="tp a">▣ 素材</span>':'<span class="tp u">≣ 非结构化</span>';
+  const run=o.status==='处理中';const sb='<span class="bdg '+(run?'brd run':'ok')+' stb">'+o.status+'</span>';
+  const view=o.type==='struct'?'<button class="btn sm gho" data-act="view-struct">查看</button>':'<button class="btn sm gho" data-act="toast" data-msg="'+(o.type==='asset'?'预览素材 + AI 标签（演示）':'查看文档分段（演示）')+'">查看</button>';
+  row.innerHTML='<div class="ic">'+(o.ic||'DOC')+'</div><div class="meta"><b>'+o.name+'</b><small>'+o.sub+'</small></div>'+tp+'<span class="bdg mut" style="margin:0 4px">'+o.group+'</span>'+sb+view;
+  $('#kbList2').prepend(row);kbCounts();filterKB();return row;}
+$('#kbType').querySelectorAll('button').forEach(b=>b.addEventListener('click',()=>{$('#kbType').querySelectorAll('button').forEach(x=>x.classList.remove('on'));b.classList.add('on');filterKB();}));
+$('#kbFile').addEventListener('change',e=>{const files=[...e.target.files];if(!files.length)return;
+  const gEl=$('#groupList .gitem.on');let g=gEl&&gEl.dataset.group?gEl.dataset.group:firstGroup();
+  files.forEach(f=>{const ty=fileType(f.name);const sub0=ty==='struct'?'解析表格中…':ty==='asset'?'AI 打标中…':'转写/分段中…';const row=addKbItem({name:f.name,type:ty,group:g,ic:fileIc(f.name),sub:sub0,status:'处理中'});
+    setTimeout(()=>{const sb=row.querySelector('.stb');sb.className='bdg ok stb';sb.textContent=ty==='struct'?'已结构化':ty==='asset'?'已打标':'已入库';row.querySelector('small').textContent=ty==='struct'?'解析完成 · 待确认字段':ty==='asset'?'AI 标签已生成 · 可供视频匹配':'已分段入库';},1900);});
+  toast('已上传 '+files.length+' 个文件到「'+g+'」，处理中','ok');e.target.value='';});
+kbCounts();
+// 素材库：分组筛选 + 计数 + 上传
+function filterAssets(){const gEl=$('#assetGroup .on'),g=gEl?gEl.dataset.g:'';let n=0;
+  $$('#assetList .atile').forEach(t=>{const ok=!g||t.dataset.g===g;t.style.display=ok?'':'none';if(ok)n++;});
+  if($('#assetCount'))$('#assetCount').textContent='共 '+n+' 个素材';}
+$('#assetGroup')&&$('#assetGroup').querySelectorAll('button').forEach(b=>b.addEventListener('click',()=>{$('#assetGroup').querySelectorAll('button').forEach(x=>x.classList.remove('on'));b.classList.add('on');filterAssets();}));
+$('#assetFile')&&$('#assetFile').addEventListener('change',e=>{const files=[...e.target.files];if(!files.length)return;
+  const gEl=$('#assetGroup .on');const g=gEl&&gEl.dataset.g?gEl.dataset.g:'产品';
+  files.forEach(f=>{const isVid=/\.(mp4|mov|avi|mkv)$/i.test(f.name);const url=URL.createObjectURL(f);
+    const t=document.createElement('div');t.className='atile';t.dataset.g=g;
+    const media=isVid?'<video src="'+url+'#t=0.5" muted preload="metadata"></video>':'<img src="'+url+'">';
+    t.innerHTML='<div class="ath">'+media+'<span class="adur">'+(isVid?'视频':'图')+'</span></div><div class="ai"><b>'+f.name.replace(/\.[^.]+$/,'')+'</b><div class="mini">AI 打标中…</div></div>';
+    $('#assetList').prepend(t);
+    setTimeout(()=>{t.querySelector('.mini').textContent='AI 标签：'+g+'·已打标 · 可供混剪召回';},1600);});
+  filterAssets();toast('已上传 '+files.length+' 个素材到「'+g+'」，AI 打标中','ok');e.target.value='';});
+filterAssets();
+// 分镜「本地上传」换画面：替换该分镜画面 + 默认存入素材库
+$('#segUpload')&&$('#segUpload').addEventListener('change',e=>{const f=e.target.files[0];if(!f)return;const isVid=/\.(mp4|mov|avi|mkv)$/i.test(f.name);const url=URL.createObjectURL(f);const r=window._swapRow;
+  if(r){let img=r.querySelector('img');if(!img){const ic=r.querySelector('.ic');if(ic){img=document.createElement('img');img.style.cssText='width:40px;height:40px;border-radius:6px;object-fit:cover;flex:none';ic.replaceWith(img);}}if(img)img.src=url;const b=r.querySelector('.meta b');if(b)b.textContent='画面：'+f.name.replace(/\.[^.]+$/,'')+'（本地上传）';const sm=r.querySelector('.meta small');if(sm)sm.textContent='已上传并存入素材库 · 可复用';}
+  if($('#kbList2')){const nm=f.name.replace(/\.[^.]+$/,'');const thumb=isVid?'<video src="'+url+'#t=0.5" muted preload="metadata" style="width:34px;height:34px;border-radius:6px;object-fit:cover;flex:none"></video>':'<img src="'+url+'" style="width:34px;height:34px;border-radius:6px;object-fit:cover;flex:none">';const row=document.createElement('div');row.className='fi';row.dataset.group='产品素材';row.dataset.type='asset';row.innerHTML=thumb+'<div class="meta"><b>'+nm+'</b><small>本地上传 · AI 打标中 · 供混剪召回</small></div><span class="tp a">▣ 素材</span><span class="bdg mut" style="margin:0 4px">产品素材</span><span class="bdg ok stb">已打标</span><button class="btn sm gho" data-act="view-asset" data-name="'+nm+'" data-kind="product">查看</button>';$('#kbList2').prepend(row);if(typeof kbCounts==='function')kbCounts();}
+  closeModal();toast('已用本地文件换画面，并存入知识库·素材','ok');e.target.value='';});
+// 数字人：形象配额（每企业 2 个，单独计费）+ 真实上传
+let MAX_AVATAR=2;
+function genAvatarCount(){return $$('#avatarList .dhcard[data-gen="1"]').length;}
+function avatarQuota(){if($('#avQuota'))$('#avQuota').textContent='已生成 '+genAvatarCount()+' / '+MAX_AVATAR;}
+function buyAvatar(){modal('增购形象额度','当前每个企业可生成 <b>'+MAX_AVATAR+'</b> 个形象'+(genAvatarCount()>=MAX_AVATAR?'，<b>已用满</b>':'')+'。<br><br>形象为<b>单独计费</b>项目，增购：<b>¥199 / 个</b>（一次性，价格示例待定）。','确认增购 1 个',()=>{MAX_AVATAR++;avatarQuota();closeModal();toast('已增购 1 个形象额度，可继续上传生成','ok');});}
+$('#avatarFile')&&$('#avatarFile').addEventListener('change',e=>{const f=e.target.files[0];if(!f)return;
+  const nm=f.name.replace(/\.[^.]+$/,'');
+  const t=document.createElement('div');t.className='dhcard';t.dataset.gen='1';
+  t.innerHTML='<img src="https://i.pravatar.cc/500?img=15" onerror="avFb(this)"><span class="tl run avst">训练中 0%</span><div class="ov"><div class="nm"><b>'+nm+'</b></div><button class="cta dis avcta">训练中…</button></div>';
+  $('#avatarList').appendChild(t);avatarQuota();toast('视频已上传，蝉镜克隆训练中','ok');
+  let p=0;const iv=setInterval(()=>{p+=20;const b=t.querySelector('.avst');if(p>=100){clearInterval(iv);b.className='tl avst';b.textContent='● 可用';const c=t.querySelector('.avcta');if(c){c.className='cta';c.textContent='用它生成';c.setAttribute('data-act','go');c.setAttribute('data-v','create');}}else b.textContent='训练中 '+p+'%';},700);
+  e.target.value='';});
+$('#voiceFile')&&$('#voiceFile').addEventListener('change',e=>{const f=e.target.files[0];if(!f)return;
+  const t=document.createElement('div');t.className='tile';
+  t.innerHTML='<div class="th"><div class="av">🔊</div><div><b>'+f.name.replace(/\.[^.]+$/,'')+'</b><div class="mini">5 秒样本复刻 · 刚刚</div></div></div><span class="bdg brd run stb">复刻中</span>';
+  $('#voiceList').appendChild(t);toast('音频已上传，蝉镜声音复刻中','ok');
+  setTimeout(()=>{const b=t.querySelector('.stb');b.outerHTML='<button class="btn sm" data-act="audition" data-tone="520">▶ 试听</button>';},1800);e.target.value='';});
+function audition(freq){try{const C=window.__ac||(window.__ac=new (window.AudioContext||window.webkitAudioContext)());const o=C.createOscillator(),g=C.createGain();o.type='sine';o.frequency.value=freq;o.connect(g);g.connect(C.destination);g.gain.setValueAtTime(0.0001,C.currentTime);g.gain.exponentialRampToValueAtTime(0.16,C.currentTime+0.03);g.gain.exponentialRampToValueAtTime(0.0001,C.currentTime+0.65);o.start();o.stop(C.currentTime+0.66);}catch(err){}}
+avatarQuota();
+// 左栏导航
+$$('#nav a').forEach(a=>a.addEventListener('click',()=>go(a.dataset.v)));
+// 通用：seg / tabs / chk
+$('#srcSeg').querySelectorAll('button').forEach((b,i)=>b.addEventListener('click',()=>{if(b.dataset.act)return;$('#srcSeg').querySelectorAll('button').forEach(x=>x.classList.remove('on'));b.classList.add('on');$('#fLink').style.display=i===0?'':'none';$('#fText').style.display=i===1?'':'none';if($('#fBurst'))$('#fBurst').style.display=i===2?'':'none';}));
+// 从爆款库选一条 → 回显到参考来源
+function pickBurst(o){const t=o.bt||'选中的爆款',p=o.bp||'',m=o.bm||'';
+  if($('#burstSelect')&&$('#burstSelect').value!==t){const op=[...$('#burstSelect').options].find(x=>x.value===t);if(op)$('#burstSelect').value=t;}
+  const box=$('#burstPicked');if(box){box.style.display='';box.innerHTML='<div class="fi" style="padding:9px 11px;background:var(--brand-sft);border:1px solid var(--brand)"><div class="ic">✓</div><div class="meta"><b>已选参考：'+t+'</b><small>'+p+(m?' · '+m:'')+' · 将按此爆款拆解 + 用你的知识库仿写</small></div></div>';}
+  toast('已选爆款「'+t+'」作为参考','ok');}
+document.addEventListener('click',e=>{const c=e.target.closest('.chk');if(c)c.classList.toggle('on');});
+$('#burstMode')&&$('#burstMode').querySelectorAll('button').forEach(b=>b.addEventListener('click',()=>{$('#burstMode').querySelectorAll('button').forEach(x=>x.classList.remove('on'));b.classList.add('on');const m=b.dataset.m;$('#burstKwBar').style.display=m==='kw'?'flex':'none';$('#burstAccBar').style.display=m==='acc'?'flex':'none';$('#burstRankBar').style.display=m==='rank'?'flex':'none';}));
+// 内容创作 Step5：模板 → 动态分段（每段标 AI + 挂素材模板出素材槽）
+const TPL={
+  '产品讲解':{dep:'挂素材',dur:'约 10 秒',segs:[{n:'① 数字人讲解',ai:'数字人（可换形象）',kind:'oral'},{n:'② 产品展示',ai:'产品图 i2v（可换产品）',kind:'asset'},{n:'③ 字幕 CTA',ai:'套壳 · 零成本',kind:'caption'}]},
+  '数字人混剪':{dep:'挂素材',dur:'约 15 秒',segs:[{n:'① 数字人口播',ai:'数字人',kind:'oral'},{n:'② 素材混剪',ai:'素材切片混剪（参考硅基）',kind:'mix'},{n:'③ 字幕 CTA',ai:'套壳 · 零成本',kind:'caption'}]},
+  'Seedance':{dep:'纯 AI',dur:'约 15 秒',segs:[{n:'① 数字人开场口播',ai:'数字人（可选）',kind:'oral'},{n:'② AI 生成画面',ai:'Seedance 文生视频',kind:'t2v'},{n:'③ 字幕',ai:'套壳 · 零成本',kind:'caption'}]}
+};
+function assetOpts(){return [...$$('#kbList2 .fi[data-type="asset"]')].map(f=>'<option>'+f.querySelector('b').textContent+'</option>').join('')||'<option>真丝七件套-产品图.jpg</option><option>金丝楠骨灰盒-产品图.jpg</option>';}
+function segInner(kind){
+  if(kind==='oral')return '<div class="split"><div class="field" style="margin:0"><label>数字人形象（仅授权）</label><select class="inp"><optgroup label="我的生成形象"><option>老板克隆形象</option></optgroup><optgroup label="公模 · 不占额度"><option>主播 A</option><option>温和长者形象</option></optgroup></select></div><div class="field" style="margin:0"><label>声音</label><select class="inp"><option>温情女声（预置）</option><option>老板声音（克隆）</option></select></div></div><div class="field" style="margin:10px 0 0"><label>口播稿（取自上一步脚本，可改）</label><textarea rows="2">很多人不知道，老人的寿衣讲究单数……为家里老人准备的，评论区扣「1」。</textarea></div>';
+  if(kind==='asset')return '<div class="field" style="margin:0"><label>产品素材 <span class="req">*</span> <span class="bdg ok" style="margin-left:6px">AI 已从知识库匹配</span></label><select class="inp">'+assetOpts()+'</select><div class="mini" style="margin-top:6px">系统按口播稿/选题自动从知识库素材库找相关产品图（如"产品介绍"段匹配对应产品），用 i2v 生成产品展示；可手动换或加选，未匹配到会提示去知识库补素材。</div></div>';
+  if(kind==='mix')return '<div class="field" style="margin:0"><label>混剪分镜 <span class="bdg ok" style="margin-left:6px">AI 按分镜需求自动判定来源</span></label>'+
+    '<div style="display:flex;flex-direction:column;gap:8px">'+
+    // 分镜A：素材库命中（用现成视频，最省最真）
+    '<div class="fi" style="padding:8px 10px"><img src="https://picsum.photos/seed/mendian/80/80" style="width:36px;height:36px;border-radius:6px;object-fit:cover;flex:none"><div class="meta"><b>镜① 门店实拍空镜 3s</b><small>需求:场景·门店 → 命中素材库「门店实拍-空镜.mp4」(匹配0.92·已授权)</small></div><span class="bdg ok" style="flex:none">✓用素材库</span><button class="btn sm gho" data-act="swap-seg">换素材</button></div>'+
+    // 分镜B：素材库命中产品视频
+    '<div class="fi" style="padding:8px 10px"><img src="https://picsum.photos/seed/shouyi/80/80" style="width:36px;height:36px;border-radius:6px;object-fit:cover;flex:none"><div class="meta"><b>镜② 真丝材质特写 3s</b><small>需求:产品P001·特写 → 命中「真丝七件套-产品图」→ i2v 动起来</small></div><span class="bdg brd" style="flex:none">素材→i2v</span><button class="btn sm gho" data-act="swap-seg">换素材</button></div>'+
+    // 分镜C：素材库没合适的 → 转生成
+    '<div class="fi" style="padding:8px 10px"><div class="ic" style="flex:none">AI</div><div class="meta"><b>镜③ 沙漠治理宏大场景 4s</b><small>需求:场景·宏大 → 素材库无合格候选(最高0.41<阈值) → 转文生视频</small></div><span class="bdg warn" style="flex:none">转生成</span><button class="btn sm gho" data-act="swap-seg">改用素材</button></div>'+
+    '</div>'+
+    '<div class="mini" style="margin-top:8px">判定逻辑：每个分镜先去<b>素材库召回</b>(产品ID+标签+画面相似)→ 够格(匹配≥阈值·时长够·已授权)就<b>用素材库</b>(最省最真)；产品段勉强则<b>转 i2v</b>；都没有则<b>转文生视频</b>并提示补素材。绝不硬凑不相干画面。</div></div>';
+  if(kind==='t2v')return '<div class="mini">Seedance 文生视频自动生成画面（无需客户素材）。此段成本最高，模板已约束用量；画面风格可在「提示词 → Seedance 画面提示词」里调。</div>';
+  if(kind==='caption')return '<div class="field" style="margin:0"><label>字幕 / 背景模板</label><select class="inp"><option>素雅模板 A</option><option>纯色 · 浅</option></select></div>';
+  return '';
+}
+function renderSegs(name){const tp=TPL[name];if(!tp||!$('#tplSegs'))return;
+  if($('#segMeta'))$('#segMeta').textContent='预计时长 '+tp.dur;
+  $('#tplSegs').innerHTML='<div class="note" style="margin:0 0 10px"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><circle cx="12" cy="12" r="9"/><path d="M12 8v5M12 16h.01"/></svg><span>模板「'+name+'」· '+tp.dep+'：系统按下列分段逐段生成（口播脚本来自上一步），再拼装成片。</span></div>'+
+    tp.segs.map(s=>{const inner=segInner(s.kind);return '<div style="border:1px solid var(--line-2);border-radius:10px;padding:12px 14px;margin-bottom:10px"><div style="display:flex;align-items:center;gap:8px'+(inner?';margin-bottom:10px':'')+'"><b style="font-size:13px">'+s.n+'</b><span class="bdg mut">'+s.ai+'</span></div>'+inner+'</div>';}).join('');
+}
+function selectedTpl(){const t=$('#tplPick .tpl.on');return t?t.dataset.tpl:'产品讲解';}
+function updateDH(tpl){const b=$('#dhBlock');if(b)b.style.display=(tpl==='产品讲解'||tpl==='数字人混剪')?'':'none';}
+$('#tplPick')&&$('#tplPick').addEventListener('click',e=>{const t=e.target.closest('.tpl');if(!t)return;$$('#tplPick .tpl').forEach(x=>x.classList.remove('on'));t.classList.add('on');renderSegs(t.dataset.tpl);updateDH(t.dataset.tpl);});
+renderSegs('产品讲解');updateDH('产品讲解');
+// 生成结果 平台分版（tab 随 Step3 所选平台动态生成，内容随平台变）
+const PMAP={'抖音':'dy','小红书':'xhs','视频号':'sph','快手':'ks'};
+const genData={
+  dy:{t:'老人寿衣的讲究，作为子女一定要知道',b:'很多人不知道，老人的寿衣讲究单数，一般五件、七件……真丝面料透气，是对老人最后的体面。灵堂布置也有讲究；为家里老人准备的，评论区扣「1」，我把选购清单发你。',g:'#寿衣  #殡葬习俗  #孝心'},
+  xhs:{t:'寿衣怎么选？这份避坑清单先收藏🤍',b:'整理了老人寿衣的选购讲究：① 件数取单数（五件/七件）② 真丝比化纤更透气体面 ③ 价格差别主要在面料和做工。姐妹们家里有需要的，评论区问我～',g:'#殡葬 #寿衣选购 #避坑指南 #孝心'},
+  sph:{t:'老人寿衣的讲究，子女别不懂',b:'寿衣讲究单数，五件、七件，真丝更透气体面。准备前先了解清楚，私信可领选购清单。',g:'#寿衣 #殡葬习俗'},
+  ks:{t:'老人寿衣有啥讲究？一条说清',b:'寿衣要单数、真丝透气体面。家里有需要的扣评论，把选购清单发你。',g:'#寿衣 #殡葬'}
+};
+function fillGen(k){const d=genData[k]||genData.dy;if($('#gTitle')){$('#gTitle').value=d.t;$('#gBody').value=d.b;$('#gTags').value=d.g;}}
+function renderGenTabs(){if(!$('#genTabs'))return['抖音'];const sel=[...$$('#genPlats .chk.on')].map(c=>c.textContent);const plats=sel.length?sel:['抖音'];
+  $('#genTabs').innerHTML=plats.map((p,i)=>'<button'+(i===0?' class="on"':'')+' data-tab="'+(PMAP[p]||'dy')+'">'+p+'</button>').join('');
+  fillGen(PMAP[plats[0]]||'dy');return plats;}
+$('#genTabs')&&$('#genTabs').addEventListener('click',e=>{const b=e.target.closest('button');if(!b)return;$('#genTabs').querySelectorAll('button').forEach(x=>x.classList.remove('on'));b.classList.add('on');fillGen(b.dataset.tab);});
+$('#burstSelect')&&$('#burstSelect').addEventListener('change',function(){const o=this.options[this.selectedIndex];if(!o||!o.value){if($('#burstPicked')){$('#burstPicked').style.display='none';$('#burstPicked').innerHTML='';}return;}pickBurst({bt:o.value,bp:o.dataset.bp||'',bm:o.dataset.bm||''});});
+// 套用爆款公式 → 回显 + 软推荐视频模板（弱关联，可改）
+$('#formulaSelect')&&$('#formulaSelect').addEventListener('change',function(){
+  const o=this.options[this.selectedIndex],box=$('#formulaPicked');if(!box)return;
+  if(!o||!o.value){box.style.display='none';box.innerHTML='';return;}
+  const rec=o.dataset.rec||'';box.style.display='';
+  box.innerHTML='已套用公式：<b>'+o.value+'</b>'+(rec?'　·　已软推荐视频模板「'+rec+'」（开「产出视频」后可在下方改）':'');
+  if(rec){const card=[...$$('#tplPick .tpl')].find(t=>t.dataset.tpl===rec);if(card){$$('#tplPick .tpl').forEach(x=>x.classList.remove('on'));card.classList.add('on');renderSegs(rec);updateDH(rec);}}
+});
+$$('#fPlat,#fForm,#fCmp,#fPub').forEach(s=>s.addEventListener('change',filterWorks));
+filterWorks();
+</script>
+</body>
+</html>

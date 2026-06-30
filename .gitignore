@@ -1,0 +1,8 @@
+# 大体积 demo 视频（按 prototype/assets/demo/README.md 本地放置，不入库）
+prototype/assets/demo/*.mp4
+prototype-boss/assets/demo/*.mp4
+
+# 系统 / 本地配置
+.DS_Store
+**/.DS_Store
+.claude/settings.local.json

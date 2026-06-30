@@ -1,0 +1,758 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>礼承获客 · 运营后台原型</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Sora:wght@400;500;600;700&display=swap" rel="stylesheet" />
+<style>
+:root{
+  --bg:oklch(0.984 0.004 200);--surface:oklch(1 0 0);--surface-2:oklch(0.975 0.006 200);
+  --rail:oklch(0.255 0.022 215);--rail-2:oklch(0.225 0.022 215);--rail-tx:oklch(0.82 0.015 210);--rail-tx-2:oklch(0.62 0.02 210);
+  --line:oklch(0.915 0.008 210);--line-2:oklch(0.86 0.01 210);
+  --ink:oklch(0.27 0.022 225);--ink-2:oklch(0.46 0.018 220);--ink-3:oklch(0.62 0.014 215);
+  --brand:oklch(0.52 0.072 200);--brand-d:oklch(0.44 0.075 202);--brand-sft:oklch(0.95 0.022 200);
+  --accent:oklch(0.66 0.11 62);--accent-sft:oklch(0.95 0.04 70);
+  --ok:oklch(0.6 0.09 155);--ok-sft:oklch(0.95 0.03 155);
+  --warn:oklch(0.7 0.13 65);--warn-sft:oklch(0.955 0.045 72);
+  --danger:oklch(0.58 0.15 25);--danger-sft:oklch(0.955 0.035 28);
+  --r:12px;--r-s:8px;--r-l:16px;
+  --sh-1:0 1px 2px oklch(0.4 0.03 220 /.06),0 1px 3px oklch(0.4 0.03 220 /.05);
+  --sh-2:0 4px 14px oklch(0.4 0.03 220 /.08),0 1px 3px oklch(0.4 0.03 220 /.05);
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html{-webkit-font-smoothing:antialiased}
+body{font-family:"PingFang SC","HarmonyOS Sans SC","Microsoft YaHei",system-ui,sans-serif;background:var(--bg);color:var(--ink);font-size:14px;line-height:1.55}
+.num,.disp{font-family:"Sora",system-ui,sans-serif;font-variant-numeric:tabular-nums}
+::-webkit-scrollbar{width:9px;height:9px}::-webkit-scrollbar-thumb{background:var(--line-2);border-radius:6px}
+.app{display:grid;grid-template-columns:236px 1fr;min-height:100vh}
+.rail{background:var(--rail);color:var(--rail-tx);display:flex;flex-direction:column;position:sticky;top:0;height:100vh}
+.brand{display:flex;align-items:center;gap:10px;padding:20px 18px 18px;border-bottom:1px solid oklch(1 0 0 /.07)}
+.brand .mk{width:30px;height:30px;border-radius:9px;background:linear-gradient(150deg,var(--brand),var(--brand-d));display:grid;place-items:center;color:#fff;font-weight:700;font-size:15px;box-shadow:0 2px 8px oklch(0.4 0.07 200 /.4)}
+.brand b{color:#fff;font-size:15px;font-weight:600;letter-spacing:.2px}
+.brand small{display:block;color:var(--rail-tx-2);font-size:11px;font-weight:400;letter-spacing:.4px}
+.nav{flex:1;overflow-y:auto;padding:12px 12px}
+.nav .grp{color:var(--rail-tx-2);font-size:11px;letter-spacing:1.2px;padding:13px 10px 6px;text-transform:uppercase}
+.nav a{display:flex;align-items:center;gap:11px;padding:8px 11px;border-radius:9px;color:var(--rail-tx);text-decoration:none;font-size:13.5px;cursor:pointer;transition:background .15s,color .15s}
+.nav a svg{width:17px;height:17px;stroke-width:1.7;opacity:.85;flex:none}
+.nav a:hover{background:oklch(1 0 0 /.06);color:#fff}
+.nav a.on{background:linear-gradient(100deg,var(--brand-d),oklch(0.4 0.06 205));color:#fff}
+.nav a.on svg{opacity:1}
+.nav a .dot{margin-left:auto;background:var(--accent);color:oklch(0.28 0.04 60);font-size:10.5px;font-weight:600;padding:1px 6px;border-radius:20px;font-family:Sora}
+.nav a .dot.dng{background:var(--danger);color:#fff}
+.rail .foot{padding:13px 16px;border-top:1px solid oklch(1 0 0 /.07);display:flex;align-items:center;gap:9px;font-size:12.5px;color:var(--rail-tx-2)}
+.rail .foot .av{width:26px;height:26px;border-radius:50%;background:var(--accent);color:#fff;display:grid;place-items:center;font-size:12px;font-weight:600}
+.main{display:flex;flex-direction:column;min-width:0}
+.top{position:sticky;top:0;z-index:5;background:oklch(1 0 0 /.82);backdrop-filter:blur(10px);border-bottom:1px solid var(--line);display:flex;align-items:center;gap:16px;padding:0 26px;height:58px}
+.top h1{font-size:16px;font-weight:600;letter-spacing:.2px}
+.top .crumb{color:var(--ink-3);font-size:12.5px}
+.spacer{flex:1}
+.chip{display:inline-flex;align-items:center;gap:7px;background:var(--surface-2);border:1px solid var(--line);border-radius:20px;padding:5px 12px;font-size:12.5px;color:var(--ink-2);cursor:pointer}
+.chip b{color:var(--ink);font-weight:600}.chip.usage b{color:var(--brand-d)}.chip.warn{background:var(--warn-sft);border-color:oklch(0.85 0.06 70);color:oklch(0.46 0.1 55)}.chip.warn b{color:oklch(0.46 0.1 55)}
+.co{display:inline-flex;align-items:center;gap:8px;background:var(--surface);border:1px solid var(--line-2);border-radius:9px;padding:5px 11px;font-size:13px;font-weight:500;cursor:pointer}
+.co .lg{width:22px;height:22px;border-radius:6px;background:var(--brand-sft);color:var(--brand-d);display:grid;place-items:center;font-size:11px;font-weight:700}
+.page{padding:24px 28px 60px;display:none;animation:in .35s cubic-bezier(.2,.7,.2,1)}
+.page.show{display:block}
+@keyframes in{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
+.lead{display:flex;align-items:flex-end;justify-content:space-between;gap:16px;margin-bottom:18px}
+.lead .t{font-size:20px;font-weight:600;letter-spacing:.2px}.lead .s{color:var(--ink-3);font-size:13px;margin-top:3px}
+.btn{display:inline-flex;align-items:center;gap:7px;border:1px solid var(--line-2);background:var(--surface);color:var(--ink);padding:8px 14px;border-radius:9px;font-size:13px;font-weight:500;cursor:pointer;transition:.15s;font-family:inherit}
+.btn:hover{border-color:var(--ink-3);background:var(--surface-2)}
+.btn:active{transform:scale(.97)}
+.btn svg{width:15px;height:15px;stroke-width:1.8}
+.btn.pri{background:linear-gradient(160deg,var(--brand),var(--brand-d));border-color:transparent;color:#fff;box-shadow:0 2px 9px oklch(0.45 0.07 200 /.28)}
+.btn.pri:hover{filter:brightness(1.06)}
+.btn.gho{background:transparent;border-color:transparent;color:var(--ink-2)}.btn.gho:hover{background:var(--surface-2);color:var(--ink)}
+.btn.dng{color:var(--danger);border-color:var(--danger-sft)}.btn.dng:hover{background:var(--danger-sft);border-color:var(--danger)}
+.btn.sm{padding:5px 10px;font-size:12px}
+.card{background:var(--surface);border:1px solid var(--line);border-radius:var(--r);box-shadow:var(--sh-1)}
+.card.pad{padding:18px 20px}
+.grid{display:grid;gap:16px}
+.head{display:flex;align-items:center;gap:10px;margin-bottom:14px}
+.head h3{font-size:14.5px;font-weight:600}.head .more{margin-left:auto;font-size:12.5px;color:var(--brand-d);cursor:pointer}
+.stats{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin-bottom:16px}
+.stats.k6{grid-template-columns:repeat(6,1fr)}
+.stat{background:var(--surface);border:1px solid var(--line);border-radius:var(--r);padding:15px 17px;position:relative;overflow:hidden}
+.stat .k{color:var(--ink-3);font-size:12.5px;display:flex;align-items:center;gap:6px}
+.stat .v{font-size:25px;font-weight:600;margin-top:6px;letter-spacing:-.5px}
+.stat .v small{font-size:13px;color:var(--ink-3);font-weight:400;margin-left:3px}
+.stat .tr{position:absolute;right:14px;top:15px;font-size:11.5px;font-weight:600;color:var(--ok);font-family:Sora}
+.stat .tr.dn{color:var(--danger)}
+.stat .bar{position:absolute;left:0;bottom:0;height:3px;width:100%;background:var(--line)}.stat .bar i{display:block;height:100%;background:var(--brand)}
+.bdg{display:inline-flex;align-items:center;gap:5px;padding:2px 9px;border-radius:20px;font-size:11.5px;font-weight:500;line-height:1.7}
+.bdg::before{content:"";width:6px;height:6px;border-radius:50%}
+.bdg.ok{background:var(--ok-sft);color:oklch(0.4 0.09 155)}.bdg.ok::before{background:var(--ok)}
+.bdg.warn{background:var(--warn-sft);color:oklch(0.5 0.12 60)}.bdg.warn::before{background:var(--warn)}
+.bdg.dng{background:var(--danger-sft);color:var(--danger)}.bdg.dng::before{background:var(--danger)}
+.bdg.mut{background:var(--surface-2);color:var(--ink-3)}.bdg.mut::before{background:var(--ink-3)}
+.bdg.brd{background:var(--brand-sft);color:var(--brand-d)}.bdg.brd::before{background:var(--brand)}
+.bdg.run::before{animation:pulse 1.2s infinite}
+.bdg.np::before{display:none}.bdg.np{padding:2px 8px}
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:.3}}
+table{width:100%;border-collapse:collapse}
+thead th{text-align:left;font-size:11.5px;letter-spacing:.5px;color:var(--ink-3);font-weight:500;padding:11px 14px;border-bottom:1px solid var(--line);text-transform:uppercase}
+tbody td{padding:12px 14px;border-bottom:1px solid var(--line);font-size:13px;vertical-align:middle}
+tbody tr:last-child td{border-bottom:none}tbody tr:hover{background:var(--surface-2)}
+.tt{font-weight:500;color:var(--ink)}.tm{color:var(--ink-3);font-size:12px}
+.rowact{text-align:right;white-space:nowrap}
+.rowact .btn{display:inline-flex;vertical-align:middle}
+.rowact .btn+.btn{margin-left:5px}
+.num-c{font-family:Sora;font-variant-numeric:tabular-nums}
+.plat{display:inline-flex;align-items:center;gap:5px;font-size:12px;color:var(--ink-2)}
+.plat i{width:16px;height:16px;border-radius:4px;display:grid;place-items:center;font-size:9px;color:#fff;font-style:normal;font-weight:600}
+.dy{background:oklch(0.3 0.02 280)}.xhs{background:oklch(0.6 0.18 18)}.sph{background:oklch(0.62 0.13 150)}.ks{background:oklch(0.68 0.17 45)}
+.tabs{display:flex;gap:4px;border-bottom:1px solid var(--line);margin-bottom:16px;flex-wrap:wrap}
+.tabs button{border:none;background:transparent;padding:9px 14px;font-size:13px;cursor:pointer;color:var(--ink-3);border-bottom:2px solid transparent;font-family:inherit;margin-bottom:-1px}
+.tabs button.on{color:var(--brand-d);border-color:var(--brand);font-weight:500}
+.tab-pane{display:none}.tab-pane.show{display:block}
+.seg{display:inline-flex;background:var(--surface-2);border:1px solid var(--line);border-radius:9px;padding:3px;gap:3px}
+.seg button{border:none;background:transparent;padding:6px 14px;border-radius:7px;font-size:12.5px;cursor:pointer;color:var(--ink-2);font-family:inherit}
+.seg button.on{background:var(--surface);color:var(--ink);box-shadow:var(--sh-1);font-weight:500}
+.field{margin-bottom:16px}.field label{display:block;font-size:12.5px;font-weight:500;color:var(--ink-2);margin-bottom:7px}.field label .req{color:var(--danger)}
+.inp,textarea,select{width:100%;border:1px solid var(--line-2);border-radius:9px;padding:10px 12px;font-size:13px;font-family:inherit;color:var(--ink);background:var(--surface)}
+textarea{resize:vertical;line-height:1.6}
+.inp:focus,textarea:focus,select:focus{outline:none;border-color:var(--brand);box-shadow:0 0 0 3px var(--brand-sft)}
+.split{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+.toolbar{display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin-bottom:14px}
+.toolbar select,.toolbar input{width:auto}
+.kv{display:flex;justify-content:space-between;align-items:center;padding:9px 0;border-bottom:1px dashed var(--line);font-size:12.5px}
+.kv:last-child{border:none}.kv .k{color:var(--ink-3)}.kv .v{font-weight:500}
+.ub{margin-bottom:14px}.ub .ul{display:flex;justify-content:space-between;font-size:12.5px;margin-bottom:6px}.ub .ul b{font-weight:500}.ub .ul span{color:var(--ink-3);font-family:Sora}
+.ub .ut{height:8px;border-radius:6px;background:var(--surface-2);overflow:hidden}.ub .ut i{display:block;height:100%;border-radius:6px;background:var(--brand)}
+.mini{color:var(--ink-3);font-size:12px}
+.note{font-size:12px;color:var(--ink-3);margin-top:10px;display:flex;gap:6px;align-items:flex-start}.note svg{width:14px;height:14px;flex:none;margin-top:1px}
+.alert{display:flex;gap:10px;align-items:flex-start;background:var(--warn-sft);border:1px solid oklch(0.85 0.06 70);border-radius:10px;padding:11px 13px;font-size:12.5px;color:oklch(0.45 0.1 55);margin-bottom:14px}
+.alert.dng{background:var(--danger-sft);border-color:oklch(0.82 0.08 28);color:var(--danger)}
+.alert.ok{background:var(--ok-sft);border-color:oklch(0.8 0.05 155);color:oklch(0.4 0.09 155)}
+.alert svg{width:17px;height:17px;flex:none;margin-top:1px}.alert .ac{margin-left:auto;white-space:nowrap;display:flex;gap:6px;align-items:center}
+.sw{position:relative;width:38px;height:21px;border-radius:20px;background:var(--line-2);cursor:pointer;transition:.2s;flex:none;display:inline-block}
+.sw.on{background:var(--brand)}
+.sw::after{content:"";position:absolute;top:2px;left:2px;width:17px;height:17px;border-radius:50%;background:#fff;transition:.2s;box-shadow:var(--sh-1)}
+.sw.on::after{transform:translateX(17px)}
+.sw.dis{background:var(--line);cursor:not-allowed;opacity:.55}
+.tline{display:flex;flex-direction:column;gap:0;margin:4px 0}
+.tline .ti{display:flex;gap:11px;padding-bottom:15px;position:relative}
+.tline .ti:last-child{padding-bottom:0}
+.tline .ti::before{content:"";position:absolute;left:6px;top:16px;bottom:0;width:1.5px;background:var(--line-2)}
+.tline .ti:last-child::before{display:none}
+.tline .dot{width:13px;height:13px;border-radius:50%;border:2px solid var(--line-2);background:var(--surface);flex:none;margin-top:2px;z-index:1}
+.tline .ti.done .dot{background:var(--ok);border-color:var(--ok)}
+.tline .ti.cur .dot{background:var(--brand);border-color:var(--brand);animation:pulse 1.3s infinite}
+.tline .tc b{font-size:13px;font-weight:500}.tline .tc small{display:block;color:var(--ink-3);font-size:11.5px;font-family:Sora}
+.tile{border:1px solid var(--line);border-radius:12px;padding:15px;background:var(--surface)}
+.tiles{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:14px}
+.tile .av{width:40px;height:40px;border-radius:10px;background:linear-gradient(150deg,var(--brand-sft),var(--accent-sft));display:grid;place-items:center;font-size:16px}
+.tile.add{border-style:dashed;display:grid;place-items:center;color:var(--ink-3);cursor:pointer;min-height:120px}
+.tile.add:hover{border-color:var(--brand);color:var(--brand-d);background:var(--brand-sft)}
+.empty{text-align:center;padding:46px 20px;color:var(--ink-3)}
+.empty .ei{width:54px;height:54px;border-radius:14px;background:var(--brand-sft);color:var(--brand-d);display:grid;place-items:center;margin:0 auto 14px}
+.empty b{color:var(--ink);font-size:15px;display:block;margin-bottom:5px}
+.barcell{display:flex;align-items:center;gap:8px}.barcell .bt{flex:1;height:7px;border-radius:5px;background:var(--surface-2);overflow:hidden;min-width:60px}.barcell .bt i{display:block;height:100%;background:var(--brand)}.barcell .bt i.hot{background:var(--warn)}.barcell .bt i.over{background:var(--danger)}.barcell span{font-family:Sora;font-size:11.5px;color:var(--ink-3);white-space:nowrap}
+.cost-row{display:flex;align-items:center;gap:10px;padding:9px 0;border-bottom:1px dashed var(--line)}.cost-row:last-child{border:none}.cost-row .cn{width:88px;font-size:12.5px;color:var(--ink-2)}.cost-row .cbar{flex:1;height:9px;border-radius:6px;background:var(--surface-2);overflow:hidden}.cost-row .cbar i{display:block;height:100%;background:linear-gradient(90deg,var(--brand),var(--brand-d))}.cost-row .cv{width:72px;text-align:right;font-family:Sora;font-size:12.5px;font-weight:500}
+.dot-st{width:8px;height:8px;border-radius:50%;display:inline-block;margin-right:5px}.dot-st.ok{background:var(--ok)}.dot-st.warn{background:var(--warn)}.dot-st.dng{background:var(--danger)}
+/* login */
+.login{position:fixed;inset:0;z-index:200;display:grid;grid-template-columns:1.05fr .95fr}
+.login .lpanel{background:linear-gradient(160deg,var(--rail),oklch(0.31 0.045 205));color:#fff;padding:52px 56px;display:flex;flex-direction:column}
+.login .lbrand{display:flex;align-items:center;gap:11px}
+.login .lbrand .mk{width:34px;height:34px;border-radius:10px;background:linear-gradient(150deg,var(--brand),var(--brand-d));display:grid;place-items:center;color:#fff;font-weight:700;font-size:16px}
+.login .lbrand b{color:#fff;font-size:16px}.login .lbrand small{display:block;color:var(--rail-tx-2);font-size:11px}
+.login .lhero{margin-top:auto}
+.login .lhero h1{font-size:30px;font-weight:600;line-height:1.4;letter-spacing:.5px}
+.login .lhero p{color:var(--rail-tx);margin-top:16px;font-size:14px;line-height:1.8}
+.login .lfeat{list-style:none;margin:26px 0 0;display:flex;flex-direction:column;gap:10px}
+.login .lfeat li{color:var(--rail-tx);font-size:13px}
+.login .lfoot{margin-top:auto;padding-top:40px;color:var(--rail-tx-2);font-size:12px}
+.login .lform{display:grid;place-items:center;padding:40px;background:var(--surface)}
+.login .lcard{width:340px;max-width:100%}
+.login .lcard h2{font-size:24px;font-weight:600}
+.login .lsub{color:var(--ink-3);font-size:13px;margin:8px 0 26px}
+.login .lrow{display:flex;align-items:center;justify-content:space-between;margin:2px 0 22px;font-size:12.5px}
+.login .lcheck{display:flex;align-items:center;gap:7px;color:var(--ink-2);cursor:pointer}
+.login .lbtn{width:100%;justify-content:center;padding:11px;font-size:14px}
+.login .lnote{text-align:center;color:var(--ink-3);font-size:12px;margin-top:18px}
+@media(max-width:760px){.login{grid-template-columns:1fr}.login .lpanel{display:none}}
+.toast-wrap{position:fixed;top:18px;right:18px;z-index:120;display:flex;flex-direction:column;gap:10px}
+.toast{background:var(--ink);color:#fff;padding:11px 15px;border-radius:10px;font-size:13px;box-shadow:var(--sh-2);display:flex;align-items:center;gap:9px;max-width:340px;animation:tin .3s cubic-bezier(.2,.7,.2,1)}
+.toast svg{width:16px;height:16px;flex:none}
+.toast.ok{background:oklch(0.42 0.09 155)}.toast.warn{background:oklch(0.5 0.12 60)}.toast.dng{background:var(--danger)}
+@keyframes tin{from{opacity:0;transform:translateX(24px)}to{opacity:1}}
+.mask{position:fixed;inset:0;background:oklch(0.2 0.02 220 /.45);z-index:100;display:none;place-items:center;backdrop-filter:blur(2px)}
+.mask.show{display:grid}
+.modal{background:var(--surface);border-radius:16px;width:460px;max-width:92vw;box-shadow:var(--sh-2);overflow:hidden;animation:in .25s}
+.modal.wide{width:620px}
+.modal h4{padding:18px 20px;font-size:15px;border-bottom:1px solid var(--line)}
+.modal .mb{padding:18px 20px;max-height:70vh;overflow:auto}.modal .mf{padding:14px 20px;border-top:1px solid var(--line);display:flex;justify-content:flex-end;gap:9px;background:var(--surface-2)}
+.modal table th{padding:8px 12px}.modal table td{padding:9px 12px}
+.ovl{position:fixed;inset:0;z-index:110;background:oklch(1 0 0 /.62);backdrop-filter:blur(3px);display:none;flex-direction:column;align-items:center;justify-content:center}
+.ovl.show{display:flex}
+.spin{width:40px;height:40px;border:3px solid var(--brand-sft);border-top-color:var(--brand);border-radius:50%;animation:sp .8s linear infinite}
+@keyframes sp{to{transform:rotate(360deg)}}
+.ovl .ot{margin-top:15px;font-size:13.5px;color:var(--ink-2)}
+</style>
+</head>
+<body>
+<!-- LOGIN -->
+<div class="login" id="login">
+  <div class="lpanel">
+    <div class="lbrand"><div class="mk">运</div><div><b>礼承获客 · 运营后台</b><small>OPERATOR CONSOLE · 内部</small></div></div>
+    <div class="lhero"><h1>开通、计费、履约、合规，<br>一个台子管住所有租户</h1>
+      <p>商家端自助生产内容，运营后台撑起背后的「配额—成本—毛利」与履约</p></div>
+    <ul class="lfeat">
+      <li>✓ 商家无注册，账号由此开通</li>
+      <li>✓ 第三方调用成本实时归集，毛利可视</li>
+      <li>✓ 数字人定制工单 / 抖音授权 / 合规词库统一履约</li>
+    </ul>
+    <div class="lfoot">© 2026 礼承获客 · 仅限内部团队 · 演示原型</div>
+  </div>
+  <div class="lform"><div class="lcard">
+    <h2>运营登录</h2><div class="lsub">内部团队账号，登录即记审计</div>
+    <div class="field"><label>账号</label><input class="inp" value="ranwei@licheng.ai"></div>
+    <div class="field"><label>密码</label><input class="inp" type="password" value="demo1234"></div>
+    <div class="lrow"><label class="lcheck"><input type="checkbox" checked> 记住登录</label><span class="mini">已开启 2FA（预留）</span></div>
+    <button class="btn pri lbtn" data-act="do-login">登录</button>
+    <div class="lnote">超级管理员 · 蔚然</div>
+  </div></div>
+</div>
+
+<div class="app">
+  <aside class="rail">
+    <div class="brand"><div class="mk">运</div><div><b>礼承 · 运营后台</b><small>殡葬 SaaS · OPERATOR</small></div></div>
+    <nav class="nav" id="nav">
+      <div class="grp">概览</div>
+      <a data-v="dash" class="on"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><rect x="3" y="3" width="7" height="9"/><rect x="14" y="3" width="7" height="5"/><rect x="14" y="12" width="7" height="9"/><rect x="3" y="16" width="7" height="5"/></svg>运营看板</a>
+      <div class="grp">客户</div>
+      <a data-v="tenants"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M3 21V8l9-5 9 5v13M9 21v-6h6v6"/></svg>开通中心</a>
+      <a data-v="accounts"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><circle cx="9" cy="8" r="3"/><path d="M3 20a6 6 0 0112 0M16 6a3 3 0 010 6M21 20a5 5 0 00-4-5"/></svg>成员 / 账号</a>
+      <div class="grp">计费</div>
+      <a data-v="packages"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M21 8l-9-5-9 5 9 5 9-5zM3 8v8l9 5 9-5V8M3 16l9 5 9-5"/></svg>套餐配置</a>
+      <a data-v="quota"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M3 3v18h18"/><rect x="7" y="11" width="3" height="6"/><rect x="12" y="7" width="3" height="10"/><rect x="17" y="13" width="3" height="4"/></svg>配额与用量</a>
+      <a data-v="cost"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><circle cx="12" cy="12" r="9"/><path d="M12 7v10M9.5 9.5h3.5a1.5 1.5 0 010 3h-2a1.5 1.5 0 000 3h3.5"/></svg>成本与毛利<span class="dot dng">亏1</span></a>
+      <div class="grp">履约</div>
+      <a data-v="tickets"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><circle cx="12" cy="8" r="4"/><path d="M4 21a8 8 0 0116 0"/></svg>数字人工单<span class="dot">2</span></a>
+      <a data-v="auth"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M12 3l8 4v5c0 5-3.5 8-8 9-4.5-1-8-4-8-9V7z"/><path d="M9 12l2 2 4-4"/></svg>抖音授权<span class="dot">1</span></a>
+      <a data-v="tasks"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M12 6v6l4 2"/><circle cx="12" cy="12" r="9"/></svg>长任务监控<span class="dot dng">4</span></a>
+      <div class="grp">合规</div>
+      <a data-v="lexicon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M4 5a2 2 0 012-2h12v18H6a2 2 0 01-2-2z"/><path d="M8 7h7M8 11h5"/></svg>合规词库</a>
+      <a data-v="tpl"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M7 8h10M7 12h6M5 3h14a2 2 0 012 2v10a2 2 0 01-2 2H9l-4 4z"/></svg>合规模板下发</a>
+      <a data-v="review"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4.3-4.3"/></svg>合规复核队列</a>
+      <a data-v="audit"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2M9 13l2 2 4-4"/></svg>审计日志</a>
+      <div class="grp">资产 / 系统</div>
+      <a data-v="suppliers"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M5 7h14l-1 13H6zM9 7V5a3 3 0 016 0v2"/></svg>供应商配置</a>
+      <a data-v="presets"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="9" cy="9" r="2"/><path d="M21 15l-5-5L5 21"/></svg>公模形象库</a>
+      <a data-v="team"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M12 2l8 4v6c0 5-3.5 8-8 10-4.5-2-8-5-8-10V6z"/></svg>内部成员 / RBAC</a>
+      <a data-v="notice"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M3 11l18-7v16L3 13zM3 11v4M9 13v5l3 1"/></svg>公告下发</a>
+    </nav>
+    <div class="foot" data-act="logout" style="cursor:pointer"><div class="av">蔚</div><div>蔚然 · 超级管理员</div><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" style="width:15px;height:15px;margin-left:auto;stroke-width:1.7"><path d="M16 17l5-5-5-5M21 12H9M9 21H5a2 2 0 01-2-2V5a2 2 0 012-2h4"/></svg></div>
+  </aside>
+
+  <div class="main">
+    <header class="top">
+      <h1 id="ptitle">运营看板</h1><span class="crumb" id="pcrumb">总览</span><span class="spacer"></span>
+      <span class="chip warn" data-act="go" data-v="cost">毛利率 <b>61%</b></span>
+      <span class="chip" data-act="go" data-v="tasks">待处理告警 <b>6</b></span>
+      <span class="co" data-act="toast" data-msg="行业固定：殡葬（V1 不做多行业切换）">殡葬 · V1 <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg></span>
+    </header>
+
+    <!-- ===================== 运营看板 ===================== -->
+    <section class="page show" data-p="dash">
+      <div class="lead"><div><div class="t">运营总览 · 2026 年 6 月</div><div class="s">38 家殡葬租户 · 看「用量—成本—毛利」是否健康，处理今日履约与告警</div></div>
+        <button class="btn pri" data-act="go" data-v="tenants"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M12 5v14M5 12h14"/></svg>开通新公司</button></div>
+      <div class="stats k6">
+        <div class="stat"><div class="k">租户总数</div><div class="v num">38<small>家</small></div><div class="tr">▲ 5</div><div class="bar"><i style="width:76%"></i></div></div>
+        <div class="stat"><div class="k">本月活跃</div><div class="v num">29<small>家</small></div><div class="tr">▲ 3</div><div class="bar"><i style="width:62%"></i></div></div>
+        <div class="stat"><div class="k">本月调用</div><div class="v num">1.2<small>万次</small></div><div class="tr">▲ 18%</div><div class="bar"><i style="width:70%"></i></div></div>
+        <div class="stat"><div class="k">本月成本</div><div class="v num">¥8,640</div><div class="tr dn">▲ 14%</div><div class="bar"><i style="width:55%;background:var(--accent)"></i></div></div>
+        <div class="stat"><div class="k">本月毛利</div><div class="v num">¥13.6<small>k</small></div><div class="tr">▲ 9%</div><div class="bar"><i style="width:61%;background:var(--ok)"></i></div></div>
+        <div class="stat"><div class="k">毛利率</div><div class="v num">61<small>%</small></div><div class="tr dn">▼ 2pt</div><div class="bar"><i style="width:61%;background:var(--ok)"></i></div></div>
+      </div>
+      <div class="grid" style="grid-template-columns:1.5fr 1fr">
+        <div class="card pad"><div class="head"><h3>Top 消耗租户</h3><span class="more" data-act="go" data-v="quota">配额详情 →</span></div>
+          <table><thead><tr><th>租户</th><th>主消耗</th><th>本月成本</th><th>配额水位</th><th></th></tr></thead><tbody>
+            <tr><td><b class="tt">福寿堂礼仪</b><div class="tm">旗舰版</div></td><td class="tm">成片 142 分</td><td class="num-c">¥335</td><td><div class="barcell"><div class="bt"><i class="hot" style="width:82%"></i></div><span>82%</span></div></td><td class="rowact"><button class="btn sm gho" data-act="open-tenant" data-n="福寿堂礼仪">详情</button></td></tr>
+            <tr><td><b class="tt">安然殡葬服务</b><div class="tm">标准版</div></td><td class="tm">爆款 901 次 / 生成 290</td><td class="num-c">¥210</td><td><div class="barcell"><div class="bt"><i class="over" style="width:97%"></i></div><span>97%</span></div></td><td class="rowact"><button class="btn sm gho" data-act="open-tenant" data-n="安然殡葬服务">详情</button></td></tr>
+            <tr><td><b class="tt">西园寿衣</b><div class="tm">标准版</div></td><td class="tm">成片 58 分</td><td class="num-c bdg dng np" style="font-weight:600">¥168 · 亏</td><td><div class="barcell"><div class="bt"><i style="width:44%"></i></div><span>44%</span></div></td><td class="rowact"><button class="btn sm gho" data-act="open-tenant" data-n="西园寿衣">详情</button></td></tr>
+            <tr><td><b class="tt">永怀纪念</b><div class="tm">旗舰版</div></td><td class="tm">生成 168</td><td class="num-c">¥96</td><td><div class="barcell"><div class="bt"><i style="width:35%"></i></div><span>35%</span></div></td><td class="rowact"><button class="btn sm gho" data-act="open-tenant" data-n="永怀纪念">详情</button></td></tr>
+          </tbody></table>
+        </div>
+        <div class="card pad"><div class="head"><h3>今日待处理</h3></div>
+          <div style="display:flex;flex-direction:column;gap:10px">
+            <div class="alert" style="margin:0"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><circle cx="12" cy="8" r="4"/><path d="M4 21a8 8 0 0116 0"/></svg><div><b>2 个数字人定制工单</b> 待接单</div><span class="ac"><button class="btn sm" data-act="go" data-v="tickets">去接单</button></span></div>
+            <div class="alert" style="margin:0"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M12 3l8 4v5c0 5-3.5 8-8 9-4.5-1-8-4-8-9V7z"/></svg><div><b>1 个抖音授权</b> 待审核</div><span class="ac"><button class="btn sm" data-act="go" data-v="auth">去审核</button></span></div>
+            <div class="alert dng" style="margin:0"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M12 9v4M12 17h.01M10.3 3.9l-8 14A2 2 0 004 21h16a2 2 0 001.7-3l-8-14a2 2 0 00-3.4 0z"/></svg><div><b>4 个长任务失败</b> · 蝉镜成片</div><span class="ac"><button class="btn sm" data-act="go" data-v="tasks">去处理</button></span></div>
+            <div class="alert" style="margin:0;background:var(--surface-2);border-color:var(--line);color:var(--ink-2)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M5 7h14l-1 13H6z"/></svg><div><b>蝉镜积分余额 12%</b> 偏低</div><span class="ac"><button class="btn sm gho" data-act="go" data-v="suppliers">充值</button></span></div>
+          </div>
+        </div>
+      </div>
+      <div class="grid" style="grid-template-columns:1fr 1fr;margin-top:16px">
+        <div class="card pad"><div class="head"><h3>本月成本构成</h3><span class="more" data-act="go" data-v="cost">对账 →</span></div>
+          <div class="cost-row"><div class="cn">蝉镜 · 成片</div><div class="cbar"><i style="width:48%"></i></div><div class="cv">¥4,120</div></div>
+          <div class="cost-row"><div class="cn">蝉妈妈 · 爆款</div><div class="cbar"><i style="width:28%"></i></div><div class="cv">¥2,400</div></div>
+          <div class="cost-row"><div class="cn">ASR / LLM</div><div class="cbar"><i style="width:20%"></i></div><div class="cv">¥1,722</div></div>
+          <div class="cost-row"><div class="cn">蝉镜 · 形象</div><div class="cbar"><i style="width:5%"></i></div><div class="cv">¥398</div></div>
+        </div>
+        <div class="card pad"><div class="head"><h3>用量趋势（近 7 天）</h3></div>
+          <div style="display:flex;align-items:flex-end;gap:8px;height:130px;padding-top:8px">
+            <div style="flex:1;display:flex;flex-direction:column;align-items:center;gap:6px"><div style="width:100%;background:var(--brand-sft);border-radius:5px 5px 0 0;height:52%"></div><span class="mini">19</span></div>
+            <div style="flex:1;display:flex;flex-direction:column;align-items:center;gap:6px"><div style="width:100%;background:var(--brand-sft);border-radius:5px 5px 0 0;height:64%"></div><span class="mini">20</span></div>
+            <div style="flex:1;display:flex;flex-direction:column;align-items:center;gap:6px"><div style="width:100%;background:var(--brand-sft);border-radius:5px 5px 0 0;height:48%"></div><span class="mini">21</span></div>
+            <div style="flex:1;display:flex;flex-direction:column;align-items:center;gap:6px"><div style="width:100%;background:var(--brand);border-radius:5px 5px 0 0;height:78%"></div><span class="mini">22</span></div>
+            <div style="flex:1;display:flex;flex-direction:column;align-items:center;gap:6px"><div style="width:100%;background:var(--brand);border-radius:5px 5px 0 0;height:88%"></div><span class="mini">23</span></div>
+            <div style="flex:1;display:flex;flex-direction:column;align-items:center;gap:6px"><div style="width:100%;background:var(--brand);border-radius:5px 5px 0 0;height:70%"></div><span class="mini">24</span></div>
+            <div style="flex:1;display:flex;flex-direction:column;align-items:center;gap:6px"><div style="width:100%;background:var(--accent);border-radius:5px 5px 0 0;height:95%"></div><span class="mini">今</span></div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===================== 开通中心 ===================== -->
+    <section class="page" data-p="tenants">
+      <div class="lead"><div><div class="t">开通中心</div><div class="s">商家端无自助注册 · 客户由这里开公司账号、配套餐、建管理员</div></div>
+        <button class="btn pri" data-act="new-tenant"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M12 5v14M5 12h14"/></svg>开通新公司</button></div>
+      <div class="card pad">
+        <div class="toolbar">
+          <select class="inp"><option>全部状态</option><option>已开通</option><option>待开通</option><option>已停用</option><option>已到期</option></select>
+          <select class="inp"><option>全部套餐</option><option>标准版</option><option>旗舰版</option></select>
+          <input class="inp" placeholder="搜索公司名 / 账号" style="flex:1;min-width:160px">
+          <span class="spacer"></span><span class="mini">共 38 家 · 已开通 35 · 待开通 1</span>
+        </div>
+        <table id="tenantTbl"><thead><tr><th>公司</th><th>套餐</th><th>状态</th><th>成员</th><th>配额水位</th><th>到期</th><th></th></tr></thead><tbody>
+          <tr><td><b class="tt">福寿堂礼仪</b><div class="tm">福州 · 销售：阿May</div></td><td><span class="bdg brd">旗舰版</span></td><td><span class="bdg ok">已开通</span></td><td class="num-c">3</td><td><div class="barcell"><div class="bt"><i class="hot" style="width:82%"></i></div><span>82%</span></div></td><td class="tm num-c">09-22</td><td class="rowact"><button class="btn sm gho" data-act="open-tenant" data-n="福寿堂礼仪">详情</button><button class="btn sm gho dng" data-act="toggle-tenant">停用</button></td></tr>
+          <tr><td><b class="tt">安然殡葬服务</b><div class="tm">厦门 · 销售：阿May</div></td><td><span class="bdg mut">标准版</span></td><td><span class="bdg ok">已开通</span></td><td class="num-c">2</td><td><div class="barcell"><div class="bt"><i class="over" style="width:97%"></i></div><span>97%</span></div></td><td class="tm num-c">08-10</td><td class="rowact"><button class="btn sm gho" data-act="open-tenant" data-n="安然殡葬服务">详情</button><button class="btn sm gho dng" data-act="toggle-tenant">停用</button></td></tr>
+          <tr><td><b class="tt">永怀纪念</b><div class="tm">泉州 · 销售：阿亮</div></td><td><span class="bdg brd">旗舰版</span></td><td><span class="bdg ok">已开通</span></td><td class="num-c">4</td><td><div class="barcell"><div class="bt"><i style="width:35%"></i></div><span>35%</span></div></td><td class="tm num-c">11-03</td><td class="rowact"><button class="btn sm gho" data-act="open-tenant" data-n="永怀纪念">详情</button><button class="btn sm gho dng" data-act="toggle-tenant">停用</button></td></tr>
+          <tr><td><b class="tt">西园寿衣</b><div class="tm">漳州 · 销售：阿亮</div></td><td><span class="bdg mut">标准版</span></td><td><span class="bdg ok">已开通</span></td><td class="num-c">1</td><td><div class="barcell"><div class="bt"><i style="width:44%"></i></div><span>44%</span></div></td><td class="tm num-c">07-28</td><td class="rowact"><button class="btn sm gho" data-act="open-tenant" data-n="西园寿衣">详情</button><button class="btn sm gho dng" data-act="toggle-tenant">停用</button></td></tr>
+          <tr><td><b class="tt">松鹤堂</b><div class="tm">莆田 · 待客户确认资料</div></td><td><span class="bdg mut">标准版</span></td><td><span class="bdg warn">待开通</span></td><td class="num-c tm">—</td><td class="tm">—</td><td class="tm">—</td><td class="rowact"><button class="btn sm pri" data-act="new-tenant">继续开通</button></td></tr>
+          <tr><td><b class="tt">归园殡仪</b><div class="tm">宁德 · 已到期未续</div></td><td><span class="bdg mut">标准版</span></td><td><span class="bdg dng">已到期</span></td><td class="num-c">2</td><td><div class="barcell"><div class="bt"><i style="width:0%"></i></div><span>停</span></div></td><td class="tm num-c">06-01</td><td class="rowact"><button class="btn sm" data-act="toast" data-msg="已发起续期，套餐已重新激活" data-type="ok">续期</button></td></tr>
+        </tbody></table>
+      </div>
+    </section>
+
+    <!-- ===================== 租户详情 ===================== -->
+    <section class="page" data-p="tenant">
+      <div class="lead"><div><div class="t" id="tdName">福寿堂礼仪</div><div class="s"><span class="bdg brd np">旗舰版</span> · <span class="bdg ok np">已开通</span> · 到期 2026-09-22 · 公司ID T-10231</div></div>
+        <div style="display:flex;gap:8px"><button class="btn" data-act="change-pkg">改套餐</button><button class="btn" data-act="toast" data-msg="已发起续期">续期</button><button class="btn dng" data-act="toggle-tenant">停用租户</button></div></div>
+      <div class="tabs" id="tdTabs">
+        <button class="on" data-pane="td-over">概览</button>
+        <button data-pane="td-mem">成员</button>
+        <button data-pane="td-use">用量账单</button>
+        <button data-pane="td-tk">数字人工单</button>
+        <button data-pane="td-bind">平台绑定</button>
+        <button data-pane="td-cmp">合规</button>
+        <button data-pane="td-log">操作日志</button>
+      </div>
+      <div class="tab-pane show" data-pane="td-over">
+        <div class="stats"><div class="stat"><div class="k">本月成本</div><div class="v num">¥335</div><div class="bar"><i style="width:82%;background:var(--accent)"></i></div></div>
+          <div class="stat"><div class="k">套餐月费</div><div class="v num">¥—<small>待定</small></div><div class="bar"><i style="width:50%"></i></div></div>
+          <div class="stat"><div class="k">知识库</div><div class="v num">120<small>条</small></div><div class="bar"><i style="width:48%"></i></div></div>
+          <div class="stat"><div class="k">产出作品</div><div class="v num">56<small>条</small></div><div class="bar"><i style="width:70%"></i></div></div></div>
+        <div class="grid" style="grid-template-columns:1.3fr 1fr">
+          <div class="card pad"><div class="head"><h3>本月配额水位</h3></div>
+            <div class="ub"><div class="ul"><b>爆款抓取</b><span>320 / 5000</span></div><div class="ut"><i style="width:6%"></i></div></div>
+            <div class="ub"><div class="ul"><b>参考转写</b><span>41 / 100</span></div><div class="ut"><i style="width:41%"></i></div></div>
+            <div class="ub"><div class="ul"><b>内容生成</b><span>168 / 300</span></div><div class="ut"><i style="width:56%"></i></div></div>
+            <div class="ub"><div class="ul"><b>数字人成片（分钟）</b><span>142 / 200</span></div><div class="ut"><i style="width:71%;background:var(--warn)"></i></div></div>
+            <div class="ub" style="margin:0"><div class="ul"><b>生成形象（个）</b><span>1 / 2</span></div><div class="ut"><i style="width:50%"></i></div></div>
+          </div>
+          <div class="card pad"><div class="head"><h3>关键信息</h3></div>
+            <div class="kv"><span class="k">管理员</span><span class="v">林老板 · 138****6021</span></div>
+            <div class="kv"><span class="k">对接销售</span><span class="v">阿May</span></div>
+            <div class="kv"><span class="k">开通时间</span><span class="v num-c">2026-03-22</span></div>
+            <div class="kv"><span class="k">抖音授权</span><span class="v"><span class="bdg ok np">已授权</span></span></div>
+            <div class="kv"><span class="k">小红书</span><span class="v"><span class="bdg mut np">仅手动</span></span></div>
+            <div class="kv"><span class="k">合规提醒</span><span class="v"><span class="bdg warn np">3 未处理</span></span></div>
+            <div class="note"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><circle cx="12" cy="12" r="9"/><path d="M12 8v5M12 16h.01"/></svg><span>后台只看聚合统计，不直接编辑客户知识库 / 作品正文（红线·留痕）。</span></div>
+          </div>
+        </div>
+      </div>
+      <div class="tab-pane" data-pane="td-mem">
+        <div class="card pad"><table><thead><tr><th>成员</th><th>账号</th><th>角色</th><th>状态</th><th></th></tr></thead><tbody>
+          <tr><td><b class="tt">林老板</b></td><td class="tm">138****6021</td><td><span class="bdg brd np">老板 · 管理员</span></td><td><span class="bdg ok np">启用</span></td><td class="rowact"><button class="btn sm gho" data-act="toast" data-msg="已发送重置密码链接" data-type="ok">重置密码</button></td></tr>
+          <tr><td><b class="tt">小陈</b></td><td class="tm">155****8842</td><td><span class="bdg mut np">运营</span></td><td><span class="bdg ok np">启用</span></td><td class="rowact"><button class="btn sm gho" data-act="toast" data-msg="已发送重置密码链接" data-type="ok">重置密码</button><button class="btn sm gho dng" data-act="toast" data-msg="已停用该成员" data-type="warn">停用</button></td></tr>
+          <tr><td><b class="tt">小王</b></td><td class="tm">159****2201</td><td><span class="bdg mut np">运营</span></td><td><span class="bdg ok np">启用</span></td><td class="rowact"><button class="btn sm gho" data-act="toast" data-msg="已发送重置密码链接" data-type="ok">重置密码</button><button class="btn sm gho dng" data-act="toast" data-msg="已停用该成员" data-type="warn">停用</button></td></tr>
+        </tbody></table></div>
+      </div>
+      <div class="tab-pane" data-pane="td-use">
+        <div class="card pad"><div class="head"><h3>用量明细 · 2026-06（每条已映射第三方成本）</h3><span class="more" data-act="buy-quota">代客增购</span></div>
+          <table><thead><tr><th>类型</th><th>数量</th><th>供应商</th><th>映射成本</th><th>时间</th></tr></thead><tbody>
+            <tr><td>数字人成片</td><td class="num-c">3.2 分</td><td class="tm">蝉镜</td><td class="num-c">¥7.6</td><td class="tm num-c">06-24 15:02</td></tr>
+            <tr><td>内容生成（抖音）</td><td class="num-c">1 条</td><td class="tm">DeepSeek</td><td class="num-c">¥0.3</td><td class="tm num-c">06-24 14:48</td></tr>
+            <tr><td>爆款抓取</td><td class="num-c">20 次</td><td class="tm">蝉妈妈</td><td class="num-c">¥1.0</td><td class="tm num-c">06-24 11:20</td></tr>
+            <tr><td>生成形象（增购）</td><td class="num-c">1 个</td><td class="tm">蝉镜</td><td class="num-c">¥199</td><td class="tm num-c">06-18 09:10</td></tr>
+          </tbody></table>
+          <div class="kv" style="margin-top:10px"><span class="k">本月累计成本</span><span class="v num-c">¥335</span></div>
+        </div>
+      </div>
+      <div class="tab-pane" data-pane="td-tk">
+        <div class="card pad"><table><thead><tr><th>工单</th><th>类型</th><th>形象额度</th><th>状态</th><th></th></tr></thead><tbody>
+          <tr><td class="num-c">#1042</td><td>上传克隆（老板出镜）</td><td class="tm">1 / 2 可用</td><td><span class="bdg brd np run">审核中</span></td><td class="rowact"><button class="btn sm gho" data-act="go" data-v="tickets">去处理</button></td></tr>
+          <tr><td class="num-c">#1015</td><td>选公模主播A</td><td class="tm">不占额度</td><td><span class="bdg ok np">已完成</span></td><td class="rowact"><button class="btn sm gho" data-act="toast" data-msg="查看工单详情（演示）">查看</button></td></tr>
+        </tbody></table></div>
+      </div>
+      <div class="tab-pane" data-pane="td-bind">
+        <div class="tiles">
+          <div class="tile"><div style="display:flex;align-items:center;gap:10px;margin-bottom:10px"><div class="av" style="background:oklch(0.3 0.02 280);color:#fff;font-size:13px">抖</div><div><b>抖音 · 福寿堂</b><div class="mini">官方 API · 自有 2C</div></div></div><div style="display:flex;align-items:center;gap:8px"><span class="bdg ok np">已授权</span><span class="mini">可开自动发</span></div></div>
+          <div class="tile"><div style="display:flex;align-items:center;gap:10px;margin-bottom:10px"><div class="av" style="background:oklch(0.6 0.18 18);color:#fff;font-size:13px">书</div><div><b>小红书 · 福寿堂</b><div class="mini">无 API · 仅手动</div></div></div><div style="display:flex;align-items:center;gap:8px"><span class="bdg mut np">不可授权</span><span class="mini">自动发禁用</span></div></div>
+        </div>
+        <div class="note"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><circle cx="12" cy="12" r="9"/><path d="M12 8v5M12 16h.01"/></svg><span>授权态由后台驱动：抖音过审才在商家端放开「自动发」开关；小红书 / 视频号无接口，标记不可授权。</span></div>
+      </div>
+      <div class="tab-pane" data-pane="td-cmp">
+        <div class="card pad"><div class="head"><h3>该租户合规命中（近 30 天）</h3></div>
+          <table><thead><tr><th>内容</th><th>命中词</th><th>风险</th><th>处理</th></tr></thead><tbody>
+            <tr><td class="tt">寿衣怎么选 · 抖音</td><td><span class="bdg warn np">灵堂</span></td><td><span class="bdg warn np">中</span></td><td><span class="bdg mut np">未处理</span></td></tr>
+            <tr><td class="tt">骨灰盒价格 · 小红书</td><td><span class="bdg dng np">最便宜</span></td><td><span class="bdg dng np">高</span></td><td><span class="bdg ok np">已采纳改写</span></td></tr>
+          </tbody></table>
+          <div class="note"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M12 9v4M12 17h.01"/></svg><span>V1 合规为「提醒非阻断」，客户可采纳改写；高风险条目可路由复核队列人工兜底。</span></div>
+        </div>
+      </div>
+      <div class="tab-pane" data-pane="td-log">
+        <div class="card pad"><div class="tline">
+          <div class="ti done"><span class="dot"></span><div class="tc"><b>蔚然 增购 1 个形象额度</b><small>2026-06-18 09:10 · ¥199</small></div></div>
+          <div class="ti done"><span class="dot"></span><div class="tc"><b>阿May 通过抖音授权审核</b><small>2026-04-02 16:30</small></div></div>
+          <div class="ti done"><span class="dot"></span><div class="tc"><b>蔚然 开通公司「福寿堂礼仪」· 旗舰版</b><small>2026-03-22 10:02</small></div></div>
+        </div></div>
+      </div>
+    </section>
+
+    <!-- ===================== 成员 / 账号 ===================== -->
+    <section class="page" data-p="accounts">
+      <div class="lead"><div><div class="t">成员 / 账号</div><div class="s">跨租户查看所有客户成员 · 重置密码 / 停启用</div></div></div>
+      <div class="card pad">
+        <div class="toolbar"><select class="inp"><option>全部租户</option><option>福寿堂礼仪</option><option>安然殡葬服务</option></select><select class="inp"><option>全部角色</option><option>管理员</option><option>运营</option></select><input class="inp" placeholder="搜索姓名 / 账号" style="flex:1;min-width:160px"><span class="spacer"></span><span class="mini">共 67 个账号</span></div>
+        <table><thead><tr><th>成员</th><th>所属公司</th><th>账号</th><th>角色</th><th>状态</th><th></th></tr></thead><tbody>
+          <tr><td><b class="tt">林老板</b></td><td>福寿堂礼仪</td><td class="tm">138****6021</td><td><span class="bdg brd np">管理员</span></td><td><span class="bdg ok np">启用</span></td><td class="rowact"><button class="btn sm gho" data-act="toast" data-msg="已发送重置密码链接" data-type="ok">重置密码</button></td></tr>
+          <tr><td><b class="tt">小陈</b></td><td>福寿堂礼仪</td><td class="tm">155****8842</td><td><span class="bdg mut np">运营</span></td><td><span class="bdg ok np">启用</span></td><td class="rowact"><button class="btn sm gho" data-act="toast" data-msg="已发送重置密码链接" data-type="ok">重置密码</button><button class="btn sm gho dng" data-act="toast" data-msg="已停用" data-type="warn">停用</button></td></tr>
+          <tr><td><b class="tt">王姐</b></td><td>安然殡葬服务</td><td class="tm">137****0098</td><td><span class="bdg brd np">管理员</span></td><td><span class="bdg ok np">启用</span></td><td class="rowact"><button class="btn sm gho" data-act="toast" data-msg="已发送重置密码链接" data-type="ok">重置密码</button></td></tr>
+          <tr><td><b class="tt">阿强</b></td><td>归园殡仪</td><td class="tm">130****7765</td><td><span class="bdg mut np">运营</span></td><td><span class="bdg mut np">已停用</span></td><td class="rowact"><button class="btn sm gho" data-act="toast" data-msg="已启用" data-type="ok">启用</button></td></tr>
+        </tbody></table>
+      </div>
+    </section>
+
+    <!-- ===================== 套餐配置 ===================== -->
+    <section class="page" data-p="packages">
+      <div class="lead"><div><div class="t">套餐配置</div><div class="s">定义套餐与各配额项 · 保存时强制校验「套餐价 ≥ 满额成本」防越用越亏</div></div>
+        <button class="btn pri" data-act="new-package"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M12 5v14M5 12h14"/></svg>新建套餐</button></div>
+      <div class="alert"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M12 9v4M12 17h.01M10.3 3.9l-8 14A2 2 0 004 21h16a2 2 0 001.7-3l-8-14a2 2 0 00-3.4 0z"/></svg><div><b>套餐月费待定</b>：需等蝉镜 / 蝉妈妈最终报价反推单价后填实数（见规划 §六待办）。当前为结构占位。</div></div>
+      <div class="card pad" style="margin-bottom:16px"><div class="head"><h3>套餐</h3></div>
+        <table id="pkgTbl"><thead><tr><th>套餐</th><th>月费</th><th>爆款</th><th>转写</th><th>生成</th><th>成片(分)</th><th>形象</th><th>满额成本</th><th>状态</th><th></th></tr></thead><tbody>
+          <tr><td><b class="tt">标准版</b></td><td class="num-c">¥—</td><td class="num-c">2000</td><td class="num-c">100</td><td class="num-c">300</td><td class="num-c">60</td><td class="num-c">1</td><td class="num-c bdg warn np">≈¥420</td><td><span class="bdg ok np">上架</span></td><td class="rowact"><button class="btn sm gho" data-act="toast" data-msg="编辑套餐（演示）">编辑</button></td></tr>
+          <tr><td><b class="tt">旗舰版</b></td><td class="num-c">¥—</td><td class="num-c">不限</td><td class="num-c">1000</td><td class="num-c">1000</td><td class="num-c">200</td><td class="num-c">2</td><td class="num-c bdg warn np">≈¥1,180</td><td><span class="bdg ok np">上架</span></td><td class="rowact"><button class="btn sm gho" data-act="toast" data-msg="编辑套餐（演示）">编辑</button></td></tr>
+        </tbody></table>
+      </div>
+      <div class="card pad"><div class="head"><h3>增购项</h3><span class="more" data-act="toast" data-msg="配置增购项（演示）">配置</span></div>
+        <table><thead><tr><th>项目</th><th>计量</th><th>单价</th><th>适用套餐</th></tr></thead><tbody>
+          <tr><td>生成形象</td><td class="tm">个</td><td class="num-c">¥199</td><td class="tm">全部</td></tr>
+          <tr><td>成片分钟包</td><td class="tm">分钟</td><td class="num-c">¥—</td><td class="tm">全部</td></tr>
+          <tr><td>爆款调用包</td><td class="tm">次</td><td class="num-c">¥—</td><td class="tm">标准版</td></tr>
+        </tbody></table>
+      </div>
+    </section>
+
+    <!-- ===================== 配额与用量 ===================== -->
+    <section class="page" data-p="quota">
+      <div class="lead"><div><div class="t">配额与用量</div><div class="s">各租户用量 vs 套餐配额 · 超额拦截并引导增购</div></div></div>
+      <div class="card pad">
+        <div class="toolbar"><select class="inp"><option>2026-06</option><option>2026-05</option></select><select class="inp"><option>全部租户</option></select><span class="spacer"></span><span class="bdg dng np">1 项已超额</span></div>
+        <table><thead><tr><th>租户</th><th>爆款</th><th>转写</th><th>生成</th><th>成片(分)</th><th>形象</th><th>超额</th><th></th></tr></thead><tbody>
+          <tr><td><b class="tt">福寿堂礼仪</b></td><td class="num-c">320/5000</td><td class="num-c">41/100</td><td class="num-c">168/300</td><td class="num-c">142/200</td><td class="num-c">1/2</td><td class="tm">—</td><td class="rowact"><button class="btn sm gho" data-act="buy-quota">代客增购</button></td></tr>
+          <tr><td><b class="tt">安然殡葬服务</b></td><td class="num-c">901/2000</td><td class="num-c">88/100</td><td class="num-c"><span class="bdg dng np">298/300</span></td><td class="num-c"><span class="bdg dng np">60/60</span></td><td class="num-c">1/1</td><td><span class="bdg dng np">生成 / 成片</span></td><td class="rowact"><button class="btn sm pri" data-act="buy-quota">引导增购</button></td></tr>
+          <tr><td><b class="tt">永怀纪念</b></td><td class="num-c">120/5000</td><td class="num-c">12/1000</td><td class="num-c">168/1000</td><td class="num-c">40/200</td><td class="num-c">0/2</td><td class="tm">—</td><td class="rowact"><button class="btn sm gho" data-act="buy-quota">代客增购</button></td></tr>
+        </tbody></table>
+        <div class="head" style="margin:18px 0 8px"><h3 style="font-size:13.5px">增购记录</h3></div>
+        <table><thead><tr><th>租户</th><th>项目</th><th>数量</th><th>金额</th><th>状态</th><th>时间</th></tr></thead><tbody>
+          <tr><td class="tt">福寿堂礼仪</td><td>生成形象</td><td class="num-c">+1</td><td class="num-c">¥199</td><td><span class="bdg ok np">已确认</span></td><td class="tm num-c">06-18</td></tr>
+        </tbody></table>
+      </div>
+    </section>
+
+    <!-- ===================== 成本与毛利对账 ===================== -->
+    <section class="page" data-p="cost">
+      <div class="lead"><div><div class="t">成本与毛利对账</div><div class="s">第三方真实成本 vs 套餐收入 · 命脉：定价必须覆盖采购成本</div></div>
+        <button class="btn" data-act="toast" data-msg="对账单已导出 对账-2026-06.xlsx" data-type="ok"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M12 3v12M7 10l5 5 5-5M5 21h14"/></svg>导出对账单</button></div>
+      <div class="stats"><div class="stat"><div class="k">本月收入（套餐）</div><div class="v num">¥22.2<small>k</small></div><div class="bar"><i style="width:100%;background:var(--ok)"></i></div></div>
+        <div class="stat"><div class="k">本月成本</div><div class="v num">¥8,640</div><div class="bar"><i style="width:39%;background:var(--accent)"></i></div></div>
+        <div class="stat"><div class="k">毛利</div><div class="v num">¥13.6<small>k</small></div><div class="bar"><i style="width:61%;background:var(--ok)"></i></div></div>
+        <div class="stat"><div class="k">毛利率</div><div class="v num">61<small>%</small></div><div class="tr dn">▼ 2pt</div><div class="bar"><i style="width:61%;background:var(--ok)"></i></div></div></div>
+      <div class="grid" style="grid-template-columns:1fr 1.4fr">
+        <div class="card pad"><div class="head"><h3>成本构成（供应商）</h3></div>
+          <div class="cost-row"><div class="cn">蝉镜 · 成片</div><div class="cbar"><i style="width:48%"></i></div><div class="cv">¥4,120</div></div>
+          <div class="cost-row"><div class="cn">蝉妈妈 · 爆款</div><div class="cbar"><i style="width:28%"></i></div><div class="cv">¥2,400</div></div>
+          <div class="cost-row"><div class="cn">ASR / LLM</div><div class="cbar"><i style="width:20%"></i></div><div class="cv">¥1,722</div></div>
+          <div class="cost-row"><div class="cn">蝉镜 · 形象</div><div class="cbar"><i style="width:5%"></i></div><div class="cv">¥398</div></div>
+          <div class="note"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><circle cx="12" cy="12" r="9"/><path d="M12 8v5M12 16h.01"/></svg><span>V1 成本按供应商单价估算，留「拉真实账单核对」字段。</span></div>
+        </div>
+        <div class="card pad"><div class="head"><h3>单租户毛利（可排序）</h3><span class="bdg dng np">1 家亏损</span></div>
+          <table><thead><tr><th>租户</th><th>收入</th><th>成本</th><th>毛利</th><th>毛利率</th></tr></thead><tbody>
+            <tr><td class="tt">福寿堂礼仪</td><td class="num-c">¥899</td><td class="num-c">¥335</td><td class="num-c">¥564</td><td class="num-c">63%</td></tr>
+            <tr><td class="tt">安然殡葬服务</td><td class="num-c">¥499</td><td class="num-c">¥210</td><td class="num-c">¥289</td><td class="num-c">58%</td></tr>
+            <tr><td class="tt">永怀纪念</td><td class="num-c">¥899</td><td class="num-c">¥96</td><td class="num-c">¥803</td><td class="num-c">89%</td></tr>
+            <tr style="background:var(--danger-sft)"><td class="tt">西园寿衣</td><td class="num-c">¥149</td><td class="num-c">¥168</td><td class="num-c bdg dng np">-¥19</td><td class="num-c bdg dng np">亏损</td></tr>
+          </tbody></table>
+          <div class="note"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M12 9v4M12 17h.01"/></svg><span>西园寿衣：低价套餐 + 高成片消耗导致亏损 → 触发套餐升档建议 / 增购引导。</span></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===================== 数字人定制工单 ===================== -->
+    <section class="page" data-p="tickets">
+      <div class="lead"><div><div class="t">数字人定制工单</div><div class="s">商家端「申请定制」的对侧 · 接单 → 对接蝉镜训练 → 回填形象状态到租户</div></div>
+        <div class="seg"><button class="on">全部</button><button>待接单</button><button>进行中</button><button>已完成</button></div></div>
+      <div class="card pad"><table id="ticketTbl"><thead><tr><th>工单</th><th>租户</th><th>类型</th><th>需求</th><th>形象额度</th><th>状态</th><th></th></tr></thead><tbody>
+        <tr data-tk="1042"><td class="num-c">#1042</td><td class="tt">福寿堂礼仪</td><td>上传克隆</td><td class="tm">老板出镜 10s 素材 · 温情</td><td class="tm">1/2 可用</td><td><span class="bdg warn np tkst">待接单</span></td><td class="rowact"><button class="btn sm pri" data-act="order-ticket">接单</button></td></tr>
+        <tr data-tk="1041"><td class="num-c">#1041</td><td class="tt">永怀纪念</td><td>选公模</td><td class="tm">公模主播A · 不占额度</td><td class="tm">不占额度</td><td><span class="bdg warn np tkst">待接单</span></td><td class="rowact"><button class="btn sm pri" data-act="order-ticket">接单</button></td></tr>
+        <tr data-tk="1038"><td class="num-c">#1038</td><td class="tt">安然殡葬服务</td><td>指定定制</td><td class="tm">指定女主播形象</td><td class="tm"><span class="bdg dng np">1/1 已满</span></td><td><span class="bdg dng np tkst">超额拦截</span></td><td class="rowact"><button class="btn sm" data-act="guide-buy">引导增购</button></td></tr>
+        <tr data-tk="1031"><td class="num-c">#1031</td><td class="tt">西园寿衣</td><td>上传克隆</td><td class="tm">主理人出镜</td><td class="tm">1/1</td><td><span class="bdg brd np run tkst">训练中 60%</span></td><td class="rowact"><button class="btn sm gho" data-act="toast" data-msg="蝉镜训练进行中，完成自动回填">查看</button></td></tr>
+        <tr data-tk="1024"><td class="num-c">#1024</td><td class="tt">福寿堂礼仪</td><td>选公模</td><td class="tm">温和长者形象</td><td class="tm">不占额度</td><td><span class="bdg ok np tkst">已完成</span></td><td class="rowact"><button class="btn sm gho" data-act="toast" data-msg="已回填至该租户数字人（可用）">查看</button></td></tr>
+      </tbody></table></div>
+      <div class="note"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><circle cx="12" cy="12" r="9"/><path d="M12 8v5M12 16h.01"/></svg><span>形象额度（每企业 2 个，公模不占）在接单时校验；训练状态由后台驱动，商家端只读展示。</span></div>
+    </section>
+
+    <!-- ===================== 抖音授权审核 ===================== -->
+    <section class="page" data-p="auth">
+      <div class="lead"><div><div class="t">抖音授权审核</div><div class="s">自动发的前置 · 官方 API 需企业认证 + 权限审核 · 过审才放开商家端「自动发」</div></div></div>
+      <div class="card pad"><table id="authTbl"><thead><tr><th>租户</th><th>抖音账号</th><th>资质</th><th>申请时间</th><th>状态</th><th></th></tr></thead><tbody>
+        <tr data-au="1"><td class="tt">松鹤堂</td><td class="tm">@松鹤堂礼仪服务</td><td><span class="bdg ok np">营业执照已传</span></td><td class="tm num-c">06-24</td><td><span class="bdg warn np aust">待审核</span></td><td class="rowact"><button class="btn sm pri" data-act="auth-pass">通过</button><button class="btn sm gho dng" data-act="auth-reject">驳回</button></td></tr>
+        <tr><td class="tt">福寿堂礼仪</td><td class="tm">@福寿堂礼仪</td><td><span class="bdg ok np">企业认证</span></td><td class="tm num-c">04-02</td><td><span class="bdg ok np">已授权</span></td><td class="rowact"><span class="mini">有效期至 2027-04-02</span></td></tr>
+        <tr><td class="tt">安然殡葬服务</td><td class="tm">@安然到家</td><td><span class="bdg ok np">企业认证</span></td><td class="tm num-c">05-11</td><td><span class="bdg ok np">已授权</span></td><td class="rowact"><span class="mini">有效期至 2027-05-11</span></td></tr>
+        <tr><td class="tt">归园殡仪</td><td class="tm">@归园</td><td><span class="bdg dng np">认证过期</span></td><td class="tm num-c">06-01</td><td><span class="bdg dng np">已失效</span></td><td class="rowact"><button class="btn sm gho" data-act="toast" data-msg="已通知客户重新提交认证" data-type="warn">通知重提</button></td></tr>
+      </tbody></table></div>
+      <div class="note"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M12 9v4M12 17h.01"/></svg><span>小红书 / 视频号无开放接口 → 标记「不可授权」，商家端自动发开关禁用、仅手动；话术禁止「全平台一键自动发」。</span></div>
+    </section>
+
+    <!-- ===================== 长任务监控 ===================== -->
+    <section class="page" data-p="tasks">
+      <div class="lead"><div><div class="t">长任务监控</div><div class="s">转写 / 成片 / i2v / 爆款抓取的队列 · 失败重试 · 供应商不可用自动暂停告警</div></div>
+        <button class="btn dng" data-act="retry-all"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M3 3v5h5M3 8a9 9 0 119 13"/></svg>批量重试失败（4）</button></div>
+      <div class="card pad">
+        <div class="toolbar"><select class="inp"><option>全部类型</option><option>数字人成片</option><option>音频转写</option><option>爆款抓取</option></select><select class="inp"><option>失败</option><option>全部状态</option><option>进行中</option><option>完成</option></select><span class="spacer"></span><span class="bdg dng np">蝉镜成片 4 笔失败</span></div>
+        <table id="taskTbl"><thead><tr><th>任务</th><th>租户</th><th>类型</th><th>供应商</th><th>状态</th><th>耗时</th><th></th></tr></thead><tbody>
+          <tr data-t="9981"><td class="num-c">T9981</td><td class="tt">福寿堂礼仪</td><td>数字人成片</td><td class="tm">蝉镜</td><td><span class="bdg dng np tst">失败</span></td><td class="tm">—</td><td class="rowact"><button class="btn sm pri" data-act="task-retry">重试</button><button class="btn sm gho" data-act="toast" data-msg="错误：蝉镜返回 5003 素材时长不足">日志</button></td></tr>
+          <tr data-t="9979"><td class="num-c">T9979</td><td class="tt">安然殡葬服务</td><td>数字人成片</td><td class="tm">蝉镜</td><td><span class="bdg dng np tst">失败</span></td><td class="tm">—</td><td class="rowact"><button class="btn sm pri" data-act="task-retry">重试</button><button class="btn sm gho" data-act="toast" data-msg="错误：蝉镜超时">日志</button></td></tr>
+          <tr data-t="9975"><td class="num-c">T9975</td><td class="tt">永怀纪念</td><td>音频转写</td><td class="tm">Whisper</td><td><span class="bdg brd np run tst">进行中</span></td><td class="tm num-c">3m12s</td><td class="rowact"><button class="btn sm gho" data-act="toast" data-msg="任务详情（演示）">详情</button></td></tr>
+          <tr data-t="9970"><td class="num-c">T9970</td><td class="tt">西园寿衣</td><td>爆款抓取</td><td class="tm">蝉妈妈</td><td><span class="bdg ok np tst">完成</span></td><td class="tm num-c">8s</td><td class="rowact"><button class="btn sm gho" data-act="toast" data-msg="返回 28 条爆款">详情</button></td></tr>
+        </tbody></table>
+      </div>
+    </section>
+
+    <!-- ===================== 合规词库 ===================== -->
+    <section class="page" data-p="lexicon">
+      <div class="lead"><div><div class="t">合规词库 / 规则集</div><div class="s">殡葬命门 · 违禁词 + 改写建议人工持续维护 · 版本化发布，下发全租户</div></div>
+        <button class="btn pri" data-act="add-word"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M12 5v14M5 12h14"/></svg>新增词条</button></div>
+      <div class="card pad" style="margin-bottom:14px;display:flex;align-items:center;gap:14px;flex-wrap:wrap">
+        <div><span class="mini">当前生效版本</span><div style="font-weight:600;margin-top:2px">v12 <span class="bdg ok np">已发布</span> <span class="mini">· 2026-06-20 · 142 词条 · 生效 38 租户</span></div></div>
+        <span class="spacer"></span>
+        <div><span class="mini">编辑中草稿</span><div style="font-weight:600;margin-top:2px">v13 <span class="bdg warn np">草稿</span> <span class="mini">· +3 / 改2</span></div></div>
+        <button class="btn" data-act="toast" data-msg="对比 v12 → v13：新增 3 词、修改 2 词">对比 v12</button>
+        <button class="btn pri" data-act="pub-lexicon">发布 v13 → 下发全租户</button>
+      </div>
+      <div class="card pad"><table><thead><tr><th>违禁词 / 正则</th><th>类别</th><th>命中范围</th><th>改写建议</th><th>风险</th><th></th></tr></thead><tbody>
+        <tr><td><b class="tt">最便宜 / 全网最低</b></td><td><span class="bdg dng np">绝对化</span></td><td class="tm">全文</td><td class="tm">"高性价比"</td><td><span class="bdg dng np">高</span></td><td class="rowact"><button class="btn sm gho" data-act="toast" data-msg="编辑词条（演示）">编辑</button></td></tr>
+        <tr><td><b class="tt">包治 / 一定有效</b></td><td><span class="bdg dng np">虚假承诺</span></td><td class="tm">全文</td><td class="tm">删除 / 弱化</td><td><span class="bdg dng np">高</span></td><td class="rowact"><button class="btn sm gho" data-act="toast" data-msg="编辑词条（演示）">编辑</button></td></tr>
+        <tr><td><b class="tt">灵堂</b></td><td><span class="bdg warn np">敏感用词</span></td><td class="tm">标题 / 口播</td><td class="tm">"告别厅"</td><td><span class="bdg warn np">中</span></td><td class="rowact"><button class="btn sm gho" data-act="toast" data-msg="编辑词条（演示）">编辑</button></td></tr>
+        <tr><td><b class="tt">死 / 死人 <span class="bdg brd np">v13 新增</span></b></td><td><span class="bdg warn np">敏感用词</span></td><td class="tm">全文</td><td class="tm">"逝者 / 过世"</td><td><span class="bdg warn np">中</span></td><td class="rowact"><button class="btn sm gho" data-act="toast" data-msg="编辑词条（演示）">编辑</button></td></tr>
+      </tbody></table></div>
+    </section>
+
+    <!-- ===================== 合规模板下发 ===================== -->
+    <section class="page" data-p="tpl">
+      <div class="lead"><div><div class="t">合规模板下发</div><div class="s">商家端「合规提示词·只读」的源头 · 后台维护、版本化，下发到所有租户</div></div></div>
+      <div class="card pad"><div class="head"><h3>殡葬行业合规提示词（系统预置）</h3><span class="bdg ok np" style="margin-left:8px">v6 已发布</span></div>
+        <textarea rows="8" style="font-size:12.5px;line-height:1.7">你是殡葬行业内容合规助手。生成与改写内容时严格遵守：
+1. 禁止绝对化用语（最便宜、全网最低、第一）；
+2. 禁止虚假/夸大承诺（包治、一定、保证）；
+3. 敏感用词软化（灵堂→告别厅、死→逝者/过世）；
+4. 尊重逝者与家属，避免猎奇、煽动、攀比；
+5. 命中违禁词时给出改写建议，但不阻断（V1 为提醒非阻断）。</textarea>
+        <div style="display:flex;gap:8px;margin-top:12px"><button class="btn" data-act="toast" data-msg="已存为草稿 v7">存草稿</button><button class="btn pri" data-act="pub-tpl">发布并下发全租户</button></div>
+        <div class="note"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><circle cx="12" cy="12" r="9"/><path d="M12 8v5M12 16h.01"/></svg><span>商家端「提示词」页的合规层只读展示本模板，客户不可改；风格层由客户自建。</span></div>
+      </div>
+    </section>
+
+    <!-- ===================== 合规复核队列 ===================== -->
+    <section class="page" data-p="review">
+      <div class="lead"><div><div class="t">合规复核队列</div><div class="s">高风险内容人工兜底 · LLM 命中高风险词条时进入此队列（P1）</div></div></div>
+      <div class="card pad"><table><thead><tr><th>内容</th><th>租户</th><th>命中词</th><th>风险</th><th>状态</th><th></th></tr></thead><tbody>
+        <tr><td class="tt">骨灰盒 全网最低价</td><td>安然殡葬服务</td><td><span class="bdg dng np">全网最低</span></td><td><span class="bdg dng np">高</span></td><td><span class="bdg warn np rvst">待复核</span></td><td class="rowact"><button class="btn sm pri" data-act="rv-pass">通过</button><button class="btn sm gho dng" data-act="rv-reject">打回</button></td></tr>
+        <tr><td class="tt">一条龙包办 一定满意</td><td>西园寿衣</td><td><span class="bdg dng np">一定</span></td><td><span class="bdg dng np">高</span></td><td><span class="bdg warn np rvst">待复核</span></td><td class="rowact"><button class="btn sm pri" data-act="rv-pass">通过</button><button class="btn sm gho dng" data-act="rv-reject">打回</button></td></tr>
+      </tbody></table></div>
+    </section>
+
+    <!-- ===================== 审计日志 ===================== -->
+    <section class="page" data-p="audit">
+      <div class="lead"><div><div class="t">审计日志</div><div class="s">红线留痕 · 数据来源 / 内容生成 / 敏感操作不可删</div></div>
+        <button class="btn" data-act="toast" data-msg="审计日志已导出"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M12 3v12M7 10l5 5 5-5M5 21h14"/></svg>导出</button></div>
+      <div class="card pad">
+        <div class="toolbar"><select class="inp"><option>全部操作人</option><option>蔚然</option><option>阿May</option></select><select class="inp"><option>全部动作</option><option>开通</option><option>停用</option><option>改套餐</option><option>发布词库</option><option>查看密钥</option><option>充值</option></select><input class="inp" placeholder="搜索对象 / 租户" style="flex:1;min-width:140px"></div>
+        <table><thead><tr><th>时间</th><th>操作人</th><th>动作</th><th>对象 / 租户</th><th>结果</th></tr></thead><tbody>
+          <tr><td class="tm num-c">06-24 15:40</td><td>蔚然</td><td><span class="bdg dng np">查看密钥</span></td><td class="tm">蝉镜 API key</td><td><span class="bdg ok np">成功</span></td></tr>
+          <tr><td class="tm num-c">06-24 11:08</td><td>阿May</td><td><span class="bdg brd np">开通</span></td><td class="tm">松鹤堂 · 标准版</td><td><span class="bdg ok np">成功</span></td></tr>
+          <tr><td class="tm num-c">06-20 18:22</td><td>合规·小林</td><td><span class="bdg warn np">发布词库</span></td><td class="tm">合规词库 v12 → 38 租户</td><td><span class="bdg ok np">成功</span></td></tr>
+          <tr><td class="tm num-c">06-18 09:10</td><td>蔚然</td><td><span class="bdg brd np">增购</span></td><td class="tm">福寿堂 +1 形象 ¥199</td><td><span class="bdg ok np">成功</span></td></tr>
+          <tr><td class="tm num-c">06-15 14:03</td><td>财务·阿珍</td><td><span class="bdg brd np">充值</span></td><td class="tm">蝉镜积分 +5000</td><td><span class="bdg ok np">成功</span></td></tr>
+        </tbody></table>
+      </div>
+    </section>
+
+    <!-- ===================== 供应商配置 ===================== -->
+    <section class="page" data-p="suppliers">
+      <div class="lead"><div><div class="t">供应商配置与健康</div><div class="s">蝉妈妈 / 蝉镜 / i2v / ASR / LLM 的 key、额度、健康与路由 · key 仅超管可见</div></div></div>
+      <div class="alert dng"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M12 9v4M12 17h.01M10.3 3.9l-8 14A2 2 0 004 21h16a2 2 0 001.7-3l-8-14a2 2 0 00-3.4 0z"/></svg><div><b>蝉镜积分余额 12%</b> 低于告警阈值，相关成片任务有暂停风险</div><span class="ac"><button class="btn sm" data-act="recharge">立即充值</button></span></div>
+      <div class="card pad"><table><thead><tr><th>供应商</th><th>用途</th><th>健康</th><th>额度 / 余额</th><th>单价口径</th><th></th></tr></thead><tbody>
+        <tr><td><b class="tt">蝉妈妈</b><div class="tm">厦门蝉语</div></td><td class="tm">爆款数据</td><td><span class="dot-st ok"></span>正常</td><td class="num-c">3120 / 5000 次·日</td><td class="tm">—/次</td><td class="rowact"><button class="btn sm gho" data-act="toast" data-msg="配置 蝉妈妈（key 门控）">配置</button></td></tr>
+        <tr><td><b class="tt">蝉镜</b><div class="tm">厦门立马耀</div></td><td class="tm">成片 + 形象</td><td><span class="dot-st warn"></span>额度偏低</td><td class="num-c bdg warn np">积分余额 12%</td><td class="tm">¥2.36/分起</td><td class="rowact"><button class="btn sm pri" data-act="recharge">充值</button><button class="btn sm gho" data-act="toast" data-msg="配置 蝉镜">配置</button></td></tr>
+        <tr><td><b class="tt">即梦</b></td><td class="tm">图生视频 i2v</td><td><span class="dot-st ok"></span>正常</td><td class="num-c">按量</td><td class="tm">—/秒</td><td class="rowact"><button class="btn sm gho" data-act="toast" data-msg="配置 即梦">配置</button></td></tr>
+        <tr><td><b class="tt">Whisper（本地）</b></td><td class="tm">音视频转写</td><td><span class="dot-st ok"></span>正常</td><td class="num-c">本地算力</td><td class="tm">—</td><td class="rowact"><button class="btn sm gho" data-act="toast" data-msg="配置 Whisper">配置</button></td></tr>
+        <tr><td><b class="tt">DeepSeek</b></td><td class="tm">生成 + 合规</td><td><span class="dot-st ok"></span>正常</td><td class="num-c">按量</td><td class="tm">¥—/Mtoken</td><td class="rowact"><button class="btn sm gho" data-act="toast" data-msg="配置 DeepSeek（含降级路由）">配置</button></td></tr>
+      </tbody></table>
+      <div class="note"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><circle cx="12" cy="12" r="9"/><path d="M12 8v5M12 16h.01"/></svg><span>额度 &lt;10% 自动告警；供应商不可用时相关长任务自动暂停并降级到备用路由。API key 仅超管可见明文，查看即写审计。</span></div></div>
+    </section>
+
+    <!-- ===================== 公模形象库 ===================== -->
+    <section class="page" data-p="presets">
+      <div class="lead"><div><div class="t">公模形象库</div><div class="s">维护蝉镜公模目录 · 商家端可选用、不占租户形象额度（P1）</div></div>
+        <button class="btn pri" data-act="toast" data-msg="从蝉镜同步公模库（演示）" data-type="ok"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M3 3v5h5M3 8a9 9 0 119 13"/></svg>从蝉镜同步</button></div>
+      <div class="tiles">
+        <div class="tile"><div style="display:flex;align-items:center;gap:10px;margin-bottom:8px"><div class="av">🧑</div><div><b>主播 A</b><div class="mini">公模 · 不占额度</div></div></div><div style="display:flex;gap:8px"><span class="bdg ok np">已上架</span></div></div>
+        <div class="tile"><div style="display:flex;align-items:center;gap:10px;margin-bottom:8px"><div class="av">🧑‍🦳</div><div><b>温和长者形象</b><div class="mini">公模 · 不占额度</div></div></div><div style="display:flex;gap:8px"><span class="bdg ok np">已上架</span></div></div>
+        <div class="tile"><div style="display:flex;align-items:center;gap:10px;margin-bottom:8px"><div class="av">👩</div><div><b>知性女主播</b><div class="mini">公模 · 不占额度</div></div></div><div style="display:flex;gap:8px"><span class="bdg ok np">已上架</span></div></div>
+        <div class="tile"><div style="display:flex;align-items:center;gap:10px;margin-bottom:8px"><div class="av">🧔</div><div><b>沉稳男声形象</b><div class="mini">公模 · 不占额度</div></div></div><div style="display:flex;gap:8px"><span class="bdg mut np">已下架</span></div></div>
+      </div>
+    </section>
+
+    <!-- ===================== 内部成员 / RBAC ===================== -->
+    <section class="page" data-p="team">
+      <div class="lead"><div><div class="t">内部成员 / RBAC</div><div class="s">我方团队账号与角色权限 · 超管 / 运营 / 客服 / 财务 / 合规审核</div></div>
+        <button class="btn pri" data-act="add-internal"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M12 5v14M5 12h14"/></svg>添加内部成员</button></div>
+      <div class="card pad" style="margin-bottom:14px"><table id="teamTbl"><thead><tr><th>成员</th><th>账号</th><th>角色</th><th>状态</th><th>最近登录</th><th></th></tr></thead><tbody>
+        <tr><td><b class="tt">蔚然</b></td><td class="tm">ranwei@licheng.ai</td><td><span class="bdg dng np">超级管理员</span></td><td><span class="bdg ok np">启用</span></td><td class="tm num-c">刚刚</td><td class="rowact"><span class="mini">本人</span></td></tr>
+        <tr><td><b class="tt">阿May</b></td><td class="tm">may@licheng.ai</td><td><span class="bdg brd np">运营</span></td><td><span class="bdg ok np">启用</span></td><td class="tm num-c">06-24</td><td class="rowact"><button class="btn sm gho" data-act="toast" data-msg="编辑角色（演示）">编辑</button></td></tr>
+        <tr><td><b class="tt">阿珍</b></td><td class="tm">zhen@licheng.ai</td><td><span class="bdg brd np">财务</span></td><td><span class="bdg ok np">启用</span></td><td class="tm num-c">06-23</td><td class="rowact"><button class="btn sm gho" data-act="toast" data-msg="编辑角色（演示）">编辑</button></td></tr>
+        <tr><td><b class="tt">小林</b></td><td class="tm">lin@licheng.ai</td><td><span class="bdg brd np">合规审核</span></td><td><span class="bdg ok np">启用</span></td><td class="tm num-c">06-20</td><td class="rowact"><button class="btn sm gho" data-act="toast" data-msg="编辑角色（演示）">编辑</button></td></tr>
+      </tbody></table></div>
+      <div class="card pad"><div class="head"><h3>角色 × 权限矩阵</h3></div>
+        <table><thead><tr><th>角色</th><th>开通/租户</th><th>套餐</th><th>成本毛利</th><th>履约/工单</th><th>合规词库</th><th>密钥/充值</th><th>审计</th></tr></thead><tbody>
+          <tr><td><b>超管</b></td><td>✓</td><td>✓</td><td>✓</td><td>✓</td><td>✓</td><td>✓</td><td>✓</td></tr>
+          <tr><td><b>运营</b></td><td>✓</td><td class="tm">只读</td><td class="tm">只读</td><td>✓</td><td class="tm">提案</td><td class="tm">只读</td><td class="tm">自己</td></tr>
+          <tr><td><b>客服</b></td><td class="tm">只读</td><td class="tm">✗</td><td class="tm">✗</td><td>✓</td><td class="tm">✗</td><td class="tm">✗</td><td class="tm">✗</td></tr>
+          <tr><td><b>财务</b></td><td class="tm">只读</td><td>✓</td><td>✓</td><td class="tm">✗</td><td class="tm">✗</td><td class="tm">充值/账单</td><td class="tm">自己</td></tr>
+          <tr><td><b>合规审核</b></td><td class="tm">✗</td><td class="tm">✗</td><td class="tm">✗</td><td class="tm">✗</td><td class="tm">✓发布</td><td class="tm">✗</td><td class="tm">自己</td></tr>
+        </tbody></table>
+      </div>
+    </section>
+
+    <!-- ===================== 公告下发 ===================== -->
+    <section class="page" data-p="notice">
+      <div class="lead"><div><div class="t">公告下发</div><div class="s">向租户推送系统公告 · 站内 / 通知中心（P1）</div></div></div>
+      <div class="card pad" style="max-width:640px">
+        <div class="field"><label>标题</label><input class="inp" placeholder="如：合规词库已更新至 v13"></div>
+        <div class="field"><label>目标</label><select class="inp"><option>全部租户</option><option>指定租户</option><option>指定套餐</option></select></div>
+        <div class="field"><label>内容</label><textarea rows="4" placeholder="公告正文…"></textarea></div>
+        <div style="display:flex;gap:8px"><button class="btn" data-act="toast" data-msg="已存为草稿">存草稿</button><button class="btn pri" data-act="send-notice">发布公告</button></div>
+      </div>
+    </section>
+
+  </div>
+</div>
+
+<div class="toast-wrap" id="toasts"></div>
+<div class="mask" id="mask"><div class="modal" id="modal"></div></div>
+<div class="ovl" id="ovl"><div class="spin"></div><div class="ot" id="ovlTxt">处理中…</div></div>
+
+<script>
+const $=s=>document.querySelector(s),$$=s=>document.querySelectorAll(s);
+const titles={dash:['运营看板','总览'],tenants:['开通中心','客户租户'],tenant:['租户详情','开通中心 / 租户'],accounts:['成员 / 账号','跨租户用户'],packages:['套餐配置','计费'],quota:['配额与用量','计费'],cost:['成本与毛利对账','计费'],tickets:['数字人定制工单','履约'],auth:['抖音授权审核','履约'],tasks:['长任务监控','履约'],lexicon:['合规词库 / 规则集','合规'],tpl:['合规模板下发','合规'],review:['合规复核队列','合规'],audit:['审计日志','合规'],suppliers:['供应商配置与健康','资产'],presets:['公模形象库','资产'],team:['内部成员 / RBAC','系统'],notice:['公告下发','系统']};
+
+function go(v){
+  $$('#nav a').forEach(a=>a.classList.toggle('on',a.dataset.v===v));
+  $$('.page').forEach(p=>p.classList.toggle('show',p.dataset.p===v));
+  if(titles[v]){$('#ptitle').textContent=titles[v][0];$('#pcrumb').textContent=titles[v][1];}
+  window.scrollTo(0,0);
+}
+$$('#nav a').forEach(a=>a.addEventListener('click',()=>go(a.dataset.v)));
+
+function toast(msg,type){
+  const t=document.createElement('div');t.className='toast '+(type||'');
+  t.innerHTML='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 6L9 17l-5-5"/></svg>'+msg;
+  $('#toasts').appendChild(t);setTimeout(()=>{t.style.opacity=0;t.style.transform='translateX(24px)';t.style.transition='.3s';setTimeout(()=>t.remove(),300);},2600);
+}
+function overlay(msg,ms,cb){$('#ovlTxt').textContent=msg;$('#ovl').classList.add('show');setTimeout(()=>{$('#ovl').classList.remove('show');cb&&cb();},ms||1300);}
+function modal(title,body,okText,onOk,wide){
+  $('#modal').className='modal'+(wide?' wide':'');
+  $('#modal').innerHTML='<h4>'+title+'</h4><div class="mb">'+body+'</div><div class="mf"><button class="btn" data-mc>取消</button><button class="btn pri" data-mo>'+(okText||'确定')+'</button></div>';
+  $('#mask').classList.add('show');
+  $('#modal [data-mc]').onclick=closeModal;
+  $('#modal [data-mo]').onclick=()=>{onOk&&onOk();};
+}
+function closeModal(){$('#mask').classList.remove('show');}
+$('#mask').addEventListener('click',e=>{if(e.target.id==='mask')closeModal();});
+
+// 租户详情 tab 切换
+$('#tdTabs').querySelectorAll('button').forEach(b=>b.addEventListener('click',()=>{
+  $('#tdTabs').querySelectorAll('button').forEach(x=>x.classList.remove('on'));b.classList.add('on');
+  $$('#main [data-pane]');$$('.tab-pane').forEach(p=>p.classList.toggle('show',p.dataset.pane===b.dataset.pane));
+}));
+
+// 动作分发
+document.addEventListener('click',e=>{
+  const el=e.target.closest('[data-act]');if(!el)return;
+  const a=el.dataset.act;
+  switch(a){
+    case 'go': go(el.dataset.v);break;
+    case 'toast': toast(el.dataset.msg,el.dataset.type);break;
+    case 'do-login': $('#login').style.display='none';go('dash');toast('登录成功 · 已记审计','ok');break;
+    case 'logout': $('#login').style.display='grid';break;
+    case 'open-tenant': $('#tdName').textContent=el.dataset.n||'福寿堂礼仪';go('tenant');break;
+    case 'new-tenant': modal('开通新公司',
+      '<div class="split"><div class="field"><label>公司名 <span class="req">*</span></label><input class="inp" id="ntName" placeholder="如：松鹤堂礼仪"></div><div class="field"><label>行业</label><input class="inp" value="殡葬（固定）" disabled style="color:var(--ink-3)"></div></div>'+
+      '<div class="split"><div class="field"><label>套餐 <span class="req">*</span></label><select class="inp" id="ntPkg"><option>标准版</option><option>旗舰版</option></select></div><div class="field"><label>到期时间</label><input class="inp" value="2027-06-25"></div></div>'+
+      '<div class="split"><div class="field"><label>管理员姓名 <span class="req">*</span></label><input class="inp" id="ntAdmin" placeholder="老板姓名"></div><div class="field"><label>管理员账号（手机）</label><input class="inp" id="ntPhone" placeholder="138…"></div></div>'+
+      '<div class="field" style="margin:0"><label>初始密码</label><div style="display:flex;gap:8px"><input class="inp" id="ntPwd" value="Lc@2026xZ"><button class="btn" data-act="gen-pwd">重新生成</button></div></div>',
+      '生成账号并下发',()=>{
+        const nm=$('#ntName').value.trim()||'新公司',pkg=$('#ntPkg').value,admin=$('#ntAdmin').value.trim()||'管理员';
+        const tr=document.createElement('tr');
+        tr.innerHTML='<td><b class="tt">'+nm+'</b><div class="tm">新开通 · 管理员：'+admin+'</div></td><td><span class="bdg '+(pkg==='旗舰版'?'brd':'mut')+'">'+pkg+'</span></td><td><span class="bdg ok">已开通</span></td><td class="num-c">1</td><td><div class="barcell"><div class="bt"><i style="width:2%"></i></div><span>2%</span></div></td><td class="tm num-c">2027-06</td><td class="rowact"><button class="btn sm gho" data-act="open-tenant" data-n="'+nm+'">详情</button><button class="btn sm gho dng" data-act="toggle-tenant">停用</button></td>';
+        $('#tenantTbl tbody').prepend(tr);closeModal();toast('已开通「'+nm+'」并下发登录凭证','ok');
+      });break;
+    case 'gen-pwd': if($('#ntPwd')){$('#ntPwd').value='Lc@'+Math.floor(1000+(''+Date).length*137%9000)+'xZ';toast('已生成新密码');}break;
+    case 'toggle-tenant':{const tr=el.closest('tr');if(tr){const b=tr.querySelector('.bdg');if(el.textContent.includes('停用')){b.className='bdg mut';b.textContent='已停用';el.textContent='启用';toast('已停用该租户 · 已记审计','warn');}else{b.className='bdg ok';b.textContent='已开通';el.textContent='停用';toast('已启用该租户','ok');}}else{toast('已停用该租户 · 已记审计','warn');}}break;
+    case 'change-pkg': modal('变更套餐','<div class="field" style="margin:0"><label>新套餐</label><select class="inp"><option>旗舰版（当前）</option><option>标准版</option></select></div><div class="note"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M12 9v4M12 17h.01"/></svg><span>降档若低于当前用量将提示风险；变更即写审计。</span></div>','确认变更',()=>{closeModal();toast('套餐已变更 · 已记审计','ok');});break;
+    case 'new-package': modal('新建套餐',
+      '<div class="split"><div class="field"><label>套餐名 <span class="req">*</span></label><input class="inp" placeholder="如：尊享版"></div><div class="field"><label>月费</label><input class="inp" placeholder="¥（待报价）"></div></div>'+
+      '<div class="split"><div class="field"><label>爆款配额</label><input class="inp" value="3000"></div><div class="field"><label>转写配额</label><input class="inp" value="500"></div></div>'+
+      '<div class="split"><div class="field"><label>生成配额</label><input class="inp" value="600"></div><div class="field"><label>成片分钟</label><input class="inp" value="120"></div></div>'+
+      '<div class="field" style="margin:0"><label>形象个数</label><input class="inp" value="2"></div>'+
+      '<div class="alert" style="margin-top:14px"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M12 9v4M12 17h.01"/></svg><div>保存时校验「月费 ≥ 满额成本」，未达将拦截并提示亏损风险。</div></div>',
+      '保存套餐',()=>{closeModal();toast('套餐已保存（月费待报价后补）','ok');},true);break;
+    case 'buy-quota':
+    case 'guide-buy': modal('代客增购 / 引导增购','当前形象额度 <b>1 / 1 已满</b>。<br><br>增购「生成形象」：<b>¥199 / 个</b>（一次性，价格示例待定）。<br>或升档套餐以获得更高配额。','生成增购单',()=>{closeModal();toast('已生成增购单并通知客户确认','ok');});break;
+    case 'order-ticket':{const tr=el.closest('tr'),b=tr.querySelector('.tkst');
+      b.className='bdg brd np run tkst';b.textContent='对接蝉镜中';el.outerHTML='<button class="btn sm pri" data-act="train-ticket">下单训练</button>';
+      toast('已接单 · 校验形象额度通过','ok');}break;
+    case 'train-ticket':{const tr=el.closest('tr'),b=tr.querySelector('.tkst');el.outerHTML='<button class="btn sm gho" data-act="toast" data-msg="蝉镜训练中，完成自动回填">查看</button>';
+      let p=0;b.className='bdg brd np run tkst';const iv=setInterval(()=>{p+=20;if(p>=100){clearInterval(iv);b.className='bdg ok np tkst';b.textContent='可用 · 已回填';toast('训练完成，已回填至该租户数字人','ok');}else b.textContent='训练中 '+p+'%';},700);
+      toast('已下单蝉镜训练','ok');}break;
+    case 'auth-pass':{const tr=el.closest('tr'),b=tr.querySelector('.aust');b.className='bdg ok np aust';b.textContent='已授权';tr.querySelector('.rowact').innerHTML='<span class="mini">有效期至 2027-06</span>';toast('授权已通过 · 商家端自动发开关已放开','ok');}break;
+    case 'auth-reject':{const tr=el.closest('tr'),b=tr.querySelector('.aust');modal('驳回授权申请','<div class="field" style="margin:0"><label>驳回原因</label><textarea rows="3" placeholder="如：企业认证材料不全">企业认证材料不全</textarea></div>','确认驳回',()=>{b.className='bdg dng np aust';b.textContent='已驳回';tr.querySelector('.rowact').innerHTML='<button class="btn sm gho" data-act="toast" data-msg="已通知客户补材料">通知补件</button>';closeModal();toast('已驳回并通知客户','warn');});}break;
+    case 'task-retry':{const tr=el.closest('tr'),b=tr.querySelector('.tst');b.className='bdg brd np run tst';b.textContent='重试中';setTimeout(()=>{b.className='bdg ok np tst';b.textContent='完成';tr.querySelector('.rowact').innerHTML='<button class="btn sm gho" data-act="toast" data-msg="重试成功">详情</button>';toast('任务重试成功','ok');},1400);}break;
+    case 'retry-all': overlay('正在批量重试 4 个失败任务…',1600,()=>{$$('#taskTbl .tst').forEach(b=>{if(b.textContent==='失败'){b.className='bdg ok np tst';b.textContent='完成';}});toast('批量重试完成，4 个成功','ok');});break;
+    case 'pub-lexicon': modal('发布合规词库 v13','即将把 <b>v13</b>（+3 词 / 改2 词）发布并<b>下发到全部 38 家租户</b>，立即生效于商家端生成 / 导出预审。<br><br>此操作写审计、可回滚至 v12。','确认发布并下发',()=>{closeModal();overlay('正在下发 v13 到 38 家租户…',1500,()=>toast('合规词库 v13 已发布并下发全租户','ok'));});break;
+    case 'add-word': modal('新增合规词条',
+      '<div class="field"><label>违禁词 / 正则 <span class="req">*</span></label><input class="inp" placeholder="如：全网独家"></div>'+
+      '<div class="split"><div class="field"><label>类别</label><select class="inp"><option>绝对化</option><option>虚假承诺</option><option>敏感用词</option><option>其他</option></select></div><div class="field"><label>风险级</label><select class="inp"><option>高</option><option>中</option><option>低</option></select></div></div>'+
+      '<div class="field"><label>命中范围</label><div style="display:flex;gap:8px"><span class="bdg brd np" style="cursor:pointer">全文</span><span class="bdg mut np" style="cursor:pointer">标题</span><span class="bdg mut np" style="cursor:pointer">口播</span></div></div>'+
+      '<div class="field" style="margin:0"><label>改写建议</label><input class="inp" placeholder="如：弱化 / 删除 / 替换词"></div>',
+      '加入 v13 草稿',()=>{closeModal();toast('已加入 v13 草稿，发布后下发','ok');});break;
+    case 'pub-tpl': modal('发布合规模板','即将发布合规提示词 <b>v7</b> 并下发全部租户，商家端「提示词·合规层」只读展示更新内容。','确认发布',()=>{closeModal();toast('合规模板 v7 已下发全租户','ok');});break;
+    case 'rv-pass':{const tr=el.closest('tr'),b=tr.querySelector('.rvst');b.className='bdg ok np rvst';b.textContent='通过';tr.querySelector('.rowact').innerHTML='<span class="mini">已复核</span>';toast('复核通过','ok');}break;
+    case 'rv-reject':{const tr=el.closest('tr'),b=tr.querySelector('.rvst');b.className='bdg dng np rvst';b.textContent='已打回';tr.querySelector('.rowact').innerHTML='<span class="mini">已通知改写</span>';toast('已打回并通知客户改写','warn');}break;
+    case 'recharge': modal('蝉镜积分充值','当前余额 <b>12%</b>（约可成片 60 分钟）。<br><br>充值套餐：<br>· ¥2,000 ≈ 5,000 积分<br>· ¥5,000 ≈ 13,000 积分（赠 8%）','确认充值 ¥5,000',()=>{closeModal();toast('已充值，蝉镜余额恢复 · 已记审计','ok');});break;
+    case 'add-internal': modal('添加内部成员',
+      '<div class="split"><div class="field"><label>姓名</label><input class="inp" placeholder="姓名"></div><div class="field"><label>账号（邮箱）</label><input class="inp" placeholder="name@licheng.ai"></div></div>'+
+      '<div class="field" style="margin:0"><label>角色</label><select class="inp"><option>运营</option><option>客服</option><option>财务</option><option>合规审核</option><option>超级管理员</option></select></div>',
+      '添加并发送邀请',()=>{closeModal();toast('已添加内部成员并发送邀请','ok');});break;
+    case 'send-notice': toast('公告已发布并推送到目标租户','ok');break;
+  }
+});
+</script>
+</body>
+</html>
