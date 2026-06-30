@@ -179,6 +179,7 @@ textarea{resize:vertical;line-height:1.6}
       <a data-v="packages"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M21 8l-9-5-9 5 9 5 9-5zM3 8v8l9 5 9-5V8M3 16l9 5 9-5"/></svg>套餐配置</a>
       <a data-v="videocfg"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><rect x="2" y="4" width="14" height="16" rx="2"/><path d="M16 9l6-3v12l-6-3z"/></svg>视频生成配置</a>
       <a data-v="prompts"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M7 8h10M7 12h6M5 3h14a2 2 0 012 2v10a2 2 0 01-2 2H9l-4 4z"/></svg>提示词管理</a>
+      <a data-v="modelcfg"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><circle cx="12" cy="12" r="3"/><path d="M19 12a7 7 0 00-.1-1l2-1.5-2-3.5-2.4 1a7 7 0 00-1.7-1l-.3-2.5h-4l-.3 2.5a7 7 0 00-1.7 1l-2.4-1-2 3.5 2 1.5a7 7 0 000 2l-2 1.5 2 3.5 2.4-1a7 7 0 001.7 1l.3 2.5h4l.3-2.5a7 7 0 001.7-1l2.4 1 2-3.5-2-1.5a7 7 0 00.1-1z"/></svg>模型参数</a>
       <a data-v="lexicon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M4 5a2 2 0 012-2h12v18H6a2 2 0 01-2-2z"/><path d="M8 7h7M8 11h5"/></svg>合规词库</a>
     </nav>
     <div class="foot" data-act="logout" style="cursor:pointer"><div class="av">蔚</div><div>蔚然 · 超级管理员</div><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" style="width:15px;height:15px;margin-left:auto;stroke-width:1.7"><path d="M16 17l5-5-5-5M21 12H9M9 21H5a2 2 0 01-2-2V5a2 2 0 012-2h4"/></svg></div>
@@ -218,7 +219,7 @@ textarea{resize:vertical;line-height:1.6}
     <section class="page" data-p="packages">
       <div class="lead"><div><div class="t">套餐配置</div><div class="s">定义套餐与各配额项 · 保存时校验「套餐价 ≥ 满额成本」防越用越亏</div></div>
         <button class="btn pri" data-act="new-package"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M12 5v14M5 12h14"/></svg>新建套餐</button></div>
-      <div class="alert"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M12 9v4M12 17h.01M10.3 3.9l-8 14A2 2 0 004 21h16a2 2 0 001.7-3l-8-14a2 2 0 00-3.4 0z"/></svg><div><b>套餐月费待定</b>：需等蝉镜 / 蝉妈妈最终报价反推单价后填实数。当前为结构占位。</div></div>
+      <div class="alert"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M12 9v4M12 17h.01M10.3 3.9l-8 14A2 2 0 004 21h16a2 2 0 001.7-3l-8-14a2 2 0 00-3.4 0z"/></svg><div><b>套餐月费待定</b>：需等供应商最终报价反推单价后填实数。当前为结构占位。</div></div>
       <div class="card pad" style="margin-bottom:16px"><div class="head"><h3>套餐</h3></div>
         <table id="pkgTbl"><thead><tr><th>套餐</th><th>月费</th><th>爆款</th><th>转写</th><th>生成</th><th>成片(分)</th><th>形象</th><th>满额成本</th><th>状态</th><th></th></tr></thead><tbody>
           <tr><td><b class="tt">标准版</b></td><td class="num-c">¥—</td><td class="num-c">2000</td><td class="num-c">100</td><td class="num-c">300</td><td class="num-c">60</td><td class="num-c">1</td><td class="num-c"><span class="bdg warn np">≈¥420</span></td><td><span class="bdg ok np">上架</span></td><td class="rowact"><button class="btn sm gho" data-act="toast" data-msg="编辑套餐（演示）">编辑</button></td></tr>
@@ -247,23 +248,23 @@ textarea{resize:vertical;line-height:1.6}
         <table id="tplTbl"><thead><tr><th>模板</th><th>类型</th><th>分段构成（每段用哪种 AI）</th><th>预估成本/条</th><th>状态</th><th></th></tr></thead><tbody>
           <tr><td><b class="tt">产品讲解</b><div class="tm">换数字人+产品</div></td><td><span class="bdg brd np">挂素材</span></td><td class="tm">数字人讲解 · 产品图 i2v · 字幕套壳</td><td class="num-c">≈¥6</td><td><span class="bdg ok np">上架</span></td><td class="rowact"><button class="btn sm gho" data-act="play-demo">▶ 案例</button><button class="btn sm gho" data-act="tpl-prompt" data-tpl="产品讲解">约束提示词</button><button class="btn sm gho" data-act="toast" data-msg="上传/替换案例视频（演示）">案例上传</button></td></tr>
           <tr><td><b class="tt">数字人+混剪</b><div class="tm">参考硅基结构</div></td><td><span class="bdg brd np">挂素材</span></td><td class="tm">数字人口播 · 素材切片混剪 · 字幕</td><td class="num-c">≈¥7</td><td><span class="bdg ok np">上架</span></td><td class="rowact"><button class="btn sm gho" data-act="play-demo">▶ 案例</button><button class="btn sm gho" data-act="tpl-prompt" data-tpl="数字人混剪">约束提示词</button><button class="btn sm gho" data-act="toast" data-msg="上传/替换案例视频（演示）">案例上传</button></td></tr>
-          <tr><td><b class="tt">Seedance 生成视频</b><div class="tm">纯 AI 文生视频</div></td><td><span class="bdg mut np">纯 AI</span></td><td class="tm">数字人开场（可选）· Seedance 文生视频 · 字幕</td><td class="num-c">≈¥12</td><td><span class="bdg ok np">上架</span></td><td class="rowact"><button class="btn sm gho" data-act="play-demo">▶ 案例</button><button class="btn sm gho" data-act="tpl-prompt" data-tpl="Seedance">约束提示词</button><button class="btn sm gho" data-act="toast" data-msg="上传/替换案例视频（演示）">案例上传</button></td></tr>
+          <tr><td><b class="tt">AI 生成视频</b><div class="tm">纯 AI 文生视频</div></td><td><span class="bdg mut np">纯 AI</span></td><td class="tm">数字人开场（可选）· AI 文生视频 · 字幕</td><td class="num-c">≈¥12</td><td><span class="bdg ok np">上架</span></td><td class="rowact"><button class="btn sm gho" data-act="play-demo">▶ 案例</button><button class="btn sm gho" data-act="tpl-prompt" data-tpl="Seedance">约束提示词</button><button class="btn sm gho" data-act="toast" data-msg="上传/替换案例视频（演示）">案例上传</button></td></tr>
         </tbody></table>
       </div>
 
       <!-- 视频供应商 -->
       <div class="card pad" style="margin-bottom:16px"><div class="head"><h3>生成供应商（Provider 隔离 · 可切换比价）</h3><span class="mini" style="margin-left:auto">候选据调研，单价签约前控制台核实</span></div>
         <table id="provTbl"><thead><tr><th>能力</th><th>当前供应商</th><th>接入</th><th>参考单价</th><th>1.0 自部署降本</th><th>状态</th></tr></thead><tbody>
-          <tr><td>数字人口播（换人）</td><td class="tm">阿里百炼 wan2.2-s2v</td><td><span class="bdg ok np">注册即用</span></td><td class="num-c tm">≈¥0.5/秒</td><td class="tm">MuseTalk(MIT)</td><td><span class="bdg ok np">启用</span></td></tr>
-          <tr><td>换主角（保场景）</td><td class="tm">阿里 animate-mix / 腾讯 IVH</td><td><span class="bdg ok np">注册即用</span></td><td class="num-c tm">需核实</td><td class="tm">—</td><td><span class="bdg mut np">备用</span></td></tr>
-          <tr><td>产品 i2v（换产品主线）</td><td class="tm">阿里 wan2.6-i2v / 可灵</td><td><span class="bdg ok np">注册即用</span></td><td class="num-c tm">≈¥0.6/秒</td><td class="tm">Wan2.2(Apache)</td><td><span class="bdg ok np">启用</span></td></tr>
-          <tr><td>文生视频（场景段）</td><td class="tm">阿里 i2v / 即梦 Seedance</td><td><span class="bdg warn np">实名</span></td><td class="num-c tm">≈¥1/秒</td><td class="tm">Wan2.2</td><td><span class="bdg ok np">启用·限用</span></td></tr>
-          <tr><td>保场景真换物（前沿）</td><td class="tm">可灵 O1 / 阿里 VACE(≤5s)</td><td><span class="bdg warn np">需打样</span></td><td class="num-c tm">需核实</td><td class="tm">—</td><td><span class="bdg mut np">未开放</span></td></tr>
+          <tr><td>数字人口播（换人）</td><td class="tm">数字人服务（商业API）</td><td><span class="bdg ok np">注册即用</span></td><td class="num-c tm">≈¥0.5/秒</td><td class="tm">自部署开源</td><td><span class="bdg ok np">启用</span></td></tr>
+          <tr><td>换主角（保场景）</td><td class="tm">换主角服务</td><td><span class="bdg ok np">注册即用</span></td><td class="num-c tm">需核实</td><td class="tm">—</td><td><span class="bdg mut np">备用</span></td></tr>
+          <tr><td>产品 i2v（换产品主线）</td><td class="tm">i2v 服务（商业API）</td><td><span class="bdg ok np">注册即用</span></td><td class="num-c tm">≈¥0.6/秒</td><td class="tm">自部署开源</td><td><span class="bdg ok np">启用</span></td></tr>
+          <tr><td>文生视频（场景段）</td><td class="tm">文生视频服务</td><td><span class="bdg warn np">实名</span></td><td class="num-c tm">≈¥1/秒</td><td class="tm">自部署开源</td><td><span class="bdg ok np">启用·限用</span></td></tr>
+          <tr><td>保场景真换物（前沿）</td><td class="tm">前沿换物服务</td><td><span class="bdg warn np">需打样</span></td><td class="num-c tm">需核实</td><td class="tm">—</td><td><span class="bdg mut np">未开放</span></td></tr>
           <tr><td>拼装 / 字幕套壳</td><td class="tm">Revideo(MIT) / FFmpeg</td><td><span class="bdg ok np">自部署</span></td><td class="num-c tm">≈¥0</td><td class="tm">同左</td><td><span class="bdg ok np">启用</span></td></tr>
         </tbody></table>
       </div>
 
-      <div class="note"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><circle cx="12" cy="12" r="9"/><path d="M12 8v5M12 16h.01"/></svg><span>演示版全用商业 API 求稳（阿里百炼一套 Key 打通 s2v+i2v）；1.0 高频量产切自部署开源降本。🔴 供应商须确认算法备案、成片加 AI 生成标识、仅授权形象换人。各段单价计入套餐「满额成本」校验，防越用越亏。</span></div>
+      <div class="note"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><circle cx="12" cy="12" r="9"/><path d="M12 8v5M12 16h.01"/></svg><span>演示版用商业 API 求稳（一套 Key 打通）；1.0 高频量产切自部署开源降本。🔴 供应商须确认算法备案、成片加 AI 生成标识、仅授权形象换人。各段单价计入套餐「满额成本」校验，防越用越亏。</span></div>
     </section>
 
     <!-- ===================== 提示词管理（生成类，运营维护，客户端不可改）===================== -->
@@ -277,10 +278,29 @@ textarea{resize:vertical;line-height:1.6}
         <tr><td><b class="tt">标题 / 字幕 / CTA 提示词</b></td><td class="tm">仿写</td><td><span class="bdg mut np">不可见</span></td><td><span class="bdg ok np">已下发</span></td><td class="rowact"><button class="btn sm gho" data-act="toast" data-msg="编辑（演示）">编辑</button></td></tr>
         <tr><td><b class="tt">数字人口播提示词</b></td><td class="tm">视频·口播段</td><td><span class="bdg mut np">不可见</span></td><td><span class="bdg ok np">已下发</span></td><td class="rowact"><button class="btn sm gho" data-act="toast" data-msg="编辑（演示）">编辑</button></td></tr>
         <tr><td><b class="tt">产品 i2v 提示词</b></td><td class="tm">视频·产品段</td><td><span class="bdg mut np">不可见</span></td><td><span class="bdg ok np">已下发</span></td><td class="rowact"><button class="btn sm gho" data-act="toast" data-msg="编辑（演示）">编辑</button></td></tr>
-        <tr><td><b class="tt">Seedance 画面提示词</b></td><td class="tm">视频·文生段</td><td><span class="bdg mut np">不可见</span></td><td><span class="bdg ok np">已下发</span></td><td class="rowact"><button class="btn sm gho" data-act="toast" data-msg="编辑（演示）">编辑</button></td></tr>
+        <tr><td><b class="tt">文生视频画面提示词</b></td><td class="tm">视频·文生段</td><td><span class="bdg mut np">不可见</span></td><td><span class="bdg ok np">已下发</span></td><td class="rowact"><button class="btn sm gho" data-act="toast" data-msg="编辑（演示）">编辑</button></td></tr>
         <tr><td><b class="tt">风格 · 温情风 / 专业风</b></td><td class="tm">口吻</td><td><span class="bdg brd np">客户可选/微调</span></td><td><span class="bdg ok np">已下发</span></td><td class="rowact"><button class="btn sm gho" data-act="toast" data-msg="编辑（演示）">编辑</button></td></tr>
       </tbody></table></div>
       <div class="note"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><circle cx="12" cy="12" r="9"/><path d="M12 8v5M12 16h.01"/></svg><span>模板的「约束提示词」（镜头/人物/动作/台词/语气）在「视频生成配置」里按模板维护；本页是通用生成提示词。两者都不向客户端开放编辑。</span></div>
+    </section>
+
+    <!-- ===================== 模型参数 ===================== -->
+    <section class="page" data-p="modelcfg">
+      <div class="lead"><div><div class="t">模型参数</div><div class="s">各场景调用的模型与 API 参数（温度 / top_p / 最大 tokens）由运营维护、客户端不可见；支持<b>平台默认 + 按商户覆盖</b></div></div></div>
+      <div class="card pad" style="margin-bottom:14px;display:flex;align-items:center;gap:12px;flex-wrap:wrap">
+        <span class="mini">配置对象</span>
+        <select class="inp" id="mcTenant" style="width:auto"><option value="">平台默认（全租户基线）</option><option>福寿堂礼仪</option><option>安然殡葬服务</option><option>永怀纪念</option></select>
+        <span class="spacer"></span>
+        <span class="mini" id="mcHint">当前编辑：平台默认基线，适用于所有未单独覆盖的租户</span>
+      </div>
+      <div class="card pad"><table id="mcTbl"><thead><tr><th>场景</th><th>模型</th><th>温度</th><th>top_p</th><th>最大tokens</th><th>来源</th><th></th></tr></thead><tbody>
+        <tr data-scn="爆款拆解"><td><b class="tt">爆款拆解</b><div class="tm">八维度 → 公式</div></td><td class="tm mc-model">文本模型 · 标准</td><td class="num-c mc-temp">0.3</td><td class="num-c mc-top">0.9</td><td class="num-c mc-tok">2048</td><td class="mc-src"><span class="bdg mut np">默认</span></td><td class="rowact"><button class="btn sm gho" data-act="edit-model">编辑</button></td></tr>
+        <tr data-scn="仿写脚本"><td><b class="tt">仿写脚本 / 口播</b><div class="tm">填知识库事实</div></td><td class="tm mc-model">文本模型 · 标准</td><td class="num-c mc-temp">0.8</td><td class="num-c mc-top">0.95</td><td class="num-c mc-tok">1024</td><td class="mc-src"><span class="bdg mut np">默认</span></td><td class="rowact"><button class="btn sm gho" data-act="edit-model">编辑</button></td></tr>
+        <tr data-scn="标题字幕CTA"><td><b class="tt">标题 / 字幕 / CTA</b><div class="tm">多平台分版</div></td><td class="tm mc-model">文本模型 · 标准</td><td class="num-c mc-temp">0.9</td><td class="num-c mc-top">0.95</td><td class="num-c mc-tok">512</td><td class="mc-src"><span class="bdg mut np">默认</span></td><td class="rowact"><button class="btn sm gho" data-act="edit-model">编辑</button></td></tr>
+        <tr data-scn="合规预审"><td><b class="tt">合规预审</b><div class="tm">违禁词检测 + 改写</div></td><td class="tm mc-model">文本模型 · 标准</td><td class="num-c mc-temp">0.0</td><td class="num-c mc-top">1.0</td><td class="num-c mc-tok">512</td><td class="mc-src"><span class="bdg mut np">默认</span></td><td class="rowact"><button class="btn sm gho" data-act="edit-model">编辑</button></td></tr>
+        <tr data-scn="图片视频打标"><td><b class="tt">图片 / 视频打标</b><div class="tm">素材库召回</div></td><td class="tm mc-model">多模态模型</td><td class="num-c mc-temp">0.2</td><td class="num-c mc-top">0.9</td><td class="num-c mc-tok">512</td><td class="mc-src"><span class="bdg mut np">默认</span></td><td class="rowact"><button class="btn sm gho" data-act="edit-model">编辑</button></td></tr>
+      </tbody></table></div>
+      <div class="note"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><circle cx="12" cy="12" r="9"/><path d="M12 8v5M12 16h.01"/></svg><span>温度越低越稳定（<b>合规预审 0.0、爆款拆解低温</b>＝确定性优先），越高越有创意（<b>仿写/标题高温</b>）。选某商户即可为其单独覆盖参数，未覆盖的场景继承平台默认；视频段（i2v/文生）画面参数在「视频生成配置」维护。</span></div>
     </section>
 
     <!-- ===================== 合规词库 ===================== -->
@@ -312,7 +332,7 @@ textarea{resize:vertical;line-height:1.6}
 
 <script>
 const $=s=>document.querySelector(s),$$=s=>document.querySelectorAll(s);
-const titles={tenants:['账号开通','客户租户'],packages:['套餐配置','计费'],videocfg:['视频生成配置','模板 + 供应商 + 计费'],prompts:['提示词管理','生成类提示词 · 运营维护下发'],lexicon:['合规词库 / 规则集','合规']};
+const titles={tenants:['账号开通','客户租户'],packages:['套餐配置','计费'],videocfg:['视频生成配置','模板 + 供应商 + 计费'],prompts:['提示词管理','生成类提示词 · 运营维护下发'],modelcfg:['模型参数','按场景 × 按商户配置'],lexicon:['合规词库 / 规则集','合规']};
 
 function go(v){
   $$('#nav a').forEach(a=>a.classList.toggle('on',a.dataset.v===v));
@@ -339,6 +359,15 @@ function modal(title,body,okText,onOk,wide){
 }
 function closeModal(){$('#mask').classList.remove('show');}
 $('#mask').addEventListener('click',e=>{if(e.target.id==='mask')closeModal();});
+$('#mcTenant')&&$('#mcTenant').addEventListener('change',function(){
+  const tn=this.value,hint=$('#mcHint');
+  $$('#mcTbl tbody tr').forEach(tr=>{
+    if(!tn){tr.querySelector('.mc-src').innerHTML='<span class="bdg mut np">默认</span>';tr.querySelector('.rowact').innerHTML='<button class="btn sm gho" data-act="edit-model">编辑</button>';}
+    else if(tr.dataset.scn==='仿写脚本'){tr.querySelector('.mc-src').innerHTML='<span class="bdg brd np">自定义</span>';tr.querySelector('.rowact').innerHTML='<button class="btn sm gho" data-act="edit-model">编辑</button><button class="btn sm gho dng" data-act="reset-model">重置</button>';}
+    else{tr.querySelector('.mc-src').innerHTML='<span class="bdg mut np">继承默认</span>';tr.querySelector('.rowact').innerHTML='<button class="btn sm gho" data-act="edit-model">覆盖</button>';}
+  });
+  hint.innerHTML=tn?'正在为「<b>'+tn+'</b>」覆盖；未覆盖场景继承平台默认':'当前编辑：平台默认基线，适用于所有未单独覆盖的租户';
+});
 // 模板「约束提示词」：模板内置的锁定约束，换数字人/换产品时这套不变，只替换形象与产品
 function blk(t,c,tag){return '<div style="margin-bottom:12px"><div style="font-size:12.5px;font-weight:600;color:var(--ink);margin-bottom:5px">'+t+' '+(tag||'')+'</div><div class="mini" style="line-height:1.7">'+c+'</div></div>';}
 const _lk='<span class="bdg dng np" style="font-size:10px">锁定·不可改</span>',_vr='<span class="bdg warn np" style="font-size:10px">换人/换产品时替换</span>';
@@ -357,9 +386,9 @@ const TPL_PROMPT={
     ['④ 口播脚本','按五段结构写口播（换选题/产品时替换）。硬事实只取知识库、未命中留空。',_vr],
     ['⑤ 混剪素材','按脚本节奏从素材库/免费源匹配切片（换产品/选题时替换）。',_vr],
     ['⑥ 🔴 质量红线','禁止文案整段重复（硅基原片有此 bug，必须去重）；画面与口播语义对齐；混剪片段来源合规（不自爬他人受版权素材）；成片加 AI 生成标识。',_lk]]},
-  'Seedance':{title:'Seedance 生成视频 · 纯 AI',tip:'完全 AI 生成（火山 Seedance 文生视频），无需客户素材。换选题时替换「画面提示词」与「口播」。',blocks:[
-    ['① 整体','数字人开场口播（可选）→ Seedance 文生视频生成主体画面 → 字幕。最贵段，模板约束 Seedance 段用量。',_lk],
-    ['② Seedance 画面提示词','镜头/光线/色调/主体/运镜的文生视频提示词（换选题时替换）。暖色调、自然光、东方素雅意境；避免人脸违禁元素。',_vr],
+  'Seedance':{title:'AI 生成视频 · 纯 AI',tip:'完全 AI 生成（文生视频），无需客户素材。换选题时替换「画面提示词」与「口播」。',blocks:[
+    ['① 整体','数字人开场口播（可选）→ AI 文生视频生成主体画面 → 字幕。最贵段，模板约束 文生视频段用量。',_lk],
+    ['② 文生视频画面提示词','镜头/光线/色调/主体/运镜的文生视频提示词（换选题时替换）。暖色调、自然光、东方素雅意境；避免人脸违禁元素。',_vr],
     ['③ 口播 / 字幕','开场口播脚本 + 全程字幕（换选题时替换口播）。',_vr],
     ['④ 🔴 质量红线','文生视频成本最高，按模板约束用量；成片加 AI 生成标识；避免违禁画面。',_lk]]}
 };
@@ -375,6 +404,15 @@ document.addEventListener('click',e=>{
   const a=el.dataset.act;
   switch(a){
     case 'go': go(el.dataset.v);break;
+    case 'edit-model':{const tr=el.closest('tr'),scn=tr.dataset.scn,tn=$('#mcTenant').value,gv=s=>tr.querySelector(s).textContent;
+      modal((tn?'['+tn+'] ':'[平台默认] ')+scn+' · 模型参数',
+        '<div class="split"><div class="field"><label>模型</label><select class="inp" id="mmModel"><option>文本模型 · 标准</option><option>文本模型 · 高级</option><option>多模态模型</option></select></div><div class="field"><label>温度 temperature</label><input class="inp" id="mmTemp" value="'+gv('.mc-temp')+'"></div></div>'+
+        '<div class="split"><div class="field"><label>top_p</label><input class="inp" id="mmTop" value="'+gv('.mc-top')+'"></div><div class="field" style="margin:0"><label>最大 tokens</label><input class="inp" id="mmTok" value="'+gv('.mc-tok')+'"></div></div>'+
+        (tn?'<div class="note" style="margin-top:12px"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M12 9v4M12 17h.01"/></svg><span>保存后<b>仅对「'+tn+'」覆盖</b>此场景，其余租户不受影响。</span></div>':'<div class="note" style="margin-top:12px"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M12 9v4M12 17h.01"/></svg><span>修改<b>平台默认基线</b>，影响所有未单独覆盖的租户。</span></div>'),
+        '保存',()=>{tr.querySelector('.mc-model').textContent=$('#mmModel').value;tr.querySelector('.mc-temp').textContent=$('#mmTemp').value;tr.querySelector('.mc-top').textContent=$('#mmTop').value;tr.querySelector('.mc-tok').textContent=$('#mmTok').value;
+          if(tn){tr.querySelector('.mc-src').innerHTML='<span class="bdg brd np">自定义</span>';tr.querySelector('.rowact').innerHTML='<button class="btn sm gho" data-act="edit-model">编辑</button><button class="btn sm gho dng" data-act="reset-model">重置</button>';}
+          closeModal();toast(tn?'已为「'+tn+'」覆盖 '+scn:'已更新平台默认 '+scn,'ok');});}break;
+    case 'reset-model':{const tr=el.closest('tr');tr.querySelector('.mc-src').innerHTML='<span class="bdg mut np">继承默认</span>';tr.querySelector('.rowact').innerHTML='<button class="btn sm gho" data-act="edit-model">覆盖</button>';toast('已重置为平台默认','warn');}break;
     case 'navtog':{const r=$('.rail');if(r)r.classList.toggle('open');const m=$('.navmask');if(m)m.classList.toggle('show');}break;
     case 'toast': toast(el.dataset.msg,el.dataset.type);break;
     case 'do-login': $('#login').style.display='none';go('tenants');toast('登录成功','ok');break;
@@ -415,7 +453,7 @@ document.addEventListener('click',e=>{
     case 'del-word':{const tr=el.closest('tr');tr.style.opacity=.4;setTimeout(()=>tr.remove(),200);toast('已从草稿移除该词条','warn');}break;
     case 'tpl-prompt': tplPrompt(el.dataset.tpl);break;
     case 'play-demo':{const nm=(el.closest('tr')&&el.closest('tr').querySelector('.tt'))?el.closest('tr').querySelector('.tt').textContent:'模板案例';
-      const src=nm.indexOf('Seedance')>=0?'../prototype/assets/demo/ai-gen.mp4':nm.indexOf('混剪')>=0?'../prototype/assets/demo/hunjian.mp4':'../prototype/assets/demo/daihuo.mp4';
+      const src=nm.indexOf('AI 生成')>=0?'../prototype/assets/demo/ai-gen.mp4':nm.indexOf('混剪')>=0?'../prototype/assets/demo/hunjian.mp4':'../prototype/assets/demo/daihuo.mp4';
       modal('案例视频 · '+nm,'<div style="position:relative;border-radius:10px;overflow:hidden;background:#1a1a1a;display:grid;place-items:center;max-height:60vh"><video src="'+src+'#t=0.1" controls muted playsinline preload="metadata" style="width:auto;max-width:100%;max-height:60vh;display:block;object-fit:contain" onerror="this.style.display=\'none\';this.nextElementSibling.style.display=\'grid\'"></video><div style="display:none;position:absolute;inset:0;place-items:center;color:#fff;text-align:center;min-height:280px"><div><div style="font-size:28px">▶</div><div style="opacity:.85;font-size:12px;margin-top:4px">数字人介绍产品 · 样片</div></div></div></div><div class="mini" style="margin-top:10px">每个内置模板配一条案例视频，商家端选用前可预览；运营把真实样片放入 prototype/assets/demo/（命名见该目录 README）。</div>','关闭',closeModal);}break;
     case 'new-tpl': modal('新增内置视频模板',
       '<div class="split"><div class="field"><label>模板名 <span class="req">*</span></label><input class="inp" id="ntpName" placeholder="如：节日促销"></div><div class="field"><label>类型</label><select class="inp" id="ntpType"><option>挂素材（需客户产品图）</option><option>纯 AI（无需素材）</option></select></div></div>'+
