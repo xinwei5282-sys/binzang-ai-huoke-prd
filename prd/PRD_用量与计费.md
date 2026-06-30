@@ -126,8 +126,9 @@ used < limit ──消耗──▶ used+1 ──...──▶ used = limit (满)
 
 > 复用 [[PRD_后台_套餐配置]] 的 `quota` / `addon` / `cost_unit`。本模块定义 `usage_record`。
 
-### 6.1 `quota`（复用·配额快照）
-company_id · type(5类) · limit · used · period(月) · source(套餐/增购) · enforce(bool, V1 仅形象=true)
+### 6.1 `quota`（行级表）→ **单一真相见 [[PRD索引]] §四.1**
+- 字段:`quota_id · company_id · type(5类) · limit(-1=不限) · used · period · source · enforce(V1 仅形象=true) · cap_estimate`。
+- 本模块为 `quota` 的**读写消费方**:used 累加、limit 校验、增购改 limit;开通时由账号开通模块实例化 quota 行。
 
 ### 6.2 `usage_record`（用量明细，**回流后台对账**）
 | 字段 | 类型 | 说明 |

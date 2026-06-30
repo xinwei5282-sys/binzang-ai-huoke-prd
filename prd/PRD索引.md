@@ -76,3 +76,38 @@ keywords: ["殡葬", "AI获客", "prd索引", "双轨"]
 - 外部依赖：蝉镜（数字人）/ 蝉妈妈（爆款数据）/ ASR（转写）/ LLM（拆解·生成·合规）/ 抖音发布 API
 - 合规红线：禁自爬、私域企微官方、合规预审为提醒非阻断 + 人工复核兜底
 - PRD 模板：1 概述 / 2 用户场景 / 3 整体方案(含设计约束) / 4 功能需求(逐字段) / 5 状态流转 / 6 数据对象 / 7 接口草案 / 8 技术考虑 / 9 风险依赖 / 10 验收标准
+
+---
+
+## 四、共用数据对象 schema 契约（单一真相 · 2026-06-30 冻结）
+
+> 落地审查发现:`quota` 等共用表在多份 PRD 中定义不一致(开通写、计费读对不上)。本节冻结**单一真相**,各 PRD 一律指向这里,不再各自定义。
+
+### 4.1 `quota`（配额 · 行级表 · 单一真相）
+| 字段 | 类型 | 说明 |
+|--|--|--|
+| quota_id | str(PK) | |
+| company_id | ref | 租户 |
+| type | enum | 爆款抓取 / 参考转写 / 内容生成 / 数字人成片(分钟) / 生成形象(个) |
+| limit | int | 额度;-1=不限 |
+| used | int | 已用 |
+| period | str | 月份键(YYYY-MM) |
+| source | enum | 套餐 / 增购 |
+| enforce | bool | 是否硬限;**V1 仅"生成形象"=true,其余=false(只计数)** |
+| cap_estimate | int | "不限(-1)"项的封顶估算量,供套餐满额成本计算 |
+
+**生命周期(三模块统一口径)**：
+- **套餐配置**:`package.quota_items`(json `{type:limit}`)是**套餐模板**,只定义"送多少",**不是 quota 本身**。
+- **账号开通**:开通/续期时按 `package.quota_items` **实例化成 `quota` 行**(company_id + 当月 period),即"快照"语义。~~`tenant_company.quota_snapshot`(json)取消~~,改为直接写 `quota` 行。
+- **用量计费**:读写 `quota` 行(used 累加、limit 校验、增购改 limit)。
+- 套餐改动只改 `package`,**不回溯已开通租户的 `quota` 行**(快照隔离)。
+
+### 4.2 `account` / `tenant_company`（账号/公司 · 单一真相）
+- 定义见 [[PRD_后台_账号开通]] §6.1/§6.2;[[PRD_账号与成员]] **复用同一张表,不另定义**。
+- `account.login` **全局唯一**,后台开通与商家端加成员**走同一唯一性校验服务**(防并发重复)。
+
+### 4.3 `product`（商品/product_id 主表 · 单一真相）
+- 定义见 [[PRD_多模态知识库底座]] §13.7:`product_id(PK·UUID) · company_id · external_key · name · aliases · source · created_at`。
+- 内容创作/数字人/视频模板/作品库等**按 product_id 引用**,不另建商品表;`kb_fact` / `asset` 持有 `product_id` 外键。
+
+> 🔒 **冻结约定**:以上三组表的 schema 以本节为准;任何 PRD 的局部定义若与此冲突,以本节为单一真相。

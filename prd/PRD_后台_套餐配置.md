@@ -138,8 +138,9 @@ keywords: ["殡葬", "套餐配置", "平台后台"]
 | quota_items | json | 5 类配额 {type: limit} |
 | full_cost | money | 满额成本(派生) |
 
-### 6.2 `quota`（配额快照，开通时按 package 冻结，**计费模块消费**）
-company_id · type(enum 5类) · limit(int) · used(int) · period(月) · source(套餐/增购)
+### 6.2 `quota`（配额 · 行级表）→ **单一真相见 [[PRD索引]] §四.1，本 PRD 不另定义**
+- 字段以索引 §四.1 为准:`quota_id · company_id · type · limit(-1=不限) · used · period · source · enforce · cap_estimate`。
+- 本模块关系:`package.quota_items`(§6.1) 是**套餐模板**;开通时按它实例化成 `quota` 行(归账号开通);满额成本用 `cap_estimate` 估算"不限"项。
 
 ### 6.3 `addon`（增购项）
 name · unit(个/分钟/次) · price(money) · apply_packages(ref list)

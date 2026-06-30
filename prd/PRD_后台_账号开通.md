@@ -168,7 +168,7 @@ keywords: ["殡葬", "账号开通", "平台后台"]
 | admin_account_id | ref | 管理员账号 |
 | sales_owner | str | 对接销售(备注) |
 | region | str | 地区(备注) |
-| quota_snapshot | json | 开通时按套餐写入的配额快照 |
+| ~~quota_snapshot~~ | — | **取消(2026-06-30)**:不存 json 快照;改为开通/续期时按 `package.quota_items` **实例化成 `quota` 行**(单一真相见 [[PRD索引]] §四.1)。快照语义 = 写入即冻结、套餐改动不回溯。 |
 
 ### 6.2 `account`（账号，**与商家端配对共用**）
 | 字段 | 类型 | 说明 |

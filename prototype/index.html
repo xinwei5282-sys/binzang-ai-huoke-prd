@@ -413,6 +413,13 @@ textarea{resize:vertical;line-height:1.6}
               <div class="tpl" data-tpl="Seedance"><div class="tpl-poster"><video src="assets/demo/ai-gen.mp4#t=0.1" muted playsinline preload="metadata" class="cover"></video><span class="cor" data-act="play-demo" data-name="AI 生成视频">▶ 案例</span><span class="dur">0:15</span></div><div class="tpl-i"><b>AI 生成视频</b><div class="mini">纯 AI · 文生视频 · 字幕</div></div></div>
             </div>
             <div class="mini" style="margin-top:8px">模板规定每段用哪种 AI（贵的文生视频默认≤1段），产品素材 AI 从知识库匹配。</div></div>
+          <div class="field" id="durBlock" style="margin-top:14px">
+            <label>视频时长 <span class="req">*</span> <span class="mini">（系统按所选模板把时长分配到各段；越长成本越高）</span></label>
+            <div class="seg" id="durSeg">
+              <button class="on" data-dur="15">15 秒</button><button data-dur="30">30 秒</button><button data-dur="60">60 秒</button><button data-dur="tpl">跟模板（长混剪）</button>
+            </div>
+            <div class="mini" id="durHint" style="margin-top:6px">≈15 秒 · 口播约 70 字 · 文生视频段 ≤1 段控量 · 预估成本：低</div>
+          </div>
           <div class="field" id="dhBlock" style="margin-top:4px">
             <label>数字人形象 + 声音 <span class="req">*</span> <span class="mini">（该模板含数字人口播，需指定出镜形象与声音）</span></label>
             <div class="split">
@@ -1029,6 +1036,8 @@ function selectedTpl(){const t=$('#tplPick .tpl.on');return t?t.dataset.tpl:'产
 function updateDH(tpl){const b=$('#dhBlock');if(b)b.style.display=(tpl==='产品讲解'||tpl==='数字人混剪')?'':'none';}
 $('#tplPick')&&$('#tplPick').addEventListener('click',e=>{const t=e.target.closest('.tpl');if(!t)return;$$('#tplPick .tpl').forEach(x=>x.classList.remove('on'));t.classList.add('on');renderSegs(t.dataset.tpl);updateDH(t.dataset.tpl);});
 renderSegs('产品讲解');updateDH('产品讲解');
+const DURHINT={'15':'≈15 秒 · 口播约 70 字 · 文生视频段 ≤1 段控量 · 预估成本：低','30':'≈30 秒 · 口播约 140 字 · 文生视频段控量 · 预估成本：中','60':'≈60 秒 · 口播约 280 字 · 文生视频段控量 · 预估成本：偏高','tpl':'跟模板时长（如数字人混剪可 2–3 分钟）· 文生视频段严格控量 · 预估成本：最高'};
+$('#durSeg')&&$('#durSeg').querySelectorAll('button').forEach(b=>b.addEventListener('click',()=>{$('#durSeg').querySelectorAll('button').forEach(x=>x.classList.remove('on'));b.classList.add('on');if($('#durHint'))$('#durHint').textContent=DURHINT[b.dataset.dur]||'';}));
 // 生成结果 平台分版（tab 随 Step3 所选平台动态生成，内容随平台变）
 const PMAP={'抖音':'dy','小红书':'xhs','视频号':'sph','快手':'ks'};
 const genData={
