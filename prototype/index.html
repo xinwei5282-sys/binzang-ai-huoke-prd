@@ -403,14 +403,14 @@ textarea{resize:vertical;line-height:1.6}
         </div>
         <div class="field"><label>目标平台 <span class="req">*</span> <span class="mini">（各平台自动分版）</span></label><div class="chks" id="genPlats"><span class="chk on">抖音</span><span class="chk on">小红书</span><span class="chk">视频号</span><span class="chk">快手</span></div></div>
         <div class="field"><label>合规规避</label><div style="display:flex;align-items:center;gap:10px"><span class="bdg ok">● 锁定开 · 全链路预审</span><span class="mini">系统殡葬规则自动规避违禁表达</span></div></div>
-        <div class="field"><label>产出视频？ <span class="mini">（开：先出脚本+预审，确认后再按模板出片；关：只产脚本 / 图文）</span></label>
+        <div class="field"><label>产出视频？ <span class="mini">（开：脚本+预审 → 确认脚本 → 分镜图 → 确认分镜图后才出片；关：只产脚本 / 图文）</span></label>
           <div style="display:flex;align-items:center;gap:10px"><span class="sw" id="mkVideo" data-act="toggle-mkvideo"></span><span class="mini" id="mkVideoTip">已关：只产脚本 / 图文（默认）</span></div></div>
         <div id="tplBlock" style="display:none">
           <div class="field" style="margin-bottom:4px"><label>选用视频模板 <span class="mini">（平台内置 · 点「▶案例」看样片）</span></label>
             <div class="tpl-pick" id="tplPick">
               <div class="tpl on" data-tpl="产品讲解"><div class="tpl-poster"><video src="assets/demo/daihuo.mp4#t=0.1" muted playsinline preload="metadata" class="cover"></video><span class="cor" data-act="play-demo" data-name="产品讲解 · 换数字人+产品">▶ 案例</span><span class="dur">0:10</span></div><div class="tpl-i"><b>产品讲解 · 换数字人+产品</b><div class="mini">数字人讲解 · 产品 i2v · 字幕</div></div></div>
               <div class="tpl" data-tpl="数字人混剪"><div class="tpl-poster"><video src="assets/demo/hunjian.mp4#t=0.1" muted playsinline preload="metadata" class="cover"></video><span class="cor" data-act="play-demo" data-name="数字人+混剪">▶ 案例</span><span class="dur">2:49</span></div><div class="tpl-i"><b>数字人+混剪</b><div class="mini">数字人口播 · 素材混剪 · 字幕</div></div></div>
-              <div class="tpl" data-tpl="Seedance"><div class="tpl-poster"><video src="assets/demo/ai-gen.mp4#t=0.1" muted playsinline preload="metadata" class="cover"></video><span class="cor" data-act="play-demo" data-name="AI 生成视频">▶ 案例</span><span class="dur">0:15</span></div><div class="tpl-i"><b>AI 生成视频</b><div class="mini">纯 AI · 文生视频 · 字幕</div></div></div>
+              <div class="tpl" data-tpl="Seedance"><div class="tpl-poster"><video src="assets/demo/ai-gen.mp4#t=0.1" muted playsinline preload="metadata" class="cover"></video><span class="cor" data-act="play-demo" data-name="AI 生成视频">▶ 案例</span><span class="dur">0:15</span></div><div class="tpl-i"><b>AI 生成视频</b><div class="mini">纯 AI · 文生图→确认→i2v · 字幕</div></div></div>
             </div>
             <div class="mini" style="margin-top:8px">模板规定每段用哪种 AI（贵的文生视频默认≤1段），产品素材 AI 从知识库匹配。</div></div>
           <div class="field" id="durBlock" style="margin-top:14px">
@@ -437,9 +437,10 @@ textarea{resize:vertical;line-height:1.6}
       <div id="createList">
 
       <!-- 生成任务（后台进度） -->
-      <div class="card pad" id="genTasksCard" style="margin-top:14px"><div class="head"><h3>生成任务</h3><span class="mini" style="margin-left:auto">后台：转写拆解 → 仿写（填知识库事实）→ 按模板生成；完成后查看结果</span></div><div class="flist" id="genTasks">
+      <div class="card pad" id="genTasksCard" style="margin-top:14px"><div class="head"><h3>生成任务</h3><span class="mini" style="margin-left:auto">出视频：拆解 → 仿写 → 脚本+预审 → 确认脚本 → 分镜图（便宜）→ 确认分镜图 → 才烧钱出片；图文直接生成</span></div><div class="flist" id="genTasks">
         <div class="fi" data-name="花圈挽联怎么选"><div class="ic">⚙</div><div class="meta"><b>花圈挽联怎么选</b><small class="gst">按模板逐段生成视频中…</small></div><span class="bdg brd run gstb">出片中</span></div>
-        <div class="fi" data-name="头七有什么讲究"><div class="ic">⚙</div><div class="meta"><b>头七有什么讲究</b><small class="gst">脚本就绪 · 合规预审通过 · 待确认出片</small></div><button class="btn sm" data-act="view-result" data-mode="script" style="margin-right:5px">看脚本</button><button class="btn sm pri" data-act="confirm-film">确认出片 →</button></div>
+        <div class="fi" data-name="头七有什么讲究"><div class="ic">⚙</div><div class="meta"><b>头七有什么讲究</b><small class="gst">分镜图就绪 · 待确认分镜图（确认后才烧钱出视频）</small></div><button class="btn sm" data-act="view-result" data-mode="script" style="margin-right:5px">看脚本</button><button class="btn sm pri" data-act="confirm-frames">确认分镜图 →</button></div>
+        <div class="fi" data-name="守灵夜有什么忌讳"><div class="ic">⚙</div><div class="meta"><b>守灵夜有什么忌讳</b><small class="gst">脚本就绪 · 合规预审通过 · 待确认脚本</small></div><button class="btn sm" data-act="view-result" data-mode="script" style="margin-right:5px">看脚本</button><button class="btn sm pri" data-act="confirm-script">确认脚本 →</button></div>
       </div></div>
 
       <!-- 历史生成记录 -->
@@ -771,19 +772,60 @@ function addGenTask(name,withVideo){const c=$('#genTasksCard');if(c)c.style.disp
   $('#genTasks').prepend(row);const s=row.querySelector('.gst');
   setTimeout(()=>{if(s)s.textContent='仿写中（套公式 + 填知识库事实）…';},1400);
   if(withVideo){
-    // 出视频：先跑到"脚本+预审就绪"停下，人工确认后才烧钱出片（不可逆步骤前置确认门）
-    setTimeout(()=>{if(s)s.textContent='脚本就绪 · 合规预审通过 · 待确认出片';const b=row.querySelector('.gstb');if(b)b.outerHTML='<button class="btn sm" data-act="view-result" data-mode="script" style="margin-right:5px">看脚本</button><button class="btn sm pri" data-act="confirm-film">确认出片 →</button>';},2800);
+    // 出视频（两级确认门）：先跑到"脚本+预审就绪"停在确认门1；确认脚本后生成分镜图（便宜）停在确认门2；确认分镜图后才烧钱出片
+    setTimeout(()=>{if(s)s.textContent='脚本就绪 · 合规预审通过 · 待确认脚本';const b=row.querySelector('.gstb');if(b)b.outerHTML='<button class="btn sm" data-act="view-result" data-mode="script" style="margin-right:5px">看脚本</button><button class="btn sm pri" data-act="confirm-script">确认脚本 →</button>';},2800);
   }else{
-    setTimeout(()=>{if(s)s.textContent='生成多平台图文中…';},2800);
+    setTimeout(()=>{if(s)s.textContent='生成文案 + 配图中（配图：素材库召回 / 阿里云文生图）…';},2800);
     setTimeout(()=>{const b=row.querySelector('.gstb');if(b)b.outerHTML='<button class="btn sm pri" data-act="view-result">查看结果 →</button>';if(s)s.textContent='已完成 · 已存历史 / 作品库';addHist(name,'图文');},4200);
   }}
-// 确认出片：脚本确认后才触发成片（贵且不可逆那一段）
-function confirmFilm(row){const s=row.querySelector('.gst');row.querySelector('.gstb')&&row.querySelector('.gstb').remove();
+// 确认门1·确认脚本：先按分镜生成首帧图（素材库召回零成本 / 阿里云文生图约几毛/张），停在确认门2，不烧视频钱
+function confirmScriptGate(row){const s=row.querySelector('.gst');row.querySelectorAll('button,.gstb').forEach(b=>b.remove());
+  const badge=document.createElement('span');badge.className='bdg brd run gstb';badge.textContent='生成分镜图';row.querySelector('.meta').after(badge);
+  if(s)s.textContent='按分镜生成首帧图中（素材库召回 / 阿里云文生图，低成本）…';
+  setTimeout(()=>{badge.remove();if(s)s.textContent='分镜图就绪 · 待确认分镜图（确认后才烧钱出视频）';
+    row.insertAdjacentHTML('beforeend','<button class="btn sm" data-act="view-result" data-mode="script" style="margin-right:5px">看脚本</button><button class="btn sm pri" data-act="confirm-frames">确认分镜图 →</button>');},2000);}
+// 确认门2·分镜图确认弹窗：每个分镜一张卡（口播文字 + 首帧图 + 来源），可换图/重生成；全部认可才进入烧钱出片
+function frameCard(no,name,text,imgHtml,srcLabel,bdgCls,bdgTxt,acts){
+  return '<div class="fi" style="align-items:flex-start;padding:10px 12px;margin-bottom:10px;border:1px solid var(--line-2);border-radius:10px">'+imgHtml+
+    '<div class="meta"><b>'+no+' '+name+'</b><small>'+text+'<br>首帧来源：'+srcLabel+'</small></div>'+
+    '<span class="bdg '+bdgCls+'" style="flex:none">'+bdgTxt+'</span>'+(acts||'')+'</div>';}
+function framesModal(row){window._frameRow=row;
+  const body='<div class="mini" style="margin-bottom:10px">图片阶段成本≈几毛（文生图按张 / 素材库召回零成本）；<b>确认后才进入视频生成</b>（i2v 0.6–1 元/秒，成本大头）。每张图可换/可重生成，废片拦在图片层。</div>'+
+    frameCard('①','开场口播','很多人不知道，老人的寿衣讲究单数，一般五件、七件。','<img src="https://i.pravatar.cc/80?img=13" style="width:52px;height:52px;border-radius:8px;object-fit:cover;flex:none">','老板克隆形象（已授权，固定不需生成）','mut','数字人','')+
+    frameCard('②','产品展示','真丝面料透气，是对老人最后的体面，价格 ¥2,880。','<img src="https://picsum.photos/seed/shouyi/104/104" style="width:52px;height:52px;border-radius:8px;object-fit:cover;flex:none">','素材库召回「真丝七件套-产品图」· 确认后作 i2v 首帧','ok','✓素材库','<button class="btn sm gho" data-act="swap-seg" style="flex:none;margin-left:6px">换图</button>')+
+    frameCard('③','场景氛围','一针一线都是心意，体面地送老人最后一程。','<img src="https://picsum.photos/seed/yijing/104/104" style="width:52px;height:52px;border-radius:8px;object-fit:cover;flex:none">','阿里云文生图（qwen-image，约 ¥0.2/张）· 确认后转 i2v','brd','文生图','<button class="btn sm gho" data-act="regen-frame" style="flex:none;margin-left:6px">重生成</button><button class="btn sm gho" data-act="swap-seg" style="flex:none;margin-left:6px">换图</button>')+
+    frameCard('④','字幕 CTA','为家里老人准备的，评论区扣「1」，我把选购清单发你。','<div class="ic" style="flex:none">▣</div>','素雅字幕模板 A · 套壳渲染（零成本）','mut','套壳','');
+  modal('确认分镜图 · '+(row&&row.dataset.name||''),body,'确认分镜图，开始出片',()=>{closeModal();confirmFilm(window._frameRow);toast('分镜图已确认，开始按模板逐段出视频（烧钱步骤）','ok');},true);
+  $('#modal').classList.add('xwide');}
+// 确认出片：两道门都过了才触发成片（贵且不可逆那一段）
+function confirmFilm(row){if(!row)return;const s=row.querySelector('.gst');row.querySelectorAll('button,.gstb').forEach(b=>b.remove());
   const badge=document.createElement('span');badge.className='bdg brd run gstb';badge.textContent='出片中';row.querySelector('.meta').after(badge);
   if(s)s.textContent='按模板逐段生成视频中…';
   setTimeout(()=>{badge.outerHTML='<button class="btn sm pri" data-act="view-result">查看结果 →</button>';if(s)s.textContent='已完成 · 已存历史 / 作品库';const nm=row.dataset.name||'模板成片';addHist(nm,'成片');addWork(nm);},2200);}
-// 查看结果 / 看脚本：Tab 分区。mode='script' 只到脚本（确认门前，未出片）；默认 full（已出片，含成片素材）
+// 查看结果 / 看脚本：Tab 分区。mode='script' 只到脚本（确认门前，未出片）；形态=图文 → 图文预览；默认 full（已出片，含成片素材）
+function illuCard(no,name,src,cap,srcLabel,bdgCls,bdgTxt,canRegen){
+  return '<div class="fi" style="display:block;padding:0;overflow:hidden;border:1px solid var(--line-2);border-radius:10px">'+
+    '<div style="aspect-ratio:3/4;overflow:hidden;position:relative"><img src="'+src+'" style="width:100%;height:100%;object-fit:cover;display:block">'+
+    '<span style="position:absolute;left:8px;bottom:8px;right:8px;color:#fff;font-size:11px;line-height:1.4;text-shadow:0 1px 4px rgba(0,0,0,.75)">图注：'+cap+'</span></div>'+
+    '<div style="padding:8px 10px"><b style="font-size:12px">'+no+' '+name+'</b><br><small class="mini">'+srcLabel+'</small>'+
+    '<div style="display:flex;align-items:center;gap:6px;margin-top:6px"><span class="bdg '+bdgCls+'" style="flex:none">'+bdgTxt+'</span><span class="spacer"></span>'+
+    (canRegen?'<button class="btn sm gho" data-act="regen-frame">重生成</button>':'')+'<button class="btn sm gho" data-act="swap-seg">换图</button></div></div></div>';}
 const RES_TAB={
+  imgtext:'<div class="resfilm"><div>'+
+    '<div class="mini" style="margin:0 0 8px;font-weight:600;color:var(--ink)">配图预览（小红书 3:4）· 按「配图脚本」逐张对应，可换图 / 重生成</div>'+
+    '<div class="tiles" style="grid-template-columns:repeat(2,1fr)">'+
+    illuCard('P1','封面 · 禁忌钩子大字','https://picsum.photos/seed/sygaijin/300/400','老人寿衣讲究单数，很多人第一步就错了','阿里云文生图（qwen-image）+ 大字套壳','brd','文生图',true)+
+    illuCard('P2','产品实拍 · 真丝细节','https://picsum.photos/seed/shouyi/300/400','真丝面料透气，是最后的体面','素材库召回「真丝七件套-产品图」（零成本·已授权）','ok','✓素材库',false)+
+    illuCard('P3','干货图 · 单数讲究对比','https://picsum.photos/seed/duibi/300/400','五件 / 七件怎么选，看这张就懂','阿里云文生图 + 图表套壳','brd','文生图',true)+
+    illuCard('P4','结尾 · 引导卡','https://picsum.photos/seed/yindao/300/400','评论区扣「1」领选购清单','素雅文字卡模板 · 套壳渲染（零成本）','mut','套壳',false)+
+    '</div><div class="mini" style="margin-top:8px">配图来源三级：<b>素材库实拍优先</b>（最真·零成本）→ <b>阿里云文生图</b>（约几毛/张）→ 无合格候选<b>留空提示补素材</b>，不硬凑。图片便宜，图文不设确认门，随时换/重生成。</div></div>'+
+    '<div class="rscroll">'+
+    '<div class="field" style="margin:0 0 10px"><label>标题（可改）</label><input class="inp" value="老人寿衣讲究单数，很多人第一步就错了🕯️"></div>'+
+    '<div class="field" style="margin:0 0 10px"><label>正文 · 小红书笔记（可改）</label><textarea rows="9" class="inp">家里老人到了要准备的年纪，寿衣真的别乱买❗\n\n1️⃣ 件数讲究单数：一般五件、七件，取「阳数」的讲究\n2️⃣ 面料选真丝或纯棉：透气亲肤，是对老人最后的体面\n3️⃣ 提前备不是不孝：老一辈讲「冲喜添寿」，提前准备是心意\n\n我们家做了 12 年，真丝七件套 ¥2,880 起，每一针都是手工缝的。\n\n不懂怎么选的，评论区扣「1」，把选购清单发你🙏</textarea></div>'+
+    '<div class="field" style="margin:0 0 10px"><label>话题标签</label><input class="inp" value="#寿衣讲究 #殡葬知识 #给老人尽孝 #体面告别"></div>'+
+    '<div style="display:flex;align-items:center;gap:8px;margin-bottom:10px"><span class="bdg ok">合规预审 · 已通过</span><span class="mini">硬事实（¥2,880/真丝）取自知识库，未命中留空不编造</span></div>'+
+    '<div style="background:var(--surface-2);border:1px dashed var(--line-2);border-radius:10px;padding:11px 13px"><div class="mini" style="font-weight:600;margin-bottom:5px">发布出口</div><div class="mini">小红书无开放接口 → <b>导出 zip（4 张图 + 文案 txt）手动发布</b>；或存作品库（形态=图文）后导出。</div></div>'+
+    '</div></div>',
   decon:'<div class="mini" style="line-height:1.8"><b>八维度拆解</b><br>钩子=禁忌制造紧迫 ｜ 结构=痛点→科普→方案→引导 ｜ 情绪=愧疚→安心 ｜ 选题=习俗禁忌系列 ｜ 视觉=面料特写+素雅暖光 ｜ CTA=评论扣1 ｜ 评论区=高频问价<br><br><b>可迁移公式</b><br>禁忌钩子 + 习俗科普 + 体面叙事 + 评论区钩子</div>',
   script:'<div class="field" style="margin:0 0 12px"><label>仿写脚本 / 口播（可改）</label><textarea rows="4" class="inp">很多人不知道，老人的寿衣讲究单数……真丝是对老人最后的体面。评论区扣「1」领选购清单。</textarea></div>'+
     '<div style="background:var(--surface-2);border:1px dashed var(--line-2);border-radius:10px;padding:11px 13px"><div class="mini" style="font-weight:600;margin-bottom:7px">🔎 仿写溯源 · 防编造</div><div style="display:flex;flex-wrap:wrap;gap:6px"><span class="bdg ok">¥2,880 ← 价目表.xlsx</span><span class="bdg ok">单数讲究 ← 习俗.docx</span><span class="bdg ok">真丝 ← 价目表.xlsx</span><span class="bdg mut">口吻 ← 温情风</span></div><div class="mini" style="margin-top:7px">硬事实只取知识库、未命中留空不编造；正文数字与知识库回检不一致会标红。</div></div>',
@@ -806,8 +848,8 @@ const RES_TAB={
     '<div class="fi" style="padding:6px 8px;background:var(--surface-2)"><div class="ic" style="flex:none">▣</div><div class="meta"><b>画面：素雅字幕模板 A</b><small>套壳渲染</small></div><button class="btn sm gho" data-act="swap-seg">换画面</button></div></div>'+
     '</div></div>'
 };
-function viewResult(mode,title){const isScript=mode==='script';const t0=title||'老人寿衣的讲究';
-  const tabs=isScript?[['script','脚本 + 溯源'],['decon','拆解 + 公式']]:[['film','成片 + 素材'],['script','脚本 + 溯源'],['decon','拆解 + 公式']];
+function viewResult(mode,title,form){const isScript=mode==='script';const isImgText=!isScript&&form==='图文';const t0=title||'老人寿衣的讲究';
+  const tabs=isScript?[['script','脚本 + 溯源'],['decon','拆解 + 公式']]:isImgText?[['imgtext','图文预览'],['script','文案 + 溯源'],['decon','拆解 + 公式']]:[['film','成片 + 素材'],['script','脚本 + 溯源'],['decon','拆解 + 公式']];
   const body='<div class="tabs" id="resTabs" style="margin-bottom:14px">'+tabs.map((t,i)=>'<button'+(i===0?' class="on"':'')+' data-rtab="'+t[0]+'">'+t[1]+'</button>').join('')+'</div>'+
     '<div id="resBody" style="min-height:120px">'+RES_TAB[tabs[0][0]]+'</div>';
   modal((isScript?'看脚本 · ':'生成结果 · ')+t0,body,isScript?'确认脚本':'微调后重生成',()=>{closeModal();toast(isScript?'脚本已确认':'已按微调重新生成（演示）','ok');},true);
@@ -855,11 +897,13 @@ document.addEventListener('click',e=>{
     case 'dissect': addDissectTask('老人寿衣的讲究（参考视频）');toast('拆解任务已提交：后台转写 + AI 拆解约 1-2 分钟，完成后通知，可继续其他操作','ok');break;
     case 'open-dissect': step(1);break;
     case 'reuse-cfg': go('create');showCreate('form');toast('已复用该记录的配置，可直接调整后重新生成','ok');break;
-    case 'toggle-mkvideo':{const sw=$('#mkVideo');sw.classList.toggle('on');const on=sw.classList.contains('on');if($('#tplBlock'))$('#tplBlock').style.display=on?'':'none';if(on)updateDH(selectedTpl());if($('#mkVideoTip'))$('#mkVideoTip').textContent=on?'已开：先出脚本+预审，确认后再出片':'已关：只产脚本 / 图文（默认）';toast(on?'已开启出视频（含确认门）':'已关闭出视频（只产图文）');}break;
-    case 'auto-gen':{const plats=[...$$('#genPlats .chk.on')].map(c=>c.textContent);if(!plats.length){toast('请至少选一个目标平台','warn');break;}const withVideo=$('#mkVideo')&&$('#mkVideo').classList.contains('on');addGenTask('老人寿衣的讲究',withVideo);showCreate('list');toast('已提交：后台 拆解 → 仿写 → '+(withVideo?'出脚本+预审，待你确认后再出片':'生成图文')+'（'+plats.join('/')+'）；可继续其他操作','ok');}break;
-    case 'view-result':{const row=el.closest('tr')||el.closest('.fi');const tt=row&&row.querySelector('.tt,b');viewResult(el.dataset.mode,tt?tt.textContent.replace(/★赢家/,'').trim():'');}break;
+    case 'toggle-mkvideo':{const sw=$('#mkVideo');sw.classList.toggle('on');const on=sw.classList.contains('on');if($('#tplBlock'))$('#tplBlock').style.display=on?'':'none';if(on)updateDH(selectedTpl());if($('#mkVideoTip'))$('#mkVideoTip').textContent=on?'已开：确认脚本 → 分镜图 → 确认分镜图后才出片（两级确认门）':'已关：只产脚本 / 图文（默认）';toast(on?'已开启出视频（两级确认门：脚本 / 分镜图）':'已关闭出视频（只产图文）');}break;
+    case 'auto-gen':{const plats=[...$$('#genPlats .chk.on')].map(c=>c.textContent);if(!plats.length){toast('请至少选一个目标平台','warn');break;}const withVideo=$('#mkVideo')&&$('#mkVideo').classList.contains('on');addGenTask('老人寿衣的讲究',withVideo);showCreate('list');toast('已提交：后台 拆解 → 仿写 → '+(withVideo?'脚本+预审 → 两道确认（脚本/分镜图）后才出片':'生成图文（文案+配图）')+'（'+plats.join('/')+'）；可继续其他操作','ok');}break;
+    case 'view-result':{const row=el.closest('tr')||el.closest('.fi');const tt=row&&row.querySelector('.tt,b');let form='';if(row){form=row.dataset.form||'';if(!form){const tds=row.querySelectorAll('td');if(tds.length>2)form=tds[1].textContent.trim();}}viewResult(el.dataset.mode,tt?tt.textContent.replace(/★赢家/,'').trim():'',form);}break;
     case 'view-asset': viewAsset(el.dataset.name||'素材',el.dataset.kind);break;
-    case 'confirm-film':{const row=el.closest('.fi');modal('确认出片','成片是<b>按分钟付费、不可逆</b>的一段。确认前请已核对脚本与价格无误（合规已预审通过）。<br><br>确认后系统按模板逐段生成视频。','确认出片',()=>{closeModal();confirmFilm(row);toast('已确认，开始按模板出片','ok');});}break;
+    case 'confirm-script':{const row=el.closest('.fi');modal('确认脚本（门1 / 共 2 道）','确认后系统先按分镜生成<b>首帧图</b>（素材库召回零成本 / 阿里云文生图约几毛/张），<b>不产生视频费用</b>。<br><br>分镜图就绪后需你再确认一次（门2），才开始烧钱出视频。','确认脚本，生成分镜图',()=>{closeModal();confirmScriptGate(row);toast('脚本已确认，按分镜生成首帧图中（低成本）','ok');});}break;
+    case 'confirm-frames':{const row=el.closest('.fi');framesModal(row);}break;
+    case 'regen-frame':{const card=el.closest('.fi');const img=card&&card.querySelector('img');if(img){window._rgSeed=(window._rgSeed||0)+1;img.src='https://picsum.photos/seed/regen'+window._rgSeed+'/300/400';}toast('已用阿里云文生图重生成该图（约 ¥0.2/张）','ok');}break;
     case 'new-create': showCreate('form');break;
     case 'back-create-list': showCreate('list');break;
     case 'use-formula':{const nm=el.dataset.formula||'';go('create');showCreate('form');const sel=$('#formulaSelect');if(sel){const op=[...sel.options].find(x=>x.value===nm);if(op){sel.value=op.value;sel.dispatchEvent(new Event('change'));}}toast('已带入公式到新建配置（已选中、软推荐模板），可调整后生成','ok');}break;
