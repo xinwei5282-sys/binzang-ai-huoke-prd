@@ -209,6 +209,30 @@ textarea{resize:vertical;line-height:1.6}
 .sw.on::after{transform:translateX(17px)}
 .sw.dis{background:var(--line);cursor:not-allowed;opacity:.55}
 .swrow{display:flex;align-items:center;gap:8px;margin-top:12px;padding-top:11px;border-top:1px solid var(--line);font-size:12.5px;color:var(--ink-2)}
+/* enterprise knowledge center */
+.kb-tabs{display:flex;gap:3px;overflow-x:auto;border-bottom:1px solid var(--line);margin:-2px 0 18px;scrollbar-width:none}
+.kb-tabs::-webkit-scrollbar{display:none}
+.kb-tabs button{border:0;background:transparent;color:var(--ink-3);font-family:inherit;font-size:13px;padding:10px 13px 11px;cursor:pointer;white-space:nowrap;border-bottom:2px solid transparent;margin-bottom:-1px}
+.kb-tabs button.on{color:var(--brand-d);border-color:var(--brand);font-weight:600}
+.kb-panel{display:none}.kb-panel.show{display:block;animation:in .25s cubic-bezier(.2,.7,.2,1)}
+.kb-init{background:var(--rail);color:var(--rail-tx);border-radius:15px;padding:21px 23px;margin-bottom:16px;display:grid;grid-template-columns:minmax(0,1.4fr) minmax(260px,.6fr);gap:28px;align-items:center;overflow:hidden;position:relative}
+.kb-init::after{content:"";position:absolute;width:190px;height:190px;border:1px solid oklch(1 0 0/.09);border-radius:50%;right:-70px;top:-90px;box-shadow:0 0 0 36px oklch(1 0 0/.025),0 0 0 72px oklch(1 0 0/.018)}
+.kb-init .ey{font-size:11px;letter-spacing:1.2px;color:var(--accent);font-weight:600;margin-bottom:6px}.kb-init h2{color:#fff;font-size:18px;font-weight:600}.kb-init p{font-size:12.5px;margin-top:5px;max-width:620px}
+.kb-init .prog{position:relative;z-index:1}.kb-init .progline{height:7px;background:oklch(1 0 0/.12);border-radius:8px;overflow:hidden;margin:8px 0}.kb-init .progline i{display:block;width:83%;height:100%;background:var(--accent);border-radius:8px}.kb-init .progmeta{display:flex;justify-content:space-between;align-items:center;font-size:12px}.kb-init .progmeta b{color:#fff}.kb-init .progmeta span{color:var(--rail-tx-2)}
+.kb-overview{display:grid;grid-template-columns:minmax(0,1.5fr) minmax(300px,.78fr);gap:16px;align-items:start}
+.kb-health{display:grid;grid-template-columns:148px 1fr;gap:22px;align-items:center;padding:22px}
+.health-ring{width:116px;height:116px;border-radius:50%;background:conic-gradient(var(--brand) 0 78%,var(--surface-2) 78%);display:grid;place-items:center;position:relative;margin:auto}.health-ring::after{content:"";position:absolute;inset:10px;border-radius:50%;background:var(--surface)}.health-ring .hv{position:relative;z-index:1;text-align:center}.health-ring b{display:block;font-size:27px;font-family:Sora}.health-ring span{font-size:11px;color:var(--ink-3)}
+.kb-signals{display:grid;grid-template-columns:1fr 1fr;column-gap:22px}.kb-signal{padding:10px 0;border-bottom:1px dashed var(--line);display:flex;justify-content:space-between;gap:10px}.kb-signal:nth-last-child(-n+2){border-bottom:0}.kb-signal span{font-size:12px;color:var(--ink-3)}.kb-signal b{font-size:13px;font-weight:600}
+.kb-todo{display:flex;gap:11px;padding:12px 0;border-bottom:1px solid var(--line);align-items:flex-start}.kb-todo:last-child{border-bottom:0;padding-bottom:0}.kb-todo .ki{width:30px;height:30px;border-radius:8px;background:var(--warn-sft);color:oklch(0.5 0.12 60);display:grid;place-items:center;flex:none;font-size:12px;font-weight:700}.kb-todo .ki.ok{background:var(--ok-sft);color:oklch(0.42 0.1 155)}.kb-todo .meta{min-width:0;flex:1}.kb-todo b{display:block;font-size:12.5px}.kb-todo small{display:block;color:var(--ink-3);font-size:11.5px;margin-top:2px}
+.domain-strip{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-top:16px}.domain-cell{border-top:1px solid var(--line);padding:13px 2px 0}.domain-cell .dc{display:flex;justify-content:space-between;gap:8px;font-size:12px;color:var(--ink-3)}.domain-cell .db{font-size:13px;font-weight:600;margin-top:3px}.domain-cell .bar{height:4px;background:var(--surface-2);border-radius:4px;overflow:hidden;margin-top:8px}.domain-cell .bar i{display:block;height:100%;background:var(--brand)}
+.kb-source-row,.kb-review-row,.agent-row{display:grid;grid-template-columns:minmax(240px,1.3fr) minmax(150px,.6fr) minmax(170px,.7fr) auto;gap:16px;align-items:center;padding:14px 4px;border-bottom:1px solid var(--line)}
+.kb-source-row:last-child,.kb-review-row:last-child,.agent-row:last-child{border-bottom:0}.source-identity{display:flex;gap:11px;align-items:center;min-width:0}.source-identity .si{width:36px;height:36px;border-radius:9px;background:var(--brand-sft);color:var(--brand-d);display:grid;place-items:center;font-size:11px;font-weight:700;flex:none}.source-identity b{display:block;font-size:13px}.source-identity small{display:block;color:var(--ink-3);font-size:11.5px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.permline{display:flex;flex-wrap:wrap;gap:5px;margin-top:7px}.perm{font-size:10.5px;line-height:1.6;padding:2px 7px;border-radius:5px;background:var(--surface-2);color:var(--ink-2);white-space:nowrap}.perm.safe{background:var(--ok-sft);color:oklch(0.4 0.09 155)}.perm.limit{background:var(--warn-sft);color:oklch(0.48 0.11 60)}.perm.secret{background:var(--danger-sft);color:var(--danger)}
+.kb-domain-head{display:flex;align-items:center;gap:12px;flex-wrap:wrap;margin-bottom:14px}.kb-domain-head .spacer{min-width:10px}.kb-domain-title b{font-size:15px}.kb-domain-title span{display:block;color:var(--ink-3);font-size:11.5px;margin-top:2px}
+.review-fact{font-size:12px;color:var(--ink-2);margin-top:4px}.review-fact strong{color:var(--ink);font-weight:600}.review-src{font-size:11.5px;color:var(--ink-3)}
+.gov-grid{display:grid;grid-template-columns:minmax(0,1.25fr) minmax(300px,.75fr);gap:16px;align-items:start}.gov-rule{display:flex;align-items:center;gap:12px;padding:13px 0;border-bottom:1px solid var(--line)}.gov-rule:last-child{border-bottom:0}.gov-rule .rule-icon{width:34px;height:34px;border-radius:9px;background:var(--surface-2);display:grid;place-items:center;flex:none}.gov-rule .meta{flex:1}.gov-rule b{display:block;font-size:12.5px}.gov-rule small{display:block;font-size:11.5px;color:var(--ink-3);margin-top:2px}
+.agent-row{grid-template-columns:minmax(210px,1fr) minmax(260px,1.35fr) minmax(170px,.8fr) auto}.agent-id{display:flex;align-items:center;gap:10px}.agent-id .ai{width:38px;height:38px;border-radius:10px;background:var(--rail);color:var(--accent);display:grid;place-items:center;font-size:12px;font-weight:700}.agent-id b{font-size:13px;display:block}.agent-id small{font-size:11.5px;color:var(--ink-3)}
+.kb-empty-scope{padding:16px;background:var(--surface-2);border-radius:10px;color:var(--ink-2);font-size:12.5px}
 /* login */
 .login{position:fixed;inset:0;z-index:200;display:grid;grid-template-columns:1.05fr .95fr}
 .login .lpanel{background:linear-gradient(160deg,var(--rail),oklch(0.31 0.045 205));color:#fff;padding:52px 56px;display:flex;flex-direction:column}
@@ -281,12 +305,18 @@ textarea{resize:vertical;line-height:1.6}
   .top .chip.usage,.top .crumb{display:none}
   .page{padding:18px 14px 48px}
   .lead{flex-wrap:wrap;align-items:flex-start}
-  .split,.wzgrid,.kbwrap{grid-template-columns:1fr}
+  .split,.wzgrid,.kbwrap,.kb-overview,.gov-grid,.kb-init{grid-template-columns:1fr}
+  .kb-init{gap:17px}.kb-init::after{display:none}
+  .kb-source-row,.kb-review-row,.agent-row{grid-template-columns:1fr;gap:8px}.kb-source-row .rowact,.kb-review-row .rowact,.agent-row .rowact{text-align:left}
+  .domain-strip{grid-template-columns:1fr 1fr}
+  .lead>div{min-width:0}.lead>div:first-child{width:100%}.lead .s{overflow-wrap:anywhere;white-space:normal}
+  .kbwrap>.glist{display:flex;overflow-x:auto;gap:4px;padding:6px;scrollbar-width:none}.kbwrap>.glist::-webkit-scrollbar{display:none}.kbwrap>.glist .gitem{flex:none;white-space:nowrap}.kbwrap>.glist .gitem .ct{margin-left:8px}
+  .kb-panel .flist .fi{flex-wrap:wrap;align-items:flex-start}.kb-panel .flist .fi .meta{min-width:0;width:calc(100% - 52px);flex:1 1 calc(100% - 52px)}.kb-panel .flist .fi .permline{max-width:100%}
   .aside{position:static}
   .card>table,.card.pad>table{display:block;overflow-x:auto;white-space:nowrap;-webkit-overflow-scrolling:touch}
   .toolbar input,.toolbar select{flex:1 1 auto;min-width:120px}
 }
-@media(max-width:560px){.stats{grid-template-columns:1fr}}
+@media(max-width:560px){.stats{grid-template-columns:1fr}.kb-health{grid-template-columns:1fr}.kb-signals{grid-template-columns:1fr}.kb-signal:nth-last-child(2){border-bottom:1px dashed var(--line)}.domain-strip{grid-template-columns:1fr}.kb-tabs{margin-left:-14px;margin-right:-14px;padding:0 14px}.kb-init{padding:18px}.lead>div+div,.lead>div+button{width:100%}}
 </style>
 </head>
 <body>
@@ -320,7 +350,7 @@ textarea{resize:vertical;line-height:1.6}
       <a data-v="create"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M12 20h9M16.5 3.5a2.1 2.1 0 013 3L7 19l-4 1 1-4z"/></svg>内容创作</a>
       <a data-v="burst"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M13 2L3 14h7l-1 8 11-13h-8z"/></svg>爆款抓取<span class="dot">新</span></a>
       <div class="grp">资产</div>
-      <a data-v="kb"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M4 5a2 2 0 012-2h12v18H6a2 2 0 01-2-2z"/><path d="M8 7h7M8 11h7"/></svg>知识库</a>
+      <a data-v="kb"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M4 5a2 2 0 012-2h12v18H6a2 2 0 01-2-2z"/><path d="M8 7h7M8 11h7"/></svg>企业知识库<span class="dot">7</span></a>
       <a data-v="avatar"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><circle cx="12" cy="8" r="4"/><path d="M4 21a8 8 0 0116 0"/></svg>数字人</a>
       <a data-v="tune"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M4 21v-7M4 10V3M12 21v-9M12 8V3M20 21v-5M20 12V3M1 14h6M9 8h6M17 16h6"/></svg>提示词微调</a>
       <div class="grp">发布</div>
@@ -491,44 +521,126 @@ textarea{resize:vertical;line-height:1.6}
 
     <!-- KB -->
     <section class="page" data-p="kb">
-      <div class="lead"><div><div class="t">知识库</div><div class="s">多模态营销底座：事实（结构化/非结构化）+ 图片/视频素材，AI 自动分类 + 人工分组，供内容生成与视频调用</div></div>
-        <div style="display:flex;gap:8px">
-          <button class="btn" data-act="new-group">+ 新建分组</button>
-          <button class="btn" data-act="new-struct">+ 录入结构化</button>
-          <button class="btn pri" data-act="pick-file"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M12 5v14M5 12h14"/></svg>傻瓜上传（资料 / 素材）</button>
+      <div class="lead"><div><div class="t">企业知识库</div><div class="s">企业统一知识底座 · 资料先进入收件箱，经确认后成为 Agent 可调用的正式知识</div></div>
+        <div style="display:flex;gap:8px;flex-wrap:wrap">
+          <button class="btn" data-act="kb-tab" data-kbtab="agents">Agent 授权</button>
+          <button class="btn pri" data-act="open-kb-upload"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M12 5v14M5 12h14"/></svg>上传企业资料</button>
         </div></div>
       <input type="file" id="kbFile" hidden multiple accept=".doc,.docx,.txt,.xls,.xlsx,.csv,.pdf,image/*,audio/*,video/*">
-      <div class="kbwrap">
-        <div class="glist" id="groupList">
-          <div class="gitem on" data-act="kb-group" data-group=""><span class="gi"></span>全部<span class="ct">6</span></div>
-          <div class="gitem" data-act="kb-group" data-group="产品价格"><span class="gi"></span>产品价格<span class="ct">2</span></div>
-          <div class="gitem" data-act="kb-group" data-group="习俗讲究"><span class="gi"></span>习俗讲究<span class="ct">2</span></div>
-          <div class="gitem" data-act="kb-group" data-group="承接话术"><span class="gi"></span>承接话术<span class="ct">1</span></div>
-          <div class="gitem" data-act="kb-group" data-group="门店信息"><span class="gi"></span>门店信息<span class="ct">1</span></div>
-          <div class="gitem" data-act="kb-group" data-group="产品素材"><span class="gi"></span>产品素材<span class="ct">3</span></div>
-          <div class="gitem addg" data-act="new-group"><span class="gi"></span>+ 新建分组</div>
+      <div class="kb-tabs" id="kbTabs">
+        <button class="on" data-act="kb-tab" data-kbtab="overview">知识概览</button>
+        <button data-act="kb-tab" data-kbtab="sources">数据源中心</button>
+        <button data-act="kb-tab" data-kbtab="domains">业务知识域</button>
+        <button data-act="kb-tab" data-kbtab="review">待审核 <span class="bdg warn" style="margin-left:4px">7</span></button>
+        <button data-act="kb-tab" data-kbtab="governance">治理中心</button>
+        <button data-act="kb-tab" data-kbtab="agents">Agent 授权</button>
+      </div>
+
+      <div class="kb-panel show" data-kbpanel="overview">
+        <div class="kb-init">
+          <div><div class="ey">企业知识初始化</div><h2>核心知识已可用，还差 1 项即可完成基础建设</h2><p>企业、产品、客户、品牌与销售知识已经确认。建议补充“审批与经营规则”，企业 Agent 才能安全执行自动化任务。</p></div>
+          <div class="prog"><div class="progmeta"><b>基础知识 5 / 6</b><span>83%</span></div><div class="progline"><i></i></div><button class="btn sm" data-act="kb-tab" data-kbtab="governance" style="margin-top:5px;background:transparent;color:#fff;border-color:oklch(1 0 0/.22)">继续补充 →</button></div>
         </div>
-        <div>
-          <div class="card pad" style="margin-bottom:14px;display:flex;align-items:center;gap:12px;flex-wrap:wrap">
-            <div class="seg" id="kbType"><button class="on" data-t="">全部类型</button><button data-t="struct">结构化</button><button data-t="unstruct">非结构化</button><button data-t="asset">素材（图/视）</button></div>
-            <span class="spacer"></span><span class="mini">结构化＝表格事实精确填充 · 非结构化＝文档/转写走检索 · 素材库＝图/视，AI 打标后供视频按段匹配</span>
-          </div>
-          <div class="card pad"><div class="head"><h3>资料</h3><span class="mini" id="kbCount" style="margin-left:auto"></span></div>
-            <div class="flist" id="kbList2">
-              <div class="fi" data-group="产品价格" data-type="struct"><div class="ic">XLS</div><div class="meta"><b>2026 价目表.xlsx</b><small>120 条事实 · 8 字段</small></div><span class="tp s">⊞ 结构化</span><span class="bdg mut" style="margin:0 4px">产品价格</span><span class="bdg ok stb">已结构化</span><button class="btn sm gho" data-act="view-struct">查看</button></div>
-              <div class="fi" data-group="产品价格" data-type="struct"><div class="ic">XLS</div><div class="meta"><b>骨灰盒规格价格.xlsx</b><small>36 条 · 6 字段</small></div><span class="tp s">⊞ 结构化</span><span class="bdg mut" style="margin:0 4px">产品价格</span><span class="bdg ok stb">已结构化</span><button class="btn sm gho" data-act="view-struct">查看</button></div>
-              <div class="fi" data-group="习俗讲究" data-type="unstruct"><div class="ic">DOC</div><div class="meta"><b>各地殡葬习俗.docx</b><small>45 段 · 已分段入库</small></div><span class="tp u">≣ 非结构化</span><span class="bdg mut" style="margin:0 4px">习俗讲究</span><span class="bdg ok stb">已入库</span><button class="btn sm gho" data-act="toast" data-msg="查看文档分段（演示）">查看</button></div>
-              <div class="fi" data-group="习俗讲究" data-type="unstruct"><div class="ic">MP3</div><div class="meta"><b>老板口述-选购讲究.mp3</b><small>转写中 · 预计 1 分钟</small></div><span class="tp u">≣ 非结构化</span><span class="bdg mut" style="margin:0 4px">习俗讲究</span><span class="bdg brd run stb">转写中</span><button class="btn sm gho" data-act="toast" data-msg="转写完成后可查看">查看</button></div>
-              <div class="fi" data-group="承接话术" data-type="unstruct"><div class="ic">DOC</div><div class="meta"><b>承接话术整理.docx</b><small>28 段 · 已分段入库</small></div><span class="tp u">≣ 非结构化</span><span class="bdg mut" style="margin:0 4px">承接话术</span><span class="bdg ok stb">已入库</span><button class="btn sm gho" data-act="toast" data-msg="查看文档分段（演示）">查看</button></div>
-              <div class="fi" data-group="门店信息" data-type="unstruct"><div class="ic">TXT</div><div class="meta"><b>门店与服务介绍.txt</b><small>已分段入库</small></div><span class="tp u">≣ 非结构化</span><span class="bdg mut" style="margin:0 4px">门店信息</span><span class="bdg ok stb">已入库</span><button class="btn sm gho" data-act="toast" data-msg="查看文档分段（演示）">查看</button></div>
-              <div class="fi" data-group="产品素材" data-type="asset"><img src="https://picsum.photos/seed/shouyi/80/80" style="width:34px;height:34px;border-radius:6px;object-fit:cover;flex:none"><div class="meta"><b>真丝七件套-产品图.jpg</b><small>AI 标签：产品·寿衣·真丝·特写 · 供混剪召回</small></div><span class="tp a">▣ 素材</span><span class="bdg mut" style="margin:0 4px">产品素材</span><span class="bdg ok stb">已打标</span><button class="btn sm gho" data-act="view-asset" data-name="真丝七件套-产品图.jpg" data-kind="product">查看</button></div>
-              <div class="fi" data-group="产品素材" data-type="asset"><img src="https://picsum.photos/seed/guhe/80/80" style="width:34px;height:34px;border-radius:6px;object-fit:cover;flex:none"><div class="meta"><b>金丝楠骨灰盒-产品图.jpg</b><small>AI 标签：产品·骨灰盒·特写 · 供混剪召回</small></div><span class="tp a">▣ 素材</span><span class="bdg mut" style="margin:0 4px">产品素材</span><span class="bdg ok stb">已打标</span><button class="btn sm gho" data-act="view-asset" data-name="金丝楠骨灰盒-产品图.jpg" data-kind="product">查看</button></div>
-              <div class="fi" data-group="产品素材" data-type="asset"><video src="assets/demo/daihuo.mp4#t=1" muted preload="metadata" style="width:34px;height:34px;border-radius:6px;object-fit:cover;flex:none"></video><div class="meta"><b>门店实拍-空镜.mp4</b><small>AI 标签：场景·门店·空镜 · 可切 4 段</small></div><span class="tp a">▣ 素材</span><span class="bdg mut" style="margin:0 4px">产品素材</span><span class="bdg ok stb">已打标</span><button class="btn sm gho" data-act="view-asset" data-name="门店实拍-空镜.mp4" data-kind="product">查看</button></div>
+        <div class="kb-overview">
+          <div class="card kb-health">
+            <div class="health-ring"><div class="hv"><b>78</b><span>知识健康度</span></div></div>
+            <div><div class="head" style="margin-bottom:5px"><h3>可信度与可用性</h3><span class="more" data-act="kb-tab" data-kbtab="governance">查看治理 →</span></div>
+              <div class="kb-signals">
+                <div class="kb-signal"><span>正式知识</span><b>286 条</b></div><div class="kb-signal"><span>来源可追溯</span><b>96%</b></div>
+                <div class="kb-signal"><span>负责人覆盖</span><b>82%</b></div><div class="kb-signal"><span>本月 Agent 调用</span><b>1,248 次</b></div>
+              </div>
             </div>
+          </div>
+          <div class="card pad"><div class="head"><h3>今天需要处理</h3><span class="more" data-act="kb-tab" data-kbtab="review">全部 7 项 →</span></div>
+            <div class="kb-todo"><div class="ki">3</div><div class="meta"><b>关键事实待确认</b><small>价格、服务承诺与联系方式</small></div></div>
+            <div class="kb-todo"><div class="ki">2</div><div class="meta"><b>新旧资料存在冲突</b><small>采用新版本前不会覆盖正式知识</small></div></div>
+            <div class="kb-todo"><div class="ki ok">2</div><div class="meta"><b>知识即将到期</b><small>负责人复核后可继续使用</small></div></div>
+          </div>
+        </div>
+        <div class="card pad" style="margin-top:16px"><div class="head"><h3>业务知识域覆盖</h3><span class="mini" style="margin-left:auto">企业管理员维护一级知识域 · 员工上传无需选择最终归属</span></div>
+          <div class="domain-strip">
+            <div class="domain-cell"><div class="dc"><span>产品与服务</span><span>92%</span></div><div class="db">86 条 · 王店长负责</div><div class="bar"><i style="width:92%"></i></div></div>
+            <div class="domain-cell"><div class="dc"><span>市场与客户</span><span>68%</span></div><div class="db">41 条 · 李经理负责</div><div class="bar"><i style="width:68%;background:var(--accent)"></i></div></div>
+            <div class="domain-cell"><div class="dc"><span>品牌与内容</span><span>81%</span></div><div class="db">73 条 · 运营组负责</div><div class="bar"><i style="width:81%"></i></div></div>
+            <div class="domain-cell"><div class="dc"><span>流程与规则</span><span>44%</span></div><div class="db">18 条 · 待补负责人</div><div class="bar"><i style="width:44%;background:var(--warn)"></i></div></div>
           </div>
         </div>
       </div>
-      <div class="note"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><circle cx="12" cy="12" r="9"/><path d="M12 8v5M12 16h.01"/></svg><span>一个知识库，傻瓜上传，AI 自动判类：Excel/CSV→结构化（精确填价格/规格）、Word/TXT/音频→非结构化（转写检索）、<b>图片/视频→素材</b>（AI 打标，供视频混剪按分镜相似召回）。两类检索分治：硬事实精确召回不进向量库、画面相似匹配。</span></div>
+
+      <div class="kb-panel" data-kbpanel="sources">
+        <div class="card pad" style="margin-bottom:14px;display:flex;align-items:center;gap:14px;flex-wrap:wrap"><div><b>企业资料收件箱</b><div class="mini">上传后由 AI 提取、判类和检查冲突；未经负责人确认，不会成为正式知识</div></div><span class="spacer"></span><button class="btn" data-act="connect-source">连接数据源</button><button class="btn pri" data-act="open-kb-upload">上传资料</button></div>
+        <div class="card pad"><div class="head"><h3>数据源与处理状态</h3><span class="mini" style="margin-left:auto">最近同步：今天 15:42</span></div><div id="sourceList">
+          <div class="kb-source-row"><div class="source-identity"><div class="si">XLS</div><div><b>2026 产品报价.xlsx</b><small>蔚然上传 · 今天 14:20 · 识别出 120 条事实</small></div></div><div><span class="bdg warn">待确认 6 条</span></div><div class="mini">推荐：产品与服务</div><div class="rowact"><button class="btn sm pri" data-act="kb-tab" data-kbtab="review">去确认</button></div></div>
+          <div class="kb-source-row"><div class="source-identity"><div class="si">DOC</div><div><b>销售接待 SOP.docx</b><small>销售部 · 昨天 18:06 · 版本 v3</small></div></div><div><span class="bdg ok">已发布</span></div><div class="mini">销售与客户服务</div><div class="rowact"><button class="btn sm gho" data-act="toast" data-msg="已打开来源与提取知识关系">查看</button></div></div>
+          <div class="kb-source-row"><div class="source-identity"><div class="si">云</div><div><b>企业云盘 / 市场资料</b><small>自动同步 · 每日 02:00 · 36 个文件</small></div></div><div><span class="bdg ok">同步正常</span></div><div class="mini">品牌与内容</div><div class="rowact"><button class="btn sm gho" data-act="toast" data-msg="数据源同步规则已打开">配置</button></div></div>
+          <div class="kb-source-row"><div class="source-identity"><div class="si">CRM</div><div><b>客户管理系统</b><small>按任务授权查询，不复制客户个人数据</small></div></div><div><span class="bdg brd">已授权</span></div><div class="mini">销售 Agent 专用</div><div class="rowact"><button class="btn sm gho" data-act="toast" data-msg="仅允许销售 Agent 按客户负责人范围查询">权限</button></div></div>
+        </div></div>
+      </div>
+
+      <div class="kb-panel" data-kbpanel="domains">
+        <div class="kbwrap">
+          <div class="glist" id="groupList">
+            <div class="gitem on" data-act="kb-group" data-group=""><span class="gi"></span>全部正式知识<span class="ct">6</span></div>
+            <div class="gitem" data-act="kb-group" data-group="企业与组织"><span class="gi"></span>企业与组织<span class="ct">1</span></div>
+            <div class="gitem" data-act="kb-group" data-group="产品与服务"><span class="gi"></span>产品与服务<span class="ct">2</span></div>
+            <div class="gitem" data-act="kb-group" data-group="市场与客户"><span class="gi"></span>市场与客户<span class="ct">0</span></div>
+            <div class="gitem" data-act="kb-group" data-group="品牌与内容"><span class="gi"></span>品牌与内容<span class="ct">1</span></div>
+            <div class="gitem" data-act="kb-group" data-group="销售与客服"><span class="gi"></span>销售与客服<span class="ct">1</span></div>
+            <div class="gitem" data-act="kb-group" data-group="经营流程与制度"><span class="gi"></span>经营流程与制度<span class="ct">0</span></div>
+            <div class="gitem" data-act="kb-group" data-group="合规与权限"><span class="gi"></span>合规与权限<span class="ct">1</span></div>
+            <div class="gitem" data-act="kb-group" data-group="素材与案例"><span class="gi"></span>素材与案例<span class="ct">1</span></div>
+          </div>
+          <div>
+            <div class="card pad" style="margin-bottom:14px"><div class="kb-domain-head"><div class="kb-domain-title"><b id="kbDomainName">全部正式知识</b><span>跨知识域检索 · 仅显示你有权查看的内容</span></div><span class="spacer"></span><div class="seg" id="kbType"><button class="on" data-t="">全部</button><button data-t="struct">硬事实</button><button data-t="unstruct">文档 / 规则</button><button data-t="asset">素材</button></div></div><div class="mini">权限摘要：当前身份为“企业管理员” · 可查看全员内部及以下知识 · 机密知识仍需专项授权</div></div>
+            <div class="card pad"><div class="head"><h3>正式知识</h3><span class="mini" id="kbCount" style="margin-left:auto"></span></div><div class="flist" id="kbList2">
+              <div class="fi" data-group="产品与服务" data-type="struct"><div class="ic">事实</div><div class="meta"><b>真丝七件套标准售价 ¥2,880</b><small>来源：2026 产品报价.xlsx · 第 12 行 · 王店长确认</small><div class="permline"><span class="perm">销售部可见</span><span class="perm safe">销售 / PPT Agent</span><span class="perm limit">对外输出需审核</span><span class="perm">2026-12-31 失效</span></div></div><span class="tp s">硬事实</span><span class="bdg warn stb">部门内部</span><button class="btn sm gho" data-act="view-kb-detail">详情</button></div>
+              <div class="fi" data-group="产品与服务" data-type="unstruct"><div class="ic">SOP</div><div class="meta"><b>寿衣产品选购说明</b><small>来源：产品手册.pdf · 第 4-9 页 · 王店长负责</small><div class="permline"><span class="perm">全员内部</span><span class="perm safe">内容 / 销售 Agent</span><span class="perm safe">允许对外引用</span></div></div><span class="tp u">文档</span><span class="bdg ok stb">已发布</span><button class="btn sm gho" data-act="view-kb-detail">详情</button></div>
+              <div class="fi" data-group="企业与组织" data-type="unstruct"><div class="ic">企</div><div class="meta"><b>福恩寿衣企业与门店介绍</b><small>来源：企业介绍.docx · 蔚然确认</small><div class="permline"><span class="perm safe">可对外公开</span><span class="perm safe">全部 Agent</span><span class="perm safe">允许对外输出</span></div></div><span class="tp u">介绍</span><span class="bdg ok stb">已发布</span><button class="btn sm gho" data-act="view-kb-detail">详情</button></div>
+              <div class="fi" data-group="品牌与内容" data-type="unstruct"><div class="ic">牌</div><div class="meta"><b>品牌表达与禁用词</b><small>来源：品牌手册 v2.docx · 运营组负责</small><div class="permline"><span class="perm">全员内部</span><span class="perm safe">内容 / 发布 Agent</span><span class="perm limit">发布前强制检查</span></div></div><span class="tp u">规则</span><span class="bdg ok stb">已发布</span><button class="btn sm gho" data-act="view-kb-detail">详情</button></div>
+              <div class="fi" data-group="销售与客服" data-type="unstruct"><div class="ic">销</div><div class="meta"><b>客户接待与异议处理 SOP</b><small>来源：销售接待 SOP.docx · 李经理负责</small><div class="permline"><span class="perm">销售部可见</span><span class="perm safe">销售 Agent</span><span class="perm">禁止批量导出</span></div></div><span class="tp u">SOP</span><span class="bdg warn stb">部门内部</span><button class="btn sm gho" data-act="view-kb-detail">详情</button></div>
+              <div class="fi" data-group="合规与权限" data-type="struct"><div class="ic">密</div><div class="meta"><b>销售价格底线与审批条件</b><small>来源：经营规则.xlsx · 蔚然确认</small><div class="permline"><span class="perm secret">管理层可见</span><span class="perm secret">仅企业 Agent</span><span class="perm secret">禁止自动输出</span></div></div><span class="tp s">规则</span><span class="bdg dng stb">严格受限</span><button class="btn sm gho" data-act="restricted-kb">申请访问</button></div>
+              <div class="fi" data-group="素材与案例" data-type="asset"><img src="https://picsum.photos/seed/shouyi/80/80" style="width:34px;height:34px;border-radius:6px;object-fit:cover;flex:none"><div class="meta"><b>真丝七件套产品素材</b><small>来源：市场部上传 · 已识别 8 张图 / 3 段视频</small><div class="permline"><span class="perm">全员内部</span><span class="perm safe">内容 / 数字人混剪</span><span class="perm safe">已获使用授权</span></div></div><span class="tp a">素材</span><span class="bdg ok stb">已发布</span><button class="btn sm gho" data-act="view-asset" data-name="真丝七件套产品素材" data-kind="product">查看</button></div>
+            </div></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="kb-panel" data-kbpanel="review">
+        <div class="card pad"><div class="head"><h3>待审核与治理事项</h3><span class="mini" style="margin-left:auto">关键事实必须逐条确认 · 普通介绍可批量确认</span></div><div id="reviewList">
+          <div class="kb-review-row" data-review><div><b>真丝七件套售价</b><div class="review-fact">提取结果：<strong>¥2,980</strong> · 当前正式值：<strong>¥2,880</strong></div><div class="review-src">新来源：2026 产品报价.xlsx · 第 12 行</div></div><div><span class="bdg dng">价格冲突</span></div><div class="mini">负责人：王店长</div><div class="rowact"><button class="btn sm pri" data-act="resolve-kb">处理冲突</button></div></div>
+          <div class="kb-review-row" data-review><div><b>门店服务热线</b><div class="review-fact">提取结果：<strong>0571-8866 2218</strong></div><div class="review-src">来源：门店与服务介绍.txt · 第 6 行</div></div><div><span class="bdg warn">关键事实</span></div><div class="mini">负责人：蔚然</div><div class="rowact"><button class="btn sm pri" data-act="approve-kb">确认并发布</button></div></div>
+          <div class="kb-review-row" data-review><div><b>售后处理规范</b><div class="review-fact">18 个文档段落 · AI 推荐归入“销售与客服”</div><div class="review-src">来源：销售接待 SOP.docx</div></div><div><span class="bdg brd">待确认</span></div><div class="mini">负责人：李经理</div><div class="rowact"><button class="btn sm" data-act="approve-kb">审核内容</button></div></div>
+          <div class="kb-review-row" data-review><div><b>端午促销政策</b><div class="review-fact">已于 2026-06-30 失效，仍被 2 个工作流引用</div><div class="review-src">影响：内容 Agent、自动发布 Agent</div></div><div><span class="bdg warn">已失效</span></div><div class="mini">负责人：运营组</div><div class="rowact"><button class="btn sm" data-act="renew-kb">复核处理</button></div></div>
+        </div></div>
+      </div>
+
+      <div class="kb-panel" data-kbpanel="governance">
+        <div class="gov-grid">
+          <div class="card pad"><div class="head"><h3>治理规则</h3><span class="mini" style="margin-left:auto">修改会提示受影响的 Agent 与工作流</span></div>
+            <div class="gov-rule"><div class="rule-icon">验</div><div class="meta"><b>关键事实逐条确认</b><small>价格、规格、联系方式、承诺和合同规则未经确认不可调用</small></div><span class="sw on" data-act="toggle-policy"></span></div>
+            <div class="gov-rule"><div class="rule-icon">冲</div><div class="meta"><b>冲突时保留旧版本</b><small>新资料不自动覆盖，由业务负责人裁决版本与适用范围</small></div><span class="sw on" data-act="toggle-policy"></span></div>
+            <div class="gov-rule"><div class="rule-icon">期</div><div class="meta"><b>高变更知识定期复核</b><small>价格 30 天、活动政策 7 天、联系方式 90 天</small></div><button class="btn sm gho" data-act="edit-review-cycle">配置</button></div>
+            <div class="gov-rule"><div class="rule-icon">审</div><div class="meta"><b>高风险对外输出需审批</b><small>涉及价格、承诺、管理层规则或跨部门调用时转人工</small></div><span class="sw on" data-act="toggle-policy"></span></div>
+          </div>
+          <div class="card pad"><div class="head"><h3>知识域负责人</h3><span class="more" data-act="toast" data-msg="负责人配置已打开">管理</span></div>
+            <div class="kb-todo"><div class="ki ok">王</div><div class="meta"><b>王店长 · 产品与服务</b><small>86 条知识 · 2 项待处理</small></div></div>
+            <div class="kb-todo"><div class="ki ok">李</div><div class="meta"><b>李经理 · 销售与客服</b><small>52 条知识 · 1 项待处理</small></div></div>
+            <div class="kb-todo"><div class="ki">!</div><div class="meta"><b>经营流程与制度</b><small>尚未指定负责人</small></div><button class="btn sm" data-act="toast" data-msg="请选择一名业务知识负责人">指定</button></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="kb-panel" data-kbpanel="agents">
+        <div class="card pad" style="margin-bottom:14px;display:flex;align-items:center;gap:12px;flex-wrap:wrap"><div><b>Agent 最小权限原则</b><div class="mini">员工发起任务时，Agent 不得超过员工权限；后台自动化使用独立企业服务身份</div></div><span class="spacer"></span><span class="bdg ok">权限网关已启用</span></div>
+        <div class="card pad"><div class="head"><h3>Agent 知识与动作授权</h3><span class="mini" style="margin-left:auto">5 个 Agent · 2 个包含人工审批</span></div>
+          <div class="agent-row"><div class="agent-id"><div class="ai">内容</div><div><b>内容创作 Agent</b><small>跟随任务发起人身份</small></div></div><div><div class="permline"><span class="perm">产品与服务</span><span class="perm">品牌与内容</span><span class="perm">素材与案例</span><span class="perm safe">合规规则</span></div></div><div><span class="bdg ok">生成草稿</span><div class="mini">不得直接发布</div></div><div class="rowact"><button class="btn sm" data-act="edit-agent-auth" data-agent="内容创作 Agent">编辑授权</button></div></div>
+          <div class="agent-row"><div class="agent-id"><div class="ai">销售</div><div><b>AI 销售 Agent</b><small>跟随销售人员数据范围</small></div></div><div><div class="permline"><span class="perm">产品与服务</span><span class="perm">销售与客服</span><span class="perm limit">CRM 按任务查询</span></div></div><div><span class="bdg warn">报价需审核</span><div class="mini">禁止读取价格底线</div></div><div class="rowact"><button class="btn sm" data-act="edit-agent-auth" data-agent="AI 销售 Agent">编辑授权</button></div></div>
+          <div class="agent-row"><div class="agent-id"><div class="ai">PPT</div><div><b>PPT / 朋友圈 Agent</b><small>跟随任务发起人身份</small></div></div><div><div class="permline"><span class="perm">企业与组织</span><span class="perm">产品与服务</span><span class="perm">品牌与内容</span><span class="perm">授权案例</span></div></div><div><span class="bdg ok">生成草稿</span><div class="mini">引用知识可追溯</div></div><div class="rowact"><button class="btn sm" data-act="edit-agent-auth" data-agent="PPT / 朋友圈 Agent">编辑授权</button></div></div>
+          <div class="agent-row"><div class="agent-id"><div class="ai">企业</div><div><b>企业自动化 Agent</b><small>独立服务身份 · 非老板身份</small></div></div><div><div class="permline"><span class="perm">经营流程与制度</span><span class="perm secret">指定管理层规则</span><span class="perm">有效期至 2026-12-31</span></div></div><div><span class="bdg warn">外部动作需审批</span><div class="mini">可起草，不可自行承诺</div></div><div class="rowact"><button class="btn sm pri" data-act="edit-agent-auth" data-agent="企业自动化 Agent">配置权限</button></div></div>
+          <div class="agent-row"><div class="agent-id"><div class="ai">发布</div><div><b>自动发布 Agent</b><small>企业服务身份</small></div></div><div><div class="permline"><span class="perm">已审核内容</span><span class="perm">平台规则</span><span class="perm safe">合规状态</span></div></div><div><span class="bdg dng">人工确认后发布</span><div class="mini">不可跳过审核门</div></div><div class="rowact"><button class="btn sm" data-act="edit-agent-auth" data-agent="自动发布 Agent">编辑授权</button></div></div>
+        </div>
+        <div class="note"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><circle cx="12" cy="12" r="9"/><path d="M12 8v5M12 16h.01"/></svg><span>每次调用都会记录企业、用户、Agent、任务目的、知识版本和执行结果。关键知识未命中时必须提示缺失或转人工，不能自行补编价格、规格、案例和承诺。</span></div>
+      </div>
     </section>
 
 
@@ -667,13 +779,14 @@ textarea{resize:vertical;line-height:1.6}
 
     <!-- MEMBER -->
     <section class="page" data-p="member">
-      <div class="lead"><div><div class="t">成员管理</div><div class="s">福恩寿衣 · 殡葬 · 2026-06 开通</div></div>
+      <div class="lead"><div><div class="t">成员与权限</div><div class="s">角色决定能做什么，数据范围决定能访问哪些知识；机密知识仍需专项授权</div></div>
         <button class="btn pri" data-act="add-member"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M12 5v14M5 12h14"/></svg>添加成员</button></div>
-      <div class="card"><table class="tbl-tight"><thead><tr><th>成员</th><th>账号</th><th>角色</th><th>状态</th><th style="text-align:right">操作</th></tr></thead>
+      <div class="card pad" style="margin-bottom:14px;display:flex;gap:12px;align-items:center;flex-wrap:wrap"><b>福恩寿衣</b><span class="bdg ok">3 名成员</span><span class="mini">企业知识管理员 1 人 · 业务知识负责人 1 人 · 普通成员 1 人</span><span class="spacer"></span><button class="btn sm" data-act="go" data-v="kb">查看知识授权</button></div>
+      <div class="card"><table class="tbl-tight"><thead><tr><th>成员</th><th>账号</th><th>企业角色</th><th>知识角色</th><th>数据范围</th><th>状态</th><th style="text-align:right">操作</th></tr></thead>
         <tbody id="memberBody">
-          <tr><td><div style="display:flex;align-items:center;gap:10px"><div class="co" style="width:30px;height:30px;padding:0;border-radius:8px;background:var(--accent);color:#fff;justify-content:center;font-weight:600;border:none">蔚</div><b>蔚然</b></div></td><td class="tm">138****6021</td><td><span class="bdg brd">老板 · 管理员</span></td><td><span class="bdg ok">启用</span></td><td class="rowact"><button class="btn sm gho" disabled style="opacity:.4">—</button></td></tr>
-          <tr><td><div style="display:flex;align-items:center;gap:10px"><div class="co" style="width:30px;height:30px;padding:0;border-radius:8px;background:var(--brand-sft);color:var(--brand-d);justify-content:center;font-weight:600;border:none">王</div><b>运营小王</b></div></td><td class="tm">152****3380</td><td><span class="bdg mut">运营</span></td><td><span class="bdg ok st">启用</span></td><td class="rowact"><button class="btn sm gho" data-act="toggle-member">停用</button></td></tr>
-          <tr><td><div style="display:flex;align-items:center;gap:10px"><div class="co" style="width:30px;height:30px;padding:0;border-radius:8px;background:var(--brand-sft);color:var(--brand-d);justify-content:center;font-weight:600;border:none">李</div><b>客服小李</b></div></td><td class="tm">177****9912</td><td><span class="bdg mut">运营</span></td><td><span class="bdg mut st">已停用</span></td><td class="rowact"><button class="btn sm gho" data-act="toggle-member">启用</button></td></tr>
+          <tr><td><div style="display:flex;align-items:center;gap:10px"><div class="co" style="width:30px;height:30px;padding:0;border-radius:8px;background:var(--accent);color:#fff;justify-content:center;font-weight:600;border:none">蔚</div><b>蔚然</b></div></td><td class="tm">138****6021</td><td><span class="bdg brd">老板 · 管理员</span></td><td>企业知识管理员</td><td>全企业 <span class="perm secret">机密需授权</span></td><td><span class="bdg ok">启用</span></td><td class="rowact"><button class="btn sm gho" data-act="edit-member-scope">权限</button></td></tr>
+          <tr><td><div style="display:flex;align-items:center;gap:10px"><div class="co" style="width:30px;height:30px;padding:0;border-radius:8px;background:var(--brand-sft);color:var(--brand-d);justify-content:center;font-weight:600;border:none">王</div><b>王店长</b></div></td><td class="tm">152****3380</td><td><span class="bdg mut">门店负责人</span></td><td>产品知识负责人</td><td>产品与服务 · 素材与案例</td><td><span class="bdg ok st">启用</span></td><td class="rowact"><button class="btn sm gho" data-act="edit-member-scope">权限</button><button class="btn sm gho" data-act="toggle-member">停用</button></td></tr>
+          <tr><td><div style="display:flex;align-items:center;gap:10px"><div class="co" style="width:30px;height:30px;padding:0;border-radius:8px;background:var(--brand-sft);color:var(--brand-d);justify-content:center;font-weight:600;border:none">李</div><b>客服小李</b></div></td><td class="tm">177****9912</td><td><span class="bdg mut">客服</span></td><td>普通员工</td><td>销售与客服 · 仅本人客户</td><td><span class="bdg mut st">已停用</span></td><td class="rowact"><button class="btn sm gho" data-act="edit-member-scope">权限</button><button class="btn sm gho" data-act="toggle-member">启用</button></td></tr>
         </tbody></table>
       </div>
     </section>
@@ -700,7 +813,7 @@ textarea{resize:vertical;line-height:1.6}
 
 <script>
 const $=s=>document.querySelector(s),$$=s=>document.querySelectorAll(s);
-const titles={home:['工作台','总览'],create:['内容创作','参考 → 拆解 → 配置 → 生成 → 成片'],burst:['爆款抓取','对标 · 第三方数据'],kb:['知识库','文字事实 + 画面素材 · 一个库'],avatar:['数字人','形象 / 声音'],tune:['提示词微调','风格 + 参数 · 你可微调'],works:['作品库','导出 / 发布'],usage:['用量','本月消耗'],member:['成员管理','公司账号'],bind:['平台账号绑定','发布授权']};
+const titles={home:['工作台','总览'],create:['内容创作','参考 → 拆解 → 配置 → 生成 → 成片'],burst:['爆款抓取','对标 · 第三方数据'],kb:['企业知识库','统一知识 · 权限治理 · Agent 授权'],avatar:['数字人','形象 / 声音'],tune:['提示词微调','风格 + 参数 · 你可微调'],works:['作品库','导出 / 发布'],usage:['用量','本月消耗'],member:['成员管理','组织角色 · 数据范围'],bind:['平台账号绑定','发布授权']};
 
 function go(v){
   $$('#nav a').forEach(a=>a.classList.toggle('on',a.dataset.v===v));
@@ -709,6 +822,17 @@ function go(v){
   if(v==='create')showCreate('list');
   const r=$('.rail');if(r)r.classList.remove('open');const m=$('.navmask');if(m)m.classList.remove('show');
   window.scrollTo(0,0);
+}
+function showKbTab(id){
+  const next=id||'overview';
+  $$('#kbTabs button').forEach(b=>b.classList.toggle('on',b.dataset.kbtab===next));
+  $$('.kb-panel').forEach(p=>p.classList.toggle('show',p.dataset.kbpanel===next));
+  window.scrollTo(0,0);
+}
+function reviewState(state){
+  const login=$('#login');if(login)login.style.display='none';
+  const parts=(state||'kb-overview').split('-');go(parts[0]||'kb');
+  if(parts[0]==='kb')showKbTab(parts.slice(1).join('-')||'overview');
 }
 function step(n){
   $$('#steps .st').forEach(s=>{const i=+s.dataset.s;s.classList.toggle('on',i===n);s.classList.toggle('done',i<n);});
@@ -889,6 +1013,19 @@ document.addEventListener('click',e=>{
   const a=el.dataset.act;
   switch(a){
     case 'go': go(el.dataset.v);break;
+    case 'kb-tab': showKbTab(el.dataset.kbtab);break;
+    case 'open-kb-upload': modal('上传企业资料',
+      '<div class="kb-empty-scope" style="margin-bottom:15px"><b>资料先进入企业收件箱</b><br>AI 会自动提取、推荐知识域并检查冲突；未经负责人确认，不会成为正式知识或被 Agent 调用。</div><div class="field"><label>资料来源部门 / 负责人 <span class="mini">（可选）</span></label><select class="inp" id="upDept"><option>暂不指定，由 AI 推荐</option><option>产品与门店 · 王店长</option><option>销售与客服 · 李经理</option><option>品牌与内容 · 运营组</option><option>管理层 · 蔚然</option></select></div><div class="field" style="margin:0"><label>是否包含敏感信息 <span class="mini">（可选）</span></label><div class="chks" id="sensitivePick"><span class="chk on">不确定，交给 AI 检查</span><span class="chk">包含客户 / 员工信息</span><span class="chk">不包含</span></div></div>','选择文件并上传',()=>{closeModal();$('#kbFile').click();});break;
+    case 'connect-source': modal('连接企业数据源','<div class="field"><label>数据源类型</label><select class="inp" id="sourceType"><option>企业云盘</option><option>飞书知识库 / 云文档</option><option>官网 / 公众号</option><option>CRM 客户管理系统</option><option>ERP / 业务系统</option></select></div><div class="field" style="margin:0"><label>默认同步策略</label><select class="inp"><option>每日同步，变更进入待审核</option><option>手动同步</option><option>仅按 Agent 任务查询，不复制数据</option></select></div>','发起授权',()=>{closeModal();toast('已创建数据源授权任务，授权完成后开始首次盘点','ok');});break;
+    case 'view-kb-detail': modal('知识详情 · 权限与来源','<div class="field"><label>知识内容</label><div class="kb-empty-scope">真丝七件套采用传统单数配置，标准售价以当前生效报价表为准。</div></div><div class="split"><div class="field"><label>来源与版本</label><div class="mini">2026 产品报价.xlsx · 第 12 行<br>版本 v4 · 王店长确认</div></div><div class="field"><label>有效期</label><div class="mini">2026-07-01 至 2026-12-31</div></div></div><div class="field" style="margin:0"><label>权限摘要</label><div class="permline"><span class="perm">销售部可见</span><span class="perm safe">销售 / PPT Agent</span><span class="perm limit">对外输出需审核</span></div></div>','关闭',closeModal,true);break;
+    case 'restricted-kb': modal('申请访问受限知识','当前知识属于<b>严格受限</b>范围。系统不会向无权限成员展示具体内容。<br><br>申请提交后由企业知识管理员审批，仅授权当前任务使用并记录审计。','提交访问申请',()=>{closeModal();toast('访问申请已提交，审批通过后仅限当前任务使用','ok');});break;
+    case 'approve-kb':{const row=el.closest('[data-review]');el.outerHTML='<span class="bdg ok">已确认发布</span>';if(row){const b=row.querySelector('.bdg');if(b){b.className='bdg ok';b.textContent='已发布';}}toast('已确认来源、权限和有效期，正式知识已发布','ok');}break;
+    case 'resolve-kb':{const row=el.closest('[data-review]');modal('处理价格冲突','<div class="alert" style="margin-top:0"><div><b>当前正式值 ¥2,880</b><br>仍被销售 Agent 和 3 个内容任务使用</div></div><div class="field"><label>处理方式</label><select class="inp" id="conflictMode"><option>采用新值 ¥2,980，旧版本立即失效</option><option>保留旧值，设置 2026-08-01 失效</option><option>按产品规格拆分适用范围</option><option>暂不发布，退回资料提交人</option></select></div><div class="field" style="margin:0"><label>变更原因</label><input class="inp" value="2026 年第三季度报价调整"></div>','确认处理',()=>{closeModal();if(row){row.querySelector('.review-fact').innerHTML='已采用新版本：<strong>¥2,980</strong> · 旧版本已保留归档';const b=row.querySelector('.bdg');b.className='bdg ok';b.textContent='冲突已解决';row.querySelector('.rowact').innerHTML='<span class="bdg ok">已处理</span>';}toast('冲突已解决，受影响的 Agent 将使用新版本','ok');});}break;
+    case 'renew-kb':{const row=el.closest('[data-review]');modal('复核已失效知识','该活动政策已失效，且仍被 2 个工作流引用。建议归档并从工作流中移除，避免继续生成过期内容。','归档并停用',()=>{closeModal();if(row){row.querySelector('.bdg').className='bdg mut';row.querySelector('.bdg').textContent='已归档';row.querySelector('.rowact').innerHTML='<span class="bdg ok">已处理</span>';}toast('已归档过期知识，并停用相关工作流引用','ok');});}break;
+    case 'toggle-policy': el.classList.toggle('on');toast(el.classList.contains('on')?'治理规则已启用':'治理规则已暂停',el.classList.contains('on')?'ok':'warn');break;
+    case 'edit-review-cycle': modal('配置复核周期','<div class="split"><div class="field"><label>价格与优惠政策</label><select class="inp"><option>每 30 天</option><option>每 7 天</option><option>仅变更时</option></select></div><div class="field"><label>联系方式</label><select class="inp"><option>每 90 天</option><option>每 30 天</option></select></div></div><div class="field" style="margin:0"><label>流程与制度</label><select class="inp"><option>变更时复核</option><option>每 180 天</option></select></div>','保存',()=>{closeModal();toast('复核周期已更新','ok');});break;
+    case 'edit-agent-auth':{const nm=el.dataset.agent||'Agent';modal('配置授权 · '+nm,'<div class="field"><label>可读取知识域</label><div class="chks"><span class="chk on">产品与服务</span><span class="chk on">品牌与内容</span><span class="chk">销售与客服</span><span class="chk">经营流程与制度</span><span class="chk">管理层规则</span></div></div><div class="field"><label>可执行动作</label><div class="chks"><span class="chk on">读取</span><span class="chk on">生成草稿</span><span class="chk">提交审核</span><span class="chk">对外发布</span><span class="chk">修改正式知识</span></div></div><div class="field"><label>服务身份</label><select class="inp"><option>跟随任务发起人权限</option><option>独立企业服务身份</option></select></div><div class="field" style="margin:0"><label>高风险动作</label><select class="inp"><option>进入人工审批，不自动执行</option><option>直接拒绝</option></select></div>','保存授权',()=>{closeModal();toast(nm+' 权限已更新，后续调用按新范围审计','ok');},true);}break;
+    case 'edit-member-scope': modal('配置成员知识权限','<div class="split"><div class="field"><label>知识角色</label><select class="inp"><option>普通员工</option><option>知识维护人员</option><option>业务知识负责人</option><option>企业知识管理员</option></select></div><div class="field"><label>数据范围</label><select class="inp"><option>指定知识域</option><option>所属部门</option><option>全企业</option><option>仅本人负责</option></select></div></div><div class="field"><label>可访问知识域</label><div class="chks"><span class="chk on">产品与服务</span><span class="chk on">销售与客服</span><span class="chk">品牌与内容</span><span class="chk">经营流程与制度</span></div></div><div class="field" style="margin:0"><label>专项权限</label><div class="chks"><span class="chk">可审核</span><span class="chk">可发布</span><span class="chk">可导出</span><span class="chk">可授权 Agent</span></div></div>','保存权限',()=>{closeModal();toast('成员权限已更新并写入审计记录','ok');},true);break;
     case 'navtog':{const r=$('.rail');if(r)r.classList.toggle('open');const m=$('.navmask');if(m)m.classList.toggle('show');}break;
     case 'step': step(+el.dataset.s);break;
     case 'toast': toast(el.dataset.msg,el.dataset.type);break;
@@ -938,10 +1075,10 @@ document.addEventListener('click',e=>{
     case 'audition': audition(+el.dataset.tone||500);toast('正在试听音色…','ok');break;
     case 'custom-avatar': modal('申请数字人定制','<div class="field" style="margin:0"><label>需求描述</label><textarea rows="4" placeholder="形象风格、是否克隆老板、使用场景…"></textarea></div>','提交申请',()=>{closeModal();toast('定制申请已提交，我方将联系你','ok');});break;
     case 'add-member': modal('添加成员',
-      '<div class="split"><div class="field"><label>姓名</label><input class="inp" id="amName"></div><div class="field"><label>手机号</label><input class="inp" id="amPhone"></div></div><div class="field" style="margin:0"><label>角色</label><select class="inp" id="amRole"><option>运营</option><option>老板 · 管理员</option></select></div>','添加',
-      ()=>{const nm=$('#amName').value||'新成员',ph=$('#amPhone').value||'—',ro=$('#amRole').value;
+      '<div class="split"><div class="field"><label>姓名</label><input class="inp" id="amName"></div><div class="field"><label>手机号</label><input class="inp" id="amPhone"></div></div><div class="split"><div class="field"><label>企业角色</label><select class="inp" id="amRole"><option>运营</option><option>销售</option><option>客服</option><option>门店负责人</option><option>老板 · 管理员</option></select></div><div class="field"><label>知识角色</label><select class="inp" id="amKbRole"><option>普通员工</option><option>知识维护人员</option><option>业务知识负责人</option><option>企业知识管理员</option></select></div></div><div class="field" style="margin:0"><label>数据范围</label><select class="inp" id="amScope"><option>所属部门</option><option>指定知识域</option><option>仅本人负责</option><option>全企业</option></select></div>','添加',
+      ()=>{const nm=$('#amName').value||'新成员',ph=$('#amPhone').value||'—',ro=$('#amRole').value,kro=$('#amKbRole').value,scope=$('#amScope').value;
         const tr=document.createElement('tr');
-        tr.innerHTML='<td><div style="display:flex;align-items:center;gap:10px"><div class="co" style="width:30px;height:30px;padding:0;border-radius:8px;background:var(--brand-sft);color:var(--brand-d);justify-content:center;font-weight:600;border:none">'+nm[0]+'</div><b>'+nm+'</b></div></td><td class="tm">'+ph+'</td><td><span class="bdg mut">'+ro+'</span></td><td><span class="bdg ok st">启用</span></td><td class="rowact"><button class="btn sm gho" data-act="toggle-member">停用</button></td>';
+        tr.innerHTML='<td><div style="display:flex;align-items:center;gap:10px"><div class="co" style="width:30px;height:30px;padding:0;border-radius:8px;background:var(--brand-sft);color:var(--brand-d);justify-content:center;font-weight:600;border:none">'+nm[0]+'</div><b>'+nm+'</b></div></td><td class="tm">'+ph+'</td><td><span class="bdg mut">'+ro+'</span></td><td>'+kro+'</td><td>'+scope+'</td><td><span class="bdg ok st">启用</span></td><td class="rowact"><button class="btn sm gho" data-act="edit-member-scope">权限</button><button class="btn sm gho" data-act="toggle-member">停用</button></td>';
         $('#memberBody').appendChild(tr);closeModal();toast('已添加成员「'+nm+'」','ok');});break;
     case 'toggle-member':{const tr=el.closest('tr'),b=tr.querySelector('.st');
       if(el.textContent==='停用'){b.className='bdg mut st';b.textContent='已停用';el.textContent='启用';toast('已停用','warn');}
@@ -980,7 +1117,7 @@ function groupOptions(){return [...$$('#groupList .gitem')].filter(g=>g.dataset.
 function firstGroup(){const g=[...$$('#groupList .gitem')].find(g=>g.dataset.act==='kb-group'&&g.dataset.group);return g?g.dataset.group:'未分组';}
 function filterKB(){const gEl=$('#groupList .gitem.on'),g=gEl?gEl.dataset.group:'';const tEl=$('#kbType .on'),t=tEl?tEl.dataset.t:'';let n=0;
   $$('#kbList2 .fi').forEach(r=>{const ok=(!g||r.dataset.group===g)&&(!t||r.dataset.type===t);r.style.display=ok?'':'none';if(ok)n++;});
-  if($('#kbCount'))$('#kbCount').textContent='共 '+n+' 项';}
+  if($('#kbCount'))$('#kbCount').textContent='共 '+n+' 条';if($('#kbDomainName'))$('#kbDomainName').textContent=g||'全部正式知识';}
 function kbCounts(){const items=[...$$('#kbList2 .fi')];$$('#groupList .gitem').forEach(gi=>{if(gi.dataset.act!=='kb-group')return;const ct=gi.querySelector('.ct');if(!ct)return;const g=gi.dataset.group;ct.textContent=g===''?items.length:items.filter(i=>i.dataset.group===g).length;});}
 function fileType(n){const e=n.split('.').pop().toLowerCase();if(['xls','xlsx','csv'].includes(e))return 'struct';if(['jpg','jpeg','png','webp','gif','mp4','mov','avi','mkv'].includes(e))return 'asset';return 'unstruct';}
 function fileIc(n){const e=n.split('.').pop().toLowerCase();if(['xls','xlsx','csv'].includes(e))return 'XLS';if(['jpg','jpeg','png','webp','gif'].includes(e))return 'IMG';if(['mp3','wav','m4a','aac'].includes(e))return 'MP3';if(['mp4','mov','avi','mkv'].includes(e))return 'MP4';if(e==='txt')return 'TXT';if(e==='pdf')return 'PDF';return 'DOC';}
@@ -988,14 +1125,16 @@ function addKbItem(o){const row=document.createElement('div');row.className='fi'
   const tp=o.type==='struct'?'<span class="tp s">⊞ 结构化</span>':o.type==='asset'?'<span class="tp a">▣ 素材</span>':'<span class="tp u">≣ 非结构化</span>';
   const run=o.status==='处理中';const sb='<span class="bdg '+(run?'brd run':'ok')+' stb">'+o.status+'</span>';
   const view=o.type==='struct'?'<button class="btn sm gho" data-act="view-struct">查看</button>':'<button class="btn sm gho" data-act="toast" data-msg="'+(o.type==='asset'?'预览素材 + AI 标签（演示）':'查看文档分段（演示）')+'">查看</button>';
-  row.innerHTML='<div class="ic">'+(o.ic||'DOC')+'</div><div class="meta"><b>'+o.name+'</b><small>'+o.sub+'</small></div>'+tp+'<span class="bdg mut" style="margin:0 4px">'+o.group+'</span>'+sb+view;
+  row.innerHTML='<div class="ic">'+(o.ic||'DOC')+'</div><div class="meta"><b>'+o.name+'</b><small>'+o.sub+'</small><div class="permline"><span class="perm">全员内部</span><span class="perm">待配置 Agent</span><span class="perm limit">对外输出需审核</span></div></div>'+tp+sb+view;
   $('#kbList2').prepend(row);kbCounts();filterKB();return row;}
 $('#kbType').querySelectorAll('button').forEach(b=>b.addEventListener('click',()=>{$('#kbType').querySelectorAll('button').forEach(x=>x.classList.remove('on'));b.classList.add('on');filterKB();}));
 $('#kbFile').addEventListener('change',e=>{const files=[...e.target.files];if(!files.length)return;
-  const gEl=$('#groupList .gitem.on');let g=gEl&&gEl.dataset.group?gEl.dataset.group:firstGroup();
-  files.forEach(f=>{const ty=fileType(f.name);const sub0=ty==='struct'?'解析表格中…':ty==='asset'?'AI 打标中…':'转写/分段中…';const row=addKbItem({name:f.name,type:ty,group:g,ic:fileIc(f.name),sub:sub0,status:'处理中'});
-    setTimeout(()=>{const sb=row.querySelector('.stb');sb.className='bdg ok stb';sb.textContent=ty==='struct'?'已结构化':ty==='asset'?'已打标':'已入库';row.querySelector('small').textContent=ty==='struct'?'解析完成 · 待确认字段':ty==='asset'?'AI 标签已生成 · 可供视频匹配':'已分段入库';},1900);});
-  toast('已上传 '+files.length+' 个文件到「'+g+'」，处理中','ok');e.target.value='';});
+  showKbTab('sources');
+  files.forEach(f=>{const ty=fileType(f.name);const row=document.createElement('div');row.className='kb-source-row';
+    row.innerHTML='<div class="source-identity"><div class="si">'+fileIc(f.name)+'</div><div><b>'+f.name+'</b><small>刚刚上传 · AI 正在解析、提取和检查敏感信息</small></div></div><div><span class="bdg brd run srcst">处理中</span></div><div class="mini srcdom">待推荐知识域</div><div class="rowact"><button class="btn sm gho" data-act="toast" data-msg="处理完成后可查看提取结果">查看</button></div>';
+    $('#sourceList').prepend(row);
+    setTimeout(()=>{const sb=row.querySelector('.srcst');sb.className='bdg warn srcst';sb.textContent=ty==='asset'?'待确认授权':'待确认';row.querySelector('small').textContent=ty==='struct'?'识别出 24 条事实 · 3 条需要负责人确认':ty==='asset'?'已生成素材标签 · 需要确认使用授权':'已提取 16 条知识候选 · 未进入正式知识库';row.querySelector('.srcdom').textContent=ty==='asset'?'推荐：素材与案例':ty==='struct'?'推荐：产品与服务':'推荐：品牌与内容';row.querySelector('.rowact').innerHTML='<button class="btn sm pri" data-act="kb-tab" data-kbtab="review">去确认</button>';},1900);});
+  toast('已上传 '+files.length+' 个文件，正在企业收件箱中处理','ok');e.target.value='';});
 kbCounts();
 // 素材库：分组筛选 + 计数 + 上传
 function filterAssets(){const gEl=$('#assetGroup .on'),g=gEl?gEl.dataset.g:'';let n=0;
@@ -1015,8 +1154,8 @@ filterAssets();
 // 分镜「本地上传」换画面：替换该分镜画面 + 默认存入素材库
 $('#segUpload')&&$('#segUpload').addEventListener('change',e=>{const f=e.target.files[0];if(!f)return;const isVid=/\.(mp4|mov|avi|mkv)$/i.test(f.name);const url=URL.createObjectURL(f);const r=window._swapRow;
   if(r){let img=r.querySelector('img');if(!img){const ic=r.querySelector('.ic');if(ic){img=document.createElement('img');img.style.cssText='width:40px;height:40px;border-radius:6px;object-fit:cover;flex:none';ic.replaceWith(img);}}if(img)img.src=url;const b=r.querySelector('.meta b');if(b)b.textContent='画面：'+f.name.replace(/\.[^.]+$/,'')+'（本地上传）';const sm=r.querySelector('.meta small');if(sm)sm.textContent='已上传并存入素材库 · 可复用';}
-  if($('#kbList2')){const nm=f.name.replace(/\.[^.]+$/,'');const thumb=isVid?'<video src="'+url+'#t=0.5" muted preload="metadata" style="width:34px;height:34px;border-radius:6px;object-fit:cover;flex:none"></video>':'<img src="'+url+'" style="width:34px;height:34px;border-radius:6px;object-fit:cover;flex:none">';const row=document.createElement('div');row.className='fi';row.dataset.group='产品素材';row.dataset.type='asset';row.innerHTML=thumb+'<div class="meta"><b>'+nm+'</b><small>本地上传 · AI 打标中 · 供混剪召回</small></div><span class="tp a">▣ 素材</span><span class="bdg mut" style="margin:0 4px">产品素材</span><span class="bdg ok stb">已打标</span><button class="btn sm gho" data-act="view-asset" data-name="'+nm+'" data-kind="product">查看</button>';$('#kbList2').prepend(row);if(typeof kbCounts==='function')kbCounts();}
-  closeModal();toast('已用本地文件换画面，并存入知识库·素材','ok');e.target.value='';});
+  if($('#kbList2')){const nm=f.name.replace(/\.[^.]+$/,'');const thumb=isVid?'<video src="'+url+'#t=0.5" muted preload="metadata" style="width:34px;height:34px;border-radius:6px;object-fit:cover;flex:none"></video>':'<img src="'+url+'" style="width:34px;height:34px;border-radius:6px;object-fit:cover;flex:none">';const row=document.createElement('div');row.className='fi';row.dataset.group='素材与案例';row.dataset.type='asset';row.innerHTML=thumb+'<div class="meta"><b>'+nm+'</b><small>本地上传 · AI 打标中 · 待确认素材授权</small><div class="permline"><span class="perm">员工提交候选</span><span class="perm limit">企业 Agent 暂不可用</span></div></div><span class="tp a">▣ 素材</span><span class="bdg warn stb">待确认</span><button class="btn sm gho" data-act="view-asset" data-name="'+nm+'" data-kind="product">查看</button>';$('#kbList2').prepend(row);if(typeof kbCounts==='function')kbCounts();}
+  closeModal();toast('已替换画面；素材已进入企业收件箱，确认授权后可复用','ok');e.target.value='';});
 // 数字人：形象配额（每企业 2 个，单独计费）+ 真实上传
 let MAX_AVATAR=2;
 function genAvatarCount(){return $$('#avatarList .dhcard[data-gen="1"]').length;}
@@ -1106,6 +1245,8 @@ $('#formulaSelect')&&$('#formulaSelect').addEventListener('change',function(){
 });
 $$('#fPlat,#fForm,#fCmp,#fPub').forEach(s=>s.addEventListener('change',filterWorks));
 filterWorks();
+const reviewParam=new URLSearchParams(location.search).get('review');
+if(reviewParam)requestAnimationFrame(()=>reviewState(reviewParam));
 </script>
 </body>
 </html>
