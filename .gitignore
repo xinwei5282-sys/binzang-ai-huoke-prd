@@ -6,3 +6,6 @@ prototype-boss/assets/demo/*.mp4
 .DS_Store
 **/.DS_Store
 .claude/settings.local.json
+
+# Codex 隔离开发工作树
+.worktrees/
