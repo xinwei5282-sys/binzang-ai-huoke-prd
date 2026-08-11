@@ -64,8 +64,8 @@ function getLocalDateKey(date=new Date()) {
   return offsetDate.toISOString().slice(0,10);
 }
 function shouldShowDeepDiagnosisReminder(completed,profileCompleted,today=getLocalDateKey()) {
-  if(completed||!profileCompleted||deepDiagnosisReminderShownInSession)return false;
-  try{return localStorage.getItem(deepDiagnosisReminderDateKey)!==today;}catch(_){return true;}
+  if(completed||!profileCompleted)return false;
+  try{return localStorage.getItem(deepDiagnosisReminderDateKey)!==today;}catch(_){return !deepDiagnosisReminderShownInSession;}
 }
 function markDeepDiagnosisReminderShown(today=getLocalDateKey()) {
   deepDiagnosisReminderShownInSession=true;
