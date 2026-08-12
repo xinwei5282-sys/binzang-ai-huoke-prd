@@ -1,0 +1,5 @@
+.worktrees
+.worktrees/
+validation/
+*.artifact.json
+.DS_Store
