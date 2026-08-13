@@ -61,8 +61,10 @@ status: current
 
 ### VI-001 企业 VI
 
-- 流程：偏好 → 三套方向 → 查看具体 VI 展示 → 选择方向 → 场景图生成/审核 → 完整草案 → 人工启用 → 下载全套 VI。
+- 流程：偏好 → 三套方向 → 查看具体 VI 展示 → 确认唯一方向并生成 → 在“VI 应用场景”内查看推荐、生成状态和单图操作 → 完整 VI 自动生效 → 下载全套 VI。
 - 每套方向至少展示 Logo、颜色、字体、图形语言和多个应用场景。
+- 确认后当前批次只保留所选方向；推荐场景必须继承该方向的 Logo、标准色、字体和图片风格。
+- “根据企业情况推荐”与“图片生成任务”合并为“03 · VI 应用场景”；每张场景卡就地显示生成状态、失败原因、重试、采用、查看和下载。
 - 只有 `active` 版本可进入内容生成上下文；下载任务必须冻结版本。
 
 ### INTEL-001 外部情报
@@ -84,7 +86,7 @@ status: current
 
 - `GET /enterprise-brain/overview`：读取四卡认知和缺口。
 - `GET /knowledge-intake?status=`、`POST /knowledge-intake/{id}/adopt|reject|retry`。
-- `POST /vi-directions`、`POST /vi-versions/{id}/activate`、`POST /vi-downloads`。
+- `POST /vi-directions`、`POST /vi-directions/{id}/confirm-and-generate`（幂等）、`POST /vi-jobs/{id}/retry`、`POST /vi-downloads`。
 - `POST /external-intelligence/links`、`POST /external-intelligence/collections`。
 - `POST /learning-candidates/{id}/adopt|reject`。
 
