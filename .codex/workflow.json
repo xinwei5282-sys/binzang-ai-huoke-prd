@@ -1,0 +1,8 @@
+{
+  "version": 1,
+  "commands": {
+    "task": ["node", "prototype/scripts/start-codex-task.mjs"],
+    "verify": ["node", "prototype/scripts/verify-prototype.mjs"],
+    "preview": ["node", "prototype/scripts/open-prototype-preview.mjs"]
+  }
+}

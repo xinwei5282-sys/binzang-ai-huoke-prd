@@ -1,0 +1,33 @@
+{
+  "defaultFullCapture": "prototype/scripts/capture-v1-prototype.mjs",
+  "focuses": {
+    "enterprise-vi": {
+      "tests": [
+        "enterprise-cognition-vi-v1.test.mjs",
+        "enterprise-ai-operating-brain-prototype.test.mjs"
+      ],
+      "capture": "prototype/scripts/capture-enterprise-cognition-vi.mjs"
+    },
+    "diagnosis": {
+      "tests": [
+        "enterprise-diagnosis-v1.test.mjs",
+        "enterprise-brain-p0-gap.test.mjs"
+      ],
+      "capture": "prototype/scripts/capture-v1-prototype.mjs"
+    },
+    "knowledge": {
+      "tests": [
+        "knowledge-overview-intake-evidence.test.mjs",
+        "unified-knowledge-onboarding.test.mjs"
+      ],
+      "capture": "prototype/scripts/capture-knowledge-overview.mjs"
+    },
+    "content": {
+      "tests": [
+        "marketing-material-generation.test.mjs",
+        "commercial-workflows.test.mjs"
+      ],
+      "capture": "prototype/scripts/capture-moments-core.mjs"
+    }
+  }
+}
