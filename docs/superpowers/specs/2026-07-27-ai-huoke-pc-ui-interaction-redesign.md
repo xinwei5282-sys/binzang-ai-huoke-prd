@@ -1,3 +1,11 @@
+---
+title: "AI获客系统 PC 端交互与视觉优化设计"
+tags: ["type/设计", "domain/ai获客", "kw/PC端", "kw/交互设计", "kw/视觉系统"]
+keywords: ["PC端", "交互设计", "视觉系统"]
+project: "AI获客产品"
+date: 2026-07-27
+---
+
 # AI 获客系统 PC 端交互与视觉优化设计
 
 ## 1. 目标

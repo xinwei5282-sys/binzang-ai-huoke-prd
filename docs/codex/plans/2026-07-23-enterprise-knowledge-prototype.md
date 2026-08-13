@@ -1,3 +1,11 @@
+---
+title: "企业知识中心原型实施计划"
+tags: ["type/设计", "domain/ai获客", "kw/企业知识库", "kw/知识治理", "kw/原型实施"]
+keywords: ["企业知识库", "知识治理", "原型实施"]
+project: "AI获客产品"
+date: 2026-07-23
+---
+
 # Enterprise Knowledge Prototype Implementation Plan
 
 > **For Codex execution:** This plan may be executed inline in the current session or step-by-step with explicit checkpoints. Keep checkbox (`- [ ]`) syntax for tracking.
