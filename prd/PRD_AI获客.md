@@ -1,14 +1,15 @@
 ---
 artifact: prd
-version: "1.0"
+version: "1.3"
 created: 2026-08-13
 status: current
 ---
 
 # PRD：AI 获客
 
-> 上位真源：[[PRD_企业AI经营大脑_当前开发基线]]。专项参考 [[PRD_爆款抓取]]、[[PRD_视频模板化生成与换人换产品]]、[[PRD_数字人]]。
-> **版本**：v1.1 ｜ **状态**：当前模块开发基线 ｜ **负责人**：产品—明策 ｜ **原型**：`prototype/index.html`
+> 上位真源：[[PRD_企业AI经营大脑_当前开发基线]]。专项参考 [[PRD_爆款抓取]]、[[pages/AI获客-AI混剪]]、[[PRD_数字人]]。
+> **版本**：v1.3 ｜ **状态**：当前模块开发基线 ｜ **日期**：2026-09-01 ｜ **负责人**：产品—明策 ｜ **原型**：`prototype/index.html`
+> **页面 PRD**：[[pages/AI获客-总览]]、[[pages/AI获客-获客计划]]、[[pages/AI获客-爆款追踪]]、[[pages/AI获客-AI混剪]]、[[pages/AI获客-营销视频]]、[[pages/AI获客-数字人]]。
 
 ## 0. 文档概述
 
@@ -34,7 +35,7 @@ status: current
 
 把经营目标、公开趋势和企业内容能力转化为可执行的获客任务，并通过选定账号发布、回收结果和人工复盘形成闭环。
 
-本期包括：获客计划、爆款追踪、短视频创作、AI 视频、数字人、账号选择、发布任务和结果回收。线索自动成交、私域自动触达和未经确认的自动外发不在本期。
+本期包括：获客计划、爆款追踪、AI 混剪、营销视频、数字人、账号选择、发布任务和结果回收。线索自动成交、私域自动触达和未经确认的自动外发不在本期。
 
 ## 2. 核心流程
 
@@ -52,12 +53,15 @@ status: current
 - 去重、转写和结构化结果先作为候选，不直接成为企业事实。
 - 输出选题结构、内容钩子和可借鉴机制；不得复制受版权保护的完整内容。
 
-### VIDEO-001 短视频与 AI 视频
+### REMIX-001 AI 混剪
 
-- 脚本确认后生成分镜和首帧图；首帧图确认后才启动高成本视频任务。
-- 状态：`draft → script_review → storyboard_review → rendering → ready | failed`。
-- 支持片段失败重试，不重复扣减已成功片段配额。
-- 成片与发布分离；成片完成不代表已对外发布。
+- 列表为入口，创建后仅有「视频设置、素材确认」两步；企业上下文自动从企业大脑提取。
+- 口播支持手动输入、爆款仿写和授权链接抓取后仿写；目标平台、画幅、时长独立设置，CTA 可选。
+- 数字人和声音必选；默认右下圆形小窗、贯穿口播，保持 Remotion 独立轨道。
+- 分镜素材与首尾帧合并展示；每个分镜可查看真实图/视频、口播、时长、来源、授权和质检结果，仅支持查看/播放、替换和删除。
+- 质量门禁在素材方案生成后后台执行，问题直接标记到对应分镜；存在阻断或未处理待优化项时不得正式渲染。
+- 人工确认后由 Remotion 按 `cover/mainVisual/avatar/captions/music/cta` 多轨合成；片段失败只重试失败片段。
+- 成片与发布分离；查看成片只展示视频并支持下载，不自动发布。
 
 ### AVATAR-001 数字人
 
@@ -79,18 +83,19 @@ status: current
 
 ## 3. 数据与接口
 
-核心对象：`acquisition_plan`、`trend_candidate`、`video_task`、`avatar_authorization`、`publishing_account`、`publish_task`、`channel_metric_snapshot`、`learning_candidate`。
+核心对象：`acquisition_plan`、`trend_candidate`、`remix_task`、`remix_scene`、`quality_issue`、`remotion_manifest`、`avatar_authorization`、`publishing_account`、`publish_task`、`channel_metric_snapshot`、`learning_candidate`。
 
 - `POST /acquisition-plans`、`POST /trend-collections`。
-- `POST /video-tasks/{id}/confirm-script`、`POST /video-tasks/{id}/confirm-storyboard`。
+- `POST /remix-tasks`、`POST /remix-tasks/{id}/build-plan`、`POST /remix-tasks/{id}/confirm-render`。
 - `GET /publishing-accounts?platform=`。
 - `POST /publish-tasks`、`POST /publish-tasks/{id}/confirm`、`POST /publish-tasks/{id}/retry`。
 - `GET /publish-records/{id}/metrics`。
 
 ## 4. Skill 与 Prompt
 
-- Skills：`collect-public-trends`、`trend-deduplicator`、`video-script-generator`、`storyboard-generator`、`video-render-orchestrator`、`digital-human-generator`、`rpa-publisher`、`channel-metrics-collector`。
+- Skills：`collect-public-trends`、`trend-deduplicator`、`video-script-generator`、`remix-plan-builder`、`asset-semantic-matcher`、`caption-aligner`、`remix-quality-gate`、`remotion-render-orchestrator`、`digital-human-generator`、`rpa-publisher`、`channel-metrics-collector`。
 - Prompt 输入必须包含企业知识版本、渠道、账号能力、授权状态和合规规则。
+- AI 混剪使用 `remix-video-v1.0.0`；策划与后台质量门禁共用版本号，完整 Prompt 以 `remotion/beauty-shoulder-relaxation/src/prompts.ts` 为真源。
 - RPA 使用总 PRD `P-060` 做发布前检查，并记录截图/日志/外部内容 ID。
 
 ### 4.1 获客任务提示词模板
@@ -98,7 +103,7 @@ status: current
 ```text
 你是企业获客策划 Agent。输入 goal、audience、confirmed_facts、public_trend_candidates、channel_capabilities、budget_guardrails。
 趋势只能作为外部候选并保留 source_url；企业事实只能来自 confirmed_facts。输出 acquisition_strategy、topic_candidates、content_tasks、owner、schedule、metric、risk_flags、evidence_refs。
-不得复制原内容，不得承诺 ROI，不得选择账号或执行发布。需要视频时输出脚本与分镜草案，正式渲染必须等待 script_confirmed=true 且 storyboard_confirmed=true。
+不得复制原内容，不得承诺 ROI，不得选择账号或执行发布。需要视频时创建 AI 混剪任务；素材方案生成后自动执行后台质量门禁，只有 render_allowed=true 且 human_confirmed=true 才能创建 Remotion 正式渲染。
 严格按 output_schema 输出。
 ```
 
@@ -109,7 +114,7 @@ RPA Prompt 只生成结构化执行检查单和目标字段映射，不生成任
 | ID | 操作 | 预期结果 |
 |---|---|---|
 | ACQ-AC-001 | 创建抖音发布任务 | 必须选择具体抖音账号和受支持的发布方式 |
-| ACQ-AC-002 | 未确认首帧图时尝试出片 | 系统阻止高成本渲染 |
+| ACQ-AC-002 | AI 混剪存在未处理分镜问题时尝试生成 | 系统阻止 Remotion 正式渲染，并在对应分镜显示问题 |
 | ACQ-AC-003 | RPA 发布前未人工确认 | 任务保持等待确认，不操作外部平台 |
 | ACQ-AC-004 | 同一幂等键重复提交 | 只形成一条外部发布记录 |
 | ACQ-AC-005 | 回收多个账号数据 | 每条指标能追溯到平台、账号、内容和发布记录 |
@@ -136,3 +141,5 @@ RPA Prompt 只生成结构化执行检查单和目标字段映射，不生成任
 | 版本 | 日期 | 说明 |
 |---|---|---|
 | v1.1 | 2026-08-13 | 融合爆款、视频、数字人和发布旧规格，补齐背景、目标、指标、Prompt 和里程碑 |
+| v1.2 | 2026-08-17 | 将短视频/AI 视频口径更新为 AI 混剪，引用两步流程、Remotion 多轨、后台质量门禁和分镜级素材确认专项 PRD |
+| v1.3 | 2026-09-01 | 六个 AI 获客页面统一字段级 PRD 结构，并在原型增加随当前路由切换的页面 PRD 抽屉 |

@@ -20,7 +20,7 @@ test('customer navigation has exactly six business entries', () => {
 });
 
 test('approved secondary navigation is grouped in the left rail', () => {
-  for (const phrase of ['诊断总览', '企业 VI', '企业知识', '外部情报', '进化与治理', '品牌报告', '经营计划', 'PPT', '海报', '公众号文章', '获客计划', '爆款追踪', '短视频创作', 'AI 视频', '企业设置', '成员与权限', '平台账号', 'Agent 权限', '用量与套餐', '帮助与服务']) {
+  for (const phrase of ['诊断总览', '企业 VI', '企业知识', '外部情报', '进化与治理', '品牌报告', '经营计划', 'PPT', '海报', '公众号文章', '获客计划', '爆款追踪', 'AI 混剪', '营销视频', '企业设置', '成员与权限', '平台账号', 'Agent 权限', '用量与套餐', '帮助与服务']) {
     assert.match(nav, new RegExp(phrase), `missing left navigation entry: ${phrase}`);
   }
   assert.doesNotMatch(nav, /data-nav-sub="enterprise-profile"/);
@@ -69,7 +69,7 @@ test('Geyou stays a configurable large customer', () => {
 });
 
 test('AI acquisition is a PC test capability with the approved video gates', () => {
-  for (const phrase of ['能力演示 · 待接入', '爆款追踪', '相对基线', '八维拆解', '确认脚本', '确认分镜', '只重试失败镜头', 'MP4 成片']) assert.match(html, new RegExp(phrase));
+  for (const phrase of ['能力演示 · 待接入', '爆款追踪', '相对基线', '八维拆解', '封面、脚本与分镜确认', '确认并生成成片', '只重试失败镜头', 'MP4 成片']) assert.match(html, new RegExp(phrase));
 });
 
 test('unverified integrations are not presented as live', () => {
