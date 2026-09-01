@@ -4,14 +4,15 @@ import { readFileSync } from 'node:fs';
 
 const html = readFileSync(new URL('../index.html', import.meta.url), 'utf8');
 
-test('enterprise knowledge delegates agent authorization to settings', () => {
+test('enterprise knowledge delegates prompt governance and authorization to settings', () => {
   const knowledge = html.match(/<!-- KB -->([\s\S]*?)<!-- AVATAR -->/)?.[1] ?? '';
   for (const removed of [
     'data-kbpanel="agents"', 'data-kbtab="agents"', 'id="kbAgentRows"',
     'function renderConsumerAgents(', 'Agent 知识与动作授权', "case 'edit-agent-auth'"
   ]) assert.doesNotMatch(knowledge, new RegExp(removed.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')));
   const settings = html.match(/data-nav-sub="settings"([\s\S]*?)<\/div>/)?.[1] ?? '';
-  assert.match(settings, /data-v="agent-center"[^>]*>Agent 权限/);
+  assert.match(settings, /data-v="prompts"[^>]*>提示词管理/);
+  assert.match(settings, /data-v="permissions"[^>]*>权限管理/);
 });
 
 test('formal knowledge and source work share two non-duplicated workspaces', () => {

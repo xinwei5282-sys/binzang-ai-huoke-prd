@@ -84,7 +84,7 @@ test('verification CLI lists available focus profiles without running the suite'
   const result = spawnSync(process.execPath, ['prototype/scripts/verify-prototype.mjs', '--list-focus'], { cwd: root, encoding: 'utf8' });
   assert.equal(result.status, 0, result.stderr);
   const output = JSON.parse(result.stdout.trim());
-  assert.deepEqual(output.focuses.sort(), ['content', 'diagnosis', 'enterprise-vi', 'knowledge', 'page-prd']);
+  assert.deepEqual(output.focuses.sort(), ['content', 'diagnosis', 'enterprise-vi', 'knowledge', 'page-prd', 'system-management']);
 });
 
 test('preview CLI exposes the same non-blank health gate used after opening Chrome', () => {

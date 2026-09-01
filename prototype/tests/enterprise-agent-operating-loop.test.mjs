@@ -17,7 +17,7 @@ test('enterprise operating tools preserve the complete loop behind the result-fi
 test('operating accountability stays in deeper tools instead of a home chat cockpit', () => {
   const visibleHome = html.match(/<section class="page show" data-p="home"([\s\S]*?)<section class="page" data-p="plan">/)?.[1] ?? '';
   assert.doesNotMatch(visibleHome, /agentPrompt|agent-command-bar|agent-send/);
-  for (const label of ['Agent 权限', '知识范围', '数据范围', '动作权限', '结果回传']) assert.match(html, new RegExp(label));
+  for (const label of ['提示词管理', '数据范围', '按钮权限', '完整 Prompt 正文', '输入合同', '输出合同']) assert.match(html, new RegExp(label));
   assert.doesNotMatch(html, /data-agent-card/);
 });
 

@@ -20,7 +20,7 @@ test('customer navigation has exactly six business entries', () => {
 });
 
 test('approved secondary navigation is grouped in the left rail', () => {
-  for (const phrase of ['诊断总览', '企业 VI', '企业知识', '外部情报', '进化与治理', '品牌报告', '经营计划', 'PPT', '海报', '公众号文章', '获客计划', '爆款追踪', 'AI 混剪', '营销视频', '企业设置', '成员与权限', '平台账号', 'Agent 权限', '用量与套餐', '帮助与服务']) {
+  for (const phrase of ['诊断总览', '企业 VI', '企业知识', '外部情报', '进化与治理', '品牌报告', '经营计划', 'PPT', '海报', '公众号文章', '获客计划', '爆款追踪', 'AI 混剪', '营销视频', '系统设置', '成员管理', '权限管理', '平台账号', '提示词管理', '用量管理', '日志与审计']) {
     assert.match(nav, new RegExp(phrase), `missing left navigation entry: ${phrase}`);
   }
   assert.doesNotMatch(nav, /data-nav-sub="enterprise-profile"/);
@@ -57,10 +57,10 @@ test('legacy knowledge blueprint updates tolerate panels removed by the enterpri
   assert.match(block, /const coverage=\$\('#kbCoverageStrip'\);if\(coverage\)coverage\.innerHTML=/);
 });
 
-test('Agent permissions are a settings sub-entry rather than a customer top-level menu', () => {
+test('prompt management is a system settings sub-entry rather than a customer top-level menu', () => {
   assert.doesNotMatch(nav, /<button type="button"[^>]*data-v="agent-center"/);
-  assert.match(nav, /data-nav-sub="settings"[\s\S]*?data-v="agent-center"[\s\S]*?Agent 权限/);
-  assert.match(html, /统一约束知识、数据、动作与结果边界/);
+  assert.match(nav, /data-nav-sub="settings"[\s\S]*?data-v="prompts"[\s\S]*?提示词管理/);
+  assert.match(html, /完整 Prompt 资产与版本治理/);
 });
 
 test('Geyou stays a configurable large customer', () => {

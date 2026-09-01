@@ -28,7 +28,8 @@ test('the shared workflow exposes source-centered work and delegates agent autho
     assert.match(html, new RegExp(`data-kbpanel="${panel}"`));
   }
   for (const removed of ['sources', 'review', 'agents']) assert.doesNotMatch(html, new RegExp(`data-kbpanel="${removed}"`));
-  assert.match(html, /data-v="agent-center"[^>]*>Agent 权限/);
+  assert.match(html, /data-v="prompts"[^>]*>提示词管理/);
+  assert.match(html, /data-v="permissions"[^>]*>权限管理/);
   assert.match(html, /data-act="continue-kb-governance"/);
   assert.match(html, /人工审核/);
 });

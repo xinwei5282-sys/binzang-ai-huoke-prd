@@ -34,6 +34,14 @@
         "page-prd-drawer.test.mjs"
       ],
       "capture": "prototype/scripts/capture-page-prd-drawer.mjs"
+    },
+    "system-management": {
+      "tests": [
+        "ai-huoke-system-management.test.mjs",
+        "enterprise-ai-operating-brain-prototype.test.mjs",
+        "commercial-workflows.test.mjs"
+      ],
+      "capture": "prototype/scripts/capture-ai-huoke-system-management.mjs"
     }
   }
 }

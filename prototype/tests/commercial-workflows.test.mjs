@@ -161,12 +161,10 @@ test('internal local file executor is not exposed to customers', () => {
   assert.doesNotMatch(html, /企业专属文件执行器/);
 });
 
-test('Agent permissions are a compact settings governance view', () => {
-  assert.match(html, /data-p="agent-center"/);
-  assert.equal((html.match(/data-agent-card/g) || []).length, 0);
-  for (const phrase of ['知识范围', '数据范围', '动作权限', '人工审批', '结果回传']) {
-    assert.match(html, new RegExp(phrase));
-  }
-  assert.doesNotMatch(html, /data-act="configure-agent"/);
-  assert.doesNotMatch(html, /data-act="add-business-agent"/);
+test('prompt management replaces the legacy Agent permissions surface', () => {
+  assert.doesNotMatch(html, /data-p="agent-center"/);
+  assert.match(html, /data-p="prompts"/);
+  assert.match(html, /'agent-center':'prompts'/);
+  for (const phrase of ['完整 Prompt 正文', '输入合同', '输出合同', '平台基线 · 只读', '租户可配置']) assert.match(html, new RegExp(phrase));
+  for (const action of ['view-ai-huoke-prompt', 'test-ai-huoke-prompt', 'edit-ai-huoke-prompt', 'publish-ai-huoke-prompt', 'rollback-ai-huoke-prompt']) assert.match(html, new RegExp(action));
 });

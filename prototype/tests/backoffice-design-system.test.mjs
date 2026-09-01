@@ -35,7 +35,7 @@ test('home is result-first without a duplicate chat cockpit', () => {
 });
 
 test('AI acquisition is a task workspace rather than a feature-card launcher', () => {
-  const section = html.match(/<section class="page" data-p="acquisition"([\s\S]*?)<section class="page" data-p="settings">/)?.[1] ?? '';
+  const section = html.match(/<section class="page" data-p="acquisition"([\s\S]*?)<section class="page show" data-p="home"/)?.[1] ?? '';
   assert.match(section, /class="workspace-toolbar"/);
   assert.match(section, /class="workspace-surface"/);
   for (const label of ['任务名称', '当前阶段', '知识依据', '人工确认']) assert.match(section, new RegExp(label));
