@@ -28,6 +28,12 @@
         "commercial-workflows.test.mjs"
       ],
       "capture": "prototype/scripts/capture-moments-core.mjs"
+    },
+    "page-prd": {
+      "tests": [
+        "page-prd-drawer.test.mjs"
+      ],
+      "capture": "prototype/scripts/capture-page-prd-drawer.mjs"
     }
   }
 }

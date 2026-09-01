@@ -9,3 +9,8 @@ prototype-boss/assets/demo/*.mp4
 
 # Codex 隔离开发工作树
 .worktrees/
+
+# 项目内工具缓存（非业务真源）
+.od-skills/
+.superpowers/
+.visual-companion/

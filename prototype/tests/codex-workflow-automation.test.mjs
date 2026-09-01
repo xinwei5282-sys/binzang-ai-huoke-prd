@@ -15,8 +15,16 @@ import {
   managedBrowserSpawnOptions,
   retryTransientContext,
 } from '../scripts/lib/managed-browser.mjs';
+import { prototypeServerLaunchPlan } from '../scripts/lib/prototype-server.mjs';
 
 const root = resolve(import.meta.dirname, '../..');
+
+test('prototype server binds only to localhost', () => {
+  assert.deepEqual(prototypeServerLaunchPlan(root, 8010), {
+    command: 'python3',
+    args: ['-m', 'http.server', '8010', '--bind', '127.0.0.1', '--directory', resolve(root, 'prototype')],
+  });
+});
 
 test('worktree plan uses the ignored project directory and a codex branch', () => {
   assert.deepEqual(buildWorktreePlan({ root, slug: 'enterprise-vi-history', baseRef: 'HEAD' }), {
@@ -76,7 +84,7 @@ test('verification CLI lists available focus profiles without running the suite'
   const result = spawnSync(process.execPath, ['prototype/scripts/verify-prototype.mjs', '--list-focus'], { cwd: root, encoding: 'utf8' });
   assert.equal(result.status, 0, result.stderr);
   const output = JSON.parse(result.stdout.trim());
-  assert.deepEqual(output.focuses.sort(), ['content', 'diagnosis', 'enterprise-vi', 'knowledge']);
+  assert.deepEqual(output.focuses.sort(), ['content', 'diagnosis', 'enterprise-vi', 'knowledge', 'page-prd']);
 });
 
 test('preview CLI exposes the same non-blank health gate used after opening Chrome', () => {

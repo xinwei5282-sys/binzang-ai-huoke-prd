@@ -99,7 +99,7 @@ for (const [name, page, subview, kbTab] of captures) {
   pages.push(layout);
   await screenshot(name);
 }
-await evaluate(`(() => { document.body.dataset.customer='geyou';document.querySelector('#customerName').textContent='示例客户模式';document.querySelectorAll('[data-customer-mode]').forEach(x=>x.textContent='示例客户模式');document.querySelectorAll('[data-customer-desc]').forEach(x=>x.textContent='启用行业配置包、客户专属知识域与 90 天试点模板。');document.querySelectorAll('.geyou-only').forEach(x=>x.style.display='inline-flex');go('kb');showKbTab('diagnosis'); })()`);
+await evaluate(`(() => { document.body.dataset.customer='geyou';document.querySelector('#customerName').textContent='格优大客户模式';document.querySelectorAll('[data-customer-mode]').forEach(x=>x.textContent='格优大客户模式');document.querySelectorAll('[data-customer-desc]').forEach(x=>x.textContent='启用殡葬行业配置包、客户专属知识域与 90 天试点模板。');document.querySelectorAll('.geyou-only').forEach(x=>x.style.display='inline-flex');go('kb');showKbTab('diagnosis'); })()`);
 await screenshot('geyou-mode');
 await evaluate(`document.body.dataset.customer='general';document.querySelector('#customerName').textContent='通用企业';document.querySelectorAll('.geyou-only').forEach(x=>x.style.display='none')`);
 

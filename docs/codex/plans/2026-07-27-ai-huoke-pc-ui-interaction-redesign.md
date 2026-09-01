@@ -1,3 +1,11 @@
+---
+title: "AI获客 PC 端界面与交互重构实施计划"
+tags: ["type/设计", "domain/ai获客", "kw/PC端", "kw/界面重构", "kw/交互设计"]
+keywords: ["PC端", "界面重构", "交互设计"]
+project: "AI获客产品"
+date: 2026-07-27
+---
+
 # AI Huoke PC UI and Interaction Redesign Implementation Plan
 
 > **For Codex execution:** This plan may be executed inline in the current session or step-by-step with explicit checkpoints. Keep checkbox (`- [ ]`) syntax for tracking.

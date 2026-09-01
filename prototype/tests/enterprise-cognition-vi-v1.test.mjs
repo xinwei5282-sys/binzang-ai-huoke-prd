@@ -16,10 +16,12 @@ function loadViModel() {
     buildEnterpriseViPreferences, startEnterpriseViDirectionGeneration,
     completeEnterpriseViDirectionGeneration, selectEnterpriseViDirection,
     generateEnterpriseViDraft, completeEnterpriseViDraftGeneration,
+    completeEnterpriseViGenerationAndActivate,
     failEnterpriseViGeneration, retryEnterpriseViGeneration,
     activateEnterpriseViDraft, getActiveEnterpriseVi,
     buildActiveEnterpriseViContext, buildEnterpriseViBrandStrategy,
     buildEnterpriseViBrandSeed, recommendEnterpriseViScenes,
+    confirmEnterpriseViDirectionAndGenerate,
     confirmEnterpriseViScenePlan, queueEnterpriseViImageTasks,
     advanceEnterpriseViImageTask, retryEnterpriseViImageTask,
     adoptEnterpriseViImageTask, rejectEnterpriseViImageTask,
@@ -28,7 +30,7 @@ function loadViModel() {
 }
 
 function buildDraft(vi) {
-  vi.startEnterpriseViDirectionGeneration({ brandTone: '专业、直接', companyName: '示例企业', logoStatus: 'existing' });
+  vi.startEnterpriseViDirectionGeneration({ brandTone: '专业、直接', companyName: '蔚然企业', logoStatus: 'existing' });
   vi.completeEnterpriseViDirectionGeneration();
   vi.selectEnterpriseViDirection(vi.getState().directions[0].id);
   vi.generateEnterpriseViDraft();
@@ -37,14 +39,14 @@ function buildDraft(vi) {
 
 test('each VI direction includes an existing-logo optimization proposal that follows the selected direction into the draft', () => {
   const vi = loadViModel();
-  vi.startEnterpriseViDirectionGeneration({ companyName: '示例企业', logoStatus: 'existing' });
+  vi.startEnterpriseViDirectionGeneration({ companyName: '蔚然企业', logoStatus: 'existing' });
   const directions = vi.completeEnterpriseViDirectionGeneration();
 
   assert.equal(directions.length, 3);
   for (const direction of directions) {
     assert.match(direction.imageUrl, /^assets\/demo\/enterprise-vi\/direction-/);
     assert.equal(direction.logoProposal.mode, 'optimize_existing');
-    assert.equal(direction.logoProposal.wordmark, '示例企业');
+    assert.equal(direction.logoProposal.wordmark, '蔚然企业');
     assert.deepEqual(direction.logoProposal.variants, ['standard', 'icon', 'reverse']);
     assert.equal(direction.logoProposal.changes.length, 3);
   }
@@ -59,14 +61,14 @@ test('each VI direction includes an existing-logo optimization proposal that fol
 test('VI skill builds a confirmed-only brand seed and recommends relevant scenes from enterprise evidence', () => {
   const vi = loadViModel();
   const snapshot = {
-    licenseCompanyName: { display: '示例企业' },
+    licenseCompanyName: { display: '蔚然企业' },
     intakeBusinessModes: { display: '线上店铺销售' },
     intakeTransactionMethod: { display: '淘宝下单' },
     intakeCoreProduct: { display: '实物商品' },
     intakeAcquisitionSources: { display: '公众号、朋友圈、短视频' },
     intakeForbiddenClaims: { display: '禁止保证效果' },
   };
-  vi.startEnterpriseViDirectionGeneration({ companyName: '示例企业', logoStatus: 'existing' });
+  vi.startEnterpriseViDirectionGeneration({ companyName: '蔚然企业', logoStatus: 'existing' });
   const direction = vi.completeEnterpriseViDirectionGeneration()[0];
   const strategy = vi.buildEnterpriseViBrandStrategy(snapshot);
   const seed = vi.buildEnterpriseViBrandSeed(direction, strategy);
@@ -83,7 +85,7 @@ test('VI skill builds a confirmed-only brand seed and recommends relevant scenes
 
 test('VI image tasks retry independently and only adopted images enter the active context', () => {
   const vi = loadViModel();
-  vi.startEnterpriseViDirectionGeneration({ companyName: '示例企业', logoStatus: 'existing' });
+  vi.startEnterpriseViDirectionGeneration({ companyName: '蔚然企业', logoStatus: 'existing' });
   const direction = vi.completeEnterpriseViDirectionGeneration()[0];
   vi.selectEnterpriseViDirection(direction.id);
   vi.getState().brandStrategy = vi.buildEnterpriseViBrandStrategy({ intakeBusinessModes: { display: '线上销售' } });
@@ -129,6 +131,48 @@ test('VI directions must be selected before a complete draft can be generated', 
   assert.equal(vi.generateEnterpriseViDraft().status, 'generating_vi');
 });
 
+test('confirming a VI direction immediately starts one idempotent complete VI generation', () => {
+  const vi = loadViModel();
+  const snapshot = {
+    intakeBusinessModes: { display: '线上店铺销售' },
+    intakeCoreProduct: { display: '实物商品' },
+  };
+  vi.startEnterpriseViDirectionGeneration({ companyName: '蔚然企业', logoStatus: 'existing' });
+  const direction = vi.completeEnterpriseViDirectionGeneration()[0];
+
+  const started = vi.confirmEnterpriseViDirectionAndGenerate(direction.id, snapshot);
+  assert.equal(started.status, 'generating_vi');
+  assert.equal(started.selectedDirectionId, direction.id);
+  assert.equal(started.scenePlanConfirmed, true);
+  assert.ok(started.sceneRecommendations.length >= 4);
+  assert.ok(started.imageTasks.length > started.sceneRecommendations.length);
+  assert.equal(started.draft.directionId, direction.id);
+  assert.equal(started.directions.length, 1);
+  assert.equal(started.directions[0].id, direction.id);
+  assert.equal(vi.getActiveEnterpriseVi(), null);
+
+  const draftId = started.draft.id;
+  const repeated = vi.confirmEnterpriseViDirectionAndGenerate(direction.id, snapshot);
+  assert.equal(repeated.draft.id, draftId);
+  assert.equal(repeated.status, 'generating_vi');
+  assert.equal(vi.getActiveEnterpriseVi(), null);
+});
+
+test('successful complete VI generation automatically activates one downloadable direction', () => {
+  const vi = loadViModel();
+  vi.startEnterpriseViDirectionGeneration({ companyName: '蔚然企业', logoStatus: 'existing' });
+  const direction = vi.completeEnterpriseViDirectionGeneration()[1];
+  vi.confirmEnterpriseViDirectionAndGenerate(direction.id, { intakeBusinessModes: { display: '企业服务' } });
+  for (const task of vi.getState().imageTasks) vi.advanceEnterpriseViImageTask(task.id, 'review');
+
+  const active = vi.completeEnterpriseViGenerationAndActivate();
+  assert.equal(active.status, 'active');
+  assert.equal(active.directionId, direction.id);
+  assert.equal(vi.getState().directions.length, 1);
+  assert.equal(vi.getState().draft, null);
+  assert.equal(vi.getActiveEnterpriseVi().id, active.id);
+});
+
 test('confirmed enterprise preferences survive AI regeneration', () => {
   const vi = loadViModel();
   const first = vi.buildEnterpriseViPreferences({ brandTone: '专业、直接' });
@@ -171,10 +215,11 @@ test('a failed replacement preserves the active VI and can retry its stage', () 
 });
 
 test('enterprise cognition uses the approved staged VI information architecture', () => {
-  for (const id of ['enterpriseViPreferenceSummary','enterpriseViDirections','enterpriseViScenePlan','enterpriseViImageTasks','enterpriseViDraft','enterpriseViVersionHistory']) {
+  for (const id of ['enterpriseViPreferenceSummary','enterpriseViDirections','enterpriseViScenePlan','enterpriseViDraft','enterpriseViVersionHistory']) {
     assert.match(html, new RegExp(`id="${id}"`));
   }
-  for (const action of ['preview-enterprise-vi-direction','select-enterprise-vi-direction','select-enterprise-vi-direction-from-preview','generate-enterprise-vi-draft','activate-enterprise-vi','download-enterprise-vi','confirm-enterprise-vi-download','retry-enterprise-vi','edit-enterprise-vi-preferences']) {
+  assert.doesNotMatch(html, /id="enterpriseViImageTasks"/);
+  for (const action of ['preview-enterprise-vi-direction','select-enterprise-vi-direction','select-enterprise-vi-direction-from-preview','generate-enterprise-vi-draft','download-enterprise-vi','confirm-enterprise-vi-download','retry-enterprise-vi','edit-enterprise-vi-preferences']) {
     assert.match(html, new RegExp(`data-act="${action}"|case '${action}'`));
   }
   for (const label of ['AI 推断','企业确认','稳健决策','人文专业','现代增长','原型演示 · 待接入']) assert.match(html, new RegExp(label));
@@ -182,8 +227,14 @@ test('enterprise cognition uses the approved staged VI information architecture'
   assert.doesNotMatch(html, />企业认知</);
   assert.match(html, /方案预览 · 尚未选择/);
   assert.match(html, /查看完整展示/);
-  assert.match(html, /确认此方向与 Logo/);
+  assert.match(html, /确认此方向并生成 VI/);
   assert.match(html, /下载全套 VI/);
+  assert.match(html, /04 · 完整 VI/);
+  assert.doesNotMatch(html, /data-act="activate-enterprise-vi"/);
+  assert.doesNotMatch(html, />确认并启用</);
+  const completeViRenderer = html.match(/function renderEnterpriseViDraft\(\)\{[\s\S]*?\n\}/)?.[0] || '';
+  assert.doesNotMatch(completeViRenderer, />修改偏好</);
+  assert.doesNotMatch(completeViRenderer, />查看历史版本</);
   assert.match(html, /能力演示 · 本次不会生成真实压缩包/);
   assert.match(html, /开始下载（演示）/);
   assert.match(html, /全套 VI 下载任务已创建（演示）/);
@@ -191,17 +242,23 @@ test('enterprise cognition uses the approved staged VI information architecture'
   assert.doesNotMatch(html, /<button class="vi-direction-card/);
   assert.match(html, /vi-logo-showcase/);
   assert.match(html, /基于原 Logo 优化/);
-  assert.match(html, /确认此方向与 Logo/);
+  assert.match(html, /确认此方向并生成 VI/);
   assert.match(html, /Logo 标准组合/);
   assert.match(html, /Logo 图标版/);
   assert.match(html, /Logo 反白版/);
   assert.match(html, /vi-direction-image/);
-  assert.match(html, /根据企业情况推荐/);
-  assert.match(html, /确认场景并开始生成/);
+  assert.match(html, /03 · VI 应用场景/);
+  assert.doesNotMatch(html, /04 · 图片生成任务/);
+  assert.match(html, /基础视觉资产/);
+  assert.match(html, /视觉表现严格继承当前唯一 VI 方向/);
+  const sceneRenderer = html.match(/function renderEnterpriseViScenePlan\(\)\{[\s\S]*?\n\}/)?.[0] || '';
+  for (const contract of ['direction.colors','direction.font','direction.logoProposal','vi-scene-brand-layer']) assert.match(sceneRenderer, new RegExp(contract.replace('.', '\\.')));
+  assert.doesNotMatch(html, /确认场景并开始生成/);
+  assert.match(html, /场景内容来自企业情况推荐，视觉表现严格继承当前唯一 VI 方向/);
   assert.match(html, /单张重新生成/);
   assert.match(html, /确认采用/);
   assert.match(html, /不采用/);
-  assert.match(html, /原型演示 · 待接入图片生成服务/);
+  assert.match(html, /图片生成服务尚待真实接入/);
 });
 
 test('VI preview and download preserve selection and activation boundaries', () => {
@@ -212,6 +269,14 @@ test('VI preview and download preserve selection and activation boundaries', () 
   assert.match(download, /getActiveEnterpriseVi\(\)/);
   assert.match(download, /active\.id!==id/);
   assert.doesNotMatch(download, /Blob|createObjectURL|download=/);
+});
+
+test('both direction confirmation actions use the shared confirm-to-generate flow', () => {
+  const handlers = html.match(/case 'select-enterprise-vi-direction':[^\n]*[\s\S]*?case 'toggle-enterprise-vi-scene'/)?.[0] || '';
+  assert.match(handlers, /confirmEnterpriseViDirectionAndGenerate/);
+  assert.match(handlers, /select-enterprise-vi-direction-from-preview/);
+  assert.match(handlers, /enterpriseViDraft/);
+  assert.doesNotMatch(handlers, /请确认应用场景/);
 });
 
 test('onboarding queues VI direction generation without blocking diagnosis', () => {

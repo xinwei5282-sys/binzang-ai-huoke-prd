@@ -19,7 +19,7 @@ test('primary navigation exposes only the six approved business outcomes', () =>
     'kb',
     'settings'
   ]);
-  assert.match(nav, />短视频创作<\/button>/);
+  assert.match(nav, />AI 混剪<\/button>[\s\S]*?>营销视频<\/button>/);
   assert.doesNotMatch(nav, /移动端体验/);
 });
 

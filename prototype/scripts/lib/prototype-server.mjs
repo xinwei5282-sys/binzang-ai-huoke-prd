@@ -13,6 +13,13 @@ async function readServedSource(url) {
   return Buffer.from(await response.arrayBuffer());
 }
 
+export function prototypeServerLaunchPlan(root, port = 8010) {
+  return {
+    command: 'python3',
+    args: ['-m', 'http.server', String(port), '--bind', '127.0.0.1', '--directory', resolve(root, 'prototype')],
+  };
+}
+
 export async function ensurePrototypeServer(root, { port = 8010, startIfMissing = true } = {}) {
   const url = `http://127.0.0.1:${port}/index.html`;
   const local = readFileSync(resolve(root, 'prototype/index.html'));
@@ -26,7 +33,8 @@ export async function ensurePrototypeServer(root, { port = 8010, startIfMissing 
     if (!startIfMissing || /serves different content/.test(error.message)) throw error;
   }
 
-  const serverProcess = spawn('python3', ['-m', 'http.server', String(port), '--directory', resolve(root, 'prototype')], { cwd: root, detached: true, stdio: 'ignore' });
+  const launch = prototypeServerLaunchPlan(root, port);
+  const serverProcess = spawn(launch.command, launch.args, { cwd: root, detached: true, stdio: 'ignore' });
   serverProcess.unref();
   const deadline = Date.now() + 8000;
   let lastError = '';

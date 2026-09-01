@@ -62,7 +62,7 @@ await evaluate(`(() => {
   document.body.classList.remove('login-active');
   document.querySelectorAll('.guide-overlay,.modal-mask').forEach(item=>item.classList.remove('show'));
   go('kb');showKbTab('cognition');
-  startEnterpriseViDirectionGeneration({brandTone:'专业、温暖',intakeCoreAdvantage:'值得信赖、清晰可执行',companyName:'示例企业',logoStatus:'existing'});
+  startEnterpriseViDirectionGeneration({brandTone:'专业、温暖',intakeCoreAdvantage:'值得信赖、清晰可执行',companyName:'蔚然企业',logoStatus:'existing'});
   completeEnterpriseViDirectionGeneration();renderEnterpriseCognitionVi();
 })()`);
 await screenshot('vi-directions-ready');
@@ -104,7 +104,7 @@ const layout = await evaluate(`(() => {
 
 const audit = { viewport, draftGate, activation, failure, layout, consoleErrors, runtimeErrors };
 writeFileSync(resolve(outDir, `audit-${viewport}.json`), JSON.stringify(audit, null, 2));
-if (draftGate.before.status !== 'system_default' || draftGate.after.status !== 'system_default' || draftGate.status !== 'draft_review' || draftGate.draftStatus !== 'draft_review' || draftGate.directionCards !== 3 || draftGate.logoMode !== 'optimize_existing' || draftGate.logoWordmark !== '示例企业' || draftGate.logoShowcases !== 3) throw new Error(`draft gate failed: ${JSON.stringify(draftGate)}`);
+if (draftGate.before.status !== 'system_default' || draftGate.after.status !== 'system_default' || draftGate.status !== 'draft_review' || draftGate.draftStatus !== 'draft_review' || draftGate.directionCards !== 3 || draftGate.logoMode !== 'optimize_existing' || draftGate.logoWordmark !== '蔚然企业' || draftGate.logoShowcases !== 3) throw new Error(`draft gate failed: ${JSON.stringify(draftGate)}`);
 if (activation.activeStatus !== 'active' || activation.version !== 1 || activation.context.status !== 'active' || activation.posterVi.status !== 'active' || activation.source !== 'enterprise_vi:v1') throw new Error(`activation failed: ${JSON.stringify(activation)}`);
 if (failure.status !== 'generation_failed' || failure.failedStage !== 'directions' || !failure.preserved || failure.activeVersion !== 1) throw new Error(`failure preservation failed: ${JSON.stringify(failure)}`);
 if (layout.primary.length !== 1 || layout.primary[0] !== 'cognition' || layout.dataViewDisplay !== 'none' || layout.scrollWidth > layout.clientWidth + 2) throw new Error(`layout failed: ${JSON.stringify(layout)}`);

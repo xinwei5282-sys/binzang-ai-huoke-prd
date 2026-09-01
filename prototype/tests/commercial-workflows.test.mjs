@@ -5,13 +5,77 @@ import { readFileSync } from 'node:fs';
 const html = readFileSync(new URL('../index.html', import.meta.url), 'utf8');
 
 test('content creation is split into two complete workflows', () => {
-  for (const phrase of ['营销场景生成', '数字人混剪']) assert.match(html, new RegExp(phrase));
+  for (const phrase of ['营销视频', '数字人混剪']) assert.match(html, new RegExp(phrase));
   assert.match(html, /data-p="create"/);
   assert.match(html, /data-p="remix"/);
   for (const id of ['marketingCover', 'marketingTitle', 'marketingBody', 'remixCover', 'remixCaption']) {
     assert.match(html, new RegExp(`id="${id}"`));
   }
   assert.match(html, /data-act="submit-remix"/);
+});
+
+test('marketing video mirrors the AI remix list and two-step creation language', () => {
+  const create = html.match(/<section class="page" data-p="create"[\s\S]*?(?=<section class="page" data-p="remix")/)?.[0] ?? '';
+  for (const token of ['createList', 'createBackTitle', 'createLabel', 'createStepRibbon', '1. 视频设置', '2. 封面、脚本与分镜确认', 'data-create-step-panel="1"', 'data-create-step-panel="2"', 'marketingStoryboardList', '画面、对应口播、时长、来源和质量问题统一确认', '口播、画面、时长和关键帧统一确认', '返回上一步', '暂存', '确认并生成成片']) assert.match(create, new RegExp(token));
+  assert.match(html, /function showCreateStep\(step\)/);
+  assert.match(html, /case 'create-generate-preview':[\s\S]{0,900}showCreateStep\(2\)/);
+  assert.equal((create.match(/data-create-step-indicator/g)||[]).length, 2);
+  assert.doesNotMatch(create, /<div class="stats">/);
+  assert.doesNotMatch(create, /create-output|createPreviewTitle|createPreviewBody|竖屏页面预览/);
+  assert.doesNotMatch(create, /data-act="confirm-script"|data-act="confirm-frames"|待确认脚本|待确认分镜/);
+  assert.match(html, /function openMarketingTaskDetail\(row\)/);
+  assert.match(html, /function setMarketingDetailMode\(readonly\)/);
+  assert.match(create, /data-act="view-marketing-detail"/);
+  assert.match(create, /营销视频任务/);
+  assert.match(create, /id="marketingTaskBody"/);
+  assert.match(create, /所有任务及当前进度统一在此查看/);
+  assert.doesNotMatch(create, /id="genTasksCard"/);
+  assert.doesNotMatch(create, /<h3>生成任务<\/h3>/);
+  assert.doesNotMatch(create, /<h3>历史生成记录<\/h3>/);
+});
+
+test('marketing video supports AI-generated and one-step product marketing videos', () => {
+  const create = html.match(/<section class="page" data-p="create"[\s\S]*?(?=<section class="page" data-p="remix")/)?.[0] ?? '';
+  for (const token of ['marketingVideoTitle', '<label>标题', 'videoTypeSeg', 'AI 生成视频', '商品营销视频', 'aiVideoPanel', 'productMarketingPanel', 'aiVideoModelSelect', 'Seedance', '可灵', '海螺', '通义万相', 'marketingCoverCard', '重新生成封面', '本地替换封面', 'productMainImage', 'productModelImage', 'productName', 'generate-product-video', '立即生成']) {
+    assert.match(create, new RegExp(token));
+  }
+  assert.match(html, /function setCreateVideoType\(type\)/);
+  assert.match(html, /case 'create-video-type'/);
+  assert.match(html, /case 'generate-product-video'/);
+  assert.match(create, /<th>视频类型<\/th>/);
+  assert.match(create, />AI 生成</);
+  assert.match(create, />商品营销</);
+  assert.doesNotMatch(create, /产出视频？/);
+  assert.doesNotMatch(create, /选用视频模板/);
+  assert.doesNotMatch(create, /合规规避/);
+  assert.doesNotMatch(create, /套用爆款公式/);
+  assert.doesNotMatch(create, /提示词风格/);
+  assert.doesNotMatch(create, /Veo/);
+  assert.match(create, /仅展示国产模型/);
+  const productPanel = create.match(/<div id="productMarketingPanel"[\s\S]*?(?=<\/div>\s*<\/div>\s*<div class="card pad" data-create-step-panel="2")/)?.[0] ?? '';
+  assert.doesNotMatch(productPanel, /productSellingPoints|核心卖点|productDuration|目标时长|productCta|CTA/);
+  assert.doesNotMatch(create, /商品营销视频[\s\S]{0,500}内容确认与生成/);
+  assert.ok(create.indexOf('id="marketingVideoTitle"') < create.indexOf('id="videoTypeSeg"'));
+});
+
+test('AI marketing video reuses remix-style storyboard cards with one quality gate and optional CTA', () => {
+  const create = html.match(/<section class="page" data-p="create"[\s\S]*?(?=<section class="page" data-p="remix")/)?.[0] ?? '';
+  for (const token of ['marketingCoverCard', 'marketingStoryboardList', 'marketing-material-card', '对应口播', '需 7.0s · 可用 9.2s', '企业素材库', '人工上传', 'AI 生成', '已授权', '首帧 \\+ 尾帧', 'marketing-quality-issue', 'preview-marketing-material', 'replace-marketing-material', 'regenerate-marketing-material', 'marketingConfirmButton']) {
+    assert.match(create, new RegExp(token));
+  }
+  for (const token of ['marketingCtaToggle', 'marketingCtaInput', 'marketingCtaScene', 'toggle-marketing-cta', 'refreshMarketingQualityState']) {
+    assert.match(html, new RegExp(token));
+  }
+  const productPanel = create.match(/<div id="productMarketingPanel"[\s\S]*?(?=<\/div>\s*<\/div>\s*<div class="card pad" data-create-step-panel="2")/)?.[0] ?? '';
+  assert.doesNotMatch(productPanel, /CTA|marketingCta/);
+  assert.doesNotMatch(create, /crop-marketing-material|裁剪/);
+});
+
+test('marketing scenario and target customer are inferred instead of manually entered', () => {
+  const create = html.match(/<section class="page" data-p="create"[\s\S]*?(?=<section class="page" data-p="remix")/)?.[0] ?? '';
+  for (const token of ['系统自动理解本次营销方向', 'marketingInferenceCard', 'marketingInferenceStatus', 'inferredMarketingScenario', 'inferredTargetCustomer']) assert.doesNotMatch(create, new RegExp(token));
+  assert.doesNotMatch(create, /<label>营销场景<\/label>|<label>目标客户<\/label>/);
+  assert.match(html, /已读取企业大脑并生成内容方案/);
 });
 
 test('trend discovery stays in AI acquisition without a duplicate automation workspace', () => {

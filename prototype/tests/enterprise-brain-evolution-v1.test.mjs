@@ -59,12 +59,12 @@ test('generated content is reprocessed after revision, publication and soft dele
   brain.recordContentRevision(asset.id, '修改价格表达');
   assert.equal(asset.version, 2);
   brain.recordContentPublication(asset.id, {channel:'朋友圈', outcome:.8});
-  const deleted = brain.softDeleteContentAsset(asset.id, {reason:'事实错误', deletedBy:'演示管理员'});
+  const deleted = brain.softDeleteContentAsset(asset.id, {reason:'事实错误', deletedBy:'蔚然'});
   assert.equal(deleted.status, 'deleted');
   assert.equal(deleted.formal, false);
   assert.equal(deleted.reusable, false);
   assert.equal(deleted.processCount, 4);
-  assert.equal(deleted.deletedBy, '演示管理员');
+  assert.equal(deleted.deletedBy, '蔚然');
   assert.ok(deleted.audit.some(item => item.action === 'soft_delete'));
   assert.ok(brain.getState().learningCandidates.some(item => item.kind === 'prohibited_rule'));
 });
@@ -81,7 +81,7 @@ test('external intelligence remains candidate-only until a human confirms it', (
   const candidate = brain.queueIntelligenceCandidate({type:'政策',title:'本地扶持政策',url:'https://example.com/policy'});
   assert.equal(candidate.formal, false);
   assert.equal(candidate.usableForFacts, false);
-  brain.confirmIntelligenceCandidate(candidate.id, '演示管理员');
+  brain.confirmIntelligenceCandidate(candidate.id, '蔚然');
   assert.equal(candidate.formal, true);
   assert.equal(candidate.usableForFacts, true);
 

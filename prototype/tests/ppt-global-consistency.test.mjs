@@ -26,3 +26,16 @@ test('prototype has no retired PPT review states, output renderer or history res
   assert.doesNotMatch(prototype, /function renderPptOutput\(/);
   assert.doesNotMatch(prototype, /function restorePptSlideVersion\(/);
 });
+
+test('PPT contracts keep Presenton inspiration separate from the export implementation', () => {
+  for (const document of [design, productPrd]) {
+    assert.match(document, /Presenton/);
+    assert.match(document, /PptExportAdapter/);
+    assert.match(document, /PptxGenJS/);
+    assert.match(document, /presenton-export/);
+    assert.match(document, /不使用|禁止|排除/);
+  }
+  assert.match(prototype, /产品交互原型/);
+  assert.match(prototype, /正式导出将使用独立审核的宽松许可组件/);
+  assert.doesNotMatch(prototype, /src=["'][^"']*presenton-export|import[^\n]*presenton-export/);
+});
