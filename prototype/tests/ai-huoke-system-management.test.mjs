@@ -9,6 +9,15 @@ const labels = ['系统设置', '成员管理', '权限管理', '平台账号', 
 const docs = ['设置-系统设置.md', '设置-成员管理.md', '设置-权限管理.md', '设置-平台账号.md', '设置-提示词管理.md', '设置-用量管理.md', '设置-日志与审计.md'];
 const retiredDocs = ['设置-Agent权限.md', '设置-企业设置.md', '设置-成员与权限.md', '设置-用量与套餐.md', '设置-帮助与服务.md'];
 const headings = ['页面概述', '页面级业务规则', '页面字段级定义', '页面级操作定义', '产品边界', '页面级流程', '通知与日志', '异常与空状态', '页面验收标准', '技术实现提示'];
+const pagePrdContexts = [
+  'home',
+  'brand-report', 'operating-plan',
+  'material-ppt', 'material-moments', 'material-poster', 'material-wechat',
+  'acquisition', 'plan', 'burst', 'remix', 'create', 'avatar',
+  'kb-diagnosis', 'kb-cognition', 'kb-content', 'kb-intelligence', 'kb-evolution',
+  'studio', 'tune', 'works',
+  ...routes,
+];
 
 function pageRoutes() {
   return [...html.matchAll(/<section\s+class="page(?:\s+show)?"[^>]*data-p="([^"]+)"/g)].map(match => match[1]);
@@ -44,11 +53,19 @@ test('system identity, members and SaaS RBAC expose complete management contract
   assert.match(html, /成员最终权限为所分配角色权限并集/);
 });
 
+test('role permissions edit in an independent modal instead of an always-visible list panel', () => {
+  assert.doesNotMatch(html, /<div class="permission-layout">[\s\S]*?class="[^"]*permission-builder/);
+  assert.match(html, /function openSystemRoleEditor\(/);
+  assert.match(html, /modal\('编辑角色 · '/);
+});
+
 test('prompt catalog covers every approved function cluster with full governed content', () => {
   for (const token of ['AI_HUOKE_ENABLED_CAPABILITIES', 'AI_HUOKE_PROMPT_CATALOG', 'AI_HUOKE_PROMPT_CONTENT', 'sourceRef', 'inputContract', 'outputContract', 'visibleToCurrentAccount']) assert.match(html, new RegExp(token));
   for (const id of ['P-000', 'P-001', 'P-010', 'P-011', 'P-012', 'P-020', 'P-021', 'P-030', 'KG-001', 'KG-002', 'KG-003', 'KG-004', 'KG-005', 'KG-006', 'KG-007', 'P-040', 'P-041', 'M-010', 'M-020', 'M-021', 'M-030', 'M-031', 'M-032', 'M-040', 'A-010', 'A-020', 'P-042', 'P-043', 'P-044', 'A-030', 'A-031', 'P-050', 'P-060', 'T-010']) assert.match(html, new RegExp(id));
   for (const action of ['filter-ai-huoke-prompts', 'clear-ai-huoke-prompt-filters', 'view-ai-huoke-prompt', 'edit-ai-huoke-prompt', 'test-ai-huoke-prompt', 'publish-ai-huoke-prompt', 'rollback-ai-huoke-prompt']) assert.match(html, new RegExp(action));
-  assert.match(html, /平台基线 · 只读/);
+  assert.match(html, /平台基线 · 可创建租户版本/);
+  assert.match(html, /function canManageAiHuokePrompt\(/);
+  assert.match(html, /租户覆盖 · 基于平台基线/);
   assert.match(html, /租户可配置/);
   assert.match(html, /合规检查[^\n]{0,300}温度 0(?:\.0)?/);
   assert.match(html, /非 Prompt 驱动/);
@@ -75,4 +92,11 @@ test('seven system pages have field-level PRDs, current indexes and distinct dra
   }
   assert.match(html, /Object\.assign\(PAGE_PRD_CONTENT,\{/);
   for (const route of routes) assert.match(html, new RegExp(`\\n\\s*${route}:\\{\\n\\s*label:`), `drawer PRD: ${route}`);
+});
+
+test('every reachable page and subpage has its own page PRD context', () => {
+  const source = html.match(/const PAGE_PRD_CONTENT=\{[\s\S]*?\n\}\);\nlet pagePrdTriggerBeforeOpen/)?.[0] || '';
+  const keys = new Set([...source.matchAll(/^  ['"]?([a-z][a-z-]*)['"]?:\{/gm)].map(match => match[1]));
+  const missing = pagePrdContexts.filter(context => !keys.has(context));
+  assert.deepEqual(missing, [], `missing page PRDs: ${missing.join(', ')}`);
 });

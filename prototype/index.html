@@ -348,7 +348,7 @@ body.login-active{height:100dvh;overflow:hidden}
 .drawer{position:fixed;z-index:119;right:0;top:0;width:min(var(--drawer-w),100vw);height:100dvh;background:var(--surface);border-left:1px solid var(--line);box-shadow:-16px 0 40px oklch(.2 .03 230/.16);display:flex;flex-direction:column;transform:translateX(100%);transition:transform var(--motion-base) cubic-bezier(.2,0,0,1)}
 .drawer.show{transform:none}.drawer-head,.drawer-foot{display:flex;align-items:center;gap:12px;padding:16px 20px;border-bottom:1px solid var(--line)}.drawer-head h2{font-size:17px;letter-spacing:-.01em}.drawer-head .btn{margin-left:auto}.drawer-body{padding:20px;overflow:auto;flex:1}.drawer-foot{justify-content:flex-end;border-top:1px solid var(--line);border-bottom:0;background:var(--surface-2)}
 .drawer-section{padding:16px 0;border-bottom:1px solid var(--line)}.drawer-section:first-child{padding-top:0}.drawer-section:last-child{border-bottom:0}.drawer-section h3{font-size:13px;margin-bottom:8px}.drawer-kv{display:grid;grid-template-columns:112px minmax(0,1fr);gap:8px 12px;font-size:12.5px}.drawer-kv dt{color:var(--ink-3)}.drawer-kv dd{color:var(--ink);font-weight:500}.state-callout{padding:12px 14px;border:1px solid var(--line);background:var(--surface-2);border-radius:var(--panel-radius);font-size:12.5px}.state-callout.danger{background:var(--danger-sft);border-color:oklch(.84 .05 28);color:oklch(.42 .12 25)}
-.page-prd-trigger{position:fixed;right:0;top:50%;z-index:116;width:44px;height:92px;transform:translateY(-50%);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px;border:1px solid var(--line-2);border-right:0;border-radius:8px 0 0 8px;background:var(--rail);color:var(--rail-tx);box-shadow:-5px 5px 18px oklch(.2 .03 230/.16);font:600 11px/1.1 inherit;letter-spacing:.08em;cursor:pointer;transition:background var(--motion-fast),transform var(--motion-fast),box-shadow var(--motion-fast)}
+.page-prd-trigger{position:fixed;right:0;top:50%;z-index:90;width:44px;height:92px;transform:translateY(-50%);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px;border:1px solid var(--line-2);border-right:0;border-radius:8px 0 0 8px;background:var(--rail);color:var(--rail-tx);box-shadow:-5px 5px 18px oklch(.2 .03 230/.16);font:600 11px/1.1 inherit;letter-spacing:.08em;cursor:pointer;transition:background var(--motion-fast),transform var(--motion-fast),box-shadow var(--motion-fast)}
 .page-prd-trigger b{color:oklch(.9 .04 245);font:700 12px/1.1 Sora,system-ui,sans-serif;letter-spacing:.04em}.page-prd-trigger:hover{background:oklch(.27 .04 235);transform:translate(-2px,-50%);box-shadow:-8px 7px 22px oklch(.2 .03 230/.2)}.page-prd-trigger:focus-visible{outline:2px solid var(--brand-d);outline-offset:3px}.page-prd-trigger[aria-expanded="true"]{background:var(--brand-d);color:oklch(.98 .01 245)}
 .page-prd-mask{position:fixed;inset:0;z-index:128;background:oklch(.17 .025 230/.48);opacity:0;visibility:hidden;transition:opacity var(--motion-base),visibility var(--motion-base)}.page-prd-mask.show{opacity:1;visibility:visible}
 .page-prd-drawer{position:fixed;z-index:129;right:0;top:0;width:min(720px,100vw);height:100dvh;display:flex;flex-direction:column;background:var(--bg);border-left:1px solid var(--line-2);box-shadow:-24px 0 56px oklch(.18 .035 230/.2);transform:translateX(100%);transition:transform var(--motion-base) cubic-bezier(.2,0,0,1)}.page-prd-drawer.show{transform:none}
@@ -590,9 +590,9 @@ td{font-size:12.5px}
 .vi-direction-preview{height:178px;padding:14px;justify-content:space-between}.vi-direction-preview span{opacity:1}.vi-direction-headline{display:flex;align-items:center;justify-content:space-between;gap:8px}.vi-logo-mode{padding:4px 7px;border:1px solid color-mix(in oklch,currentColor 32%,transparent);border-radius:999px;background:color-mix(in oklch,var(--surface) 14%,transparent);font-size:10px;font-weight:650;white-space:nowrap}.vi-logo-showcase{display:grid;place-items:center;min-height:86px}.vi-logo-lockup{display:inline-flex;align-items:center;justify-content:center;gap:10px;min-width:0;color:var(--logo-ink,currentColor)}.vi-logo-mark{position:relative;display:grid;place-items:center;width:48px;height:48px;flex:0 0 auto;border:2px solid currentColor;font-family:Sora,sans-serif;font-size:19px;font-weight:700;line-height:1}.vi-logo-mark::after{content:'';position:absolute;inset:5px;border:1px solid currentColor;opacity:.38}.vi-logo-soft .vi-logo-mark{border-radius:17px 6px 17px 6px}.vi-logo-soft .vi-logo-mark::after{border-radius:12px 4px 12px 4px}.vi-logo-forward .vi-logo-mark{border-radius:8px;transform:skew(-5deg)}.vi-logo-forward .vi-logo-mark::after{inset:7px 5px 5px 8px;border-width:0 2px 2px 0}.vi-logo-seal .vi-logo-mark{border-radius:50%}.vi-logo-seal .vi-logo-mark::after{border-radius:50%}.vi-logo-wordmark{display:grid;gap:2px;text-align:left}.vi-logo-wordmark strong{font-size:17px;line-height:1.1;letter-spacing:.06em;white-space:nowrap}.vi-logo-wordmark small{font-family:Sora,sans-serif;font-size:8px;letter-spacing:.13em;opacity:.7;text-transform:uppercase}.vi-logo-lockup.icon .vi-logo-wordmark{display:none}.vi-logo-lockup.reverse{--logo-ink:white;padding:12px;border-radius:10px;background:var(--logo-bg,var(--rail))}.vi-logo-caption{font-size:10px;opacity:.78}.vi-logo-changes{min-height:30px;margin-top:8px;color:var(--ink-3);font-size:11px;line-height:1.45}.vi-logo-variant-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px}.vi-logo-variant{display:grid;align-content:space-between;gap:14px;min-height:128px;padding:12px;border:1px solid var(--line);border-radius:var(--panel-radius);background:var(--surface-2)}.vi-logo-variant>b{font-size:11px}.vi-kit-logo{display:grid;gap:12px;align-content:start}.vi-kit-logo .vi-logo-lockup{justify-content:flex-start;color:var(--ink)}
 @media(max-width:720px){.vi-logo-variant-grid{grid-template-columns:1fr}.vi-logo-variant{min-height:112px}.vi-direction-preview{height:166px}.vi-logo-mark{width:44px;height:44px}.vi-logo-wordmark strong{font-size:15px}.agent-governance{border:0;background:transparent}.agent-governance table,.agent-governance tbody,.agent-governance tr,.agent-governance td{display:block;width:100%;min-width:0;max-width:100%;white-space:normal}.agent-governance table{overflow:visible}.agent-governance thead{display:none}.agent-governance tbody{display:grid;gap:10px}.agent-governance tr{height:auto;padding:13px;border:1px solid var(--line);border-radius:var(--panel-radius);background:var(--surface)}.agent-governance td{height:auto;padding:6px 0;border:0}.agent-governance td:first-child{padding-top:0;font-size:14px}.agent-governance td:nth-child(2)::before,.agent-governance td:nth-child(3)::before{display:block;margin-bottom:2px;color:var(--ink-3);font-size:10px}.agent-governance td:nth-child(2)::before{content:'默认规则'}.agent-governance td:nth-child(3)::before{content:'人工审批边界'}}
 @media(max-width:760px){[data-subview-panel="operating-plan"] .plan-list-item{grid-template-columns:1fr}.plan-gap-action{justify-content:space-between;white-space:normal}.plan-owner{align-items:flex-start}.plan-gap-action .btn{flex:none}.company-plan-history{overflow:visible}.company-plan-history-list table,.company-plan-history-list tbody,.company-plan-history-list tr,.company-plan-history-list td{display:block;width:100%}.company-plan-history-list thead{display:none}.company-plan-history-list tr{padding:12px 14px;border-bottom:1px solid var(--line)}.company-plan-history-list td{height:auto;padding:4px 0;border:0;white-space:normal}.company-plan-history-list .rowact{text-align:left;margin-top:7px}.history-plan-review{max-width:none}.history-plan-detail{padding:14px}.history-detail-header,.history-detail-header-main{align-items:stretch;flex-direction:column}.history-detail-actions{justify-content:flex-end}.history-detail-meta{grid-template-columns:repeat(2,minmax(0,1fr))}.history-priority-grid,.history-review-grid{grid-template-columns:1fr}.history-review-section:last-child{grid-column:auto}.history-execution-table{overflow-x:auto}.history-execution-table table{min-width:720px}.company-plan-supplement-summary,.company-plan-missing-fields{grid-template-columns:1fr}}
-.system-form-card{max-width:980px}.system-form-actions{margin-top:6px;display:flex;align-items:center;justify-content:flex-end;gap:12px}.system-table{overflow:auto}.system-table table{min-width:760px}.system-table td{white-space:normal}.system-table .rowact{display:flex;flex-wrap:wrap;gap:6px;text-align:left}.system-card-head{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:15px 16px;border-bottom:1px solid var(--line)}.system-card-head h3{font-size:14px}.system-card-head p{margin-top:2px;color:var(--ink-3);font-size:11.5px}.permission-layout{display:grid;grid-template-columns:minmax(480px,1.1fr) minmax(420px,.9fr);gap:16px}.permission-builder{align-self:start}.permission-builder>.system-card-head{margin:-16px -16px 14px}.permission-module{padding:13px 0;border-bottom:1px solid var(--line)}.permission-module:last-child{border-bottom:0}.permission-module-head{display:flex;align-items:center;gap:8px;margin-bottom:9px}.permission-module-head small{margin-left:auto;color:var(--ink-3)}.permission-buttons{display:flex;flex-wrap:wrap;gap:8px 14px;padding-left:26px}.permission-check{display:inline-flex;align-items:center;gap:6px;color:var(--ink-2);font-size:12px}.permission-check input{accent-color:var(--brand-d)}.prompt-toolbar .inp:first-child{width:190px}.prompt-toolbar input{min-width:280px;max-width:440px}#system-prompts-page table{min-width:1120px;table-layout:fixed}#system-prompts-page th:first-child{width:260px}#system-prompts-page th:nth-child(2){width:110px}#system-prompts-page th:nth-child(3){width:190px}#system-prompts-page th:nth-child(4){width:110px}#system-prompts-page th:nth-child(5){width:92px}.prompt-name{display:grid;gap:3px;min-width:220px}.prompt-name small{color:var(--ink-3)}.prompt-meta{display:grid;gap:3px}.prompt-actions{display:flex;flex-wrap:wrap;gap:5px;min-width:210px}.prompt-scope{display:inline-flex;margin-top:4px}.prompt-content{padding:12px;border:1px solid var(--line);border-radius:var(--r-s);background:var(--surface-2);white-space:pre-wrap;word-break:break-word;color:var(--ink-2);font:12px/1.7 ui-monospace,SFMono-Regular,Menlo,monospace}.prompt-contract{display:grid;grid-template-columns:110px minmax(0,1fr);gap:7px 10px}.prompt-contract dt{color:var(--ink-3);font-size:12px}.prompt-contract dd{margin:0;word-break:break-word;font-size:12px}.usage-management-grid{align-items:start}.usage-management-grid .card{min-width:0}.usage-progress{width:110px;height:6px;border-radius:999px;background:var(--line);overflow:hidden}.usage-progress i{display:block;height:100%;background:var(--brand)}.log-toolbar input{min-width:280px}.system-role-active{background:var(--brand-sft)}
-@media(max-width:1100px){.permission-layout,.usage-management-grid{grid-template-columns:1fr}.permission-builder{order:-1}}
-@media(max-width:760px){.prompt-toolbar,.log-toolbar{align-items:stretch;flex-direction:column}.prompt-toolbar .inp:first-child,.prompt-toolbar input,.log-toolbar input{width:100%;max-width:none;min-width:0}.prompt-toolbar .spacer,.log-toolbar .spacer{display:none}.permission-layout{display:block}.permission-layout>.card{margin-bottom:14px}.system-form-actions{align-items:stretch;flex-direction:column}.system-form-actions .btn{width:100%}.prompt-actions{min-width:180px}}
+.system-form-card{max-width:980px}.system-form-actions{margin-top:6px;display:flex;align-items:center;justify-content:flex-end;gap:12px}.system-table{overflow:auto}.system-table table{min-width:760px}.system-table td{white-space:normal}.system-table .rowact{display:flex;flex-wrap:wrap;gap:6px;text-align:left}.system-card-head{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:15px 16px;border-bottom:1px solid var(--line)}.system-card-head h3{font-size:14px}.system-card-head p{margin-top:2px;color:var(--ink-3);font-size:11.5px}.permission-editor-intro{margin-bottom:4px}.permission-editor-intro b{display:block;margin-bottom:3px}.permission-module{padding:13px 0;border-bottom:1px solid var(--line)}.permission-module:last-child{border-bottom:0}.permission-module-head{display:flex;align-items:center;gap:8px;margin-bottom:9px}.permission-module-head small{margin-left:auto;color:var(--ink-3)}.permission-buttons{display:flex;flex-wrap:wrap;gap:8px 14px;padding-left:26px}.permission-check{display:inline-flex;align-items:center;gap:6px;color:var(--ink-2);font-size:12px}.permission-check input{accent-color:var(--brand-d)}.prompt-toolbar .inp:first-child{width:190px}.prompt-toolbar input{min-width:280px;max-width:440px}#system-prompts-page table{min-width:1120px;table-layout:fixed}#system-prompts-page th:first-child{width:260px}#system-prompts-page th:nth-child(2){width:110px}#system-prompts-page th:nth-child(3){width:190px}#system-prompts-page th:nth-child(4){width:110px}#system-prompts-page th:nth-child(5){width:92px}.prompt-name{display:grid;gap:3px;min-width:220px}.prompt-name small{color:var(--ink-3)}.prompt-meta{display:grid;gap:3px}.prompt-actions{display:flex;flex-wrap:wrap;gap:5px;min-width:210px}.prompt-scope{display:inline-flex;margin-top:4px}.prompt-content{padding:12px;border:1px solid var(--line);border-radius:var(--r-s);background:var(--surface-2);white-space:pre-wrap;word-break:break-word;color:var(--ink-2);font:12px/1.7 ui-monospace,SFMono-Regular,Menlo,monospace}.prompt-contract{display:grid;grid-template-columns:110px minmax(0,1fr);gap:7px 10px}.prompt-contract dt{color:var(--ink-3);font-size:12px}.prompt-contract dd{margin:0;word-break:break-word;font-size:12px}.usage-management-grid{align-items:start}.usage-management-grid .card{min-width:0}.usage-progress{width:110px;height:6px;border-radius:999px;background:var(--line);overflow:hidden}.usage-progress i{display:block;height:100%;background:var(--brand)}.log-toolbar input{min-width:280px}
+@media(max-width:1100px){.usage-management-grid{grid-template-columns:1fr}}
+@media(max-width:760px){.prompt-toolbar,.log-toolbar{align-items:stretch;flex-direction:column}.prompt-toolbar .inp:first-child,.prompt-toolbar input,.log-toolbar input{width:100%;max-width:none;min-width:0}.prompt-toolbar .spacer,.log-toolbar .spacer{display:none}.system-form-actions{align-items:stretch;flex-direction:column}.system-form-actions .btn{width:100%}.prompt-actions{min-width:180px}}
 </style>
 </head>
 <body class="login-active" data-customer="general">
@@ -1450,8 +1450,7 @@ td{font-size:12.5px}
 
     <section class="page" data-p="permissions" data-od-id="system-permissions-page">
       <div class="lead"><div><div class="t">权限管理</div><div class="s">按角色配置模块、数据范围与按钮权限，父子权限支持全选与半选</div></div><button class="btn pri" data-act="create-system-role">新建角色</button></div>
-      <div class="permission-layout"><div class="card system-table"><div class="system-card-head"><div><h3>角色列表</h3><p>选择角色查看权限</p></div></div><table><thead><tr><th>角色</th><th>权限摘要</th><th>创建人 / 时间</th><th>操作</th></tr></thead><tbody id="systemRoleBody"></tbody></table></div>
-      <div class="card pad permission-builder"><div class="system-card-head"><div><h3 id="permissionRoleTitle">管理员 · 权限配置</h3><p>模块权限 · 数据范围 · 按钮权限</p></div><button class="btn pri" data-act="save-system-role">保存角色</button></div><div id="permissionMatrix"></div></div></div>
+      <div class="card system-table"><div class="system-card-head"><div><h3>角色列表</h3><p>权限配置仅在点击“编辑”后打开，不占用列表浏览区域</p></div></div><table><thead><tr><th>角色</th><th>权限摘要</th><th>创建人 / 时间</th><th>操作</th></tr></thead><tbody id="systemRoleBody"></tbody></table></div>
     </section>
 
     <section class="page" data-p="prompts" data-od-id="system-prompts-page">
@@ -1567,7 +1566,7 @@ const AI_HUOKE_ROLE_GRANTS={
   'Prompt 测试员':{summary:'提示词查看与测试',createdBy:'林晓',createdAt:'2026-07-01',grants:{knowledge:['查看'],content:[],acquisition:[],prompts:['查看','测试'],system:[]}},
   观察员:{summary:'只读',createdBy:'平台预置',createdAt:'2026-06-18',grants:{knowledge:['查看'],content:['查看'],acquisition:['查看'],prompts:['查看'],system:['查看']}}
 };
-function aiHuokePrompt(id,name,featureKey,feature,scene,sourceRef,inputContract,outputContract,content,options={}){return {id,name,featureKey,feature,scene,model:options.model||'DeepSeek-V3',parameters:options.parameters||'温度 0.2 · 最大 1,600 tokens',version:options.version||'v1.0',status:options.status||'已发布',scope:options.scope||'平台基线 · 只读',visibleToCurrentAccount:options.visibleToCurrentAccount!==false,sourceRef,inputContract,outputContract,content,testPassed:false};}
+function aiHuokePrompt(id,name,featureKey,feature,scene,sourceRef,inputContract,outputContract,content,options={}){return {id,name,featureKey,feature,scene,model:options.model||'DeepSeek-V3',parameters:options.parameters||'温度 0.2 · 最大 1,600 tokens',version:options.version||'v1.0',status:options.status||'已发布',scope:options.scope||'平台基线 · 可创建租户版本',visibleToCurrentAccount:options.visibleToCurrentAccount!==false,sourceRef,inputContract,outputContract,content,testPassed:false};}
 const AI_HUOKE_PROMPT_DEFINITIONS=[
   aiHuokePrompt('P-000','全局安全与事实边界','global','全局与路由','所有生成任务的最高优先级安全与事实约束','prd/PRD_企业AI经营大脑_当前开发基线.md §7 P-000','confirmed_enterprise_facts, user_input, permission_snapshot','policy_result, missing_inputs, risk_flags','你是企业 AI 经营大脑的安全边界。只使用已确认企业事实与当前任务输入；不得编造价格、案例、资质、承诺或客户数据。缺少事实时返回 missing_inputs。发布、报价、预算、正式知识写入和高风险承诺必须要求人工确认。不得输出密钥、Cookie、Token、密码或跨租户信息。'),
   aiHuokePrompt('P-001','用户意图路由','global','全局与路由','识别模块、风险与所需 Skill 链','prd/PRD_企业AI经营大脑_当前开发基线.md §7 P-001','user_input, page_context, enabled_capabilities','module, submodule, normalized_input, risks, human_gate, skill_chain','你是意图路由器。根据用户输入、页面上下文和已开通能力，返回 module、submodule、normalized_input、risks、human_gate 与 skill_chain。区分内容导出和平台发布；无开通能力时不得伪造执行结果。只输出 JSON。'),
@@ -1774,6 +1773,12 @@ function toggleKnowledgeWorkItem(id){if(expandedKnowledgeWorkItems.has(id))expan
 function updateKnowledgeCandidate(workId,candidateId,state){const item=KNOWLEDGE_WORK_ITEMS.find(entry=>entry.id===workId),candidate=item?.candidates.find(entry=>entry.id===candidateId);if(!candidate)return;candidate.state=state;expandedKnowledgeWorkItems.add(workId);renderKnowledgeWorkQueue();}
 
 function normalizeSystemRoute(route){return LEGACY_SYSTEM_ROUTES[route]||route;}
+function resolvePagePrdContext(route){
+  const page=document.querySelector('.page[data-p="'+route+'"]');
+  if(['brand-planning','marketing-materials'].includes(route))return page?.querySelector(':scope > .subview.show')?.dataset.subviewPanel||DEFAULT_SECONDARY_NAVIGATION[route]||route;
+  if(route==='kb'){const active=$('.nav-sub[data-nav-sub="kb"] button.on')?.dataset.kbtab||'diagnosis';return 'kb-'+active;}
+  return route;
+}
 let legacySystemRouteNoticeShown=false;
 function go(v){
   const requestedRoute=v;v=normalizeSystemRoute(v);
@@ -1794,7 +1799,7 @@ function go(v){
   if(v==='kb'){showKbTab(requestedKbTab||'diagnosis');}
   if(v==='studio'){$('.page[data-p="studio"]')?.classList.remove('ppt-editor-open');if($('#pptEditorWorkspace'))$('#pptEditorWorkspace').hidden=true;const progress=$('.ppt-creation-progress');if(progress)progress.hidden=false;renderPptCreationWorkspace();}
   const r=$('.rail');if(r)r.classList.remove('open');const m=$('.navmask');if(m)m.classList.remove('show');
-  syncPagePrdEntry(v);
+  syncPagePrdEntry(resolvePagePrdContext(v));
   if(requestedRoute==='agent-center'&&!legacySystemRouteNoticeShown){legacySystemRouteNoticeShown=true;toast('Agent 权限已升级为提示词管理','ok');}
   window.scrollTo(0,0);
 }
@@ -1809,6 +1814,7 @@ function switchSubview(name,trigger){
   page.querySelectorAll('.subview').forEach(p=>p.classList.toggle('show',p===panel));
   page.querySelectorAll('.subnav-item').forEach(b=>b.classList.toggle('on',b===trigger||b.dataset.subview===name));
   $$('.nav-sub button[data-subview]').forEach(button=>button.classList.toggle('on',button.dataset.subview===name));
+  syncPagePrdEntry(name);
   window.scrollTo(0,0);
 }
 const BRAIN_STATE_KEY='aiHuokeEnterpriseBrainP0V1';
@@ -2190,6 +2196,7 @@ function showKbTab(id='diagnosis'){
   if(active==='content')renderGeneratedFormalKnowledge?.();
   if(active==='intelligence')renderEnterpriseBrainIntelligence?.();
   if(active==='evolution')renderEnterpriseBrainEvolution?.();
+  syncPagePrdEntry('kb-'+active);
   window.scrollTo(0,0);
 }
 function placeKbDataView(){
@@ -2490,12 +2497,12 @@ Object.assign(PAGE_PRD_CONTENT,{
     overview:[['页面目标','以 SaaS RBAC 统一配置角色、模块、数据和按钮权限。'],['适用角色','租户管理员和权限管理员。'],['页面入口','系统管理 → 权限管理。'],['权限要求','role.view / role.manage。']],
     rules:['权限由角色维护，成员最终权限取所有角色权限并集。','模块父级与按钮子级支持全选、取消与半选。','数据范围与按钮权限同时满足才允许执行。','提示词管理必须分别配置查看、编辑、测试、发布。'],
     fields:[['角色名称 role_name','文本','必填且租户内唯一','系统角色可复制但不可删除。'],['权限摘要 summary','只读','列表必显','模块与数据范围摘要。'],['数据范围 data_scope','枚举','必填','全部、团队与本人、仅本人。'],['模块权限 module_grants','树形多选','可空','企业大脑、营销物料、AI 获客、提示词、系统。'],['按钮权限 action_grants','树形多选','跟随模块','控制查看、编辑、测试、发布等动作。'],['创建人/时间','只读','列表必显','用于审计。']],
-    actions:[['新建角色','role.manage','从模板创建未保存角色','名称唯一。'],['编辑角色','role.manage','加载权限矩阵','系统管理员角色仍需防自锁。'],['复制角色','role.manage','生成独立副本','不复制成员关系。'],['删除角色','role.manage 且无成员引用','软删除角色','被引用时阻止。'],['保存角色','role.manage','保存权限和数据范围','使成员权限缓存失效。']],
+    actions:[['新建角色','role.manage','从模板创建未保存角色并打开独立编辑弹层','名称唯一。'],['编辑角色','role.manage','在独立弹层加载权限矩阵','列表保持只读浏览，系统管理员角色仍需防自锁。'],['复制角色','role.manage','生成独立副本并打开编辑弹层','不复制成员关系。'],['删除角色','role.manage 且无成员引用','软删除角色','被引用时阻止。'],['保存角色','role.manage','在弹层保存权限和数据范围','关闭弹层、刷新列表并使成员权限缓存失效。']],
     boundary:'前端矩阵仅为配置入口，所有业务接口必须由后端重复校验；不支持成员级 deny/allow 覆盖。',
-    flows:['选择角色 → 查看权限矩阵 → 调整父子权限与数据范围 → 保存 → 成员并集生效','复制角色 → 修改名称与权限 → 保存为新角色'],
+    flows:['角色列表 → 点击编辑 → 独立弹层 → 调整父子权限与数据范围 → 保存 → 列表刷新 → 成员并集生效','复制角色 → 创建副本 → 独立弹层编辑 → 保存为新角色'],
     logs:['角色创建、复制、删除和权限变化写操作日志。','高风险权限如发布、导出日志的变化额外记录权限差异。'],
     exceptions:[['角色仍被成员使用','禁止删除并列出引用数量。'],['管理员自锁','阻止移除最后一个权限管理员。'],['并发修改','提示版本冲突并要求重新加载。']],
-    acceptance:['角色列表与权限矩阵同屏可操作。','父子复选框全选、半选和取消正确。','提示词查看、编辑、测试、发布四权限独立。','被成员引用角色不能删除。'],
+    acceptance:['进入页面时只显示角色列表，不预先占用页面展示权限矩阵。','点击编辑后在独立弹层展示对应角色权限。','父子复选框全选、半选和取消正确。','提示词查看、编辑、测试、发布四权限独立。','被成员引用角色不能删除。'],
     tech:['role_grants 使用 module/action/data_scope 三元合同。','权限变更采用版本号和审计差异，服务端是最终授权真源。']
   },
   bind:{
@@ -2514,14 +2521,14 @@ Object.assign(PAGE_PRD_CONTENT,{
   prompts:{
     label:'提示词管理',status:'需求已确认',version:'v1.0',route:'prompts',updatedAt:'2026-09-01',
     overview:[['页面目标','展示所有实际 Prompt 的完整正文、模型参数、版本、真源和治理动作。'],['适用角色','Prompt 查看者、测试员、编辑者和发布者。'],['页面入口','系统管理 → 提示词管理。'],['权限要求','prompt.view / edit / test / publish。']],
-    rules:['目录是 PRD 注册表、企业基线、页面 PRD、Remotion 真源和原型实际调用的并集。','每条可见资产必须有稳定 ID、非空完整正文、sourceRef、输入和输出合同。','平台基线只读，可查看和测试；租户可配置项可编辑、保存草稿、测试、发布和回滚。','草稿测试通过后才能发布；回滚生成新版本记录，不删除历史。','合规门禁温度锁定 0，租户修改不得放宽事实、合规、审批和发布边界。'],
-    fields:[['Prompt / 场景','文本','列表必显','名称与具体使用场景。'],['关联功能 feature','枚举','列表/筛选必显','仅展示已开通且有权访问功能。'],['模型 / 参数','组合','列表必显','模型、温度、最大 tokens 等。'],['ID / 版本','稳定 ID + 版本','必显','版本变化不改变稳定 ID。'],['状态 / 维护边界','枚举','必显','草稿、测试通过、已发布；平台只读或租户可配。'],['完整正文 content','多行文本','详情必显且非空','查看始终完整，编辑仅租户项。'],['真源与合同','引用+文本','详情必显','sourceRef、inputContract、outputContract。']],
-    actions:[['搜索/筛选','prompt.view','名称、场景、功能、模型、ID 联合过滤','无结果可清除。'],['查看配置','prompt.view','展示完整正文与治理信息','平台和租户项均支持。'],['编辑配置','prompt.edit 且租户项','保存为草稿','不覆盖已发布版本。'],['测试 Prompt','prompt.test','以样例输入跑 Schema、事实和合规校验','写 AI 调用日志。'],['发布版本','prompt.publish 且测试通过','生成新发布版本','历史任务保留原版本。'],['回滚版本','prompt.publish 且租户项','基于历史版本生成新记录','不删除历史。']],
-    boundary:'不接入真实模型和版本服务；非文本生成能力不伪造 Prompt；不做 A/B 实验、市场或跨租户共享。',
-    flows:['检索资产 → 查看完整配置 → 运行测试','租户 Prompt → 编辑 → 保存草稿 → 测试通过 → 发布新版本','已发布租户 Prompt → 选择历史版本 → 确认回滚 → 生成新回滚版本'],
+    rules:['目录是 PRD 注册表、企业基线、页面 PRD、Remotion 真源和原型实际调用的并集。','每条可见资产必须有稳定 ID、非空完整正文、sourceRef、输入和输出合同。','平台基线本体不可被覆盖；具备编辑权限的账号可从任意可见基线创建当前租户覆盖版本。','租户覆盖或租户自建项保存为草稿，测试通过后才能发布；回滚生成新版本记录，不删除历史。','合规门禁温度锁定 0，租户修改不得放宽事实、合规、审批和发布边界。'],
+    fields:[['Prompt / 场景','文本','列表必显','名称与具体使用场景。'],['关联功能 feature','枚举','列表/筛选必显','仅展示已开通且有权访问功能。'],['模型 / 参数','组合','列表必显','模型、温度、最大 tokens 等。'],['ID / 版本','稳定 ID + 版本','必显','版本变化不改变稳定 ID。'],['状态 / 维护边界','枚举','必显','草稿、测试通过、已发布；平台基线、租户覆盖或租户自建。'],['完整正文 content','多行文本','详情必显且非空','所有可见项均可查看；编辑平台项时生成租户覆盖草稿。'],['真源与合同','引用+文本','详情必显','sourceRef、inputContract、outputContract。']],
+    actions:[['搜索/筛选','prompt.view','名称、场景、功能、模型、ID 联合过滤','无结果可清除。'],['查看配置','prompt.view','展示完整正文与治理信息','平台和租户项均支持。'],['修改配置','prompt.edit','租户项保存新草稿；平台项创建租户覆盖草稿','不覆盖平台基线或已发布历史。'],['测试 Prompt','prompt.test','以样例输入跑 Schema、事实和合规校验','写 AI 调用日志。'],['发布版本','prompt.publish 且租户草稿测试通过','生成租户新发布版本','历史任务保留原版本。'],['回滚版本','prompt.publish 且租户版本','基于历史版本生成新记录','不删除平台基线或历史。']],
+    boundary:'不接入真实模型和版本服务；平台基线本体不可改写，只允许创建租户隔离的覆盖版本；非文本生成能力不伪造 Prompt；不做 A/B 实验、市场或跨租户共享。',
+    flows:['检索资产 → 查看完整配置 → 运行测试','平台基线 → 修改配置 → 创建租户覆盖草稿 → 测试通过 → 发布租户新版本','租户自建项 → 编辑 → 保存草稿 → 测试通过 → 发布新版本','已发布租户版本 → 选择历史版本 → 确认回滚 → 生成新回滚版本'],
     logs:['查看不记录正文；编辑、测试、发布和回滚写操作与 AI 调用日志。','日志保存 Prompt ID/版本、模型、输入快照和校验摘要，不保存密钥。'],
     exceptions:[['无查看权限','不泄露名称、正文和数量。'],['正文缺失','标记配置异常并阻断测试、发布。'],['测试失败','保留输入和草稿，展示失败维度。'],['发布冲突','提示生效版本已变化，刷新后重新确认。']],
-    acceptance:['所有批准功能簇均可筛选检索。','每个可见 Prompt 可查看完整正文、真源和合同。','平台基线不显示编辑、发布、回滚。','租户项完成草稿、测试、发布和回滚闭环。','合规 Prompt 温度为 0 且不可放宽。'],
+    acceptance:['所有批准功能簇均可筛选检索。','每个可见 Prompt 可查看完整正文、真源和合同，并按权限显示修改、测试和发布操作。','修改平台基线会创建租户覆盖草稿，不改变平台基线本体。','租户覆盖和租户自建项完成草稿、测试、发布和回滚闭环。','未测试通过不可发布；合规 Prompt 温度为 0 且不可放宽。'],
     tech:['Prompt 资产按 tenant_id、prompt_id、version 版本化。','服务端权限过滤是安全边界，前端隐藏仅为体验。','发布流水线执行 Schema、事实引用和合规校验。']
   },
   usage:{
@@ -2551,6 +2558,207 @@ Object.assign(PAGE_PRD_CONTENT,{
     tech:['audit_events append-only，按租户与时间分区。','详情字段脱敏；导出任务异步、限流并留审计。']
   }
 });
+Object.assign(PAGE_PRD_CONTENT,{
+  home:{
+    label:'首页工作台',status:'需求已整理',version:'v1.0',route:'home',updatedAt:'2026-09-01',
+    overview:[['页面目标','让负责人按经营重点、待审批、执行和结果快速完成当日决策。'],['适用角色','企业负责人、运营负责人及按权限裁剪的普通成员。'],['页面入口','左侧一级菜单“首页”。'],['权限要求','读取各业务模块的聚合权限，不额外扩大数据范围。']],
+    rules:['首页只聚合各模块真实状态，不拥有或改写业务事实。','待审批优先于普通动态；高风险承诺必须进入原任务确认。','所有数字与来源模块一致，缺失数据展示横线或待接入。','经营建议必须引用已确认知识与计划版本，不自动创建任务。'],
+    fields:[['经营重点','聚合卡片','最多 3 项','来自当前生效经营计划。'],['待审批','计数+列表','按权限裁剪','来源于审核任务。'],['本周执行','任务列表','展示阶段与负责人','来源于计划和内容任务。'],['最近结果','指标卡','缺失显示横线','来源于发布与经营数据。'],['用量','整数','只读','与用量管理口径一致。']],
+    actions:[['打开审批','有对应审核权限','进入原业务审核上下文','首页不直接代替审批。'],['查看计划','有计划查看权限','进入经营计划或获客计划','保留来源版本。'],['查看结果','有结果查看权限','进入对应内容或发布记录','不伪造平台数据。'],['刷新','所有成员','重新聚合当前可见状态','不创建写操作。']],
+    boundary:'首页是跨模块只读决策工作台，不承担内容生成、任务配置、审批提交或平台发布。',
+    flows:['进入首页 → 查看经营重点 → 处理待审批 → 跟进本周执行','查看最近结果 → 进入来源模块 → 复盘或创建后续任务'],
+    logs:['打开审批、计划和结果时记录来源跳转事件。','首页不得记录或复制知识正文、密钥和平台凭据。'],
+    exceptions:[['无经营计划','展示初始化说明和计划入口。'],['无待审批','显示已清空状态，不制造待办。'],['聚合失败','分区显示失败并允许刷新。']],
+    acceptance:['首页数字与来源模块一致。','待审批可回到原业务上下文。','无数据时不补造结果。','桌面与移动端无非预期横向溢出。'],
+    tech:['聚合读取 enterprise_gap、approval_task、operating_plan、content、publishing_task 与 usage_record。','数据按 tenant_id、成员权限和来源版本过滤。']
+  },
+  'brand-report':{
+    label:'品牌报告',status:'需求已整理',version:'v1.0',route:'brand-report',updatedAt:'2026-09-01',
+    overview:[['页面目标','集中查看企业初步诊断与深度诊断报告案例和正式版本。'],['适用角色','企业负责人、品牌负责人、诊断顾问。'],['页面入口','品牌与经营 → 品牌报告。'],['权限要求','report.view；下载与生成按动作分权。']],
+    rules:['案例必须标记为案例，不得误认为当前企业正式诊断。','正式报告只能引用已确认企业事实和锁定证据。','初步与深度诊断层级、结构和生成条件必须区分。','历史版本只读且可追溯。'],
+    fields:[['报告名称','文本','列表必显','区分初步与深度诊断。'],['主要内容','文本','列表必显','展示报告覆盖结构。'],['层级','枚举','初步/深度','决定生成条件。'],['状态','枚举','案例/草稿/已确认','案例不进入正式经营链路。'],['版本与依据','版本+引用','正式报告必显','锁定知识与证据版本。']],
+    actions:[['预览案例','有查看权限','打开结构化报告预览','保持案例标识。'],['查看正式报告','有查看权限且报告存在','打开对应版本','历史只读。'],['下载','有下载权限','生成带版本水印文件','记录导出事件。']],
+    boundary:'本页负责报告查看与版本交付，不在列表中修改企业事实、诊断结论或经营计划。',
+    flows:['选择报告 → 预览结构与依据 → 查看版本 → 下载','企业大脑完成诊断 → 人工确认 → 生成正式报告版本'],
+    logs:['生成、确认和下载写报告审计。','预览案例只记录访问，不写入企业诊断结果。'],
+    exceptions:[['尚无正式报告','保留案例说明并引导完成诊断。'],['依据版本失效','阻止生成并提示重新确认。'],['下载失败','保留版本并允许重试。']],
+    acceptance:['案例与正式报告清晰区分。','初步与深度报告结构可辨认。','正式报告来源和版本可追溯。','历史版本不可覆盖。'],
+    tech:['页面真源为 prd/pages/品牌与经营-品牌报告.md。','报告引用 diagnosis_result 与 evidence_snapshot，不复制知识正文。']
+  },
+  'operating-plan':{
+    label:'经营计划',status:'需求已整理',version:'v1.0',route:'operating-plan',updatedAt:'2026-09-01',
+    overview:[['页面目标','把诊断与经营事实转成公司级、跨部门、可审核的周期计划。'],['适用角色','企业负责人、部门负责人、计划审核人。'],['页面入口','品牌与经营 → 经营计划。'],['权限要求','plan.view / review / activate。']],
+    rules:['AI 只生成草案，审核通过后才正式生效。','公司级优先事项每周期最多 3 项。','八维计划必须明确目标、指标、负责人、资源和证据。','信息缺口与资源冲突未关闭时不得生效。'],
+    fields:[['计划名称/周期','文本+日期','必填','标识公司级计划版本。'],['公司级优先事项','列表','最多3项','跨部门共同聚焦。'],['八维经营计划','结构化列表','八维必显','战略至风险全覆盖。'],['资源与依赖','关系列表','存在即展示','冲突需负责人确认。'],['信息缺口/风险','风险列表','必显','高风险承诺单独审核。'],['版本/状态','版本+枚举','必显','AI草案、待审核、已生效、历史。']],
+    actions:[['审核经营计划','plan.review','核对目标、资源、风险和缺口','记录审核人。'],['确认生效','plan.activate 且校验通过','冻结当前版本','后续修改产生新版本。'],['补充信息','有知识编辑权限','进入企业大脑候选流程','确认后再生成新草案。'],['查看历史','plan.view','打开只读计划快照','不随当前事实变化。']],
+    boundary:'经营计划不自动下发跨部门任务、不代替预算审批，也不对外承诺经营结果。',
+    flows:['已确认事实与诊断 → AI 草案 → 负责人审核 → 生效','发现缺口或冲突 → 补充并确认 → 重新生成 → 新版本审核'],
+    logs:['生成、审核、生效、退回和补充动作写计划审计。','月度跟踪与季度复盘按周期通知负责人。'],
+    exceptions:[['信息缺口未关闭','阻止生效并列出责任人。'],['资源冲突','要求负责人明确取舍。'],['并发审核','提示版本变化并重新加载。']],
+    acceptance:['三项优先事项与八维计划完整展示。','缺口、冲突和高风险承诺可追踪。','未经审核的草案不能生效。','历史计划保持只读快照。'],
+    tech:['页面真源为 prd/pages/品牌与经营-经营计划.md。','计划保存 evidence_snapshot、reviewer、effective_at 和 version。']
+  },
+  'material-ppt':{
+    label:'PPT',status:'需求已整理',version:'v1.0',route:'material-ppt',updatedAt:'2026-09-01',
+    overview:[['页面目标','管理 PPT 生成任务、版本、预览和文件交付。'],['适用角色','售前、运营、审核人。'],['页面入口','营销物料 → PPT。'],['权限要求','ppt.view / create / download。']],
+    rules:['PPT 先确认大纲，再创建完整生成任务。','成品可进入独立画布编辑，不使用通用内容审核状态。','PPT 只做文件交付，不进入平台发布和结果回收。','生成任务可以后台运行，离开页面不丢失。'],
+    fields:[['PPT名称','文本','列表必显','来自创建需求。'],['场景','枚举','必显','客户提案、经营汇报等。'],['版本','版本号','必显','编辑或重新生成产生新版本。'],['生成时间','时间','必显','使用租户时区。'],['状态','枚举','生成中/可下载/失败','与任务状态一致。'],['页数与依据','整数+引用','详情展示','企业知识与VI版本。']],
+    actions:[['新建PPT','ppt.create','进入独立创建页','先生成大纲。'],['预览/编辑','ppt.view','打开独立画布','不覆盖历史版本。'],['下载PPTX/PDF','ppt.download 且可下载','创建文件导出','记录导出。'],['重试失败任务','ppt.create','仅重试失败阶段','保留已完成产物。']],
+    boundary:'本页不直接编辑企业事实、不自动发送文件、不执行社交平台发布。',
+    flows:['新建PPT → 填写需求 → 审核大纲 → 后台生成 → 预览/编辑 → 下载','生成失败 → 查看原因 → 重试失败阶段'],
+    logs:['生成完成或失败通知发起人。','创建、重试、打开编辑器和下载写操作日志。'],
+    exceptions:[['无PPT','展示创建入口和支持场景。'],['生成失败','展示阶段和可恢复原因。'],['文件过期','重新生成下载文件，不重跑内容。']],
+    acceptance:['列表展示版本、时间、状态和操作。','未确认大纲不能生成完整PPT。','后台任务离页后继续。','可编辑文件与PDF均可交付。'],
+    tech:['页面真源为 prd/pages/营销物料-PPT.md。','生成任务固化 outline_version、knowledge_snapshot 与 vi_version。']
+  },
+  'material-moments':{
+    label:'朋友圈图文',status:'需求已整理',version:'v1.0',route:'material-moments',updatedAt:'2026-09-01',
+    overview:[['页面目标','生成、编辑、预览并导出朋友圈图文包。'],['适用角色','内容运营、品牌审核人。'],['页面入口','营销物料 → 朋友圈图文。'],['权限要求','content.view / create / edit / export。']],
+    rules:['生成自动注入已确认企业知识与当前企业VI。','封面、正文、配图和CTA必须整体预览。','导出前必须完成人工审核。','朋友圈图文只导出，不提供自动发布和结果回收。'],
+    fields:[['标题','文本','必填','列表与导出文件名。'],['封面','图片','必填','支持替换。'],['正文','富文本','必填','硬事实带来源。'],['配图','图片组','可多张','按选择顺序导出。'],['CTA','文本','可编辑','不得含未确认承诺。'],['状态','枚举','生成中/待审核/可导出','列表必显。']],
+    actions:[['新建','content.create','填写主题并生成草稿','生成后待审核。'],['预览','content.view','查看完整图文','显示知识与VI依据。'],['编辑','content.edit','修改文字和图片并重新生成','产生新草稿。'],['导出图文包','content.export 且已审核','下载图片和文案','不执行发布。']],
+    boundary:'本页不绑定社交账号、不自动发布、不回收平台互动数据。',
+    flows:['新建 → 生成草稿 → 编辑/替换素材 → 人工审核 → 导出图文包'],
+    logs:['生成、编辑、审核和导出写操作日志。','高风险事实校验失败通知审核人。'],
+    exceptions:[['无内容','展示新建入口。'],['图片生成失败','保留正文并允许单独重试图片。'],['审核未通过','阻止导出并展示原因。']],
+    acceptance:['完整封面、正文、配图和CTA可预览。','编辑后状态回到待审核。','未审核不可导出。','页面不出现自动发布入口。'],
+    tech:['页面真源为 prd/pages/营销物料-朋友圈图文.md。','导出包保存 content_version、asset_refs 与 approval_id。']
+  },
+  'material-poster':{
+    label:'海报',status:'需求已整理',version:'v1.0',route:'material-poster',updatedAt:'2026-09-01',
+    overview:[['页面目标','基于企业知识和VI生成可编辑、可审核、可下载的海报。'],['适用角色','运营、设计协作者、品牌审核人。'],['页面入口','营销物料 → 海报。'],['权限要求','poster.view / create / edit / download。']],
+    rules:['图像模型只接收当前任务所需的最小企业上下文。','主标题、主视觉和CTA必须可单独核对。','下载前必须完成人工审核。','海报只下载文件，不提供自动发布。'],
+    fields:[['海报名称','文本','必填','列表标识。'],['尺寸/渠道','枚举','必填','决定画布比例。'],['主标题','文本','必填','不得生成无依据承诺。'],['主视觉','图片','必填','支持替换或重新生成。'],['CTA','文本','可编辑','受合规门禁。'],['状态','枚举','生成中/待审核/可下载','列表必显。']],
+    actions:[['新建海报','poster.create','选择目标与尺寸生成草稿','注入最小上下文。'],['预览','poster.view','查看成品与依据','保持草稿标识。'],['编辑','poster.edit','修改文字、视觉或素材','重新进入待审核。'],['下载','poster.download 且已审核','导出图片文件','记录版本。']],
+    boundary:'本页不替代专业设计源文件管理，不执行平台发布，也不把知识库全文发送给图像模型。',
+    flows:['新建 → 注入企业上下文 → 生成 → 编辑 → 人工审核 → 下载'],
+    logs:['生成、替换素材、审核和下载写操作日志。','图像模型失败记录阶段与模型版本。'],
+    exceptions:[['无海报','展示创建入口。'],['素材授权不足','阻止生成并提示替换。'],['图像生成失败','保留请求并允许重试。']],
+    acceptance:['企业知识与VI依据可见。','文字、主视觉和CTA可核对。','未审核不能下载。','没有自动发布入口。'],
+    tech:['页面真源为 prd/pages/营销物料-海报.md。','生成上下文使用字段白名单并固化 image_model_version。']
+  },
+  'material-wechat':{
+    label:'公众号文章',status:'需求已整理',version:'v1.0',route:'material-wechat',updatedAt:'2026-09-01',
+    overview:[['页面目标','完成公众号文章创作、审核、授权发布和数据回收。'],['适用角色','内容运营、审核人、公众号管理员。'],['页面入口','营销物料 → 公众号文章。'],['权限要求','article.view / create / review / publish / analytics。']],
+    rules:['真实发布必须绑定具体公众号和该账号支持的发布方式。','文章必须经过事实、品牌和合规检查及人工审核。','自动发布只在官方能力真实授权且开关启用时可用。','阅读互动数据只在授权范围内回收，演示数据必须标识。'],
+    fields:[['公众号账号','账号引用','发布前必填','来自平台账号。'],['标题/摘要/正文','内容字段','必填','硬事实带来源。'],['封面/配图','素材引用','必填或按模板','必须有授权。'],['发布方式','枚举','api/rpa/manual','按账号能力裁剪。'],['自动发布','布尔','默认关闭','需授权与审核通过。'],['发布与回流状态','枚举+指标','发布后展示','阅读、分享、在看、关注。']],
+    actions:[['新建文章','article.create','生成文章草稿','不自动发布。'],['预览/编辑','article.edit','核对完整文章和素材','编辑后重新审核。'],['审核并发布','article.review+publish','确认账号与方式后创建发布任务','记录人工门。'],['同步数据','article.analytics','拉取授权指标','不推断缺失数据。']],
+    boundary:'没有真实公众号接口授权时只能演示或手动导出；页面不得保存明文Token。',
+    flows:['新建 → 生成草稿 → 编辑 → 人工审核 → 选择账号与方式 → 发布 → 数据回收'],
+    logs:['授权到期、发布结果和同步失败通知公众号管理员。','审核、发布和数据同步写完整审计。'],
+    exceptions:[['未授权','阻止自动发布并进入平台账号。'],['发布失败','保留审核结果并允许按失败阶段重试。'],['无回流数据','显示横线和最近同步时间。']],
+    acceptance:['账号、方式与授权状态清晰。','未经审核不能发布。','发布结果与回流指标可追溯。','未接入能力不伪造成功。'],
+    tech:['页面真源为 prd/pages/营销物料-公众号文章.md。','发布任务固化 credential_id、content_version、approval_id 和 capability_snapshot。']
+  }
+});
+Object.assign(PAGE_PRD_CONTENT,{
+  'kb-diagnosis':{
+    label:'诊断总览',status:'需求已整理',version:'v1.0',route:'kb-diagnosis',updatedAt:'2026-09-01',
+    overview:[['页面目标','展示企业资料完整度、诊断进度、结论、证据和下一步。'],['适用角色','企业负责人、诊断负责人、授权成员。'],['页面入口','企业大脑 → 诊断总览。'],['权限要求','knowledge.view / diagnosis.run / diagnosis.confirm。']],
+    rules:['草稿、候选和冲突内容不得作为正式企业事实。','诊断必须区分初步与深度层级并显示证据。','缺失信息只能标为缺口，不得由模型补造。','深度诊断结论需人工确认后才能用于经营计划。'],
+    fields:[['资料完整度','百分比','只读','按关键字段和证据计算。'],['诊断状态','枚举','必显','未开始、生成中、待确认、已确认。'],['六维结论','结构化卡片','初步诊断展示','每项带依据。'],['信息缺口','列表','存在即展示','含原因与建议补充人。'],['证据引用','来源引用','结论必带','可回到资料定位。']],
+    actions:[['开始初步诊断','diagnosis.run 且资料满足最低条件','创建异步诊断任务','锁定输入版本。'],['继续深度诊断','diagnosis.run','生成跨维度分析','不覆盖初步版本。'],['确认结论','diagnosis.confirm','标记正式可用','记录审核人。'],['补充资料','knowledge.edit','进入增量候选流程','确认后重算诊断。']],
+    boundary:'诊断提供有证据的经营判断，不替代专业财税、法务或医疗意见，不自动下发计划。',
+    flows:['资料进入候选 → 人工确认 → 初步诊断 → 深度诊断 → 人工确认 → 经营计划','发现缺口 → 补充资料 → 确认候选 → 生成新诊断版本'],
+    logs:['诊断完成、失败和待确认通知发起人与审核人。','记录输入快照、模型/Prompt版本、证据和审核动作。'],
+    exceptions:[['资料不足','展示最低条件和补充入口。'],['证据冲突','阻止确认并进入候选处理。'],['诊断失败','保留输入快照并允许重试。']],
+    acceptance:['诊断结论均可追溯到证据。','缺失信息不被补造。','未确认结论不进入正式计划。','诊断版本可回看。'],
+    tech:['页面真源为 prd/pages/企业大脑-诊断总览.md。','诊断对象绑定 enterprise_profile_version 与 evidence_snapshot。']
+  },
+  'kb-cognition':{
+    label:'企业 VI',status:'需求已整理',version:'v1.0',route:'kb-cognition',updatedAt:'2026-09-01',
+    overview:[['页面目标','生成、确认并管理可被内容任务调用的企业视觉身份。'],['适用角色','企业负责人、品牌负责人、设计协作者。'],['页面入口','企业大脑 → 企业 VI。'],['权限要求','vi.view / generate / confirm / edit。']],
+    rules:['VI 方向必须人工确认，完整 VI 生成成功后进入 active。','内容任务只能读取当前 active VI 版本。','Logo、色彩、字体和场景应用必须保持同一版本。','未确认方向和生成失败结果不得自动用于内容。'],
+    fields:[['VI方向','候选卡片','至少一项','包含策略说明与视觉预览。'],['Logo系统','组合资产','active版本必显','标志、组合和反白版本。'],['色彩/字体','设计令牌','必显','供内容生成调用。'],['图像风格','文本+样例','必显','约束模型视觉。'],['场景应用','图片组','生成后展示','包装、门店、演示、社交。'],['版本/状态','版本+枚举','必显','草稿、生成中、active、失败。']],
+    actions:[['生成VI方向','vi.generate','基于确认画像生成候选','保存模型与输入版本。'],['确认方向','vi.confirm','锁定选择并启动完整生成','人工门禁。'],['重新生成','vi.generate','基于反馈产生新候选','不覆盖active版本。'],['下载VI包','vi.view 且active','导出完整资产','记录导出。']],
+    boundary:'企业VI是可复用视觉上下文，不替代专业商标注册、版权判断或完整品牌咨询。',
+    flows:['确认企业画像 → 生成VI方向 → 人工确认 → 完整VI生成 → active → 内容任务调用'],
+    logs:['方向待确认、生成失败和active通知品牌负责人。','生成、确认、重试、启用和下载写版本审计。'],
+    exceptions:[['画像未确认','阻止正式生成并提示先确认。'],['生成部分失败','保留成功资产并重试失败项。'],['无active版本','内容任务使用明确标记的系统默认视觉。']],
+    acceptance:['方向确认与完整生成状态清晰。','active版本可被内容任务识别。','失败不会替换现有active版本。','VI包包含核心资产和版本信息。'],
+    tech:['页面真源为 prd/pages/企业大脑-企业VI.md。','active切换采用版本事务，内容任务固化 vi_version。']
+  },
+  'kb-content':{
+    label:'企业知识',status:'需求已整理',version:'v1.0',route:'kb-content',updatedAt:'2026-09-01',
+    overview:[['页面目标','统一查看资料处理任务、知识候选、冲突和正式知识域。'],['适用角色','知识管理员、业务负责人、审核人。'],['页面入口','企业大脑 → 企业知识。'],['权限要求','knowledge.view / upload / review / govern。']],
+    rules:['上传资料先成为来源和候选，人工确认后才进入正式知识。','事实必须保留来源定位、负责人、有效期和版本。','冲突内容隔离处理，不允许静默覆盖。','Agent 只能按授权读取正式可用知识。'],
+    fields:[['资料来源','文件/链接/账号','必显','保留来源类型与时间。'],['处理状态','枚举','必显','排队、解析、待确认、冲突、完成、失败。'],['知识候选','结构化列表','待确认时展示','值、推荐域、来源定位。'],['知识域','枚举','正式知识必填','企业、产品、客户、品牌、销售、经营等。'],['可信状态','枚举','必显','auto_usable、draft_only、quarantined。'],['版本/有效期','版本+时间','高风险事实必填','支持到期治理。']],
+    actions:[['上传资料','knowledge.upload','创建异步处理任务','不直接入正式库。'],['添加来源','knowledge.upload','采集公开页面或授权账号','遵守来源边界。'],['确认并入库','knowledge.review','将候选写入正式知识','记录来源和审核人。'],['处理冲突','knowledge.review','采用新值或保留现值','生成版本差异。'],['归档知识','knowledge.govern','停止新任务使用','保留历史引用。']],
+    boundary:'企业知识页不绕过外部访问限制，不把候选当事实，不删除历史任务引用的版本。',
+    flows:['上传/采集 → 解析 → 候选 → 人工确认 → 正式知识','发现冲突 → 隔离 → 对比来源 → 采用或忽略 → 新版本'],
+    logs:['解析完成、冲突、待确认和失败通知责任人。','上传、采集、确认、冲突处理和归档写知识审计。'],
+    exceptions:[['无资料','展示初始化清单和上传入口。'],['解析失败','显示可恢复原因并允许重试。'],['来源失效','保留最后快照并标记过期。']],
+    acceptance:['来源、候选和正式知识状态清晰分离。','所有正式事实可追溯。','冲突不会静默覆盖。','Agent只读取授权正式版本。'],
+    tech:['页面真源为 prd/pages/企业大脑-企业知识.md。','核心对象 source、candidate、knowledge_item、knowledge_version 与 review_event。']
+  },
+  'kb-intelligence':{
+    label:'外部情报',status:'需求已整理',version:'v1.0',route:'kb-intelligence',updatedAt:'2026-09-01',
+    overview:[['页面目标','采集、分析并人工采用与企业相关的外部市场和竞争信号。'],['适用角色','市场负责人、战略人员、情报审核人。'],['页面入口','企业大脑 → 外部情报。'],['权限要求','intelligence.view / collect / adopt。']],
+    rules:['只处理合法公开或已授权来源。','外部内容默认是候选证据，不是企业内部事实。','采用前必须查看来源、时间、适用范围和可信度。','受限页面、付费墙和登录内容不得绕过访问。'],
+    fields:[['来源','URL/机构','必显','保留规范化链接。'],['主题/对象','文本','必显','竞品、政策、客户信号等。'],['发布时间/采集时间','时间','必显','用于时效判断。'],['摘要与证据','文本+引用','分析后展示','不得替代原文。'],['可信度/适用范围','枚举+文本','采用前必填','人工确认。'],['状态','枚举','候选/已采用/忽略/失效','必显。']],
+    actions:[['新建采集','intelligence.collect','配置主题和公开来源','创建异步任务。'],['查看来源','intelligence.view','打开原页面或快照','不复制受限全文。'],['采用','intelligence.adopt','进入外部证据库','记录判断理由。'],['忽略/失效','intelligence.adopt','停止推荐使用','保留历史。']],
+    boundary:'外部情报用于经营判断证据，不自动改写企业事实、产品价格或对外承诺。',
+    flows:['配置来源 → 采集 → 去重/分析 → 待审核 → 采用或忽略 → 经营判断引用'],
+    logs:['采集失败、来源失效和待审核通知情报负责人。','采集、查看、采用和忽略写来源审计。'],
+    exceptions:[['无情报','展示主题配置与来源边界。'],['受限来源','阻止采集并说明原因。'],['重复内容','合并规范化来源与证据。']],
+    acceptance:['每条情报有来源和时间。','采用前可见可信度与范围。','受限来源不绕过。','采用情报不自动成为企业事实。'],
+    tech:['页面真源为 prd/pages/企业大脑-外部情报.md。','按 canonical_url、published_at 和 content_hash 去重。']
+  },
+  'kb-evolution':{
+    label:'进化与治理',status:'需求已整理',version:'v1.0',route:'kb-evolution',updatedAt:'2026-09-01',
+    overview:[['页面目标','持续治理知识质量、过期风险、冲突和生成回归。'],['适用角色','知识管理员、模型治理人、审计员。'],['页面入口','企业大脑 → 进化与治理。'],['权限要求','governance.view / manage / regress。']],
+    rules:['质量评分必须能回溯到来源、冲突、新鲜度和回归结果。','高风险知识到期前必须通知责任人。','归档不删除历史版本和任务引用。','知识或Prompt变更应触发受影响场景回归。'],
+    fields:[['质量评分','百分比组','只读','来源、完整性、一致性、新鲜度、回归。'],['治理待办','任务列表','按优先级','含类型、对象、责任人和期限。'],['过期知识','列表','存在即展示','显示有效期与影响场景。'],['冲突','差异列表','存在即展示','保留双方来源。'],['回归结果','场景+状态','运行后展示','通过、失败、阻断。']],
+    actions:[['处理治理任务','governance.manage','进入对应冲突/过期上下文','记录处理结论。'],['运行回归','governance.regress','对受影响场景执行测试','不直接发布。'],['归档版本','governance.manage','停止新任务使用','保留历史引用。'],['导出治理报告','governance.view','导出质量与待办统计','不含知识正文。']],
+    boundary:'治理页不直接改写知识正文或Prompt生产版本，所有变更回到对应管理页面并重新确认。',
+    flows:['质量检测 → 生成治理待办 → 责任人处理 → 回归验证 → 关闭','知识/Prompt变化 → 识别影响场景 → 回归 → 通过后发布'],
+    logs:['过期临近、冲突和回归失败通知责任人。','治理任务、归档、回归与导出写审计。'],
+    exceptions:[['无待办','展示健康状态与最近检测时间。'],['回归服务不可用','保留任务并允许稍后重试。'],['责任人缺失','升级给租户管理员。']],
+    acceptance:['质量评分可解释。','治理待办有责任人与期限。','变更可触发回归。','归档不破坏历史任务。'],
+    tech:['页面真源为 prd/pages/企业大脑-进化与治理.md。','治理任务关联 object_ref、version、impact_scenes 与 regression_run。']
+  }
+});
+Object.assign(PAGE_PRD_CONTENT,{
+  studio:{
+    label:'PPT 创建与编辑',status:'需求已整理',version:'v1.0',route:'studio',updatedAt:'2026-09-01',
+    overview:[['页面目标','完成PPT需求填写、大纲审核、异步生成和画布编辑。'],['适用角色','售前、运营、提案制作人员。'],['页面入口','营销物料 → PPT → 新建或预览/编辑。'],['权限要求','ppt.create / edit / download。']],
+    rules:['完整PPT生成前必须人工确认大纲。','生成任务固化企业知识、VI、Prompt和大纲版本。','画布编辑产生可追溯版本，不覆盖已下载历史。','生成过程可离开页面，完成后回到PPT列表。'],
+    fields:[['使用场景','枚举','必填','决定结构模板。'],['制作需求','多行文本','必填','说明受众、目标和重点。'],['页数/风格','整数+枚举','必填','受模板与VI约束。'],['大纲','可编辑列表','生成前必审','标题、目的和内容要点。'],['生成进度','阶段状态','任务创建后展示','准备、生成、完成、失败。'],['画布元素','文本/图片/布局','编辑态展示','保存为版本化页面。']],
+    actions:[['生成大纲','ppt.create','基于需求生成可编辑大纲','不生成完整PPT。'],['确认并生成','ppt.create 且大纲已确认','创建后台任务','锁定快照。'],['编辑页面','ppt.edit','调整文字、图片和布局','保存新版本。'],['下载PPTX/PDF','ppt.download 且任务完成','生成交付文件','记录导出。']],
+    boundary:'本页不自动发送文件、不替代企业事实确认，也不把PPT接入社交平台发布。',
+    flows:['填写需求 → 生成大纲 → 人工修改/确认 → 后台生成 → 画布编辑 → 下载','生成失败 → 保留大纲与已完成页 → 重试失败阶段'],
+    logs:['大纲生成、任务完成和失败通知发起人。','确认大纲、生成、编辑保存和下载写操作日志。'],
+    exceptions:[['需求缺失','阻止生成并定位字段。'],['大纲未确认','阻止完整生成。'],['部分页面失败','保留成功页面并局部重试。']],
+    acceptance:['即时阶段只有需求填写与大纲审核。','未确认大纲不能生成完整PPT。','后台任务离页后继续。','画布编辑和两种下载可用。'],
+    tech:['页面真源为 PRD_内容创作.md 的PPT创建专项。','任务保存 outline_version、knowledge_snapshot、vi_version 与 prompt_version。']
+  },
+  tune:{
+    label:'提示词微调',status:'需求已整理',version:'v1.0',route:'tune',updatedAt:'2026-09-01',
+    overview:[['页面目标','让业务用户在安全边界内维护品牌语气、卖点和禁忌偏好。'],['适用角色','租户管理员、品牌负责人、Prompt编辑者。'],['页面入口','提示词管理中的租户微调入口或兼容旧链接。'],['权限要求','prompt.view / prompt.edit。']],
+    rules:['微调层不能查看或修改平台系统基线。','微调只能影响口吻、品牌词、卖点、禁忌和少量开放参数。','事实、合规、审批和发布门禁不可被放宽。','保存产生草稿，测试通过后由提示词管理发布。'],
+    fields:[['适用场景','枚举','必填','选择实际开通功能。'],['品牌语气','多选/文本','可编辑','叠加于系统基线。'],['主推卖点','文本列表','可编辑','必须来自已确认知识。'],['禁用表达','文本列表','可编辑','优先级高于风格偏好。'],['开放参数','数值/枚举','按场景开放','合规参数锁定。'],['状态/版本','枚举+版本','只读','草稿、测试通过、已发布。']],
+    actions:[['保存微调草稿','prompt.edit','保存租户覆盖层','不覆盖当前发布版。'],['恢复当前发布版','prompt.edit','放弃未保存修改','保留历史。'],['前往测试','prompt.test','进入完整提示词测试','必须通过门禁。'],['查看完整治理','prompt.view','进入提示词管理','展示基线+微调+参数。']],
+    boundary:'本页不维护系统基线、不直接发布版本、不允许修改事实和合规门禁。',
+    flows:['选择场景 → 编辑微调 → 保存草稿 → 提示词管理测试 → 发布新版本'],
+    logs:['保存草稿和恢复操作写Prompt审计。','正文查看不记录敏感全文。'],
+    exceptions:[['无编辑权限','字段只读并提供查看完整治理入口。'],['卖点无知识来源','阻止保存并提示先确认知识。'],['旧链接访问','保留兼容跳转与升级说明。']],
+    acceptance:['平台基线不可编辑。','可编辑范围明确且有限。','合规和事实门禁不可放宽。','保存后可进入测试发布闭环。'],
+    tech:['页面真源为 PRD_提示词.md 的商家微调层。','正式版本由提示词管理统一治理，旧路由仅做兼容。']
+  },
+  works:{
+    label:'内容历史',status:'需求已整理',version:'v1.0',route:'works',updatedAt:'2026-09-01',
+    overview:[['页面目标','跨渠道只读检索历史内容、版本、发布和交付状态。'],['适用角色','运营、审核人、负责人、审计员。'],['页面入口','各内容模块的历史入口或兼容旧链接。'],['权限要求','content.view，结果数据按账号与数据范围过滤。']],
+    rules:['内容历史只聚合，不混合改变各渠道能力。','PPT、朋友圈、海报、公众号的操作仍回到对应页面。','历史版本和发布结果不可在聚合页直接覆盖。','缺失的平台指标显示横线，不推断。'],
+    fields:[['内容名称','文本','必显','来自各渠道内容对象。'],['平台/形式','枚举','必显','PPT、朋友圈、海报、公众号等。'],['活动/计划','引用','可空','关联营销或获客任务。'],['版本','版本号','必显','打开时锁定。'],['发布/交付状态','枚举','必显','草稿、已审核、已导出、已发布、失败。'],['更新时间','时间','必显','用于排序。']],
+    actions:[['筛选','content.view','按平台、形式、活动和状态过滤','不改变内容。'],['查看详情','content.view','打开对应版本只读详情','显示来源与审核。'],['进入所属页面','具备对应权限','回到渠道页面继续操作','保留对象ID。'],['导出记录','audit.export','导出当前筛选元数据','不含知识正文和凭据。']],
+    boundary:'本页是只读聚合入口，不承担创作、审核、发布、下载或平台数据同步。',
+    flows:['进入内容历史 → 筛选 → 查看版本 → 回到所属渠道处理','从任务或结果 → 打开历史内容版本 → 查看依据和发布记录'],
+    logs:['查看历史可按策略采样，导出必须记录。','跳转所属页面记录来源对象和版本。'],
+    exceptions:[['无内容','展示各渠道创建入口。'],['筛选无结果','保留筛选并提供清空。'],['来源对象已归档','显示只读版本和归档原因。']],
+    acceptance:['多渠道内容可统一检索。','状态与所属页面能力不混淆。','历史版本保持只读。','无平台指标时不补造。'],
+    tech:['页面真源为 PRD_作品库与发布.md 的内容历史约束。','聚合索引只存元数据和对象引用，正文由来源模块按权限读取。']
+  }
+});
 let pagePrdTriggerBeforeOpen=null;
 function pagePrdList(items,ordered=false){const tag=ordered?'ol':'ul';return '<'+tag+' class="'+(ordered?'page-prd-ordered':'page-prd-list')+'">'+items.map(item=>'<li>'+safeText(item)+'</li>').join('')+'</'+tag+'>';}
 function pagePrdTable(headers,rows,compact=false){return '<div class="page-prd-table-wrap"><table class="page-prd-table '+(compact?'compact':'')+'"><thead><tr>'+headers.map(item=>'<th>'+safeText(item)+'</th>').join('')+'</tr></thead><tbody>'+rows.map(row=>'<tr>'+row.map(cell=>'<td>'+safeText(cell)+'</td>').join('')+'</tr>').join('')+'</tbody></table></div>';}
@@ -2573,7 +2781,7 @@ function renderPagePrd(data){
     pagePrdSection('页面验收标准',pagePrdList(data.acceptance,true))+
     pagePrdSection('技术评估项',pagePrdList(data.tech));
 }
-function syncPagePrdEntry(route){const trigger=$('#pagePrdTrigger'),data=PAGE_PRD_CONTENT[route];if(!trigger)return;trigger.hidden=!data;if(!data)return;trigger.dataset.pagePrdRoute=route;trigger.setAttribute('aria-label','查看'+data.label+' · 页面 PRD');}
+function syncPagePrdEntry(route){const trigger=$('#pagePrdTrigger'),data=PAGE_PRD_CONTENT[route];if(!trigger)return;trigger.hidden=!data;if(!data){delete trigger.dataset.pagePrdRoute;trigger.removeAttribute('aria-label');return;}trigger.dataset.pagePrdRoute=route;trigger.setAttribute('aria-label','查看'+data.label+' · 页面 PRD');}
 function openPagePrd(trigger){const route=trigger?.dataset.pagePrdRoute,data=PAGE_PRD_CONTENT[route];if(!data)return;if($('#detailDrawer')?.classList.contains('show'))closeDrawer();pagePrdTriggerBeforeOpen=trigger;renderPagePrd(data);$('#pagePrdDrawer').classList.add('show');$('#pagePrdMask').classList.add('show');$('#pagePrdDrawer').setAttribute('aria-hidden','false');trigger.setAttribute('aria-expanded','true');document.body.style.overflow='hidden';setTimeout(()=>$('#pagePrdDrawer [data-act="close-page-prd"]')?.focus(),0);}
 function closePagePrd(){const drawer=$('#pagePrdDrawer');if(!drawer?.classList.contains('show'))return;drawer.classList.remove('show');$('#pagePrdMask').classList.remove('show');drawer.setAttribute('aria-hidden','true');$('#pagePrdTrigger')?.setAttribute('aria-expanded','false');document.body.style.overflow='';pagePrdTriggerBeforeOpen?.focus();pagePrdTriggerBeforeOpen=null;}
 function filterAcquisition(){const type=$('#acquisitionTypeFilter')?.value||'',status=$('#acquisitionStatusFilter')?.value||'';let visible=0;$$('[data-acquisition-row]').forEach(row=>{const show=(!type||row.dataset.type===type)&&(!status||row.dataset.status===status);row.hidden=!show;if(show)visible++;});if($('#acquisitionEmpty'))$('#acquisitionEmpty').hidden=visible!==0;}
@@ -2747,22 +2955,25 @@ function openAddSystemMember(){const roleOptions=roleNames().map(role=>'<label c
 function openSystemMemberRoles(id){const member=AI_HUOKE_MEMBERS.find(item=>item.id===id);if(!member)return;const roleOptions=roleNames().map(role=>'<label class="chk '+(member.roles.includes(role)?'on':'')+'"><input type="checkbox" name="editMemberRole" value="'+safeText(role)+'" '+(member.roles.includes(role)?'checked':'')+'> '+safeText(role)+'</label>').join('');modal('编辑成员角色 · '+safeText(member.name),'<div class="note">角色可多选，成员最终权限为所分配角色权限并集。</div><div class="field"><label>角色</label><div class="chks">'+roleOptions+'</div></div>','保存角色',()=>{const roles=[...$$('input[name="editMemberRole"]:checked')].map(input=>input.value);if(!roles.length){toast('至少保留一个角色','warn');return;}member.roles=roles;member.summary=memberPermissionSummary(roles);closeModal();renderSystemMembers();addAiHuokeAudit('操作日志','调整成员角色',member.name,undefined,'成功',roles.join('、'));toast('成员角色已更新','ok');});}
 function toggleSystemMember(id){const member=AI_HUOKE_MEMBERS.find(item=>item.id===id);if(!member)return;member.status=member.status==='启用'?'停用':'启用';renderSystemMembers();addAiHuokeAudit('操作日志',member.status+'成员账号',member.name);toast('成员已'+member.status,'ok');}
 function resetSystemMemberPassword(id){const member=AI_HUOKE_MEMBERS.find(item=>item.id===id);if(!member)return;modal('重置密码 · '+safeText(member.name),'<div class="alert">确认后将生成一次性重置链接，旧登录会话失效；链接不在日志中记录。</div>','确认重置',()=>{closeModal();addAiHuokeAudit('登录与安全日志','重置成员密码',member.name);toast('一次性重置链接已生成（演示）','ok');});}
-function renderSystemRoles(){const body=$('#systemRoleBody');if(!body)return;body.innerHTML=Object.entries(AI_HUOKE_ROLE_GRANTS).map(([name,role])=>'<tr class="'+(name===selectedSystemRole?'system-role-active':'')+'"><td><button class="btn sm gho" data-act="select-system-role" data-role="'+safeText(name)+'"><b>'+safeText(name)+'</b></button></td><td class="tm">'+safeText(role.summary)+'</td><td>'+safeText(role.createdBy)+'<div class="tm">'+safeText(role.createdAt)+'</div></td><td><div class="rowact"><button class="btn sm" data-act="edit-system-role" data-role="'+safeText(name)+'">编辑</button><button class="btn sm" data-act="copy-system-role" data-role="'+safeText(name)+'">复制</button>'+(name==='管理员'||name==='观察员'?'':'<button class="btn sm gho" data-act="delete-system-role" data-role="'+safeText(name)+'">删除</button>')+'</div></td></tr>').join('');renderPermissionMatrix();}
-function renderPermissionMatrix(){const host=$('#permissionMatrix'),role=AI_HUOKE_ROLE_GRANTS[selectedSystemRole];if(!host||!role)return;$('#permissionRoleTitle').textContent=selectedSystemRole+' · 权限配置';host.innerHTML='<div class="field"><label>数据范围</label><select class="inp" id="systemRoleDataScope"><option '+(selectedSystemRole==='管理员'?'selected':'')+'>全部数据</option><option '+(selectedSystemRole!=='管理员'?'selected':'')+'>所属团队与本人数据</option><option>仅本人数据</option></select></div>'+AI_HUOKE_PERMISSION_MODULES.map(module=>{const grants=role.grants[module.key]||[],all=module.buttons.every(button=>grants.includes(button)),some=module.buttons.some(button=>grants.includes(button));return '<section class="permission-module" data-permission-module="'+module.key+'"><div class="permission-module-head"><label class="permission-check"><input type="checkbox" class="permission-parent" data-module="'+module.key+'" '+(all?'checked':'')+' '+(some&&!all?'data-indeterminate="true"':'')+'> <b>'+safeText(module.label)+'</b></label><small>'+grants.length+' / '+module.buttons.length+' 项</small></div><div class="permission-buttons">'+module.buttons.map(button=>'<label class="permission-check"><input type="checkbox" class="permission-child" data-module="'+module.key+'" value="'+safeText(button)+'" '+(grants.includes(button)?'checked':'')+'> '+safeText(button)+'</label>').join('')+'</div></section>';}).join('');host.querySelectorAll('[data-indeterminate="true"]').forEach(input=>input.indeterminate=true);}
-function saveSystemRole(){const role=AI_HUOKE_ROLE_GRANTS[selectedSystemRole];if(!role)return;for(const module of AI_HUOKE_PERMISSION_MODULES)role.grants[module.key]=[...$$('.permission-child[data-module="'+module.key+'"]:checked')].map(input=>input.value);role.summary=AI_HUOKE_PERMISSION_MODULES.filter(module=>role.grants[module.key]?.length).map(module=>module.label).join('、')+' · '+($('#systemRoleDataScope')?.value||'');renderSystemRoles();addAiHuokeAudit('操作日志','保存角色权限',selectedSystemRole);toast('角色权限已保存并生成审计记录','ok');}
-function createSystemRole(){modal('新建角色','<div class="field"><label>角色名称</label><input class="inp" id="newSystemRoleName" placeholder="例如：内容审核员"></div><div class="field"><label>权限模板</label><select class="inp" id="newSystemRoleTemplate">'+roleNames().map(role=>'<option>'+safeText(role)+'</option>').join('')+'</select></div>','创建角色',()=>{const name=$('#newSystemRoleName')?.value.trim(),template=$('#newSystemRoleTemplate')?.value;if(!name||AI_HUOKE_ROLE_GRANTS[name]){toast(name?'角色名称已存在':'请输入角色名称','warn');return;}AI_HUOKE_ROLE_GRANTS[name]=structuredClone(AI_HUOKE_ROLE_GRANTS[template]);AI_HUOKE_ROLE_GRANTS[name].createdBy='林晓';AI_HUOKE_ROLE_GRANTS[name].createdAt='2026-09-01';selectedSystemRole=name;closeModal();renderSystemRoles();toast('角色已创建，请继续配置权限','ok');});}
-function copySystemRole(name){const source=AI_HUOKE_ROLE_GRANTS[name];if(!source)return;let copy=name+' 副本',index=2;while(AI_HUOKE_ROLE_GRANTS[copy])copy=name+' 副本 '+index++;AI_HUOKE_ROLE_GRANTS[copy]=structuredClone(source);AI_HUOKE_ROLE_GRANTS[copy].createdBy='林晓';selectedSystemRole=copy;renderSystemRoles();addAiHuokeAudit('操作日志','复制角色',copy);toast('角色已复制','ok');}
+function renderSystemRoles(){const body=$('#systemRoleBody');if(!body)return;body.innerHTML=Object.entries(AI_HUOKE_ROLE_GRANTS).map(([name,role])=>'<tr><td><b>'+safeText(name)+'</b></td><td class="tm">'+safeText(role.summary)+'</td><td>'+safeText(role.createdBy)+'<div class="tm">'+safeText(role.createdAt)+'</div></td><td><div class="rowact"><button class="btn sm" data-act="edit-system-role" data-role="'+safeText(name)+'">编辑</button><button class="btn sm" data-act="copy-system-role" data-role="'+safeText(name)+'">复制</button>'+(name==='管理员'||name==='观察员'?'':'<button class="btn sm gho" data-act="delete-system-role" data-role="'+safeText(name)+'">删除</button>')+'</div></td></tr>').join('');}
+function renderPermissionMatrix(){const host=$('#permissionMatrix'),role=AI_HUOKE_ROLE_GRANTS[selectedSystemRole];if(!host||!role)return;host.innerHTML='<div class="permission-editor-intro"><b>'+safeText(selectedSystemRole)+'</b><span class="tm">模块权限、数据范围与按钮权限将在保存后统一生效。</span></div><div class="field"><label>数据范围</label><select class="inp" id="systemRoleDataScope"><option '+(selectedSystemRole==='管理员'?'selected':'')+'>全部数据</option><option '+(selectedSystemRole!=='管理员'?'selected':'')+'>所属团队与本人数据</option><option>仅本人数据</option></select></div>'+AI_HUOKE_PERMISSION_MODULES.map(module=>{const grants=role.grants[module.key]||[],all=module.buttons.every(button=>grants.includes(button)),some=module.buttons.some(button=>grants.includes(button));return '<section class="permission-module" data-permission-module="'+module.key+'"><div class="permission-module-head"><label class="permission-check"><input type="checkbox" class="permission-parent" data-module="'+module.key+'" '+(all?'checked':'')+' '+(some&&!all?'data-indeterminate="true"':'')+'> <b>'+safeText(module.label)+'</b></label><small>'+grants.length+' / '+module.buttons.length+' 项</small></div><div class="permission-buttons">'+module.buttons.map(button=>'<label class="permission-check"><input type="checkbox" class="permission-child" data-module="'+module.key+'" value="'+safeText(button)+'" '+(grants.includes(button)?'checked':'')+'> '+safeText(button)+'</label>').join('')+'</div></section>';}).join('');host.querySelectorAll('[data-indeterminate="true"]').forEach(input=>input.indeterminate=true);}
+function openSystemRoleEditor(name){if(!AI_HUOKE_ROLE_GRANTS[name])return;selectedSystemRole=name;modal('编辑角色 · '+safeText(name),'<div id="permissionMatrix"></div>','保存角色',saveSystemRole,true);$('#modal').classList.add('xwide');$('#modal .mb').style.maxHeight='70vh';$('#modal .mb').style.overflowY='auto';renderPermissionMatrix();}
+function saveSystemRole(){const role=AI_HUOKE_ROLE_GRANTS[selectedSystemRole];if(!role)return;for(const module of AI_HUOKE_PERMISSION_MODULES)role.grants[module.key]=[...$$('#modal .permission-child[data-module="'+module.key+'"]:checked')].map(input=>input.value);role.summary=AI_HUOKE_PERMISSION_MODULES.filter(module=>role.grants[module.key]?.length).map(module=>module.label).join('、')+' · '+($('#systemRoleDataScope')?.value||'');closeModal();renderSystemRoles();addAiHuokeAudit('操作日志','保存角色权限',selectedSystemRole);toast('角色权限已保存并生成审计记录','ok');}
+function createSystemRole(){modal('新建角色','<div class="field"><label>角色名称</label><input class="inp" id="newSystemRoleName" placeholder="例如：内容审核员"></div><div class="field"><label>权限模板</label><select class="inp" id="newSystemRoleTemplate">'+roleNames().map(role=>'<option>'+safeText(role)+'</option>').join('')+'</select></div>','创建角色',()=>{const name=$('#newSystemRoleName')?.value.trim(),template=$('#newSystemRoleTemplate')?.value;if(!name||AI_HUOKE_ROLE_GRANTS[name]){toast(name?'角色名称已存在':'请输入角色名称','warn');return;}AI_HUOKE_ROLE_GRANTS[name]=structuredClone(AI_HUOKE_ROLE_GRANTS[template]);AI_HUOKE_ROLE_GRANTS[name].createdBy='林晓';AI_HUOKE_ROLE_GRANTS[name].createdAt='2026-09-01';closeModal();renderSystemRoles();toast('角色已创建，请继续配置权限','ok');openSystemRoleEditor(name);});}
+function copySystemRole(name){const source=AI_HUOKE_ROLE_GRANTS[name];if(!source)return;let copy=name+' 副本',index=2;while(AI_HUOKE_ROLE_GRANTS[copy])copy=name+' 副本 '+index++;AI_HUOKE_ROLE_GRANTS[copy]=structuredClone(source);AI_HUOKE_ROLE_GRANTS[copy].createdBy='林晓';renderSystemRoles();addAiHuokeAudit('操作日志','复制角色',copy);toast('角色已复制','ok');openSystemRoleEditor(copy);}
 function deleteSystemRole(name){if(!AI_HUOKE_ROLE_GRANTS[name]||['管理员','观察员'].includes(name))return;if(AI_HUOKE_MEMBERS.some(member=>member.roles.includes(name))){toast('该角色仍被成员使用，不能删除','warn');return;}delete AI_HUOKE_ROLE_GRANTS[name];selectedSystemRole='管理员';renderSystemRoles();addAiHuokeAudit('操作日志','删除角色',name);toast('角色已删除','ok');}
 function renderPromptFeatureOptions(){const select=$('#aiHuokePromptFeature');if(!select)return;select.innerHTML='<option value="">全部已开通功能</option>'+AI_HUOKE_ENABLED_CAPABILITIES.map(item=>'<option value="'+item.key+'">'+safeText(item.label)+'</option>').join('');}
 function visibleAiHuokePrompts(){const feature=$('#aiHuokePromptFeature')?.value||'',query=($('#aiHuokePromptSearch')?.value||'').trim().toLowerCase();return AI_HUOKE_PROMPT_CATALOG.filter(prompt=>prompt.visibleToCurrentAccount&&(!feature||prompt.featureKey===feature)&&(!query||[prompt.id,prompt.name,prompt.feature,prompt.scene,prompt.model].some(value=>String(value).toLowerCase().includes(query))));}
-function renderAiHuokePromptRows(){const body=$('#aiHuokePromptBody');if(!body)return;const rows=visibleAiHuokePrompts(),visibleTotal=AI_HUOKE_PROMPT_CATALOG.filter(prompt=>prompt.visibleToCurrentAccount).length;$('#aiHuokePromptCount').textContent='当前 '+rows.length+' / 可见 '+visibleTotal+' 条';$('#aiHuokePromptEmpty').hidden=rows.length!==0;body.innerHTML=rows.map(prompt=>{const tenant=prompt.scope==='租户可配置',statusTone=prompt.status==='已发布'?'ok':prompt.status==='测试通过'?'brd':'warn';return '<tr data-prompt-id="'+safeText(prompt.id)+'"><td><div class="prompt-name"><b>'+safeText(prompt.name)+'</b><small>'+safeText(prompt.scene)+'</small><span class="bdg '+(tenant?'brd':'mut')+' prompt-scope">'+safeText(prompt.scope)+'</span></div></td><td>'+safeText(prompt.feature)+'</td><td><div class="prompt-meta"><b>'+safeText(prompt.model)+'</b><small>'+safeText(prompt.parameters)+'</small></div></td><td><b class="num">'+safeText(prompt.id)+'</b><div class="tm">'+safeText(prompt.version)+'</div></td><td><span class="bdg '+statusTone+'">'+safeText(prompt.status)+'</span></td><td><div class="prompt-actions"><button class="btn sm" data-act="view-ai-huoke-prompt" data-prompt-id="'+safeText(prompt.id)+'">查看配置</button><button class="btn sm" data-act="test-ai-huoke-prompt" data-prompt-id="'+safeText(prompt.id)+'">测试 Prompt</button>'+(tenant?'<button class="btn sm" data-act="edit-ai-huoke-prompt" data-prompt-id="'+safeText(prompt.id)+'">编辑配置</button><button class="btn sm" data-act="publish-ai-huoke-prompt" data-prompt-id="'+safeText(prompt.id)+'">发布版本</button><button class="btn sm gho" data-act="rollback-ai-huoke-prompt" data-prompt-id="'+safeText(prompt.id)+'">回滚版本</button>':'')+'</div></td></tr>';}).join('');}
+function canManageAiHuokePrompt(prompt){return Boolean(prompt?.visibleToCurrentAccount);}
+function isAiHuokePlatformBaseline(prompt){return String(prompt?.scope||'').startsWith('平台基线');}
+function renderAiHuokePromptRows(){const body=$('#aiHuokePromptBody');if(!body)return;const rows=visibleAiHuokePrompts(),visibleTotal=AI_HUOKE_PROMPT_CATALOG.filter(prompt=>prompt.visibleToCurrentAccount).length;$('#aiHuokePromptCount').textContent='当前 '+rows.length+' / 可见 '+visibleTotal+' 条';$('#aiHuokePromptEmpty').hidden=rows.length!==0;body.innerHTML=rows.map(prompt=>{const platform=isAiHuokePlatformBaseline(prompt),statusTone=prompt.status==='已发布'?'ok':prompt.status==='测试通过'?'brd':'warn',manage=canManageAiHuokePrompt(prompt);return '<tr data-prompt-id="'+safeText(prompt.id)+'"><td><div class="prompt-name"><b>'+safeText(prompt.name)+'</b><small>'+safeText(prompt.scene)+'</small><span class="bdg '+(platform?'mut':'brd')+' prompt-scope">'+safeText(prompt.scope)+'</span></div></td><td>'+safeText(prompt.feature)+'</td><td><div class="prompt-meta"><b>'+safeText(prompt.model)+'</b><small>'+safeText(prompt.parameters)+'</small></div></td><td><b class="num">'+safeText(prompt.id)+'</b><div class="tm">'+safeText(prompt.version)+'</div></td><td><span class="bdg '+statusTone+'">'+safeText(prompt.status)+'</span></td><td><div class="prompt-actions"><button class="btn sm" data-act="view-ai-huoke-prompt" data-prompt-id="'+safeText(prompt.id)+'">查看配置</button>'+(manage?'<button class="btn sm" data-act="edit-ai-huoke-prompt" data-prompt-id="'+safeText(prompt.id)+'">修改配置</button><button class="btn sm" data-act="test-ai-huoke-prompt" data-prompt-id="'+safeText(prompt.id)+'">测试 Prompt</button><button class="btn sm" data-act="publish-ai-huoke-prompt" data-prompt-id="'+safeText(prompt.id)+'">发布版本</button>'+(!platform?'<button class="btn sm gho" data-act="rollback-ai-huoke-prompt" data-prompt-id="'+safeText(prompt.id)+'">回滚版本</button>':''):'')+'</div></td></tr>';}).join('');}
 function promptById(id){return AI_HUOKE_PROMPT_CATALOG.find(prompt=>prompt.id===id);}
 function promptDetailBody(prompt,editable=false){return '<div class="prompt-contract"><dt>关联功能</dt><dd>'+safeText(prompt.feature)+' · '+safeText(prompt.scene)+'</dd><dt>Prompt ID</dt><dd>'+safeText(prompt.id)+' · '+safeText(prompt.version)+' · '+safeText(prompt.status)+'</dd><dt>维护边界</dt><dd>'+safeText(prompt.scope)+'</dd><dt>模型参数</dt><dd>'+safeText(prompt.model)+' · '+safeText(prompt.parameters)+'</dd><dt>真源</dt><dd>'+safeText(prompt.sourceRef)+'</dd><dt>输入合同</dt><dd>'+safeText(prompt.inputContract)+'</dd><dt>输出合同</dt><dd>'+safeText(prompt.outputContract)+'</dd></div><div class="field" style="margin-top:14px"><label>完整 Prompt 正文</label>'+(editable?'<textarea class="inp" id="aiHuokePromptEditor" rows="12">'+safeText(AI_HUOKE_PROMPT_CONTENT[prompt.id])+'</textarea>':'<div class="prompt-content">'+safeText(AI_HUOKE_PROMPT_CONTENT[prompt.id])+'</div>')+'</div>'+(editable?'<div class="split"><div class="field"><label>模型</label><select class="inp" id="aiHuokePromptModel"><option '+(prompt.model==='DeepSeek-V3'?'selected':'')+'>DeepSeek-V3</option><option '+(prompt.model==='Doubao Image 4.0'?'selected':'')+'>Doubao Image 4.0</option></select></div><div class="field"><label>参数</label><input class="inp" id="aiHuokePromptParameters" value="'+safeText(prompt.parameters)+'"></div></div>':'');}
-function openAiHuokePrompt(id,editable=false){const prompt=promptById(id);if(!prompt)return;if(editable&&prompt.scope!=='租户可配置'){toast('平台基线只读，不能编辑','warn');return;}modal((editable?'编辑配置 · ':'Prompt 配置 · ')+safeText(prompt.name),promptDetailBody(prompt,editable),editable?'保存草稿':'关闭',()=>{if(!editable){closeModal();return;}const content=$('#aiHuokePromptEditor')?.value.trim(),parameters=$('#aiHuokePromptParameters')?.value.trim();if(!content||!parameters){toast('完整正文和参数不能为空','warn');return;}AI_HUOKE_PROMPT_CONTENT[id]=content;prompt.model=$('#aiHuokePromptModel')?.value||prompt.model;prompt.parameters=parameters;prompt.status='草稿';prompt.testPassed=false;closeModal();renderAiHuokePromptRows();addAiHuokeAudit('操作日志','保存 Prompt 草稿',id);toast('已保存草稿；测试通过后才能发布','ok');},true);}
-function testAiHuokePrompt(id){const prompt=promptById(id);if(!prompt)return;modal('测试 Prompt · '+safeText(prompt.name),'<div class="field"><label>样例输入</label><textarea class="inp" id="aiHuokePromptTestInput" rows="6" placeholder="请填写符合输入合同的样例 JSON">{\n  "task_input": "为新品体验活动生成内容草稿",\n  "confirmed_enterprise_facts": ["企业名称：示例科技"]\n}</textarea></div><div class="note">测试会校验输出 Schema、事实引用与合规边界，不执行发布或正式写入。</div>','运行测试',()=>{const input=$('#aiHuokePromptTestInput')?.value.trim();if(!input){toast('请填写样例输入','warn');return;}prompt.testPassed=true;if(prompt.scope==='租户可配置'&&prompt.status==='草稿')prompt.status='测试通过';closeModal();renderAiHuokePromptRows();addAiHuokeAudit('AI 调用日志','测试 Prompt '+id,id,undefined,'通过','Schema、事实引用与合规检查通过');toast('测试通过：Schema、事实引用与合规校验均通过','ok');},true);}
+function openAiHuokePrompt(id,editable=false){const prompt=promptById(id);if(!prompt)return;if(editable&&!canManageAiHuokePrompt(prompt)){toast('当前账号没有 Prompt 编辑权限','warn');return;}modal((editable?'编辑配置 · ':'Prompt 配置 · ')+safeText(prompt.name),promptDetailBody(prompt,editable),editable?'保存草稿':'关闭',()=>{if(!editable){closeModal();return;}const content=$('#aiHuokePromptEditor')?.value.trim(),parameters=$('#aiHuokePromptParameters')?.value.trim();if(!content||!parameters){toast('完整正文和参数不能为空','warn');return;}const fromPlatform=isAiHuokePlatformBaseline(prompt);AI_HUOKE_PROMPT_CONTENT[id]=content;prompt.model=$('#aiHuokePromptModel')?.value||prompt.model;prompt.parameters=parameters;prompt.scope=fromPlatform?'租户覆盖 · 基于平台基线':prompt.scope;prompt.status='草稿';prompt.testPassed=false;closeModal();renderAiHuokePromptRows();addAiHuokeAudit('操作日志',fromPlatform?'创建 Prompt 租户覆盖草稿':'保存 Prompt 草稿',id);toast(fromPlatform?'已基于平台基线创建租户草稿；测试通过后才能发布':'已保存草稿；测试通过后才能发布','ok');},true);}
+function testAiHuokePrompt(id){const prompt=promptById(id);if(!prompt||!canManageAiHuokePrompt(prompt))return;modal('测试 Prompt · '+safeText(prompt.name),'<div class="field"><label>样例输入</label><textarea class="inp" id="aiHuokePromptTestInput" rows="6" placeholder="请填写符合输入合同的样例 JSON">{\n  "task_input": "为新品体验活动生成内容草稿",\n  "confirmed_enterprise_facts": ["企业名称：示例科技"]\n}</textarea></div><div class="note">测试会校验输出 Schema、事实引用与合规边界，不执行发布或正式写入。</div>','运行测试',()=>{const input=$('#aiHuokePromptTestInput')?.value.trim();if(!input){toast('请填写样例输入','warn');return;}prompt.testPassed=true;if(prompt.status==='草稿')prompt.status='测试通过';closeModal();renderAiHuokePromptRows();addAiHuokeAudit('AI 调用日志','测试 Prompt '+id,id,undefined,'通过','Schema、事实引用与合规检查通过');toast('测试通过：Schema、事实引用与合规校验均通过','ok');},true);}
 function nextPromptVersion(version){const match=String(version).match(/v(\d+)\.(\d+)/);return match?'v'+match[1]+'.'+(Number(match[2])+1):'v1.1';}
-function publishAiHuokePrompt(id){const prompt=promptById(id);if(!prompt||prompt.scope!=='租户可配置')return;if(!prompt.testPassed||!['草稿','测试通过'].includes(prompt.status)){toast('请先保存草稿并完成测试','warn');return;}modal('发布 Prompt · '+safeText(prompt.name),'<div class="alert">发布将生成新版本；历史任务继续保留原 Prompt 版本，不会被静默覆盖。</div>','确认发布',()=>{prompt.version=nextPromptVersion(prompt.version);prompt.status='已发布';prompt.testPassed=false;closeModal();renderAiHuokePromptRows();addAiHuokeAudit('操作日志','发布 Prompt '+id+' '+prompt.version,id);toast('新版本 '+prompt.version+' 已发布','ok');});}
-function rollbackAiHuokePrompt(id){const prompt=promptById(id);if(!prompt||prompt.scope!=='租户可配置')return;modal('回滚 Prompt · '+safeText(prompt.name),'<div class="field"><label>选择历史版本</label><select class="inp" id="aiHuokeRollbackVersion"><option>v1.0 · 已发布</option><option>v0.9 · 已归档</option></select></div><div class="note">回滚会生成新的回滚版本记录，不删除或覆盖历史版本。</div>','确认回滚',()=>{const target=$('#aiHuokeRollbackVersion')?.value.split(' ')[0]||'v1.0';prompt.version=nextPromptVersion(prompt.version);prompt.status='已发布';closeModal();renderAiHuokePromptRows();addAiHuokeAudit('操作日志','回滚 Prompt '+id,id,undefined,'成功','基于 '+target+' 生成 '+prompt.version);toast('已基于 '+target+' 生成回滚版本 '+prompt.version,'ok');});}
+function publishAiHuokePrompt(id){const prompt=promptById(id);if(!prompt||!canManageAiHuokePrompt(prompt))return;if(isAiHuokePlatformBaseline(prompt)){toast('请先修改配置，创建租户覆盖草稿后再测试发布','warn');return;}if(!prompt.testPassed||!['草稿','测试通过'].includes(prompt.status)){toast('请先保存草稿并完成测试','warn');return;}modal('发布 Prompt · '+safeText(prompt.name),'<div class="alert">发布将生成当前租户的新版本；平台基线与历史任务版本继续保留，不会被静默覆盖。</div>','确认发布',()=>{prompt.version=nextPromptVersion(prompt.version);prompt.status='已发布';prompt.testPassed=false;closeModal();renderAiHuokePromptRows();addAiHuokeAudit('操作日志','发布 Prompt '+id+' '+prompt.version,id);toast('租户版本 '+prompt.version+' 已发布','ok');});}
+function rollbackAiHuokePrompt(id){const prompt=promptById(id);if(!prompt||!canManageAiHuokePrompt(prompt)||isAiHuokePlatformBaseline(prompt))return;modal('回滚 Prompt · '+safeText(prompt.name),'<div class="field"><label>选择历史版本</label><select class="inp" id="aiHuokeRollbackVersion"><option>v1.0 · 已发布</option><option>v0.9 · 已归档</option></select></div><div class="note">回滚会生成新的租户回滚版本记录，不删除平台基线或历史版本。</div>','确认回滚',()=>{const target=$('#aiHuokeRollbackVersion')?.value.split(' ')[0]||'v1.0';prompt.version=nextPromptVersion(prompt.version);prompt.status='已发布';closeModal();renderAiHuokePromptRows();addAiHuokeAudit('操作日志','回滚 Prompt '+id,id,undefined,'成功','基于 '+target+' 生成 '+prompt.version);toast('已基于 '+target+' 生成回滚版本 '+prompt.version,'ok');});}
 function renderSystemUsage(){const body=$('#systemUsageBody');if(!body)return;body.innerHTML=AI_HUOKE_USAGE_MEMBERS.map(member=>{const rate=Math.min(100,Math.round(member.used/member.cap*100));return '<tr><td><b>'+safeText(member.name)+'</b></td><td class="num">'+member.used.toLocaleString()+'</td><td class="num">'+member.cap.toLocaleString()+'</td><td><div class="usage-progress"><i style="width:'+rate+'%"></i></div><div class="tm">'+rate+'%</div></td><td><button class="btn sm" data-act="set-member-usage-cap" data-member-id="'+safeText(member.id)+'">设置上限</button></td></tr>';}).join('');}
 function setMemberUsageCap(id){const member=AI_HUOKE_USAGE_MEMBERS.find(item=>item.id===id);if(!member)return;modal('设置用量上限 · '+safeText(member.name),'<div class="field"><label>月度上限</label><input class="inp" id="memberUsageCap" type="number" min="'+member.used+'" max="100000" value="'+member.cap+'"></div><div class="note">上限不能低于当前已用量；调整只影响当前租户子账号。</div>','保存上限',()=>{const cap=Number($('#memberUsageCap')?.value);if(!Number.isFinite(cap)||cap<member.used){toast('上限不能低于当前已用量','warn');return;}member.cap=cap;closeModal();renderSystemUsage();addAiHuokeAudit('操作日志','调整子账号用量上限',member.name,undefined,'成功','新上限 '+cap);toast('用量上限已更新','ok');});}
 function filteredAiHuokeLogs(){const type=$('#aiHuokeLogType')?.value||'',query=($('#aiHuokeLogSearch')?.value||'').trim().toLowerCase();return AI_HUOKE_LOG_RECORDS.filter(log=>(!type||log.type===type)&&(!query||[log.event,log.object,log.actor].some(value=>String(value).toLowerCase().includes(query))));}
@@ -2946,9 +3157,8 @@ document.addEventListener('click',e=>{
     case 'edit-system-member-roles':openSystemMemberRoles(el.dataset.memberId);break;
     case 'toggle-system-member':toggleSystemMember(el.dataset.memberId);break;
     case 'reset-system-member-password':resetSystemMemberPassword(el.dataset.memberId);break;
-    case 'select-system-role':selectedSystemRole=el.dataset.role;renderSystemRoles();break;
     case 'create-system-role':createSystemRole();break;
-    case 'edit-system-role':selectedSystemRole=el.dataset.role;renderSystemRoles();$('#permissionMatrix')?.scrollIntoView({behavior:'smooth',block:'start'});break;
+    case 'edit-system-role':openSystemRoleEditor(el.dataset.role);break;
     case 'copy-system-role':copySystemRole(el.dataset.role);break;
     case 'delete-system-role':deleteSystemRole(el.dataset.role);break;
     case 'save-system-role':saveSystemRole();break;

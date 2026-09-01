@@ -165,6 +165,6 @@ test('prompt management replaces the legacy Agent permissions surface', () => {
   assert.doesNotMatch(html, /data-p="agent-center"/);
   assert.match(html, /data-p="prompts"/);
   assert.match(html, /'agent-center':'prompts'/);
-  for (const phrase of ['完整 Prompt 正文', '输入合同', '输出合同', '平台基线 · 只读', '租户可配置']) assert.match(html, new RegExp(phrase));
+  for (const phrase of ['完整 Prompt 正文', '输入合同', '输出合同', '平台基线 · 可创建租户版本', '租户可配置', '修改配置', '测试 Prompt', '发布版本']) assert.match(html, new RegExp(phrase));
   for (const action of ['view-ai-huoke-prompt', 'test-ai-huoke-prompt', 'edit-ai-huoke-prompt', 'publish-ai-huoke-prompt', 'rollback-ai-huoke-prompt']) assert.match(html, new RegExp(action));
 });
