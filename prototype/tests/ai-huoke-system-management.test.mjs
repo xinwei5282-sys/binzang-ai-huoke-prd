@@ -15,7 +15,7 @@ test('system management has seven approved routes in order and legacy redirect',
   for (const route of routes) { const i = nav.indexOf(`data-v="${route}"`); assert.ok(i > last, `${route} order`); last = i; }
   for (const label of labels) assert.match(html, new RegExp(label));
   assert.doesNotMatch(html, />Agent 权限</);
-  assert.match(html, /agent-center\s*:\s*['"]prompts['"]/);
+  assert.match(html, /['"]agent-center['"]\s*:\s*['"]prompts['"]/);
 });
 
 test('prompt catalog exposes governed assets with full content contracts', () => {
