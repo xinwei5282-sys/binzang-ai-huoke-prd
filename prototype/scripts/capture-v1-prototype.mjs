@@ -74,11 +74,11 @@ uncaughtErrors.length = 0;
 await evaluate(`(() => { const login=document.querySelector('#login');if(login)login.style.display='none';document.body.dataset.customer='general';go('home'); })()`);
 
 const secondaryNavigationAudit = await evaluate(`(() => {
-  const read=(route,panelSelector)=>{const page=document.querySelector('.page[data-p="'+route+'"]');return {topTitle:document.querySelector('#ptitle')?.textContent.trim()||'',contentTitle:page?.querySelector(':scope > .lead .t')?.textContent.trim()||'',activePanel:page?.querySelector(panelSelector)?.dataset.kbpanel||page?.querySelector(panelSelector)?.dataset.subviewPanel||''};};
+  const read=(route,panelSelector)=>{const page=document.querySelector('.page[data-p="'+route+'"]'),panel=page?.querySelector(panelSelector);return {topTitle:document.querySelector('#ptitle')?.textContent.trim()||'',contentTitle:page?.querySelector(':scope > .lead .t')?.textContent.trim()||'',activePanel:panel?.dataset.kbpanel||panel?.dataset.subviewPanel||page?.dataset.p||''};};
   document.querySelector('[data-nav-sub="kb"] [data-kbtab="diagnosis"]')?.click();
   const diagnosis=read('kb',':scope > .kb-panel.show');
-  document.querySelector('[data-nav-sub="settings"] [data-subview="setting-company"]')?.click();
-  const enterpriseSettings=read('settings',':scope > .subview.show');
+  document.querySelector('[data-nav-sub="settings"] [data-v="system"]')?.click();
+  const enterpriseSettings=read('system',':scope > .system-form-card');
   return {diagnosis,enterpriseSettings};
 })()`);
 
@@ -87,8 +87,12 @@ const captures = [
   ['enterprise-brain-diagnosis', 'kb', null, 'diagnosis'],
   ['enterprise-brain-vi', 'kb', null, 'cognition'],
   ['brand-planning', 'brand-planning', 'brand-report'],
+  ['workhub-tasks', 'workhub', 'work-tasks'],
+  ['workhub-customers', 'workhub', 'work-customers'],
+  ['workhub-projects', 'workhub', 'work-projects'],
   ['marketing-materials-wechat', 'marketing-materials', 'material-wechat'],
   ['acquisition', 'acquisition'],
+  ['kb-memory', 'kb', null, 'memory'],
   ['settings', 'settings', 'setting-company'],
   ['settings-agent-center', 'agent-center']
 ];
@@ -361,11 +365,6 @@ await new Promise(ok => setTimeout(ok, 1800));
 const deepDiagnosisAudit = await evaluate(`(() => ({deepStatus:enterpriseDiagnosisState.deepStatus,stored:localStorage.getItem('aiHuokeDeepDiagnosisGeneratedV1'),stage:getEnterpriseDiagnosisStage(getEnterpriseDiagnosisCompleteness()),buttonText:document.querySelector('#startDeepDiagnosisBtn')?.textContent||''}))()`);
 await evaluate(`document.querySelector('#toasts').innerHTML=''`);
 await screenshot('enterprise-diagnosis-deep-complete');
-await evaluate(`go('workhub');switchSubview('work-tasks');renderWorkHub()`);await screenshot('workhub-tasks');
-await evaluate(`switchSubview('work-customers')`);await screenshot('workhub-customers');
-await evaluate(`switchSubview('work-projects')`);await screenshot('workhub-projects');
-await evaluate(`go('kb');showKbTab('memory')`);await screenshot('kb-memory');
-
 const audit = {
   capturedAt: new Date().toISOString(),
   viewport: { width, height },
@@ -399,7 +398,7 @@ ws.close();
 const expectedEchoColumns=width<=700?1:2;
 const captureFailed=consoleErrors.length || uncaughtErrors.length || audit.horizontalOverflowPages.length || audit.duplicateVisiblePages.length || audit.outsideElements.length ||
   secondaryNavigationAudit.diagnosis.topTitle !== '企业大脑' || secondaryNavigationAudit.diagnosis.contentTitle !== '诊断总览' || secondaryNavigationAudit.diagnosis.activePanel !== 'diagnosis' ||
-  secondaryNavigationAudit.enterpriseSettings.topTitle !== '设置' || secondaryNavigationAudit.enterpriseSettings.contentTitle !== '企业设置' || secondaryNavigationAudit.enterpriseSettings.activePanel !== 'setting-company' ||
+  secondaryNavigationAudit.enterpriseSettings.topTitle !== '系统管理' || secondaryNavigationAudit.enterpriseSettings.contentTitle !== '系统设置' || secondaryNavigationAudit.enterpriseSettings.activePanel !== 'system' ||
   goalsStepImmediateScrollTop > 2 || goalsStepViewport.windowScrollY > 2 || goalsStepViewport.cardTop < 8 ||
   initialIntakeLayout.zoneHeight < 100 || initialIntakeLayout.zoneWidth < 240 || !initialFieldState.visible || initialFieldState.fieldCount !== 6 || !initialFieldState.editable || initialFieldState.manualValue !== '手动填写测试企业' || !licenseManualPreserved ||
   !emptyFlow.stepFourVisible || !emptyFlow.confirmEnabled || emptyFlow.page !== 'kb' || emptyFlow.stored !== '1' || emptyFlow.profileState !== 'draft' || !emptyFlow.status.includes('待补充') ||
