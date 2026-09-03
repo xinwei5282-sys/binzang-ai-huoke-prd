@@ -625,6 +625,8 @@ td{font-size:12.5px}
         <button type="button" data-v="home" class="on"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M4 18V6l8-3 8 3v12l-8 3z"/><path d="M8 9h8M8 13h5"/></svg>首页</button>
         <button type="button" data-v="brand-planning"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M5 4h14v16H5zM8 8h8M8 12h8M8 16h5"/></svg>品牌与经营</button>
         <div class="nav-sub" data-nav-sub="brand-planning"><button class="on" data-act="nav-subview" data-parent="brand-planning" data-subview="brand-report">品牌报告</button><button data-act="nav-subview" data-parent="brand-planning" data-subview="operating-plan">经营计划</button></div>
+        <button type="button" data-v="workhub"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M4 5h16v14H4zM8 9h8M8 13h5"/></svg>工作中枢<span class="dot">6</span></button>
+        <div class="nav-sub" data-nav-sub="workhub"><button class="on" data-act="nav-subview" data-parent="workhub" data-subview="work-tasks">我的待办</button><button data-act="nav-subview" data-parent="workhub" data-subview="work-customers">客户</button><button data-act="nav-subview" data-parent="workhub" data-subview="work-projects">项目</button></div>
       </section>
       <section class="nav-group" data-nav-group="content">
         <button type="button" data-v="marketing-materials"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M4 4h16v12H4zM8 20h8M12 16v4"/></svg>营销物料</button>
@@ -634,7 +636,7 @@ td{font-size:12.5px}
       </section>
       <section class="nav-group" data-nav-group="assets">
         <button type="button" data-v="kb"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M4 5a2 2 0 012-2h12v18H6a2 2 0 01-2-2z"/><path d="M8 7h7M8 11h7"/></svg>企业大脑<span class="dot">7</span></button>
-        <div class="nav-sub" data-nav-sub="kb"><button class="on" data-act="nav-kb" data-parent="kb" data-kbtab="diagnosis">诊断总览</button><button data-act="nav-kb" data-parent="kb" data-kbtab="cognition">企业 VI</button><button data-act="nav-kb" data-parent="kb" data-kbtab="content">企业知识</button><button data-act="nav-kb" data-parent="kb" data-kbtab="intelligence">外部情报</button><button data-act="nav-kb" data-parent="kb" data-kbtab="evolution">进化与治理</button></div>
+        <div class="nav-sub" data-nav-sub="kb"><button class="on" data-act="nav-kb" data-parent="kb" data-kbtab="diagnosis">诊断总览</button><button data-act="nav-kb" data-parent="kb" data-kbtab="cognition">企业 VI</button><button data-act="nav-kb" data-parent="kb" data-kbtab="content">企业知识</button><button data-act="nav-kb" data-parent="kb" data-kbtab="memory">企业记忆</button><button data-act="nav-kb" data-parent="kb" data-kbtab="intelligence">外部情报</button><button data-act="nav-kb" data-parent="kb" data-kbtab="evolution">进化与治理</button></div>
         <button type="button" data-v="settings"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><circle cx="12" cy="12" r="3"/><path d="M19 12a7 7 0 00-.1-1l2-1.5-2-3.4-2.4 1A7 7 0 0015 6l-.4-2.6h-4L10 6a7 7 0 00-1.5 1.1l-2.4-1-2 3.4L6.2 11a7 7 0 000 2L4 14.5l2 3.4 2.4-1A7 7 0 0010 18l.5 2.6h4L15 18a7 7 0 001.5-1.1l2.4 1 2-3.4-2-1.5a7 7 0 00.1-1z"/></svg>设置</button>
         <div class="nav-sub" data-nav-sub="settings"><button class="on" data-act="nav-route" data-parent="settings" data-v="system">系统设置</button><button data-act="nav-route" data-parent="settings" data-v="members">成员管理</button><button data-act="nav-route" data-parent="settings" data-v="permissions">权限管理</button><button data-act="nav-route" data-parent="settings" data-v="bind">平台账号</button><button data-act="nav-route" data-parent="settings" data-v="prompts">提示词管理</button><button data-act="nav-route" data-parent="settings" data-v="usage">用量管理</button><button data-act="nav-route" data-parent="settings" data-v="logs">日志与审计</button></div>
       </section>
@@ -1199,6 +1201,15 @@ td{font-size:12.5px}
       </div>
     </div>
 
+    <section class="page" data-p="workhub" data-od-id="work-hub-page">
+      <div class="lead"><div><div class="t">工作中枢</div><div class="s">任务、客户与项目统一协作 · 原型演示</div></div><label class="chip">账号范围 <select data-work-account onchange="setWorkHubAccount(this.value)"><option value="acct-boss">蔚然 · 老板账号</option><option value="acct-employee-lin">林晓 · 员工账号</option></select></label></div>
+      <div class="subnav"><button class="subnav-item on" data-act="switch-subview" data-subview="work-tasks">我的待办</button><button class="subnav-item" data-act="switch-subview" data-subview="work-customers">客户</button><button class="subnav-item" data-act="switch-subview" data-subview="work-projects">项目</button></div>
+      <div class="subview show" data-subview-panel="work-tasks"><div class="section-note">任务中心是行动真源；Agent 生成、对外动作和高风险判断均停在人工门。</div><div id="workTaskCenter" class="grid"></div></div>
+      <div class="subview" data-subview-panel="work-customers"><div class="section-note">每个客户只有一个累计档案，意向结论逐条链接会议或聊天证据。</div><div id="workCustomerList" class="grid"></div></div>
+      <div class="subview" data-subview-panel="work-projects"><div class="section-note">项目资料、商业文件与冲突处理集中管理；员工自主判断，不会自动覆盖。</div><div id="workProjectList" class="grid"></div><div id="project-commercial-documents" hidden>商业文件 · 合同与报价</div><div data-conflict-resolution="adopt" hidden>采纳老板要求</div><div data-conflict-resolution="keep" hidden>保留原方案</div><div data-conflict-resolution="consult" hidden>发起协商</div></div>
+      <div id="customer-followup-assistant" hidden>跟进助手 · 模拟生成</div>
+    </section>
+
     <!-- KB -->
     <section class="page" data-p="kb" data-od-id="knowledge-page">
       <div class="lead"><div><div class="t">企业大脑</div><div class="s"><span id="kbActiveBlueprint">AI 获客 · 企业获客知识蓝图</span> · 统一底座、统一治理与权限</div></div>
@@ -1206,6 +1217,7 @@ td{font-size:12.5px}
         <div data-intelligence-primary-actions hidden style="display:flex;gap:8px;flex-wrap:wrap"><button class="btn" data-act="add-brain-intelligence">添加公开链接</button><button class="btn pri" data-act="collect-brain-intelligence">采集公开网站</button></div></div>
       <div class="subnav"><button class="subnav-item on" data-act="kb-tab" data-kbtab="diagnosis">诊断总览</button><button class="subnav-item" data-act="kb-tab" data-kbtab="cognition">企业 VI</button><button class="subnav-item" data-act="kb-tab" data-kbtab="content">企业知识</button><button class="subnav-item" data-act="kb-tab" data-kbtab="intelligence">外部情报</button><button class="subnav-item" data-act="kb-tab" data-kbtab="evolution">进化与治理</button></div>
       <input type="file" id="kbFile" hidden multiple accept=".doc,.docx,.txt,.xls,.xlsx,.csv,.pdf,image/*,audio/*,video/*">
+      <div class="kb-panel" data-kbpanel="memory"><div class="section-note">企业记忆归档会议、聊天和文件；原型演示 · 未上传到真实服务器。</div><div class="card pad"><div class="head"><div><h3>会议与聊天资料</h3><div class="mini">会议证据、聊天证据仅作为候选依据，需人工确认后进入正式知识</div></div><button class="btn pri" data-act="open-work-memory-upload">上传资料</button></div><input id="workMemoryUpload" type="file" hidden multiple accept="audio/*,video/*,image/*,.pdf,.doc,.docx,.txt"><div id="enterpriseMemoryList" class="grid"></div></div></div>
       <div class="kb-panel show" data-kbpanel="diagnosis">
         <div class="section-note">企业信息完整度、六维诊断与信息缺口统一在此查看；未确认的 AI 候选不计入。</div>
         <div id="enterpriseBrainDiagnosisHost">
@@ -1613,7 +1625,7 @@ const AI_HUOKE_LOG_RECORDS=[
   {id:'log-004',time:'2026-08-31 18:20:12',type:'知识使用日志',event:'读取企业画像快照',object:'enterprise-profile-v8',actor:'营销视频任务',result:'成功',detail:'仅读取已确认字段 28 项；缺失项 3 项。'},
   {id:'log-005',time:'2026-08-31 17:05:30',type:'导出记录',event:'导出用量统计',object:'2026-08 用量',actor:'林晓',result:'成功',detail:'CSV 统计；不包含知识正文、附件或密钥。'}
 ];
-const titles={home:['首页','经营重点 · 审批 · 结果'],'brand-planning':['品牌与经营','品牌报告 · 经营计划'],'marketing-materials':['营销物料','PPT · 朋友圈图文 · 海报 · 公众号文章'],acquisition:['AI 获客','计划 · 趋势 · AI 混剪 · 营销视频 · 数字人'],settings:['系统管理','系统设置 · 成员 · 权限 · 平台 · Prompt · 用量 · 审计'],system:['系统设置','企业基础信息'],members:['成员管理','成员生命周期与角色'],permissions:['权限管理','角色与 RBAC'],bind:['平台账号','发布授权 · 经营数据'],prompts:['提示词管理','完整 Prompt 资产与版本治理'],usage:['用量管理','共享额度与子账号消耗'],logs:['日志与审计','操作、安全、AI、知识与导出记录'],plan:['获客计划','目标 → 策略 → 任务'],create:['营销视频','场景 → 知识 → 完整内容'],remix:['AI 混剪','素材 → 确认 → Remotion 成片'],studio:['PPT','经营汇报 · 销售方案 · 计划类演示'],'kb-onboarding':['企业知识初始化','交资料 → AI 分析 → 确认并启用'],burst:['爆款追踪','趋势追踪 · 对标拆解'],kb:['企业大脑','诊断总览 · 企业 VI · 企业知识 · 外部情报 · 进化与治理'],avatar:['数字人','形象 / 声音'],tune:['提示词微调','风格 + 参数'],works:['内容历史','按模块回看']};
+const titles={home:['首页','经营重点 · 审批 · 结果'],'brand-planning':['品牌与经营','品牌报告 · 经营计划'],'workhub':['工作中枢','我的待办 · 客户 · 项目'],'marketing-materials':['营销物料','PPT · 朋友圈图文 · 海报 · 公众号文章'],acquisition:['AI 获客','计划 · 趋势 · AI 混剪 · 营销视频 · 数字人'],settings:['系统管理','系统设置 · 成员 · 权限 · 平台 · Prompt · 用量 · 审计'],system:['系统设置','企业基础信息'],members:['成员管理','成员生命周期与角色'],permissions:['权限管理','角色与 RBAC'],bind:['平台账号','发布授权 · 经营数据'],prompts:['提示词管理','完整 Prompt 资产与版本治理'],usage:['用量管理','共享额度与子账号消耗'],logs:['日志与审计','操作、安全、AI、知识与导出记录'],plan:['获客计划','目标 → 策略 → 任务'],create:['营销视频','场景 → 知识 → 完整内容'],remix:['AI 混剪','素材 → 确认 → Remotion 成片'],studio:['PPT','经营汇报 · 销售方案 · 计划类演示'],'kb-onboarding':['企业知识初始化','交资料 → AI 分析 → 确认并启用'],burst:['爆款追踪','趋势追踪 · 对标拆解'],kb:['企业大脑','诊断总览 · 企业 VI · 企业知识 · 企业记忆 · 外部情报 · 进化与治理'],avatar:['数字人','形象 / 声音'],tune:['提示词微调','风格 + 参数'],works:['内容历史','按模块回看']};
 const SECONDARY_NAVIGATION_HEADINGS={
   'brand-report':['品牌报告','诊断依据 · 版本 · 下载'],
   'operating-plan':['经营计划','公司全盘 · 人工审核 · 月度跟踪 · 季度复盘'],
@@ -1621,6 +1633,11 @@ const SECONDARY_NAVIGATION_HEADINGS={
   'material-moments':['朋友圈图文','预览 · 编辑 · 图文包导出'],
   'material-poster':['海报','预览 · 编辑 · 图片下载'],
   'material-wechat':['公众号文章','创作 · 审核 · 自动发布 · 数据回收'],
+  'work-tasks':['我的待办','候选确认 · 任务树 · Agent 执行 · 交付物'],
+  'work-customers':['客户','客户档案 · 意向证据 · 跟进建议'],
+  'work-projects':['项目','协作资料 · 商业文档 · 冲突处理'],
+  memory:['企业记忆','会议与聊天 · 纪要 · 证据 · 关联关系'],
+  'kb-memory':['企业记忆','会议与聊天 · 纪要 · 证据 · 关联关系'],
   'setting-company':['企业设置','企业信息 · 经营周期 · 审核要求'],
   'setting-help':['帮助与服务','使用指引 · 问题反馈 · 客户成功'],
   diagnosis:['诊断总览','信息完整度 · 基础诊断 · 深度诊断'],
@@ -1629,9 +1646,29 @@ const SECONDARY_NAVIGATION_HEADINGS={
   intelligence:['外部情报','采集候选 · 人工确认 · 入脑'],
   evolution:['进化与治理','效果复盘 · 学习候选 · 人工治理']
 };
+const WORK_HUB_ACCOUNT_TEMPLATES={boss:{id:'acct-boss',tenantId:'tenant-weiran',name:'蔚然',roleLabel:'老板账号',dataScope:'enterprise'},employee:{id:'acct-employee-lin',tenantId:'tenant-weiran',name:'林晓',roleLabel:'员工账号',dataScope:'self_and_shared_projects'}};
+const WORK_HUB_MEMORIES=[{id:'mem-meeting-01',type:'meeting',name:'客户需求沟通会议.mp4',status:'ready',ownerAccountId:'acct-boss',visibility:'enterprise',customerId:'cust-aurora',projectId:'proj-growth',summary:'客户希望本季度完成增长方案评审。',evidenceIds:['ev-1'],candidateTasks:[{id:'cand-1',title:'整理增长方案大纲',ownerAccountId:'acct-boss'}]},{id:'mem-private-01',type:'file',name:'林晓个人草稿.txt',status:'ready',ownerAccountId:'acct-employee-lin',visibility:'private',customerId:null,projectId:null,summary:'个人总结，不进入企业检索。',evidenceIds:[]},{id:'mem-chat-01',type:'chat',name:'客户聊天截图.png',status:'parsing',ownerAccountId:'acct-employee-lin',visibility:'project',customerId:'cust-aurora',projectId:'proj-growth',summary:'聊天解析演示中。',evidenceIds:['ev-2'],candidateTasks:[]}];
+const WORK_HUB_CUSTOMERS=[{id:'cust-aurora',name:'极光科技',intent:'high',contact:'周琳 · 市场负责人',projectIds:['proj-growth'],evidence:'会议证据：明确预算与评审节点',timeline:['会议纪要 · 9月2日','聊天记录 · 9月3日']},{id:'cust-lumen',name:'Lumen 制造',intent:'medium',contact:'陈总 · 创始人',projectIds:['proj-ops'],evidence:'历史跟进记录',timeline:['跟进任务 · 8月28日']}];
+const WORK_HUB_PROJECTS=[{id:'proj-growth',name:'极光科技增长项目',customerId:'cust-aurora',status:'推进中',requirements:'老板会议要求：报价 32 万，交付周期 6 周',commercialDocuments:['quote-v3 · 员工报价 28 万'],conflictId:'conflict-quote-01'},{id:'proj-ops',name:'Lumen 经营诊断',customerId:'cust-lumen',status:'待启动',requirements:'待补充项目要求',commercialDocuments:[],conflictId:null}];
+const WORK_HUB_TASKS=[{id:'task-meeting-followup',title:'确认极光科技会议下一步',ownerAccountId:'acct-boss',customerId:'cust-aurora',projectId:'proj-growth',status:'pending',sourceMemoryId:'mem-meeting-01',deliverableType:'ppt'},{id:'task-private-summary',title:'整理个人草稿摘要',ownerAccountId:'acct-employee-lin',customerId:null,projectId:null,status:'ready',sourceMemoryId:'mem-private-01',deliverableType:null},{id:'task-agent-ppt',title:'Agent · 生成客户增长 PPT',ownerAccountId:'acct-boss',customerId:'cust-aurora',projectId:'proj-growth',status:'running',parentTaskId:'task-meeting-followup',deliverableType:'ppt',generationBrief:'极光科技增长方案 · 基于会议纪要'}];
+const WORK_HUB_CONFLICTS=[{id:'conflict-quote-01',projectId:'proj-growth',status:'open',left:'员工报价 28 万',right:'老板会议要求 32 万',resolution:null}];
+let workHubState={currentAccountId:'acct-boss',activeSubview:'work-tasks',selectedMemoryId:null,selectedCustomerId:null,selectedProjectId:null,taskFilter:'mine'};
+function getCurrentWorkAccount(){return Object.values(WORK_HUB_ACCOUNT_TEMPLATES).find(x=>x.id===workHubState.currentAccountId)||WORK_HUB_ACCOUNT_TEMPLATES.boss;}
+function canCurrentAccountSeeWorkItem(item){const a=getCurrentWorkAccount();return a.dataScope==='enterprise'||item.ownerAccountId===a.id||item.visibility==='project'&&item.projectId;}
+function setWorkHubAccount(id){workHubState.currentAccountId=id;document.querySelectorAll('[data-work-account]').forEach(x=>x.value=id);renderWorkHub();}
+function renderWorkTaskCenter(){const h=document.querySelector('#workTaskCenter');if(!h)return;const a=getCurrentWorkAccount();h.innerHTML=WORK_HUB_TASKS.filter(t=>canCurrentAccountSeeWorkItem(t)).map(t=>`<article class="card pad"><div class="head"><h3>${t.title}</h3><span class="bdg ${t.status==='running'?'brd':'warn'}">${t.status==='running'?'执行中':'待处理'}</span></div><div class="mini">${t.customerId?'客户 '+WORK_HUB_CUSTOMERS.find(c=>c.id===t.customerId)?.name:'个人范围'} · ${t.projectId?'项目 '+WORK_HUB_PROJECTS.find(p=>p.id===t.projectId)?.name:'未关联项目'}</div><div class="rowact" style="margin-top:10px"><button class="btn sm pri" data-act="open-work-task-deliverable" data-task-id="${t.id}">${t.deliverableType?'打开交付物':'查看任务'}</button></div></article>`).join('')||'<div class="card pad">当前账号暂无可见任务。</div>';}
+function renderWorkHub(){renderWorkTaskCenter();const c=document.querySelector('#workCustomerList');if(c)c.innerHTML=WORK_HUB_CUSTOMERS.map(x=>`<article class="card pad"><div class="head"><h3>${x.name}</h3><span class="bdg ok">意向 ${x.intent}</span></div><p>${x.contact}</p><div class="mini">${x.evidence}</div><button class="btn sm" data-act="open-work-customer-profile" data-customer-id="${x.id}">查看客户档案</button></article>`).join('');const p=document.querySelector('#workProjectList');if(p)p.innerHTML=WORK_HUB_PROJECTS.map(x=>`<article class="card pad"><div class="head"><h3>${x.name}</h3><span class="bdg warn">${x.status}</span></div><p>${x.requirements}</p><button class="btn sm" data-act="open-work-project" data-project-id="${x.id}">查看项目空间</button></article>`).join('');const m=document.querySelector('#enterpriseMemoryList');if(m)m.innerHTML=WORK_HUB_MEMORIES.filter(canCurrentAccountSeeWorkItem).map(x=>`<article class="card pad"><div class="head"><h3>${x.name}</h3><span class="bdg ${x.status==='ready'?'ok':'brd'}">${x.status==='ready'?'已完成':'处理中'}</span></div><div class="mini">${x.type} · ${x.visibility} · ${x.summary}</div></article>`).join('');}
+function openWorkCustomerProfile(id){workHubState.selectedCustomerId=id;go('workhub');switchSubview('work-customers');}
+function generateCustomerFollowupScript(){toast('已生成跟进话术候选 · 模拟生成','ok');}
+function adoptCustomerFollowupScript(){toast('已采用话术并创建人工跟进待办','ok');}
+function resolveWorkProjectConflict(id,resolution,reason=''){const c=WORK_HUB_CONFLICTS.find(x=>x.id===id);if(!c)return;if(resolution==='keep'&&!reason)return toast('保留原方案必须填写原因','warn');c.status=resolution==='consult'?'consultation_started':resolution==='adopt'?'adopted':'kept_with_reason';c.resolution=resolution;toast('冲突处理结果已记录，原始材料不会自动覆盖','ok');}
+function renderWorkTaskCenter(){const h=document.querySelector('#workTaskCenter');if(!h)return;h.innerHTML=WORK_HUB_TASKS.filter(canCurrentAccountSeeWorkItem).map(t=>`<article class="card pad"><div class="head"><h3>${t.title}</h3><span class="bdg brd">${t.status}</span></div><div class="mini">来源 ${t.sourceMemoryId||'人工创建'} · 原型演示</div><button class="btn sm pri" data-act="open-work-task-deliverable" data-task-id="${t.id}">${t.deliverableType?'进入交付物':'查看任务'}</button></article>`).join('');}
+function openWorkProject(id,detail='project-overview'){workHubState.selectedProjectId=id;go('workhub');switchSubview('work-projects');}
+function openWorkTaskDeliverable(id){const t=WORK_HUB_TASKS.find(x=>x.id===id);if(!t)return;if(t.deliverableType==='ppt'){go('marketing-materials');switchSubview('material-ppt',document.querySelector('[data-subview="material-ppt"]'));const b=document.querySelector('#studioBrief');if(b)b.value=t.generationBrief||'';pptCreationState={...pptCreationState,stage:'brief',taskContext:{taskId:t.id,customerId:t.customerId,projectId:t.projectId}};}else if(t.projectId)openWorkProject(t.projectId,'project-commercial-documents');else openWorkCustomerProfile(t.customerId);}
 const DEFAULT_SECONDARY_NAVIGATION={
   'brand-planning':'brand-report',
   'marketing-materials':'material-ppt',
+  workhub:'work-tasks',
   settings:'setting-company',
   kb:'diagnosis'
 };
@@ -1757,7 +1794,7 @@ function getPublishingAccounts(platform){return (PLATFORM_ACCOUNTS[platform]||[]
 function publishingAccountOptions(platform,selected=''){return getPublishingAccounts(platform).map(account=>'<option value="'+safeText(account.id)+'" '+(account.id===selected?'selected':'')+'>'+safeText(account.name)+' · '+safeText(account.platform)+'</option>').join('');}
 function getPublishingAccount(platform,id){return getPublishingAccounts(platform).find(account=>account.id===id)||getPublishingAccounts(platform)[0]||null;}
 function publishingMethodOptions(platform,accountId,selected=''){const account=getPublishingAccount(platform,accountId),active=resolvePublishingMethod(account,selected);return (account?.publishMethods||['manual']).map(method=>'<option value="'+method+'" '+(method===active?'selected':'')+'>'+safeText(PUBLISH_METHODS[method]?.label||method)+'</option>').join('');}
-const ROUTE_PARENT={plan:'acquisition',burst:'acquisition',create:'acquisition',remix:'acquisition',avatar:'acquisition',system:'settings',members:'settings',permissions:'settings',bind:'settings',prompts:'settings',usage:'settings',logs:'settings',member:'settings','agent-center':'settings',tune:'settings'};
+const ROUTE_PARENT={plan:'acquisition',burst:'acquisition',create:'acquisition',remix:'acquisition',avatar:'acquisition',system:'settings',members:'settings',permissions:'settings',bind:'settings',prompts:'settings',usage:'settings',logs:'settings',member:'settings','agent-center':'settings',tune:'settings','work-tasks':'workhub','work-customers':'workhub','work-projects':'workhub'};
 titles['kb-onboarding']=['企业初步诊断','补充资料 → AI 整理 → 确认并诊断'];
 const KB_SALES_VIEW={groups:$('#groupList').innerHTML,items:$('#kbList2').innerHTML};
 const KNOWLEDGE_WORK_ITEMS=[
@@ -2172,7 +2209,7 @@ function mountEnterpriseBrainPanels(){
 }
 function showKbTab(id='diagnosis'){
   mountEnterpriseBrainPanels();placeKbDataView();
-  const requested=id||'diagnosis',aliases={overview:'content',data:'content',sources:'content',review:'content',work:'content',domains:'content',governance:'evolution'},top=aliases[requested]||requested,allowed=['diagnosis','cognition','content','intelligence','evolution'],active=allowed.includes(top)?top:'diagnosis',page=document.querySelector('.page[data-p="kb"]');
+  const requested=id||'diagnosis',aliases={overview:'content',data:'content',sources:'content',review:'content',work:'content',domains:'content',governance:'evolution'},top=aliases[requested]||requested,allowed=['diagnosis','cognition','content','memory','intelligence','evolution'],active=allowed.includes(top)?top:'diagnosis',page=document.querySelector('.page[data-p="kb"]');
   if(!page)return;
   setNavigationHeading('kb');setContentHeading('kb',active);
   const kbPrimaryActions=page.querySelector('[data-kb-primary-actions]');if(kbPrimaryActions)kbPrimaryActions.hidden=['cognition','intelligence','evolution'].includes(active);
@@ -3152,6 +3189,10 @@ document.addEventListener('click',e=>{
     case 'nav-route': go(el.dataset.v);break;
     case 'nav-subview': go(el.dataset.parent);switchSubview(el.dataset.subview);el.closest('.nav-sub').querySelectorAll('button').forEach(button=>button.classList.toggle('on',button===el));break;
     case 'nav-kb': go('kb');showKbTab(el.dataset.kbtab);el.closest('.nav-sub').querySelectorAll('button').forEach(button=>button.classList.toggle('on',button===el));break;
+    case 'open-work-task-deliverable':openWorkTaskDeliverable(el.dataset.taskId);break;
+    case 'open-work-customer-profile':openWorkCustomerProfile(el.dataset.customerId);break;
+    case 'open-work-project':openWorkProject(el.dataset.projectId);break;
+    case 'open-work-memory-upload':document.querySelector('#workMemoryUpload')?.click();break;
     case 'save-system-settings':{const required=['enterprise_name','enterprise_short_name','contact_name','contact_phone'],missing=required.find(id=>!$('#'+id)?.value.trim());if(missing){$('#'+missing)?.focus();toast('请完整填写企业名称、简称、联系人和联系手机','warn');break;}const phone=$('#contact_phone').value.trim();if(!/^1\d{10}$/.test(phone)){toast('联系手机格式不正确','warn');break;}$('#systemSaveHint').textContent='刚刚保存 · 林晓';addAiHuokeAudit('操作日志','保存系统设置','企业基础信息');toast('企业基础信息已保存','ok');}break;
     case 'add-system-member':openAddSystemMember();break;
     case 'edit-system-member-roles':openSystemMemberRoles(el.dataset.memberId);break;
@@ -3650,7 +3691,7 @@ document.addEventListener('pointermove',event=>{if(!pptTextDrag)return;const pre
 document.addEventListener('pointerup',()=>{if(!pptTextDrag)return;$('#pptLivePreview')?.classList.remove('is-dragging');if(pptTextDrag.moved&&pptTextDrag.position){pptEditorState.deck=movePptTextElement(pptEditorState.deck,pptEditorState.selectedSlideId,pptTextDrag.elementId,pptTextDrag.position);setTimeout(()=>{if($('#pptSaveStatus'))$('#pptSaveStatus').textContent='已保存';},180);}pptTextDrag=null;});
 
 // 内容层级：统一页面标题、区块、面板和行级语法，保留现有业务 DOM 与事件绑定。
-const hierarchyRoutes=['home','brand-planning','marketing-materials','acquisition','kb','settings'];
+const hierarchyRoutes=['home','brand-planning','workhub','marketing-materials','acquisition','kb','settings'];
 function markHierarchyRegion(page,selector,name){const el=page.querySelector(selector);if(el){el.dataset.hierarchy=name;el.classList.add('section-block');}return el;}
 function applyContentHierarchy(){
   document.querySelectorAll('.page[data-p]').forEach(page=>{
@@ -3682,6 +3723,7 @@ renderEnterpriseCognitionVi();
 renderGeneratedFormalKnowledge();
 renderEnterpriseBrainIntelligence();
 renderEnterpriseBrainEvolution();
+renderWorkHub();
 renderWechatIntegration();
 upgradePublishingAccountExperience();
 pruneRedundantSecondaryHeadings();

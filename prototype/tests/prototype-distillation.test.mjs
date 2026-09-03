@@ -7,13 +7,14 @@ import { dirname, resolve } from 'node:path';
 const here = dirname(fileURLToPath(import.meta.url));
 const html = readFileSync(resolve(here, '../index.html'), 'utf8');
 
-test('primary navigation exposes only the six approved business outcomes', () => {
+test('primary navigation exposes only the seven approved business outcomes', () => {
   const nav = html.match(/<div class="nav" id="nav">([\s\S]*?)<\/div><\/nav>/)?.[1] ?? '';
   const topLevelRoutes = [...nav.matchAll(/<button type="button" data-v="([^"]+)"/g)].map((match) => match[1]);
 
   assert.deepEqual(topLevelRoutes, [
     'home',
     'brand-planning',
+    'workhub',
     'marketing-materials',
     'acquisition',
     'kb',

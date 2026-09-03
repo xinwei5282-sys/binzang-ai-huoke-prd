@@ -1,6 +1,7 @@
 {
   "defaultFullCapture": "prototype/scripts/capture-v1-prototype.mjs",
   "focuses": {
+    "enterprise-work-hub": {"tests":["enterprise-work-hub.test.mjs"],"capture":"prototype/scripts/capture-enterprise-work-hub.mjs"},
     "enterprise-vi": {
       "tests": [
         "enterprise-cognition-vi-v1.test.mjs",
