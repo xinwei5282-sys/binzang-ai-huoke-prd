@@ -26,7 +26,7 @@ try {
   fail(error.message);
 }
 
-const ignored = git(['check-ignore', '-q', '.worktrees']).status === 0;
+const ignored = git(['check-ignore', '-q', '.worktrees/']).status === 0;
 if (!ignored) fail('.worktrees is not ignored; add it to .gitignore before creating a linked worktree');
 const sourceDirtyCount = git(['status', '--porcelain']).stdout.trim().split('\n').filter(Boolean).length;
 const branchExists = git(['show-ref', '--verify', '--quiet', `refs/heads/${plan.branch}`]).status === 0;
