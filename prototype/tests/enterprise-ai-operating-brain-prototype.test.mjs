@@ -26,7 +26,7 @@ test('approved secondary navigation is grouped in the left rail', () => {
   assert.doesNotMatch(nav, /data-nav-sub="enterprise-profile"/);
   const brainNav=nav.match(/data-nav-sub="kb"([\s\S]*?)<\/div>/)?.[1]||'';
   assert.equal((brainNav.match(/<button/g)||[]).length,6);
-  assert.equal([...brainNav.matchAll(/>([^<>]+)<\/button>/g)].map(match=>match[1]).join('|'), '诊断总览|企业 VI|企业知识|外部情报|进化与治理');
+  assert.equal([...brainNav.matchAll(/>([^<>]+)<\/button>/g)].map(match=>match[1]).join('|'), '诊断总览|企业 VI|企业知识|企业记忆|外部情报|进化与治理');
   for (const parent of ['brand-planning', 'marketing-materials', 'acquisition', 'kb', 'settings']) assert.match(nav, new RegExp(`data-nav-sub="${parent}"`));
   assert.match(html, /\.nav-sub\{display:grid/);
   assert.match(html, /grid-template-columns:repeat\(2,minmax\(0,1fr\)\)/);
