@@ -19,7 +19,7 @@ test('shared hierarchy primitives are available', () => {
 });
 
 test('customer routes are registered for one shared page heading', () => {
-  assert.match(html, /const hierarchyRoutes=\['home','brand-planning','marketing-materials','acquisition','kb','settings'\]/);
+  assert.match(html, /const hierarchyRoutes=\['home','brand-planning','workhub','marketing-materials','acquisition','kb','settings'\]/);
   assert.match(html, /heading\.classList\.add\('page-heading'\)/);
   for (const route of ['home', 'brand-planning', 'marketing-materials', 'acquisition', 'kb', 'settings']) {
     assert.match(html, new RegExp(`['"]${route}['"]`));

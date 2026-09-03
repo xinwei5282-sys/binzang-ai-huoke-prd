@@ -11,9 +11,9 @@ test('prototype presents the general enterprise AI operating brain', () => {
   assert.match(html, /中小企业经营知识与内容执行平台/);
 });
 
-test('customer navigation has exactly six business entries', () => {
+test('customer navigation has exactly seven business entries', () => {
   const entries = ['首页', '品牌与经营', '营销物料', 'AI 获客', '企业大脑', '设置'];
-  assert.equal((nav.match(/<button type="button" data-v=/g) || []).length, 6);
+  assert.equal((nav.match(/<button type="button" data-v=/g) || []).length, 7);
   for (const entry of entries) assert.match(nav, new RegExp(`>${entry}(?:<|$)`));
   for (const removed of ['企业档案', '成果中心', '作品库', '本地工作台']) assert.doesNotMatch(nav, new RegExp(`>${removed}<`));
   for (const removedGroup of ['经营', '增长', '资产与管理']) assert.doesNotMatch(nav, new RegExp(`<div class="grp">${removedGroup}<\/div>`));
@@ -25,7 +25,7 @@ test('approved secondary navigation is grouped in the left rail', () => {
   }
   assert.doesNotMatch(nav, /data-nav-sub="enterprise-profile"/);
   const brainNav=nav.match(/data-nav-sub="kb"([\s\S]*?)<\/div>/)?.[1]||'';
-  assert.equal((brainNav.match(/<button/g)||[]).length,5);
+  assert.equal((brainNav.match(/<button/g)||[]).length,6);
   assert.equal([...brainNav.matchAll(/>([^<>]+)<\/button>/g)].map(match=>match[1]).join('|'), '诊断总览|企业 VI|企业知识|外部情报|进化与治理');
   for (const parent of ['brand-planning', 'marketing-materials', 'acquisition', 'kb', 'settings']) assert.match(nav, new RegExp(`data-nav-sub="${parent}"`));
   assert.match(html, /\.nav-sub\{display:grid/);
@@ -35,7 +35,7 @@ test('approved secondary navigation is grouped in the left rail', () => {
   assert.match(html, /\.main \.subnav\{display:none\}/);
 });
 
-test('enterprise brain exposes five non-duplicated responsibility panels', () => {
+test('enterprise brain exposes six non-duplicated responsibility panels', () => {
   for (const panel of ['diagnosis', 'cognition', 'content', 'intelligence', 'evolution']) {
     assert.equal((html.match(new RegExp(`data-kbpanel="${panel}"`, 'g')) || []).length, 1, `unexpected ${panel} panel count`);
   }

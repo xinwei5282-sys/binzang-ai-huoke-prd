@@ -11,10 +11,10 @@ test('PC shell keeps its established layout tokens', () => {
   assert.match(html, /PingFang SC.*HarmonyOS Sans SC.*Microsoft YaHei/);
 });
 
-test('navigation is grouped into six customer outcomes', () => {
+test('navigation is grouped into seven customer outcomes', () => {
   for (const group of ['workspace', 'content', 'assets']) assert.match(html, new RegExp(`data-nav-group="${group}"`));
   const nav = html.match(/<nav>([\s\S]*?)<\/nav>/)?.[1] ?? '';
-  assert.equal((nav.match(/<button type="button" data-v=/g) || []).length, 6);
+  assert.equal((nav.match(/<button type="button" data-v=/g) || []).length, 7);
   assert.doesNotMatch(nav, /data-v="enterprise-profile"/);
   assert.doesNotMatch(nav, /<button type="button"[^>]*data-v="(?:review|agent-center|local-codex|artifacts)"/);
   assert.match(nav, /data-nav-sub="acquisition"[\s\S]*?数字人/);

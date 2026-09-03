@@ -8,7 +8,7 @@ test('enterprise diagnosis and cognition live under the enterprise brain', () =>
   assert.doesNotMatch(html.match(/<nav>([\s\S]*?)<\/nav>/)?.[1] || '', /data-v="enterprise-profile"|data-nav-sub="enterprise-profile"/);
   const brainNav = html.match(/<div class="nav-sub" data-nav-sub="kb">([\s\S]*?)<\/div>/)?.[1] || '';
   for (const label of ['诊断总览','企业 VI','企业知识','外部情报','进化与治理']) assert.match(brainNav, new RegExp(`>${label}<\\/button>`));
-  assert.equal((brainNav.match(/<button/g) || []).length, 5);
+  assert.equal((brainNav.match(/<button/g) || []).length, 6);
 });
 
 test('diagnosis completeness is derived from confirmed six-dimension fields', () => {
