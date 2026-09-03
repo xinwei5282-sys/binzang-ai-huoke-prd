@@ -31,7 +31,7 @@ test('home is result-first without a duplicate chat cockpit', () => {
   }
   assert.doesNotMatch(home, /id="agentPrompt"|agent-command-bar|企业 Agent 学习建议/);
   assert.match(home, /home-priority-card/);
-  assert.equal((home.match(/class="card pad/g) || []).length, 3);
+  assert.equal((home.match(/class="card pad/g) || []).length, 6);
 });
 
 test('AI acquisition is a task workspace rather than a feature-card launcher', () => {

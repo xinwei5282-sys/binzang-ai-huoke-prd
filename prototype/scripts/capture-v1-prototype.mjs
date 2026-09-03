@@ -361,6 +361,10 @@ await new Promise(ok => setTimeout(ok, 1800));
 const deepDiagnosisAudit = await evaluate(`(() => ({deepStatus:enterpriseDiagnosisState.deepStatus,stored:localStorage.getItem('aiHuokeDeepDiagnosisGeneratedV1'),stage:getEnterpriseDiagnosisStage(getEnterpriseDiagnosisCompleteness()),buttonText:document.querySelector('#startDeepDiagnosisBtn')?.textContent||''}))()`);
 await evaluate(`document.querySelector('#toasts').innerHTML=''`);
 await screenshot('enterprise-diagnosis-deep-complete');
+await evaluate(`go('workhub');switchSubview('work-tasks');renderWorkHub()`);await screenshot('workhub-tasks');
+await evaluate(`switchSubview('work-customers')`);await screenshot('workhub-customers');
+await evaluate(`switchSubview('work-projects')`);await screenshot('workhub-projects');
+await evaluate(`go('kb');showKbTab('memory')`);await screenshot('kb-memory');
 
 const audit = {
   capturedAt: new Date().toISOString(),
@@ -408,7 +412,7 @@ const captureFailed=consoleErrors.length || uncaughtErrors.length || audit.horiz
   !dailyDeepReminderAudit.firstLoginVisible || dailyDeepReminderAudit.storedDate !== dailyDeepReminderAudit.today || dailyDeepReminderAudit.sameDayLoginVisible || !dailyDeepReminderAudit.nextDayFirstLoginVisible || dailyDeepReminderAudit.completedDiagnosisVisible ||
   basicDiagnosisStartAudit.before >= 40 || basicDiagnosisStartAudit.atThreshold < 40 || !basicDiagnosisStartAudit.started || basicDiagnosisStartAudit.status !== 'running' || basicDiagnosisCompleteAudit.status !== 'success' || basicDiagnosisCompleteAudit.stage !== 'basic' || !basicDiagnosisCompleteAudit.generatedAt ||
   !supplementAudit.modalOpen || supplementAudit.fourStepCount !== 4 || !supplementAudit.visibleStep || supplementAudit.saveLabel !== '保存补充' ||
-  diagnosisThresholdAudit.overall < 80 || !diagnosisThresholdAudit.allDimensionsReady || diagnosisThresholdAudit.stage !== 'deep-ready' || diagnosisThresholdAudit.deepStatusBeforeClick !== 'idle' || !diagnosisThresholdAudit.deepButtonEnabled || diagnosisThresholdAudit.menuLabels.join('|') !== '诊断总览|企业 VI|企业知识|外部情报|进化与治理' || diagnosisThresholdAudit.horizontalOverflow ||
+  diagnosisThresholdAudit.overall < 80 || !diagnosisThresholdAudit.allDimensionsReady || diagnosisThresholdAudit.stage !== 'deep-ready' || diagnosisThresholdAudit.deepStatusBeforeClick !== 'idle' || !diagnosisThresholdAudit.deepButtonEnabled || diagnosisThresholdAudit.menuLabels.join('|') !== '诊断总览|企业 VI|企业知识|企业记忆|外部情报|进化与治理' || diagnosisThresholdAudit.horizontalOverflow ||
   deepDiagnosisAudit.deepStatus !== 'success' || deepDiagnosisAudit.stored !== '1' || deepDiagnosisAudit.stage !== 'deep-complete' || !deepDiagnosisAudit.buttonText.includes('已完成');
 if (captureFailed) {
   console.error(JSON.stringify(audit, null, 2));
