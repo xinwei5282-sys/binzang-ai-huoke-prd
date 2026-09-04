@@ -112,15 +112,20 @@ if (memoryList.route !== 'kb' || !memoryList.panelVisible || memoryList.heading 
 audits['enterprise-memory'] = await screenshot('enterprise-memory');
 
 await evaluate(`document.querySelector('#enterpriseMemoryList [data-meeting-id="meeting-aurora-01"] [data-act="open-enterprise-meeting-detail"]')?.click()`);
-const meetingDetail = await evaluate(`(() => {const text=document.querySelector('#modal')?.textContent||'';return{modalOpen:document.querySelector('#mask')?.classList.contains('show'),title:document.querySelector('#modalTitle')?.textContent||'',hasSource:text.includes('音视频来源'),hasTranscript:text.includes('说话人转写'),hasSummary:text.includes('会议总结'),hasDecisions:text.includes('关键决策'),hasActions:text.includes('行动项'),hasIntent:text.includes('客户意向'),transcriptRows:document.querySelectorAll('.meeting-transcript-row').length,actionChecks:document.querySelectorAll('[data-meeting-action]').length}})()`);
+const meetingDetail = await evaluate(`(() => {const text=document.querySelector('#modal')?.textContent||'';return{modalOpen:document.querySelector('#mask')?.classList.contains('show'),title:document.querySelector('#modalTitle')?.textContent||'',hasSource:text.includes('音视频来源'),hasTranscript:text.includes('说话人转写'),hasSummary:text.includes('一句话结论'),hasDecisions:text.includes('已确认决策'),hasActions:text.includes('待办事项'),hasIntent:text.includes('客户意向'),transcriptRows:document.querySelectorAll('.meeting-transcript-row').length,actionChecks:document.querySelectorAll('[data-meeting-action]').length}})()`);
 if (!meetingDetail.modalOpen || !meetingDetail.title.includes('会议纪要') || !meetingDetail.hasSource || !meetingDetail.hasTranscript || !meetingDetail.hasSummary || !meetingDetail.hasDecisions || !meetingDetail.hasActions || !meetingDetail.hasIntent || meetingDetail.transcriptRows < 1 || meetingDetail.actionChecks < 1) throw new Error(`meeting detail audit failed: ${JSON.stringify(meetingDetail)}`);
 audits['meeting-detail'] = await screenshot('meeting-detail');
 const tabAudit = await evaluate(`(() => {const summary=document.querySelector('#modal [data-meeting-panel="summary"]'),transcript=document.querySelector('#modal [data-meeting-panel="transcript"]');return{summaryVisible:!!summary&&!summary.hidden,transcriptHidden:!!transcript&&transcript.hidden}})()`);
 if(!tabAudit.summaryVisible||!tabAudit.transcriptHidden)throw Error('summary tab default failed');
-await evaluate(`document.querySelector('#modal [data-meeting-tab="transcript"]')?.click()`);
-const transcriptTab = await evaluate(`({summaryHidden:document.querySelector('#modal [data-meeting-panel="summary"]')?.hidden,transcriptVisible:!document.querySelector('#modal [data-meeting-panel="transcript"]')?.hidden})`);
-if(!transcriptTab.summaryHidden||!transcriptTab.transcriptVisible)throw Error('transcript tab switch failed');
-audits['meeting-transcript'] = await screenshot('meeting-transcript');
+const structuredSummary = await evaluate(`(() => {const panel=document.querySelector('#modal [data-meeting-panel="summary"]'),text=panel?.textContent||'';return{sections:panel?.querySelectorAll('[data-summary-section]').length||0,evidenceButtons:panel?.querySelectorAll('[data-act="open-meeting-evidence"]').length||0,labels:['一句话结论','客户意向','章节纪要','关键需求与异议','已确认决策','待办事项','下一步建议','未决问题与风险'].every(label=>text.includes(label))}})()`);
+if(structuredSummary.sections!==8||structuredSummary.evidenceButtons<5||!structuredSummary.labels)throw Error(`structured meeting summary failed: ${JSON.stringify(structuredSummary)}`);
+audits['meeting-summary-structured'] = await screenshot('meeting-summary-structured');
+await evaluate(`(() => {const body=document.querySelector('#modal .mb');if(body)body.scrollTop=body.scrollHeight;})()`);
+audits['meeting-summary-followup'] = await screenshot('meeting-summary-followup');
+await evaluate(`document.querySelector('#modal [data-act="open-meeting-evidence"][data-time="00:18:02"]')?.click()`);
+const transcriptTab = await evaluate(`({summaryHidden:document.querySelector('#modal [data-meeting-panel="summary"]')?.hidden,transcriptVisible:!document.querySelector('#modal [data-meeting-panel="transcript"]')?.hidden,focusedTime:document.querySelector('#modal .meeting-transcript-row.evidence-focus')?.dataset.transcriptTime||''})`);
+if(!transcriptTab.summaryHidden||!transcriptTab.transcriptVisible||transcriptTab.focusedTime!=='00:18:02')throw Error(`transcript evidence switch failed: ${JSON.stringify(transcriptTab)}`);
+audits['meeting-transcript-evidence'] = await screenshot('meeting-transcript-evidence');
 await evaluate(`document.querySelector('#modal [data-meeting-tab="summary"]')?.click()`);
 const returnedSummary = await evaluate(`!document.querySelector('#modal [data-meeting-panel="summary"]')?.hidden`);if(!returnedSummary)throw Error('summary return failed');
 await evaluate(`document.querySelector('#modal [data-mo]')?.click();go('kb');showKbTab('memory');renderWorkHub()`);

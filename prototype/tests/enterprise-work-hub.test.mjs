@@ -2,9 +2,12 @@ import test from 'node:test';
 import assert from 'node:assert/strict';
 import { readFileSync } from 'node:fs';
 import { resolve } from 'node:path';
+import vm from 'node:vm';
 const html = readFileSync(resolve('prototype/index.html'),'utf8');
 const capture = readFileSync(resolve('prototype/scripts/capture-enterprise-work-hub.mjs'),'utf8');
 const fullCapture = readFileSync(resolve('prototype/scripts/capture-v1-prototype.mjs'),'utf8');
+
+test('prototype inline scripts remain valid JavaScript',()=>{const scripts=[...html.matchAll(/<script(?:\s[^>]*)?>([\s\S]*?)<\/script>/gi)].map(match=>match[1]);scripts.forEach((source,index)=>assert.doesNotThrow(()=>new vm.Script(source,{filename:`prototype-inline-${index}.js`})));});
 
 test('work hub owns tasks customers projects and meeting minutes belongs to brain',()=>{
  assert.match(html,/data-v="workhub"/); assert.match(html,/data-p="workhub"/);
@@ -38,8 +41,8 @@ test('meeting detail defaults to AI summary with independently switchable transc
   assert.match(html,/data-act="switch-meeting-tab"/);assert.match(html,/data-act="seek-meeting"/);
 });
 test('meeting detail implementation contains real tab panels and segment progress contract',()=>{const fn=html.match(/function openEnterpriseMeetingDetail\([\s\S]*?\nfunction /)?.[0]||html;for(const token of ['data-meeting-tab="summary"','data-meeting-tab="transcript"','data-meeting-panel="summary"','data-meeting-panel="transcript"'])assert.match(fn,new RegExp(token));assert.match(html,/segmentProgress:\{total:4,completed:3,current:/);assert.match(capture,/transcriptTab/);});
-test('meeting summaries render structured modules and wired evidence focus',()=>{for(const token of ['chapters','needs','objections','nextSteps','openQuestions','data-act="open-meeting-evidence"','data-transcript-time','evidence-focus','MutationObserver'])assert.match(html,new RegExp(token));for(const time of ['00:12:34','00:18:02','00:25:10'])assert.match(html,new RegExp(time));});
-test('meeting detail keeps one implementation and preserves decisions actions and evidence',()=>{assert.equal((html.match(/function openEnterpriseMeetingDetail\(/g)||[]).length,1);const fn=html.match(/function openEnterpriseMeetingDetail\([\s\S]*?\nfunction /)?.[0]||'';for(const token of ['会议总结','关键决策','行动项','客户意向','data-meeting-action','确认所选行动项'])assert.match(fn,new RegExp(token));for(const token of ['个分段 · 已完成','结果生成后可查看 AI 总结与逐字稿'])assert.match(html,new RegExp(token));});
+test('meeting detail owns the structured summary and evidence controls',()=>{const fn=html.match(/function openEnterpriseMeetingDetail\([\s\S]*?\nfunction /)?.[0]||'';for(const token of ['meeting.chapters','meeting.needs','meeting.objections','meeting.nextSteps','meeting.openQuestions','一句话结论','章节纪要','关键需求与异议','下一步建议','未决问题与风险','data-summary-section','data-act="open-meeting-evidence"','data-transcript-time'])assert.match(fn,new RegExp(token));assert.doesNotMatch(html,/meetingSummaryObserver/);});
+test('meeting detail keeps one implementation and preserves decisions actions and evidence',()=>{assert.equal((html.match(/function openEnterpriseMeetingDetail\(/g)||[]).length,1);const fn=html.match(/function openEnterpriseMeetingDetail\([\s\S]*?\nfunction /)?.[0]||'';for(const token of ['一句话结论','已确认决策','待办事项','客户意向','data-meeting-action','确认所选行动项'])assert.match(fn,new RegExp(token));for(const token of ['个分段 · 已完成','结果生成后可查看 AI 总结与逐字稿'])assert.match(html,new RegExp(token));});
 test('meeting and knowledge upload routes reject files that belong in the other entry',()=>{
   const source=html.match(/function isMeetingMedia\(file\)\{[^\n]+/)?.[0]||'';
   assert.ok(source,'isMeetingMedia is missing');
