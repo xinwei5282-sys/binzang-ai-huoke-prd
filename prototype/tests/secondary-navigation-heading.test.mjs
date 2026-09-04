@@ -14,6 +14,7 @@ test('secondary navigation resolves to its own title without repeating the paren
   const resolveHeading = loadResolver();
   assert.deepEqual(resolveHeading('material-wechat'), ['公众号文章', '创作 · 审核 · 自动发布 · 数据回收']);
   assert.deepEqual(resolveHeading('cognition'), ['企业 VI', '企业偏好 · 方向选择 · 版本启用']);
+  assert.deepEqual(resolveHeading('memory'), ['会议纪要', '音视频 · 转写 · 总结 · 行动项']);
   assert.deepEqual(resolveHeading('brand-report'), ['品牌报告', '诊断依据 · 版本 · 下载']);
   assert.deepEqual(resolveHeading('operating-plan'), ['经营计划', '公司全盘 · 人工审核 · 月度跟踪 · 季度复盘']);
   assert.deepEqual(resolveHeading('setting-company'), ['企业设置', '企业信息 · 经营周期 · 审核要求']);

@@ -26,7 +26,7 @@ test('approved secondary navigation is grouped in the left rail', () => {
   assert.doesNotMatch(nav, /data-nav-sub="enterprise-profile"/);
   const brainNav=nav.match(/data-nav-sub="kb"([\s\S]*?)<\/div>/)?.[1]||'';
   assert.equal((brainNav.match(/<button/g)||[]).length,6);
-  assert.equal([...brainNav.matchAll(/>([^<>]+)<\/button>/g)].map(match=>match[1]).join('|'), '诊断总览|企业 VI|企业知识|企业记忆|外部情报|进化与治理');
+  assert.equal([...brainNav.matchAll(/>([^<>]+)<\/button>/g)].map(match=>match[1]).join('|'), '诊断总览|企业 VI|企业知识|会议纪要|外部情报|进化与治理');
   for (const parent of ['brand-planning', 'marketing-materials', 'acquisition', 'kb', 'settings']) assert.match(nav, new RegExp(`data-nav-sub="${parent}"`));
   assert.match(html, /\.nav-sub\{display:grid/);
   assert.match(html, /grid-template-columns:repeat\(2,minmax\(0,1fr\)\)/);
@@ -39,7 +39,7 @@ test('enterprise brain exposes six non-duplicated responsibility panels', () => 
   for (const panel of ['diagnosis', 'cognition', 'content', 'intelligence', 'evolution']) {
     assert.equal((html.match(new RegExp(`data-kbpanel="${panel}"`, 'g')) || []).length, 1, `unexpected ${panel} panel count`);
   }
-  for (const phrase of ['企业信息完整度', '企业偏好与视觉规范', '系统生成内容立即成为正式知识', '当前采集范围', '修改、发布、删除与学习候选']) {
+  for (const phrase of ['企业信息完整度', '企业偏好与视觉规范', '企业知识接收聊天记录', '会议纪要只处理会议音频和视频', '当前采集范围', '修改、发布、删除与学习候选']) {
     assert.match(html, new RegExp(phrase));
   }
   assert.match(html, /function mountEnterpriseBrainPanels\(\)/);
