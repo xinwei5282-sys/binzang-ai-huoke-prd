@@ -33,6 +33,10 @@ test('meeting detail presents source transcript summary decisions actions and in
   for(const status of ['extracting_audio','transcribing','diarizing','summarizing','ready','failed']) assert.match(html,new RegExp(`['"]${status}['"]`));
   assert.match(html,/sourceMeetingId/);
 });
+test('meeting detail defaults to AI summary with independently switchable transcript and long meeting progress',()=>{
+  for(const token of ['data-meeting-tab="summary"','data-meeting-tab="transcript"','AI 总结','逐字稿','2:36:18','已完成 3/4','查看 AI 总结']) assert.match(html,new RegExp(token));
+  assert.match(html,/data-act="switch-meeting-tab"/);assert.match(html,/data-act="seek-meeting"/);
+});
 test('meeting and knowledge upload routes reject files that belong in the other entry',()=>{
   const source=html.match(/function isMeetingMedia\(file\)\{[^\n]+/)?.[0]||'';
   assert.ok(source,'isMeetingMedia is missing');
