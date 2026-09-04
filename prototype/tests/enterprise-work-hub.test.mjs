@@ -37,6 +37,7 @@ test('meeting detail defaults to AI summary with independently switchable transc
   for(const token of ['data-meeting-tab="summary"','data-meeting-tab="transcript"','AI 总结','逐字稿','2:36:18','已完成 3/4','查看 AI 总结']) assert.match(html,new RegExp(token));
   assert.match(html,/data-act="switch-meeting-tab"/);assert.match(html,/data-act="seek-meeting"/);
 });
+test('meeting detail implementation contains real tab panels and segment progress contract',()=>{const fn=html.match(/function openEnterpriseMeetingDetail\([\s\S]*?\nfunction /)?.[0]||html;for(const token of ['data-meeting-tab="summary"','data-meeting-tab="transcript"','data-meeting-panel="summary"','data-meeting-panel="transcript"'])assert.match(fn,new RegExp(token));assert.match(html,/segmentProgress:\{total:4,completed:3,current:/);assert.match(capture,/transcriptTab/);});
 test('meeting and knowledge upload routes reject files that belong in the other entry',()=>{
   const source=html.match(/function isMeetingMedia\(file\)\{[^\n]+/)?.[0]||'';
   assert.ok(source,'isMeetingMedia is missing');
