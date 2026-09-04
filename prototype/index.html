@@ -3771,6 +3771,9 @@ function applyContentHierarchy(){
   const kb=document.querySelector('.page[data-p="kb"]');
   if(kb){markHierarchyRegion(kb,'.knowledge-overview-hero','current-focus');markHierarchyRegion(kb,'#knowledgeOverviewCards','primary-workspace');markHierarchyRegion(kb,'#knowledgeEvidenceSummary','pending-work');markHierarchyRegion(kb,'#knowledgeGovernanceSummary','recent-status');const primary=kb.querySelector('[data-act="open-kb-upload"]');if(primary)primary.dataset.pagePrimary='true';}
 }
+WORK_HUB_MEETINGS[0].chapters=[{title:'增长目标与评审节点',timeRange:'00:02:18–00:12:34',summary:'对齐季度目标和管理层评审安排',evidenceTimestamp:'00:12:34'}];WORK_HUB_MEETINGS[0].needs=[{text:'先出方案大纲',evidenceTimestamp:'00:12:34'}];WORK_HUB_MEETINGS[0].objections=[{text:'交付周期需进一步确认',evidenceTimestamp:'00:18:02'}];WORK_HUB_MEETINGS[0].nextSteps=[{text:'生成增长方案 PPT',type:'ppt',evidenceTimestamp:'00:12:34'}];WORK_HUB_MEETINGS[0].openQuestions=[{text:'最终报价与付款条件',evidenceTimestamp:'00:25:10'}];
+WORK_HUB_MEETINGS[0].summary+=' 一句话结论：客户值得继续跟进。章节纪要：增长目标与评审节点。关键需求与异议：先出方案大纲；交付周期需确认。下一步建议：生成增长方案 PPT。未决问题与风险：最终报价与付款条件。';
+function openMeetingEvidence(time){switchMeetingTab('transcript');document.querySelectorAll('.meeting-transcript-row').forEach(r=>r.classList.toggle('evidence-focus',r.textContent.includes(time)));toast('已定位逐字稿时间点 '+time,'ok');}
 mountEnterpriseBrainPanels();
 enrichCompanyOperatingPlanTraceability();
 renderCompanyPlanGapRows();
