@@ -120,11 +120,12 @@ if(!tabAudit.summaryVisible||!tabAudit.transcriptHidden)throw Error('summary tab
 await evaluate(`document.querySelector('#modal [data-meeting-tab="transcript"]')?.click()`);
 const transcriptTab = await evaluate(`({summaryHidden:document.querySelector('#modal [data-meeting-panel="summary"]')?.hidden,transcriptVisible:!document.querySelector('#modal [data-meeting-panel="transcript"]')?.hidden})`);
 if(!transcriptTab.summaryHidden||!transcriptTab.transcriptVisible)throw Error('transcript tab switch failed');
+audits['meeting-transcript'] = await screenshot('meeting-transcript');
 await evaluate(`document.querySelector('#modal [data-meeting-tab="summary"]')?.click()`);
 const returnedSummary = await evaluate(`!document.querySelector('#modal [data-meeting-panel="summary"]')?.hidden`);if(!returnedSummary)throw Error('summary return failed');
 await evaluate(`document.querySelector('#modal [data-mo]')?.click();go('kb');showKbTab('memory');renderWorkHub()`);
 const longMeeting = await evaluate(`(() => {const m=WORK_HUB_MEETINGS.find(x=>x.id==='meeting-long-demo');return{duration:m?.duration,progress:m?.segmentProgress,text:document.querySelector('#enterpriseMemoryList')?.textContent||''}})()`);
-if(longMeeting.duration!=='2:36:18'||longMeeting.progress?.total!==4||longMeeting.progress?.completed!==3||!longMeeting.text.includes('2:36:18'))throw Error('long meeting progress failed');
+if(longMeeting.duration!=='2:36:18'||longMeeting.progress?.total!==4||longMeeting.progress?.completed!==3||!longMeeting.text.includes('2:36:18')||!longMeeting.text.includes('4 个分段')||!longMeeting.text.includes('已完成 3 个')||!longMeeting.text.includes('结果生成后可查看 AI 总结与逐字稿'))throw Error('long meeting progress failed');
 await evaluate(`document.querySelector('#modal [data-mo]')?.click()`);
 const meetingTask = await evaluate(`(() => {const task=WORK_HUB_TASKS.find(item=>item.sourceMeetingId==='meeting-aurora-01'&&item.title==='整理增长方案大纲');return{exists:Boolean(task),sourceMeetingId:task?.sourceMeetingId||'',evidenceTimestamp:task?.evidenceTimestamp||''}})()`);
 if (!meetingTask.exists || meetingTask.sourceMeetingId !== 'meeting-aurora-01' || meetingTask.evidenceTimestamp !== '00:12:34') throw new Error(`meeting task audit failed: ${JSON.stringify(meetingTask)}`);
