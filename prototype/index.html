@@ -607,6 +607,7 @@ td{font-size:12.5px}
 @media(max-width:1100px){.usage-management-grid{grid-template-columns:1fr}}
 @media(max-width:760px){.prompt-toolbar,.log-toolbar{align-items:stretch;flex-direction:column}.prompt-toolbar .inp:first-child,.prompt-toolbar input,.log-toolbar input{width:100%;max-width:none;min-width:0}.prompt-toolbar .spacer,.log-toolbar .spacer{display:none}.system-form-actions{align-items:stretch;flex-direction:column}.system-form-actions .btn{width:100%}.prompt-actions{min-width:180px}}
 </style>
+<style>.meeting-structured-summary{display:grid;gap:12px}.meeting-structured-summary section{padding:12px;border:1px solid var(--line);border-radius:8px}.meeting-transcript-row.evidence-focus{background:var(--accent-sft);outline:2px solid var(--accent);border-radius:6px}</style>
 </head>
 <body class="login-active" data-customer="general">
 <div class="login" id="login">
@@ -3235,6 +3236,7 @@ document.addEventListener('click',e=>{
     case 'open-work-meeting-upload':document.querySelector('#workMeetingUpload')?.click();break;
     case 'open-enterprise-meeting-detail':openEnterpriseMeetingDetail(el.dataset.meetingId);break;
     case 'switch-meeting-tab':switchMeetingTab(el.dataset.meetingTab);break;
+    case 'open-meeting-evidence':openMeetingEvidence(el.dataset.time);break;
     case 'retry-work-meeting':retryWorkMeetingParsing(el.dataset.meetingId);break;
     case 'seek-meeting':toast('已定位到 '+el.dataset.time+'（播放器演示）','ok');break;
     case 'toggle-meeting-play':el.textContent=el.textContent==='▶'?'❚❚':'▶';toast('会议播放器为原型演示','ok');break;
@@ -3774,6 +3776,10 @@ function applyContentHierarchy(){
 WORK_HUB_MEETINGS[0].chapters=[{title:'增长目标与评审节点',timeRange:'00:02:18–00:12:34',summary:'对齐季度目标和管理层评审安排',evidenceTimestamp:'00:12:34'}];WORK_HUB_MEETINGS[0].needs=[{text:'先出方案大纲',evidenceTimestamp:'00:12:34'}];WORK_HUB_MEETINGS[0].objections=[{text:'交付周期需进一步确认',evidenceTimestamp:'00:18:02'}];WORK_HUB_MEETINGS[0].nextSteps=[{text:'生成增长方案 PPT',type:'ppt',evidenceTimestamp:'00:12:34'}];WORK_HUB_MEETINGS[0].openQuestions=[{text:'最终报价与付款条件',evidenceTimestamp:'00:25:10'}];
 WORK_HUB_MEETINGS[0].summary+=' 一句话结论：客户值得继续跟进。章节纪要：增长目标与评审节点。关键需求与异议：先出方案大纲；交付周期需确认。下一步建议：生成增长方案 PPT。未决问题与风险：最终报价与付款条件。';
 function openMeetingEvidence(time){switchMeetingTab('transcript');document.querySelectorAll('.meeting-transcript-row').forEach(r=>r.classList.toggle('evidence-focus',r.textContent.includes(time)));toast('已定位逐字稿时间点 '+time,'ok');}
+const meetingSummaryObserver=new MutationObserver(()=>{const root=document.querySelector('#modal.meeting-detail-modal'),panel=root?.querySelector('[data-meeting-panel="summary"]');if(!panel||panel.querySelector('.meeting-structured-summary'))return;const m=WORK_HUB_MEETINGS.find(x=>root.textContent.includes(x.name))||WORK_HUB_MEETINGS[0];panel.insertAdjacentHTML('beforeend',`<div class="meeting-structured-summary"><section><b>一句话结论</b><p>客户值得继续跟进</p></section><section><b>章节纪要</b><p><button class="btn sm gho" data-act="open-meeting-evidence" data-time="00:12:34">00:12:34</button> ${m.chapters?.[0]?.summary||'暂未识别'}</p></section><section><b>关键需求与异议</b><p><button class="btn sm gho" data-act="open-meeting-evidence" data-time="00:18:02">00:18:02</button> ${m.needs?.[0]?.text||'暂未识别'}；${m.objections?.[0]?.text||'暂未识别'}</p></section><section><b>已确认决策</b><p>${m.decisions?.[0]||'暂未确认'}</p></section><section><b>待办事项</b><p>${m.actionItems?.[0]?.title||'暂未识别'}</p></section><section><b>下一步建议</b><p><button class="btn sm gho" data-act="open-meeting-evidence" data-time="00:25:10">00:25:10</button> ${m.nextSteps?.[0]?.text||'暂未识别'}</p></section><section><b>未决问题与风险</b><p>${m.openQuestions?.[0]?.text||'暂未识别'}</p></section></div>`);});
+WORK_HUB_MEETINGS[0].transcript.push({start:'00:18:02',speaker:'客户方 · 周琳',text:'交付周期需要进一步确认。'},{start:'00:25:10',speaker:'我方 · 蔚然',text:'最终报价与付款条件待确认。'});
+meetingSummaryObserver.observe(document.body,{childList:true,subtree:true});
+const TRANSCRIPT_TIME_ATTRIBUTE='data-transcript-time';
 mountEnterpriseBrainPanels();
 enrichCompanyOperatingPlanTraceability();
 renderCompanyPlanGapRows();
