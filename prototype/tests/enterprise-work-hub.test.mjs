@@ -73,7 +73,7 @@ test('work hub browser capture honors verifier arguments and audits runtime stat
   assert.match(capture,/Emulation\.setDeviceMetricsOverride/);
   assert.match(capture,/visiblePages/);
   assert.match(capture,/documentOverflow/);
-  for(const state of ['boss-home','enterprise-memory','meeting-detail','employee-private-memory','customer-followup','project-conflict','task-tree','ppt-routing']) assert.match(capture,new RegExp(state));
+  for(const state of ['boss-home','enterprise-memory','meeting-detail','enterprise-knowledge','employee-private-memory','customer-followup','project-conflict','task-tree','ppt-routing']) assert.match(capture,new RegExp(state));
   assert.match(capture,/\$\{name\}-\$\{width\}x\$\{height\}\.png/);
 });
 
