@@ -566,8 +566,38 @@ td{font-size:12.5px}
 }
 @media(max-width:760px){
   .page-heading{flex-direction:column;align-items:stretch;gap:12px}.page-heading-actions{width:100%;justify-content:flex-start}.section-block{margin-top:20px}.plan-priorities,.plan-dimensions,.plan-bottom{grid-template-columns:1fr}.plan-priority,.plan-dimension{border-right:0;border-bottom:1px solid var(--line)}.plan-priority:last-child,.plan-dimension:nth-last-child(-n+2){border-bottom:1px solid var(--line)}.plan-dimension:last-child{border-bottom:0}
+  .project-head,.project-cockpit{grid-template-columns:1fr}
+  .project-metrics{grid-template-columns:1fr 1fr}
+  .project-head-actions{justify-content:flex-start}
 }
-.project-head{display:flex;justify-content:space-between;gap:16px;align-items:flex-start}.project-tabs{display:flex;gap:20px;border-bottom:1px solid var(--line);overflow:auto}.project-tab{border:0;border-bottom:2px solid transparent;background:none;padding:11px 2px;white-space:nowrap}.project-tab.on{border-bottom-color:var(--brand-d);color:var(--brand-d)}.project-metrics{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:10px}.project-cockpit{display:grid;grid-template-columns:minmax(0,1.2fr) minmax(280px,.8fr);gap:14px}.project-panel{border:1px solid var(--line);border-radius:var(--panel-radius);padding:14px;background:var(--surface)}.project-row{padding:10px 0;border-bottom:1px solid var(--line)}
+.project-head{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:16px;align-items:start}
+.project-head-copy h2{margin:10px 0 4px;font-size:22px}
+.project-head-copy p{color:var(--ink-3);font-size:12px;line-height:1.6}
+.project-head-actions{display:flex;align-items:center;justify-content:flex-end;gap:8px}
+.project-tabs{display:flex;gap:20px;margin-top:18px;border-bottom:1px solid var(--line);overflow-x:auto}
+.project-tab{border:0;border-bottom:2px solid transparent;background:none;padding:11px 2px;color:var(--ink-3);white-space:nowrap;cursor:pointer}
+.project-tab.on{border-bottom-color:var(--brand-d);color:var(--brand-d);font-weight:600}
+[data-project-panel]{padding-top:16px}
+.project-metrics{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));border:1px solid var(--line);border-radius:var(--panel-radius);background:var(--surface);overflow:hidden}
+.project-metrics>div{padding:13px 15px;border-right:1px solid var(--line)}
+.project-metrics>div:last-child{border-right:0}
+.project-metrics span{display:block;color:var(--ink-3);font-size:11px}
+.project-metrics b{display:block;margin-top:4px;font-size:19px}
+.project-cockpit{display:grid;grid-template-columns:minmax(0,1.25fr) minmax(280px,.75fr);gap:14px;margin-top:14px}
+.project-cockpit-main,.project-cockpit-aside{display:grid;align-content:start;gap:12px}
+.project-panel{padding:15px 16px;border:1px solid var(--line);border-radius:var(--panel-radius);background:var(--surface)}
+.project-panel.ai-panel{border-color:color-mix(in oklab,var(--brand) 35%,var(--line));background:var(--brand-sft)}
+.project-panel h3{font-size:13px}
+.project-row{padding:11px 0;border-bottom:1px solid var(--line)}
+.project-row:last-child{border-bottom:0}
+.project-row small{display:block;margin-top:4px;color:var(--ink-3);font-size:11px;line-height:1.55}
+.project-row .rowact{margin-top:8px}
+.project-create-progress{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));margin-bottom:16px;border:1px solid var(--line);border-radius:var(--r-s);overflow:hidden}
+.project-create-progress span{padding:9px 10px;border-right:1px solid var(--line);color:var(--ink-3);font-size:11px;text-align:center}
+.project-create-progress span:last-child{border-right:0}
+.project-create-progress span.on{background:var(--brand-sft);color:var(--brand-d);font-weight:600}
+.project-member-options{display:grid;gap:8px}
+.project-member-options label{display:flex;align-items:center;gap:8px;padding:9px 10px;border:1px solid var(--line);border-radius:var(--r-s)}
 @media(max-width:560px){
   .page{padding:16px 14px 40px}
   .lead{flex-direction:column}.lead>:last-child:not(:first-child){width:auto}
@@ -1222,7 +1252,7 @@ td{font-size:12.5px}
       <div class="subnav"><button class="subnav-item on" data-act="switch-subview" data-subview="work-tasks">我的待办</button><button class="subnav-item" data-act="switch-subview" data-subview="work-customers">客户</button><button class="subnav-item" data-act="switch-subview" data-subview="work-projects">项目</button></div>
       <div class="subview show" data-subview-panel="work-tasks"><div class="section-note">任务中心是行动真源；Agent 生成、对外动作和高风险判断均停在人工门。</div><div class="workspace-toolbar"><select id="workTaskFilter" data-work-filter onchange="renderWorkTaskCenter()"><option value="mine">我的</option><option value="team">团队</option><option value="customer">客户</option><option value="project">项目</option><option value="running">执行中</option><option value="failed">失败</option></select><button class="btn sm" data-act="confirm-work-task">确认候选</button></div><div id="workTaskCenter" class="grid"></div></div>
       <div class="subview" data-subview-panel="work-customers"><div class="section-note">每个客户只有一个累计档案，意向结论逐条链接会议或聊天证据。</div><div id="workCustomerList" class="grid"></div></div>
-      <div class="subview" data-subview-panel="work-projects"><button data-act="return-work-project-list" data-project-list-return hidden>返回项目列表</button><div class="section-note">项目统一汇总资料、会议、待办与成果；页面内容按当前账号权限过滤。</div><div class="workspace-toolbar"><button class="btn pri" data-act="create-work-project">创建项目</button></div><div id="workProjectList" class="grid"></div><div id="project-commercial-documents" hidden>商业文件 · 合同与报价</div><div data-conflict-resolution="adopt" hidden>采纳老板要求</div><div data-conflict-resolution="keep" hidden>保留原方案</div><div data-conflict-resolution="consult" hidden>发起协商</div></div>
+      <div class="subview" data-subview-panel="work-projects"><div class="section-note">项目统一汇总资料、会议、待办与成果；页面内容按当前账号权限过滤。</div><div class="workspace-toolbar"><button class="btn pri" data-act="create-work-project">创建项目</button></div><div id="workProjectList" class="grid"></div><div id="project-commercial-documents" hidden>商业文件 · 合同与报价</div><div data-conflict-resolution="adopt" hidden>采纳老板要求</div><div data-conflict-resolution="keep" hidden>保留原方案</div><div data-conflict-resolution="consult" hidden>发起协商</div></div>
       <div id="customer-followup-assistant" hidden>跟进助手 · 模拟生成</div>
     </section>
 
@@ -1700,7 +1730,6 @@ function openWorkTaskSource(id){const t=WORK_HUB_TASKS.find(x=>x.id===id);if(t?.
 function meetingStageLabel(stage){return({uploaded:'等待处理',extracting_audio:'提取音轨',transcribing:'生成转写',diarizing:'区分说话人',summarizing:'生成总结',ready:'已完成',failed:'解析失败'})[stage]||'处理中';}
 function switchMeetingTab(tab){const modalRoot=document.querySelector('#modal.meeting-detail-modal');if(!modalRoot)return;modalRoot.querySelectorAll('[data-meeting-panel]').forEach(panel=>panel.hidden=panel.dataset.meetingPanel!==tab);modalRoot.querySelectorAll('[data-meeting-tab]').forEach(button=>{const active=button.dataset.meetingTab===tab;button.classList.toggle('on',active);button.setAttribute('aria-selected',String(active));});}
 function openMeetingEvidence(time){const modalRoot=document.querySelector('#modal.meeting-detail-modal');if(!modalRoot||!time)return;switchMeetingTab('transcript');let target=null;modalRoot.querySelectorAll('.meeting-transcript-row').forEach(row=>{const active=row.dataset.transcriptTime===time;row.classList.toggle('evidence-focus',active);if(active)target=row;});target?.scrollIntoView({block:'center',behavior:'smooth'});toast(target?'已定位逐字稿时间点 '+time:'暂未找到 '+time+' 的逐字稿','ok');}
-function renderWorkHubLegacy(){renderWorkTaskCenter();const c=document.querySelector('#workCustomerList');if(c)c.innerHTML=WORK_HUB_CUSTOMERS.map(x=>`<article class="card pad"><div class="head"><h3>${x.name}</h3><span class="bdg ok">意向 ${x.intent}</span></div><p>${x.contact}</p><div class="mini">${x.evidence}</div><button class="btn sm" data-act="open-work-customer-profile" data-customer-id="${x.id}">查看客户档案</button></article>`).join('');const p=document.querySelector('#workProjectList');if(p)p.innerHTML=WORK_HUB_PROJECTS.map(x=>`<article class="card pad"><div class="head"><h3>${x.name}</h3><span class="bdg warn">${x.status}</span></div><p>${x.requirements}</p><button class="btn sm" data-act="open-work-project" data-project-id="${x.id}">查看项目空间</button></article>`).join('');const m=document.querySelector('#enterpriseMemoryList');if(m)m.innerHTML=WORK_HUB_MEETINGS.filter(canCurrentAccountSeeWorkItem).map(x=>`<article class="card pad" data-meeting-id="${x.id}"><div class="head"><h3>${x.name}</h3><span class="bdg ${x.stage==='ready'?'ok':x.stage==='failed'?'dng':'brd'}">${meetingStageLabel(x.stage)}</span></div><div class="meeting-card-meta"><span>${x.mediaType==='video'?'视频':'音频'}</span><span>时长 ${x.duration||'等待识别'}</span><span>${x.visibility==='private'?'仅自己可见':'企业可见'}</span><span>${x.actionItems?.length||0} 个行动项</span></div><p>${x.summary}</p>${x.segmentProgress?`<div class="meeting-segment-progress"><b>${x.segmentProgress.total} 个分段 · 已完成 ${x.segmentProgress.completed} 个</b><small>${safeText(x.segmentProgress.current)} · 结果生成后可查看 AI 总结与逐字稿</small></div>`:''}<div class="rowact" style="margin-top:12px">${x.stage==='failed'?`<button class="btn sm" data-act="retry-work-meeting" data-meeting-id="${x.id}">重试解析</button>`:`<button class="btn sm" data-act="open-enterprise-meeting-detail" data-meeting-id="${x.id}" ${x.stage==='ready'?'':'disabled'}>${x.stage==='ready'?'查看 AI 总结与逐字稿':'结果生成中'}</button>`}</div></article>`).join('')||'<div class="card pad">当前账号暂无可见会议。</div>';}
 function openWorkCustomerProfile(id){workHubState.selectedCustomerId=id;go('workhub');switchSubview('work-customers');const c=WORK_HUB_CUSTOMERS.find(x=>x.id===id),host=document.querySelector('#workCustomerList');if(c&&host)host.innerHTML=`<article class="card pad"><button class="btn sm" data-act="switch-subview" data-subview="work-customers">← 客户列表</button><h2 style="margin:14px 0 6px">${c.name}</h2><div class="permline"><span class="perm safe">意向 ${c.intent}</span><span class="perm limit">证据充分度：演示</span></div><p>${c.contact}</p><h3 style="margin-top:16px">沟通时间线</h3><div class="work-customer-timeline">${c.timeline.map((x,index)=>`<div class="work-timeline-row"><span>${index===0?'最新沟通':'历史记录'}</span><div><b>${x}</b><small>会议证据/聊天证据 · 可追溯</small></div></div>`).join('')}</div><section class="card pad" style="margin-top:14px" id="customer-followup-assistant"><div class="head"><h3>跟进助手</h3><span class="bdg brd">模拟生成</span></div><p class="mini">基于意向、历史沟通和下一步任务生成可编辑候选话术；原型不自动发送。</p><button class="btn pri" data-act="generate-customer-followup">生成候选话术</button></section></article>`;}
 function isMeetingMedia(file){return Boolean(file&&(/^(audio|video)\//.test(file.type||'')||/\.(mp3|wav|m4a|aac|flac|ogg|mp4|mov|mkv|webm)$/i.test(file.name||'')));}
 function routeUnsupportedMeetingFile(file){modal('上传位置不匹配','<div class="state-callout warning"><b>该资料请上传到企业知识</b><br>'+safeText(file?.name||'当前文件')+' 不是会议音频或视频。聊天记录、图片和文档统一在企业知识中处理。</div>','前往企业知识',()=>{closeModal();go('kb');showKbTab('content');},true);}
@@ -1907,7 +1936,7 @@ function go(v){
 function syncMaterialPrimaryAction(name){const page=document.querySelector('.page[data-p="marketing-materials"]');if(!page)return;page.querySelectorAll('[data-material-primary-action]').forEach(action=>{action.hidden=action.dataset.materialPrimaryAction!==name;});}
 function switchSubview(name,trigger){
   if(!name)return;
-  if(name==='work-projects'&&typeof workHubState!=='undefined'&&trigger?.textContent?.includes('项目列表'))workHubState.selectedProjectId=null;
+  if(name==='work-projects'&&typeof workHubState!=='undefined'&&trigger?.classList?.contains('subnav-item'))workHubState.selectedProjectId=null;
   const panel=document.querySelector('[data-subview-panel="'+name+'"]');if(!panel)return;
   const page=panel.closest('.page');if(!page)return;
   setNavigationHeading(page.dataset.p);setContentHeading(page.dataset.p,name);
@@ -1917,6 +1946,7 @@ function switchSubview(name,trigger){
   page.querySelectorAll('.subnav-item').forEach(b=>b.classList.toggle('on',b===trigger||b.dataset.subview===name));
   $$('.nav-sub button[data-subview]').forEach(button=>button.classList.toggle('on',button.dataset.subview===name));
   syncPagePrdEntry(name);
+  if(name==='work-projects'&&typeof renderWorkProjectList==='function'&&!workHubState.selectedProjectId)renderWorkProjectList();
   window.scrollTo(0,0);
 }
 function returnToWorkProjectList(){workHubState.selectedProjectId=null;workHubState.activeProjectTab='overview';renderWorkProjectList();}
@@ -3277,6 +3307,7 @@ document.addEventListener('click',e=>{
     case 'open-work-task-source':openWorkTaskSource(el.dataset.taskId);break;
     case 'open-work-customer-profile':openWorkCustomerProfile(el.dataset.customerId);break;
     case 'open-work-project':openWorkProject(el.dataset.projectId);break;
+    case 'open-project-meeting':openEnterpriseMeetingDetail(el.dataset.meetingId);break;
     case 'return-work-project-list':returnToWorkProjectList();break;
     case 'create-work-project':openCreateWorkProject();break;
     case 'advance-project-create':advanceProjectCreate(Number(el.dataset.step));break;
@@ -3818,32 +3849,120 @@ renderEnterpriseCognitionVi();
 renderGeneratedFormalKnowledge();
 renderEnterpriseBrainIntelligence();
 renderEnterpriseBrainEvolution();
-function openCreateWorkProject(){if(!hasWorkHubAction('创建项目')){toast('当前账号没有创建项目权限','warn');return;}const members=AI_HUOKE_MEMBERS.filter(m=>m.tenantId===getCurrentWorkAccount().tenantId&&m.status==='启用');modal('创建项目','<section data-project-create-step="1"><input class="inp" id="newProjectName" placeholder="项目名称 *"><select class="inp" id="newProjectCustomer"><option value="">暂不关联客户</option></select><select class="inp" id="newProjectStatus"><option>待启动</option><option>推进中</option><option>已完成</option></select><select class="inp" id="newProjectOwner">'+members.map(m=>'<option value="'+m.accountId+'">'+safeText(m.name)+'</option>').join('')+'</select><button class="btn pri" data-act="advance-project-create" data-step="2">下一步：选择成员</button></section><section data-project-create-step="2" hidden><div>'+members.map(m=>'<label><input type="checkbox" data-new-project-member value="'+m.accountId+'"> '+safeText(m.name)+'</label>').join('')+'</div><button class="btn pri" data-act="advance-project-create" data-step="3">下一步：确认</button></section><section data-project-create-step="3" hidden>确认创建项目空间</section>','创建并进入',saveWorkProject,true);showProjectCreateStep(1);}
-const PROJECT_CREATE_FIELDS=['项目名称','关联客户','项目状态','项目负责人','项目成员'];
-const PROJECT_CREATE_PROGRESS='project-create-progress · data-step="1" · data-step="2" · data-step="3" · 1 项目信息 · 2 项目成员 · 3 确认创建';
-const customerOptions=WORK_HUB_CUSTOMERS.map(item=>'<option value="'+item.id+'">'+safeText(item.name)+'</option>').join('');
-function showProjectCreateStep(step){$$('[data-project-create-step]').forEach(panel=>panel.hidden=Number(panel.dataset.projectCreateStep)!==step);const submit=$('#modal [data-mo]');if(submit)submit.hidden=step!==3;}
-function advanceProjectCreate(step){if(step>1&&!$('#newProjectName')?.value.trim()){toast('请输入项目名称','warn');return;}if(step>1&&!$('#newProjectOwner')?.value){toast('请选择项目负责人','warn');return;}showProjectCreateStep(step);}
-function saveWorkProject(){const name=$('#newProjectName')?.value.trim(),account=getCurrentWorkAccount(),owner=$('#newProjectOwner')?.value;if(!name||!owner){toast('请填写项目名称和负责人','warn');return;}const id='proj-'+Date.now(),memberIds=[account.id,owner,...$$('[data-new-project-member]:checked').map(x=>x.value)].filter((v,i,a)=>a.indexOf(v)===i);WORK_HUB_PROJECTS.unshift({id,tenantId:account.tenantId,name,customerId:$('#newProjectCustomer')?.value||null,status:$('#newProjectStatus')?.value||'待启动',createdByAccountId:account.id,ownerAccountId:owner,memberIds,requirements:'待补充项目要求',commercialDocuments:[],conflictId:null,updatedAt:'刚刚',aiInsight:'资料不足，请先上传项目资料或会议。'});memberIds.forEach(accountId=>WORK_HUB_PROJECT_MEMBERS.push({projectId:id,accountId,joinedAt:'刚刚'}));closeModal();openWorkProject(id);}
+function openCreateWorkProject(){
+  if(!hasWorkHubAction('创建项目')){toast('当前账号没有创建项目权限','warn');return;}
+  const account=getCurrentWorkAccount();
+  const members=AI_HUOKE_MEMBERS.filter(member=>member.tenantId===account.tenantId&&member.status==='启用');
+  const memberOptions=members.map(member=>'<option value="'+member.accountId+'">'+safeText(member.name)+'</option>').join('');
+  const customerOptions=WORK_HUB_CUSTOMERS.map(item=>'<option value="'+item.id+'">'+safeText(item.name)+'</option>').join('');
+  const memberChecks=members.map(member=>'<label><input type="checkbox" data-new-project-member value="'+member.accountId+'"> <span>'+safeText(member.name)+'</span><small>'+safeText(member.roles.join('、'))+'</small></label>').join('');
+  const body='<div class="project-create-progress"><span data-project-create-progress="1">1 项目信息</span><span data-project-create-progress="2">2 项目成员</span><span data-project-create-progress="3">3 确认创建</span></div>'+
+    '<section data-project-create-step="1"><div class="field"><label>项目名称 *</label><input class="inp" id="newProjectName" placeholder="例如：极光科技增长项目"></div><div class="split"><div class="field"><label>关联客户</label><select class="inp" id="newProjectCustomer"><option value="">暂不关联</option>'+customerOptions+'</select></div><div class="field"><label>项目状态</label><select class="inp" id="newProjectStatus"><option>待启动</option><option>推进中</option><option>已完成</option></select></div></div><div class="field"><label>项目负责人 *</label><select class="inp" id="newProjectOwner">'+memberOptions+'</select></div><div class="rowact"><button class="btn pri" data-act="advance-project-create" data-step="2">下一步：选择成员</button></div></section>'+
+    '<section data-project-create-step="2" hidden><div class="field"><label>项目成员</label><div class="project-member-options">'+memberChecks+'</div></div><div class="rowact"><button class="btn" data-act="advance-project-create" data-step="1">上一步</button><button class="btn pri" data-act="advance-project-create" data-step="3">下一步：确认</button></div></section>'+
+    '<section data-project-create-step="3" hidden><div class="state-callout"><b>确认创建项目空间</b><br>创建人、项目负责人和所选成员将进入项目数据范围；系统角色权限仍保持不变。</div><div class="rowact"><button class="btn" data-act="advance-project-create" data-step="2">上一步</button></div></section>';
+  modal('创建项目',body,'创建并进入',saveWorkProject,true);
+  showProjectCreateStep(1);
+}
+function showProjectCreateStep(step){
+  $$('[data-project-create-step]').forEach(panel=>panel.hidden=Number(panel.dataset.projectCreateStep)!==step);
+  $$('[data-project-create-progress]').forEach(item=>item.classList.toggle('on',Number(item.dataset.projectCreateProgress)===step));
+  const submit=$('#modal [data-mo]');if(submit)submit.hidden=step!==3;
+}
+function advanceProjectCreate(step){
+  if(step>1&&!$('#newProjectName')?.value.trim()){toast('请输入项目名称','warn');return;}
+  if(step>1&&!$('#newProjectOwner')?.value){toast('请选择项目负责人','warn');return;}
+  showProjectCreateStep(step);
+}
+function saveWorkProject(){
+  if(!hasWorkHubAction('创建项目')){toast('当前账号没有创建项目权限','warn');return;}
+  const name=$('#newProjectName')?.value.trim(),account=getCurrentWorkAccount(),ownerAccountId=$('#newProjectOwner')?.value;
+  if(!name||!ownerAccountId){toast('请填写项目名称和负责人','warn');return;}
+  const id='proj-'+Date.now();
+  const memberIds=[account.id,ownerAccountId,...$$('[data-new-project-member]:checked').map(input=>input.value)].filter((value,index,list)=>list.indexOf(value)===index);
+  WORK_HUB_PROJECTS.unshift({id,tenantId:account.tenantId,name,customerId:$('#newProjectCustomer')?.value||null,status:$('#newProjectStatus')?.value||'待启动',createdByAccountId:account.id,ownerAccountId,memberIds,requirements:'待补充项目要求',commercialDocuments:[],conflictId:null,updatedAt:'刚刚',aiInsight:'资料不足，请先上传项目资料或会议。'});
+  memberIds.forEach(accountId=>WORK_HUB_PROJECT_MEMBERS.push({projectId:id,accountId,joinedAt:'刚刚'}));
+  closeModal();openWorkProject(id,'overview');toast('项目空间已创建','ok');
+}
 const PROJECT_TABS=[['overview','项目总览'],['materials','全部资料'],['meetings','会议'],['tasks','待办'],['deliverables','成果'],['members','成员']];
-function switchWorkProjectTab(tab){if(!PROJECT_TABS.some(([key])=>key===tab))tab='overview';workHubState.activeProjectTab=tab;$$('[data-project-tab]').forEach(x=>{const active=x.dataset.projectTab===tab;x.classList.toggle('on',active);x.setAttribute('aria-selected',String(active));});$$('[data-project-panel]').forEach(x=>x.hidden=x.dataset.projectPanel!==tab);}
-function renderProjectOverview(project){const materials=visibleProjectMaterials(project.id),tasks=WORK_HUB_TASKS.filter(t=>t.projectId===project.id&&canCurrentAccountSeeWorkItem(t)),meetings=WORK_HUB_MEETINGS.filter(t=>t.projectId===project.id&&canCurrentAccountSeeWorkItem(t));return '<div class="project-metrics"><div><span>未完成待办</span><b>'+tasks.filter(t=>t.status!=='ready').length+'</b></div><div><span>资料</span><b>'+materials.length+'</b></div><div><span>会议</span><b>'+meetings.length+'</b></div><div><span>项目成员</span><b>'+project.memberIds.length+'</b></div></div><div class="project-cockpit"><div><section class="project-panel"><h3>下一步工作</h3>'+tasks.slice(0,3).map(t=>'<div class="project-row"><b>'+safeText(t.title)+'</b><small>'+safeText(t.status)+' · '+safeText(t.dueAt||'待确认')+'</small></div>').join('')+'</section><section class="project-panel"><h3>项目阻塞</h3><p>'+safeText(project.conflictId?'报价口径冲突待判断':'暂无待处理阻塞')+'</p></section><section class="project-panel"><h3>最新会议</h3><p>'+safeText(meetings[0]?.name||'暂无关联会议')+'</p></section></div><aside><section class="project-panel"><h3>AI 项目判断</h3><p>'+safeText(project.aiInsight)+'</p></section><section class="project-panel"><h3>最近资料</h3>'+materials.slice(0,3).map(m=>'<div class="project-row"><b>'+safeText(m.title)+'</b><small>'+safeText(m.updatedAt)+'</small></div>').join('')+'</section></aside></div>';}
-function renderProjectOverviewContract(){return '客户意向 owner 负责人 sourceMeetingId sourceConflictId open-project-meeting intent actionItems visibilityLabel ownerAccountId AI 推断 待人工判断 renderProjectConflict';}
-function renderProjectMaterials(project){return visibleProjectMaterials(project.id).map(m=>'<div class="project-row"><b>'+safeText(m.title)+'</b><small>'+safeText(m.sourceType)+' · '+safeText(m.updatedAt)+'</small></div>').join('')||'<div class="card pad">暂无可见资料。</div>';}
-function renderProjectMeetings(project){return WORK_HUB_MEETINGS.filter(m=>m.projectId===project.id&&canCurrentAccountSeeWorkItem(m)).map(m=>'<div class="project-row"><b>'+safeText(m.name)+'</b><small>'+safeText(m.summary)+'</small></div>').join('')||'<div class="card pad">暂无关联会议。</div>';}
-function renderProjectTasks(project){return WORK_HUB_TASKS.filter(t=>t.projectId===project.id&&canCurrentAccountSeeWorkItem(t)).map(t=>'<div class="project-row"><b>'+safeText(t.title)+'</b><small>'+safeText(t.status)+'</small></div>').join('')||'<div class="card pad">暂无项目待办。</div>';}
-function renderProjectConflict(project){const conflict=WORK_HUB_CONFLICTS.find(item=>item.id===project.conflictId);if(!conflict)return '<p class="mini">暂无项目冲突</p>';return '<section class="project-panel"><h3>项目冲突 · '+safeText(conflict.status)+'</h3><div class="permline"><span class="perm limit">'+safeText(conflict.left)+'</span><span>vs</span><span class="perm safe">'+safeText(conflict.right)+'</span></div><div class="rowact"><button class="btn sm" data-act="resolve-work-conflict" data-conflict-id="'+conflict.id+'" data-conflict-resolution="adopt" data-resolution="adopt">采纳老板要求</button><button class="btn sm" data-act="resolve-work-conflict" data-conflict-id="'+conflict.id+'" data-conflict-resolution="keep" data-resolution="keep">保留原方案并说明</button><button class="btn sm" data-act="resolve-work-conflict" data-conflict-id="'+conflict.id+'" data-conflict-resolution="consult" data-resolution="consult">发起协商</button></div></section>';}
-function renderProjectDeliverables(project){return '<div class="work-commercial-document"><b>'+safeText(project.commercialDocuments.join('、')||'暂无商业文件')+'</b><div class="rowact"><button class="btn sm" data-act="create-project-commercial-document" data-deliverable-type="quote">生成报价草稿</button><button class="btn sm" data-act="create-project-commercial-document" data-deliverable-type="contract">生成合同草稿</button></div></div>'+renderProjectConflict(project);}
-function renderProjectMembers(project){return project.memberIds.map(id=>{const m=AI_HUOKE_MEMBERS.find(x=>x.accountId===id);return m?'<div class="project-row"><b>'+safeText(m.name)+'</b><small>'+safeText(m.roles.join('、'))+'</small></div>':'';}).join('');}
-function renderWorkProjectDetail(){const project=WORK_HUB_PROJECTS.find(x=>x.id===workHubState.selectedProjectId),host=$('#workProjectList');if(!host)return;if(!project||!canCurrentAccountAccessProject(project)){workHubState.selectedProjectId=null;host.innerHTML='<div class="card pad">当前账号暂无可见项目。</div>';return;}host.innerHTML='<article class="card pad"><div class="project-head"><button class="btn sm" data-act="switch-subview" data-subview="work-projects">← 项目列表</button><h2>'+safeText(project.name)+'</h2><button class="btn sm" data-act="add-work-project-member" data-project-id="'+project.id+'">添加成员</button></div><div class="project-tabs">'+PROJECT_TABS.map(([k,l])=>'<button class="project-tab" data-act="switch-work-project-tab" data-project-tab="'+k+'">'+l+'</button>').join('')+'</div><section data-project-panel="overview">'+renderProjectOverview(project)+'</section><section data-project-panel="materials">'+renderProjectMaterials(project)+'</section><section data-project-panel="meetings">'+renderProjectMeetings(project)+'</section><section data-project-panel="tasks">'+renderProjectTasks(project)+'</section><section data-project-panel="deliverables">'+renderProjectDeliverables(project)+'</section><section data-project-panel="members">'+renderProjectMembers(project)+'</section></article>';switchWorkProjectTab(workHubState.activeProjectTab||'overview');}
-const PROJECT_DETAIL_CONTRACT="memberAction=hasWorkHubAction('管理项目成员') 关联客户 负责人 成员 data-act=\"return-work-project-list\" role=\"tab\" role=\"tabpanel\"";
-function openAddWorkProjectMember(projectId){const p=WORK_HUB_PROJECTS.find(x=>x.id===projectId);if(!p||!hasWorkHubAction('管理项目成员')||!canCurrentAccountAccessProject(p)){toast('当前账号无权管理项目成员','warn');return;}const members=AI_HUOKE_MEMBERS.filter(m=>m.tenantId===p.tenantId&&m.status==='启用');modal('项目成员','<div id="editProjectMembers">'+members.map(m=>'<label><input type="checkbox" value="'+m.accountId+'" '+(p.memberIds.includes(m.accountId)?'checked':'')+'> '+safeText(m.name)+'</label>').join('')+'</div>','保存成员',()=>saveWorkProjectMembers(projectId),true);}
-function saveWorkProjectMembers(projectId){const p=WORK_HUB_PROJECTS.find(x=>x.id===projectId);if(!p||!hasWorkHubAction('管理项目成员')||!canCurrentAccountAccessProject(p)){toast('当前账号无权管理项目成员','warn');return;}p.memberIds=[p.ownerAccountId,...$$('#editProjectMembers input:checked').map(x=>x.value)].filter((v,i,a)=>a.indexOf(v)===i);const keep=WORK_HUB_PROJECT_MEMBERS.filter(link=>link.projectId!==projectId);WORK_HUB_PROJECT_MEMBERS.splice(0,WORK_HUB_PROJECT_MEMBERS.length,...keep,...p.memberIds.map(accountId=>({projectId,accountId,joinedAt:'刚刚'})));closeModal();renderWorkProjectDetail();}
-function openWorkProject(id,tab='overview'){const p=WORK_HUB_PROJECTS.find(x=>x.id===id);if(!canCurrentAccountAccessProject(p)){toast('当前账号无权查看该项目','warn');return;}workHubState.selectedProjectId=id;workHubState.activeProjectTab=tab;go('workhub');switchSubview('work-projects');renderWorkProjectDetail();}
-function renderWorkProjectList(){const host=$('#workProjectList');if(!host||workHubState.selectedProjectId)return;host.innerHTML=WORK_HUB_PROJECTS.filter(canCurrentAccountAccessProject).map(project=>'<article class="card pad"><div class="head"><h3>'+safeText(project.name)+'</h3><span class="bdg warn">'+safeText(project.status)+'</span></div><p>'+safeText(project.requirements)+'</p><button class="btn sm" data-act="open-work-project" data-project-id="'+project.id+'">查看项目空间</button></article>').join('')||'<div class="card pad">当前账号暂无可见项目。</div>';}
-const PROJECT_LIST_CONTRACT='WORK_HUB_PROJECTS.filter(canCurrentAccountAccessProject) ownerAccountId customerId memberIds pending updatedAt';
-function openWorkTaskDeliverable(id){const task=WORK_HUB_TASKS.find(item=>item.id===id);if(!task)return;if(task.deliverableType==='ppt'){go('marketing-materials');switchSubview('material-ppt');const brief=$('#studioBrief');if(brief)brief.value=task.generationBrief||'';pptCreationState={...pptCreationState,stage:'brief',taskContext:{taskId:task.id,customerId:task.customerId,projectId:task.projectId}};}else if(task.projectId)openWorkProject(task.projectId,'deliverables');else openWorkCustomerProfile(task.customerId);}
-function renderWorkHub(){renderWorkTaskCenter();const c=document.querySelector('#workCustomerList');if(c)c.innerHTML=WORK_HUB_CUSTOMERS.map(x=>'<article>'+safeText(x.name)+'</article>').join('');const p=document.querySelector('#workProjectList');if(p){if(workHubState.selectedProjectId)renderWorkProjectDetail();else renderWorkProjectList();}const createButton=document.querySelector('[data-act="create-work-project"]');if(createButton)createButton.hidden=!hasWorkHubAction('创建项目');const m=document.querySelector('#enterpriseMemoryList');if(m)m.innerHTML=WORK_HUB_MEETINGS.filter(canCurrentAccountSeeWorkItem).map(x=>'<article>'+safeText(x.name)+'</article>').join('');}
+function switchWorkProjectTab(tab){
+  if(!PROJECT_TABS.some(([key])=>key===tab))tab='overview';
+  workHubState.activeProjectTab=tab;
+  $$('[data-project-tab]').forEach(button=>{const active=button.dataset.projectTab===tab;button.classList.toggle('on',active);button.setAttribute('aria-selected',String(active));button.tabIndex=active?0:-1;});
+  $$('[data-project-panel]').forEach(panel=>panel.hidden=panel.dataset.projectPanel!==tab);
+}
+function renderProjectConflict(project){
+  const conflict=WORK_HUB_CONFLICTS.find(item=>item.id===project.conflictId);
+  if(!conflict)return '<p class="mini">暂无待处理阻塞</p>';
+  return '<div class="project-row"><div class="head"><b>报价口径冲突</b><span class="bdg '+(conflict.status==='open'?'warn':'ok')+'">'+safeText(conflict.status==='open'?'待判断':'已处理')+'</span></div><div class="permline"><span class="perm limit">'+safeText(conflict.left)+'</span><span>vs</span><span class="perm safe">'+safeText(conflict.right)+'</span></div><small>系统不会自动覆盖任一版本，由员工结合项目事实自主判断。</small><div class="rowact"><button class="btn sm" data-act="resolve-work-conflict" data-conflict-id="'+conflict.id+'" data-conflict-resolution="adopt" data-resolution="adopt">采纳老板要求</button><button class="btn sm" data-act="resolve-work-conflict" data-conflict-id="'+conflict.id+'" data-conflict-resolution="keep" data-resolution="keep">保留原方案并说明</button><button class="btn sm" data-act="resolve-work-conflict" data-conflict-id="'+conflict.id+'" data-conflict-resolution="consult" data-resolution="consult">发起协商</button></div></div>';
+}
+function renderProjectOverview(project){
+  const materials=visibleProjectMaterials(project.id);
+  const tasks=WORK_HUB_TASKS.filter(task=>task.projectId===project.id&&canCurrentAccountSeeWorkItem(task));
+  const meetings=WORK_HUB_MEETINGS.filter(meeting=>meeting.projectId===project.id&&canCurrentAccountSeeWorkItem(meeting));
+  const unfinished=tasks.filter(task=>task.status!=='ready');
+  const customer=WORK_HUB_CUSTOMERS.find(item=>item.id===project.customerId);
+  const visibilityLabel={project:'全项目可见',selected_members:'指定成员',private:'仅自己'};
+  const taskRows=unfinished.slice(0,3).map(task=>{const owner=AI_HUOKE_MEMBERS.find(member=>member.accountId===task.ownerAccountId);return '<div class="project-row"><b>'+safeText(task.title)+'</b><small>负责人 '+safeText(owner?.name||'待分配')+' · 截止 '+safeText(task.dueAt||'待确认')+' · 来源 '+safeText(task.sourceMeetingId||task.sourceConflictId||'人工创建')+' · '+safeText(task.status)+'</small></div>';}).join('')||'<p class="mini">暂无待办</p>';
+  const meetingRows=meetings.slice(0,1).map(meeting=>'<div class="project-row"><b>'+safeText(meeting.name)+'</b><small>'+safeText(meeting.summary)+' · 意向 '+safeText(meeting.intent?.level||'待分析')+' · '+(meeting.actionItems?.length||0)+' 个行动项</small><div class="rowact"><button class="btn sm" data-act="open-project-meeting" data-meeting-id="'+meeting.id+'" data-project-id="'+project.id+'">查看完整纪要</button></div></div>').join('')||'<p class="mini">暂无关联会议</p>';
+  const materialRows=materials.slice(0,3).map(material=>{const uploader=AI_HUOKE_MEMBERS.find(member=>member.accountId===material.ownerAccountId);return '<div class="project-row"><b>'+safeText(material.title)+'</b><small>'+safeText(material.sourceType)+' · 上传人 '+safeText(uploader?.name||'未知')+' · '+safeText(material.updatedAt)+' · '+safeText(visibilityLabel[material.visibility]||material.visibility)+'</small></div>';}).join('')||'<p class="mini">暂无可见资料</p>';
+  return '<div class="project-metrics"><div><span>客户意向</span><b>'+safeText(customer?.intent||'待判断')+'</b></div><div><span>未完成待办</span><b>'+unfinished.length+'</b></div><div><span>资料</span><b>'+materials.length+'</b></div><div><span>项目成员</span><b>'+project.memberIds.length+'</b></div></div><div class="project-cockpit"><div class="project-cockpit-main"><section class="project-panel"><h3>下一步工作</h3>'+taskRows+'</section><section class="project-panel"><h3>项目阻塞</h3>'+renderProjectConflict(project)+'</section><section class="project-panel"><h3>最新会议</h3>'+meetingRows+'</section></div><aside class="project-cockpit-aside"><section class="project-panel ai-panel"><div class="head"><h3>AI 项目判断</h3><span class="bdg warn">AI 推断 · 待人工判断</span></div><p>'+safeText(project.aiInsight)+'</p></section><section class="project-panel"><h3>最近资料</h3>'+materialRows+'</section></aside></div>';
+}
+function renderProjectMaterials(project){return visibleProjectMaterials(project.id).map(item=>'<div class="project-row"><b>'+safeText(item.title)+'</b><small>'+safeText(item.sourceType)+' · '+safeText(item.updatedAt)+'</small></div>').join('')||'<div class="project-panel">暂无可见资料。</div>';}
+function renderProjectMeetings(project){return WORK_HUB_MEETINGS.filter(item=>item.projectId===project.id&&canCurrentAccountSeeWorkItem(item)).map(item=>'<div class="project-row"><b>'+safeText(item.name)+'</b><small>'+safeText(item.summary)+'</small><div class="rowact"><button class="btn sm" data-act="open-project-meeting" data-meeting-id="'+item.id+'" data-project-id="'+project.id+'">查看完整纪要</button></div></div>').join('')||'<div class="project-panel">暂无关联会议。</div>';}
+function renderProjectTasks(project){return WORK_HUB_TASKS.filter(item=>item.projectId===project.id&&canCurrentAccountSeeWorkItem(item)).map(item=>'<div class="project-row"><b>'+safeText(item.title)+'</b><small>'+safeText(item.status)+' · 截止 '+safeText(item.dueAt||'待确认')+'</small></div>').join('')||'<div class="project-panel">暂无项目待办。</div>';}
+function renderProjectDeliverables(project){return '<div class="work-commercial-document"><div><b>'+safeText(project.commercialDocuments.join('、')||'暂无商业文件')+'</b><small>所有报价与合同草稿都会先生成对应待办，原文件不会被自动覆盖。</small></div><div class="rowact"><button class="btn sm" data-act="create-project-commercial-document" data-deliverable-type="quote">生成报价草稿</button><button class="btn sm" data-act="create-project-commercial-document" data-deliverable-type="contract">生成合同草稿</button></div></div><section class="project-panel" style="margin-top:12px"><h3>口径与版本冲突</h3>'+renderProjectConflict(project)+'</section>';}
+function renderProjectMembers(project){return project.memberIds.map(accountId=>{const member=AI_HUOKE_MEMBERS.find(item=>item.accountId===accountId);return member?'<div class="project-row"><b>'+safeText(member.name)+'</b><small>'+safeText(member.roles.join('、'))+(accountId===project.ownerAccountId?' · 项目负责人':'')+'</small></div>':'';}).join('')||'<div class="project-panel">暂无项目成员。</div>';}
+function renderWorkProjectDetail(){
+  const project=WORK_HUB_PROJECTS.find(item=>item.id===workHubState.selectedProjectId),host=$('#workProjectList');
+  if(!host)return;
+  if(!project||!canCurrentAccountAccessProject(project)){workHubState.selectedProjectId=null;renderWorkProjectList();return;}
+  const owner=AI_HUOKE_MEMBERS.find(member=>member.accountId===project.ownerAccountId);
+  const customer=WORK_HUB_CUSTOMERS.find(item=>item.id===project.customerId);
+  const memberAction=hasWorkHubAction('管理项目成员')?'<button class="btn sm" data-act="add-work-project-member" data-project-id="'+project.id+'">添加成员</button>':'';
+  host.innerHTML='<article class="card pad"><div class="project-head"><div class="project-head-copy"><button class="btn sm" data-act="return-work-project-list">← 项目列表</button><h2>'+safeText(project.name)+'</h2><p>'+safeText(project.status)+' · 关联客户 '+safeText(customer?.name||'未关联')+' · 负责人 '+safeText(owner?.name||'待指定')+' · '+project.memberIds.length+' 名成员</p></div><div class="project-head-actions">'+memberAction+'</div></div><div class="project-tabs" role="tablist">'+PROJECT_TABS.map(([key,label])=>'<button class="project-tab" role="tab" aria-selected="false" data-act="switch-work-project-tab" data-project-tab="'+key+'">'+label+'</button>').join('')+'</div><section role="tabpanel" data-project-panel="overview">'+renderProjectOverview(project)+'</section><section role="tabpanel" data-project-panel="materials">'+renderProjectMaterials(project)+'</section><section role="tabpanel" data-project-panel="meetings">'+renderProjectMeetings(project)+'</section><section role="tabpanel" data-project-panel="tasks">'+renderProjectTasks(project)+'</section><section role="tabpanel" data-project-panel="deliverables">'+renderProjectDeliverables(project)+'</section><section role="tabpanel" data-project-panel="members">'+renderProjectMembers(project)+'</section></article>';
+  switchWorkProjectTab(workHubState.activeProjectTab||'overview');
+}
+function openAddWorkProjectMember(projectId){
+  const project=WORK_HUB_PROJECTS.find(item=>item.id===projectId);
+  if(!project||!hasWorkHubAction('管理项目成员')||!canCurrentAccountAccessProject(project)){toast('当前账号无权管理项目成员','warn');return;}
+  const members=AI_HUOKE_MEMBERS.filter(member=>member.tenantId===project.tenantId&&member.status==='启用');
+  modal('项目成员 · '+safeText(project.name),'<div id="editProjectMembers" class="project-member-options">'+members.map(member=>'<label><input type="checkbox" value="'+member.accountId+'" '+(project.memberIds.includes(member.accountId)?'checked':'')+'> <span>'+safeText(member.name)+'</span><small>'+safeText(member.roles.join('、'))+'</small></label>').join('')+'</div><div class="note">项目成员只控制数据范围，不替代系统角色权限；项目负责人始终保留。</div>','保存成员',()=>saveWorkProjectMembers(projectId),true);
+}
+function saveWorkProjectMembers(projectId){
+  const project=WORK_HUB_PROJECTS.find(item=>item.id===projectId);
+  if(!project||!hasWorkHubAction('管理项目成员')||!canCurrentAccountAccessProject(project)){toast('当前账号无权管理项目成员','warn');return;}
+  const selected=$$('#editProjectMembers input:checked').map(input=>input.value);
+  project.memberIds=[project.ownerAccountId,...selected].filter((value,index,list)=>list.indexOf(value)===index);
+  const keep=WORK_HUB_PROJECT_MEMBERS.filter(link=>link.projectId!==projectId);
+  WORK_HUB_PROJECT_MEMBERS.splice(0,WORK_HUB_PROJECT_MEMBERS.length,...keep,...project.memberIds.map(accountId=>({projectId,accountId,joinedAt:'刚刚'})));
+  closeModal();renderWorkProjectDetail();toast('项目成员已更新','ok');
+}
+function openWorkProject(id,tab='overview'){
+  const project=WORK_HUB_PROJECTS.find(item=>item.id===id);
+  if(!canCurrentAccountAccessProject(project)){toast('当前账号无权查看该项目','warn');return;}
+  workHubState.selectedProjectId=id;workHubState.activeProjectTab=PROJECT_TABS.some(([key])=>key===tab)?tab:'overview';
+  go('workhub');switchSubview('work-projects');renderWorkProjectDetail();
+}
+function renderWorkProjectList(){
+  const host=$('#workProjectList');if(!host||workHubState.selectedProjectId)return;
+  const projects=WORK_HUB_PROJECTS.filter(canCurrentAccountAccessProject);
+  host.innerHTML=projects.map(project=>{const owner=AI_HUOKE_MEMBERS.find(member=>member.accountId===project.ownerAccountId),customer=WORK_HUB_CUSTOMERS.find(item=>item.id===project.customerId),pending=WORK_HUB_TASKS.filter(task=>task.projectId===project.id&&task.status!=='ready'&&canCurrentAccountSeeWorkItem(task)).length;return '<article class="card pad"><div class="head"><h3>'+safeText(project.name)+'</h3><span class="bdg warn">'+safeText(project.status)+'</span></div><p>'+safeText(customer?.name||'未关联客户')+'</p><div class="mini">负责人 '+safeText(owner?.name||'待指定')+' · '+project.memberIds.length+' 名成员 · '+pending+' 个待办 · 更新 '+safeText(project.updatedAt)+'</div><div class="rowact" style="margin-top:12px"><button class="btn sm" data-act="open-work-project" data-project-id="'+project.id+'">查看项目空间</button></div></article>';}).join('')||'<div class="card pad">当前账号暂无可见项目。</div>';
+}
+function openWorkTaskDeliverable(id){
+  const task=WORK_HUB_TASKS.find(item=>item.id===id);if(!task)return;
+  if(task.deliverableType==='ppt'){go('marketing-materials');switchSubview('material-ppt',document.querySelector('[data-subview="material-ppt"]'));const brief=$('#studioBrief');if(brief)brief.value=task.generationBrief||'';pptCreationState={...pptCreationState,stage:'brief',taskContext:{taskId:task.id,customerId:task.customerId,projectId:task.projectId}};}
+  else if(task.projectId)openWorkProject(task.projectId,'deliverables');else openWorkCustomerProfile(task.customerId);
+}
+function renderWorkHub(){
+  renderWorkTaskCenter();
+  const customerHost=document.querySelector('#workCustomerList');
+  if(customerHost)customerHost.innerHTML=WORK_HUB_CUSTOMERS.map(item=>'<article class="card pad"><div class="head"><h3>'+safeText(item.name)+'</h3><span class="bdg ok">意向 '+safeText(item.intent)+'</span></div><p>'+safeText(item.contact)+'</p><div class="mini">'+safeText(item.evidence)+'</div><button class="btn sm" data-act="open-work-customer-profile" data-customer-id="'+item.id+'">查看客户档案</button></article>').join('');
+  const projectHost=document.querySelector('#workProjectList');
+  if(projectHost){if(workHubState.selectedProjectId)renderWorkProjectDetail();else renderWorkProjectList();}
+  const createButton=document.querySelector('[data-act="create-work-project"]');if(createButton)createButton.hidden=!hasWorkHubAction('创建项目');
+  const meetingHost=document.querySelector('#enterpriseMemoryList');
+  if(meetingHost)meetingHost.innerHTML=WORK_HUB_MEETINGS.filter(canCurrentAccountSeeWorkItem).map(item=>'<article class="card pad" data-meeting-id="'+item.id+'"><div class="head"><h3>'+safeText(item.name)+'</h3><span class="bdg '+(item.stage==='ready'?'ok':item.stage==='failed'?'dng':'brd')+'">'+meetingStageLabel(item.stage)+'</span></div><div class="meeting-card-meta"><span>'+(item.mediaType==='video'?'视频':'音频')+'</span><span>时长 '+safeText(item.duration||'等待识别')+'</span><span>'+(item.visibility==='private'?'仅自己可见':'企业可见')+'</span><span>'+(item.actionItems?.length||0)+' 个行动项</span></div><p>'+safeText(item.summary)+'</p>'+(item.segmentProgress?'<div class="meeting-segment-progress"><b>'+item.segmentProgress.total+' 个分段 · 已完成 '+item.segmentProgress.completed+' 个</b><small>'+safeText(item.segmentProgress.current)+' · 结果生成后可查看 AI 总结与逐字稿</small></div>':'')+'<div class="rowact" style="margin-top:12px">'+(item.stage==='failed'?'<button class="btn sm" data-act="retry-work-meeting" data-meeting-id="'+item.id+'">重试解析</button>':'<button class="btn sm" data-act="open-enterprise-meeting-detail" data-meeting-id="'+item.id+'" '+(item.stage==='ready'?'':'disabled')+'>'+(item.stage==='ready'?'查看 AI 总结与逐字稿':'结果生成中')+'</button>')+'</div></article>').join('')||'<div class="card pad">当前账号暂无可见会议。</div>';
+}
 renderWorkHub();
 renderWorkProjectList();
 renderWechatIntegration();
