@@ -3935,7 +3935,7 @@ function projectMaterialType(file){
   if(/\.(pdf|docx?|xlsx?|csv|txt)$/.test(name))return 'document';
   return 'other';
 }
-function projectMaterialStatusLabel(material){return ({processing:'上传中',ready:'已完成',failed:'处理失败'})[material.status]||'待处理';}
+function projectMaterialStatusLabel(material){if(material.sourceAvailable===false)return '来源不可用';return ({processing:'上传中',ready:'已完成',failed:'处理失败'})[material.status]||'待处理';}
 function setProjectMaterialFilter(kind,value){if(kind==='type')workHubState.projectMaterialTypeFilter=value;if(kind==='status')workHubState.projectMaterialStatusFilter=value;renderWorkProjectDetail();}
 function openProjectMaterialUpload(projectId){
   if(!hasWorkHubAction('上传资料')){toast('当前账号没有项目资料上传权限','warn');return;}
@@ -4029,6 +4029,7 @@ function openProjectTaskList(projectId){const project=WORK_HUB_PROJECTS.find(ite
 function openProjectDeliverable(type,sourceId){const project=WORK_HUB_PROJECTS.find(item=>item.id===workHubState.selectedProjectId);if(!project||!canCurrentAccountAccessProject(project)){toast('当前账号无权查看该项目成果','warn');return;}if(type==='ppt'){if(!hasSystemAction('content','查看')){toast('当前账号没有营销物料查看权限','warn');return;}const task=WORK_HUB_TASKS.find(item=>item.projectId===project.id&&(item.resultId===sourceId||item.id===sourceId));if(task)openWorkTaskDeliverable(task.id);else toast('PPT 来源不可用，已保留项目操作记录','warn');return;}if(type==='script'){openWorkCustomerProfile(project.customerId);return;}openWorkProject(project.id,'deliverables');}
 function retryProjectMaterial(materialId){const material=WORK_HUB_PROJECT_MATERIALS.find(item=>item.id===materialId);if(!material||material.sourceAvailable===false){toast('来源不可用，无法重试','warn');return;}material.status='processing';renderWorkProjectDetail();setTimeout(()=>{material.status='ready';renderWorkProjectDetail();},450);}
 function renderProjectMaterialActions(material){const retry=material.status==='failed'&&material.sourceAvailable?'<button class="btn sm" data-act="retry-project-material" data-material-id="'+material.id+'">重试</button>':'';return '<div class="rowact"><button class="btn sm" data-act="open-project-material-source" data-material-id="'+material.id+'">查看</button>'+retry+'</div>';}
+WORK_HUB_PROJECT_MATERIALS.push({id:'material-archived-source',tenantId:'tenant-weiran',projectId:'proj-growth',sourceType:'document',sourceId:'archived-brief',title:'旧版需求说明.docx',ownerAccountId:'acct-boss',visibility:'project',selectedMemberIds:[],status:'ready',sourceAvailable:false,updatedAt:'8月29日 11:00'});
 renderWorkHub();
 renderWorkProjectList();
 renderWechatIntegration();
