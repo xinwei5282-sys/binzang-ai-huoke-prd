@@ -592,6 +592,10 @@ td{font-size:12.5px}
 .project-row:last-child{border-bottom:0}
 .project-row small{display:block;margin-top:4px;color:var(--ink-3);font-size:11px;line-height:1.55}
 .project-row .rowact{margin-top:8px}
+.project-material-row{display:grid;grid-template-columns:minmax(0,1fr) auto auto;align-items:center;gap:12px;padding:12px 0;border-bottom:1px solid var(--line)}
+.project-material-row:last-child{border-bottom:0}
+.project-material-row small{display:block;margin-top:4px;color:var(--ink-3);font-size:11px;line-height:1.55}
+.project-material-row .rowact{justify-content:flex-end}
 .project-create-progress{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));margin-bottom:16px;border:1px solid var(--line);border-radius:var(--r-s);overflow:hidden}
 .project-create-progress span{padding:9px 10px;border-right:1px solid var(--line);color:var(--ink-3);font-size:11px;text-align:center}
 .project-create-progress span:last-child{border-right:0}
@@ -601,6 +605,13 @@ td{font-size:12.5px}
 @media(max-width:560px){
   .page{padding:16px 14px 40px}
   .lead{flex-direction:column}.lead>:last-child:not(:first-child){width:auto}
+  .project-head,.project-cockpit{grid-template-columns:minmax(0,1fr)}
+  .project-cockpit-main,.project-cockpit-aside{width:100%;min-width:0}
+  .project-head-actions{justify-content:flex-start;flex-wrap:wrap}
+  .project-head-actions .btn{flex:1 1 auto;justify-content:center}
+  .project-material-row{grid-template-columns:minmax(0,1fr) auto;gap:8px}
+  .project-material-row>.rowact{grid-column:1/-1;justify-content:flex-start}
+  .project-panel{padding:13px}
   .page[data-p="workhub"] .rowact{white-space:normal;flex-wrap:wrap}
   .page[data-p="workhub"] .rowact .btn{margin-left:0}
   #workTaskCenter,#workCustomerList,#workProjectList,[data-followup-candidate]{min-width:0;max-width:100%}
@@ -4041,7 +4052,7 @@ function renderWorkHub(){
   if(customerHost)customerHost.innerHTML=WORK_HUB_CUSTOMERS.map(item=>'<article class="card pad"><div class="head"><h3>'+safeText(item.name)+'</h3><span class="bdg ok">意向 '+safeText(item.intent)+'</span></div><p>'+safeText(item.contact)+'</p><div class="mini">'+safeText(item.evidence)+'</div><button class="btn sm" data-act="open-work-customer-profile" data-customer-id="'+item.id+'">查看客户档案</button></article>').join('');
   const projectHost=document.querySelector('#workProjectList');
   if(projectHost){if(workHubState.selectedProjectId)renderWorkProjectDetail();else renderWorkProjectList();}
-  const createButton=document.querySelector('[data-act="create-work-project"]');if(createButton)createButton.hidden=!hasWorkHubAction('创建项目');
+  const createButton=document.querySelector('[data-act="create-work-project"]');if(createButton){createButton.hidden=!hasWorkHubAction('创建项目');const createToolbar=createButton.closest('.workspace-toolbar');if(createToolbar)createToolbar.hidden=createButton.hidden;}
   const meetingHost=document.querySelector('#enterpriseMemoryList');
   if(meetingHost)meetingHost.innerHTML=WORK_HUB_MEETINGS.filter(canCurrentAccountSeeWorkItem).map(item=>'<article class="card pad" data-meeting-id="'+item.id+'"><div class="head"><h3>'+safeText(item.name)+'</h3><span class="bdg '+(item.stage==='ready'?'ok':item.stage==='failed'?'dng':'brd')+'">'+meetingStageLabel(item.stage)+'</span></div><div class="meeting-card-meta"><span>'+(item.mediaType==='video'?'视频':'音频')+'</span><span>时长 '+safeText(item.duration||'等待识别')+'</span><span>'+(item.visibility==='private'?'仅自己可见':'企业可见')+'</span><span>'+(item.actionItems?.length||0)+' 个行动项</span></div><p>'+safeText(item.summary)+'</p>'+(item.segmentProgress?'<div class="meeting-segment-progress"><b>'+item.segmentProgress.total+' 个分段 · 已完成 '+item.segmentProgress.completed+' 个</b><small>'+safeText(item.segmentProgress.current)+' · 结果生成后可查看 AI 总结与逐字稿</small></div>':'')+'<div class="rowact" style="margin-top:12px">'+(item.stage==='failed'?'<button class="btn sm" data-act="retry-work-meeting" data-meeting-id="'+item.id+'">重试解析</button>':'<button class="btn sm" data-act="open-enterprise-meeting-detail" data-meeting-id="'+item.id+'" '+(item.stage==='ready'?'':'disabled')+'>'+(item.stage==='ready'?'查看 AI 总结与逐字稿':'结果生成中')+'</button>')+'</div></article>').join('')||'<div class="card pad">当前账号暂无可见会议。</div>';
 }

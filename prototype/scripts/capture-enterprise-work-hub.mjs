@@ -106,6 +106,62 @@ const bossHome = await evaluate(`(() => ({route:document.querySelector('.page.sh
 if (bossHome.route !== 'home' || !bossHome.decisions || !bossHome.customers || !bossHome.tasks || !bossHome.role.includes('老板决策')) throw new Error(`boss home audit failed: ${JSON.stringify(bossHome)}`);
 audits['boss-home'] = await screenshot('boss-home');
 
+await evaluate(`setWorkHubAccount('acct-boss');go('workhub');switchSubview('work-projects');renderWorkHub()`);
+const projectList = await evaluate(`(() => ({route:document.querySelector('.page.show')?.dataset.p,rows:document.querySelectorAll('#workProjectList > article').length,createVisible:document.querySelector('[data-act="create-work-project"]')?.hidden===false}))()`);
+if (projectList.route !== 'workhub' || projectList.rows < 2 || !projectList.createVisible) throw new Error(`project list audit failed: ${JSON.stringify(projectList)}`);
+audits['project-list'] = await screenshot('project-list');
+
+await evaluate(`document.querySelector('[data-act="create-work-project"]')?.click()`);
+const projectCreate = await evaluate(`(() => ({open:document.querySelector('#mask')?.classList.contains('show'),title:document.querySelector('#modalTitle')?.textContent||'',steps:document.querySelectorAll('[data-project-create-step]').length,name:Boolean(document.querySelector('#newProjectName')),customer:Boolean(document.querySelector('#newProjectCustomer'))}))()`);
+if (!projectCreate.open || !projectCreate.title.includes('创建项目') || projectCreate.steps !== 3 || !projectCreate.name || !projectCreate.customer) throw new Error(`project create audit failed: ${JSON.stringify(projectCreate)}`);
+audits['project-create'] = await screenshot('project-create');
+
+await evaluate(`closeModal();openWorkProject('proj-growth','overview')`);
+const projectCockpit = await evaluate(`(() => {const text=document.querySelector('#workProjectList')?.textContent||'';return{tabs:document.querySelectorAll('[data-project-tab]').length,next:text.includes('下一步工作'),blockers:text.includes('项目阻塞'),meeting:text.includes('最新会议'),ai:text.includes('AI 项目判断')}})()`);
+if (projectCockpit.tabs !== 6 || !projectCockpit.next || !projectCockpit.blockers || !projectCockpit.meeting || !projectCockpit.ai) throw new Error(`project cockpit audit failed: ${JSON.stringify(projectCockpit)}`);
+audits['project-cockpit'] = await screenshot('project-cockpit');
+
+await evaluate(`switchWorkProjectTab('materials')`);
+const projectMaterials = await evaluate(`(() => {const text=document.querySelector('[data-project-panel="materials"]')?.textContent||'';return{visible:!document.querySelector('[data-project-panel="materials"]')?.hidden,rows:document.querySelectorAll('[data-project-panel="materials"] [data-material-id]').length,hasMeeting:text.includes('客户需求沟通会议.mp4'),hasPpt:text.includes('增长方案大纲.pptx'),hasUnavailable:text.includes('来源不可用'),permissionActions:document.querySelectorAll('[data-project-panel="materials"] [data-act="edit-project-material-permissions"]').length}})()`);
+if (!projectMaterials.visible || projectMaterials.rows < 4 || !projectMaterials.hasMeeting || !projectMaterials.hasPpt || !projectMaterials.hasUnavailable || projectMaterials.permissionActions < 1) throw new Error(`project materials audit failed: ${JSON.stringify(projectMaterials)}`);
+audits['project-materials'] = await screenshot('project-materials');
+
+await evaluate(`document.querySelector('[data-project-panel="materials"] [data-act="edit-project-material-permissions"]')?.click()`);
+const projectMaterialPermission = await evaluate(`(() => ({open:document.querySelector('#mask')?.classList.contains('show'),title:document.querySelector('#modalTitle')?.textContent||'',visibility:Boolean(document.querySelector('#editMaterialVisibility')),members:document.querySelectorAll('#editMaterialMembers input').length}))()`);
+if (!projectMaterialPermission.open || !projectMaterialPermission.title.includes('材料查看权限') || !projectMaterialPermission.visibility) throw new Error(`project material permission audit failed: ${JSON.stringify(projectMaterialPermission)}`);
+audits['project-material-permission'] = await screenshot('project-material-permission');
+await evaluate(`closeModal()`);
+
+await evaluate(`go('kb');showKbTab('memory');submitWorkMeetingUpload(new File(['demo'],'极光客户评审.mp3',{type:'audio/mpeg'}),{customerId:'cust-aurora'})`);
+await new Promise(resolveWait => setTimeout(resolveWait, 1900));
+const recommendedMeeting = await evaluate(`(() => {const meeting=WORK_HUB_MEETINGS.find(item=>item.name==='极光客户评审.mp3');if(meeting)openEnterpriseMeetingDetail(meeting.id);const text=document.querySelector('#modal')?.textContent||'';return{id:meeting?.id||'',stage:meeting?.stage||'',projectId:meeting?.projectId||null,recommendedProjectId:meeting?.recommendedProjectId||null,linkStatus:meeting?.projectLinkStatus||'',recommendation:text.includes('AI 推荐项目 · 极光科技增长项目（待确认）')}})()`);
+if (!recommendedMeeting.id || recommendedMeeting.stage !== 'ready' || recommendedMeeting.projectId !== null || recommendedMeeting.recommendedProjectId !== 'proj-growth' || recommendedMeeting.linkStatus !== 'recommended' || !recommendedMeeting.recommendation) throw new Error(`project meeting recommendation audit failed: ${JSON.stringify(recommendedMeeting)}`);
+audits['project-meeting-recommendation'] = await screenshot('project-meeting-recommendation');
+
+await evaluate(`document.querySelector('#modal [data-act="confirm-meeting-project-link"]')?.click()`);
+const confirmedMeeting = await evaluate(`(() => {const meeting=WORK_HUB_MEETINGS.find(item=>item.name==='极光客户评审.mp3'),links=WORK_HUB_PROJECT_MATERIALS.filter(item=>item.projectId==='proj-growth'&&item.sourceType==='meeting'&&item.sourceId===meeting?.id);return{id:meeting?.id||'',projectId:meeting?.projectId||'',linkStatus:meeting?.projectLinkStatus||'',links:links.length}})()`);
+if (confirmedMeeting.projectId !== 'proj-growth' || confirmedMeeting.linkStatus !== 'linked' || confirmedMeeting.links !== 1) throw new Error(`project meeting link audit failed: ${JSON.stringify(confirmedMeeting)}`);
+await evaluate(`closeModal();openWorkProject('proj-growth','meetings');document.querySelector('[data-project-panel="meetings"] [data-act="open-project-meeting"]')?.click()`);
+const linkedMeeting = await evaluate(`(() => {const text=document.querySelector('#modal')?.textContent||'';return{open:document.querySelector('#mask')?.classList.contains('show'),linked:text.includes('已关联 极光科技增长项目'),returnAction:Boolean(document.querySelector('#modal [data-act="return-to-meeting-project"]'))}})()`);
+if (!linkedMeeting.open || !linkedMeeting.linked || !linkedMeeting.returnAction) throw new Error(`project linked meeting audit failed: ${JSON.stringify(linkedMeeting)}`);
+audits['project-meeting-link'] = await screenshot('project-meeting-link');
+
+await evaluate(`document.querySelector('#modal [data-act="return-to-meeting-project"]')?.click()`);
+const projectMeetingReturn = await evaluate(`(() => ({route:document.querySelector('.page.show')?.dataset.p,meetingTab:document.querySelector('[data-project-tab="meetings"]')?.getAttribute('aria-selected'),meetingPanel:!document.querySelector('[data-project-panel="meetings"]')?.hidden}))()`);
+if (projectMeetingReturn.route !== 'workhub' || projectMeetingReturn.meetingTab !== 'true' || !projectMeetingReturn.meetingPanel) throw new Error(`project meeting return audit failed: ${JSON.stringify(projectMeetingReturn)}`);
+audits['project-meeting-return'] = await screenshot('project-meeting-return');
+
+await evaluate(`setWorkHubAccount('acct-employee-lin');openWorkProject('proj-growth','materials')`);
+const projectAccountVisibility = await evaluate(`(() => {const text=document.querySelector('[data-project-panel="materials"]')?.textContent||'';return{rows:document.querySelectorAll('[data-project-panel="materials"] [data-material-id]').length,hasBudget:text.includes('客户预算底稿.xlsx'),hasBossPrivate:text.includes('老板内部报价底线.docx'),canCreate:document.querySelector('[data-act="create-work-project"]')?.hidden===false,canManageMembers:Boolean(document.querySelector('[data-act="add-work-project-member"]'))}})()`);
+if (projectAccountVisibility.rows < 3 || projectAccountVisibility.hasBudget || projectAccountVisibility.hasBossPrivate || projectAccountVisibility.canCreate || projectAccountVisibility.canManageMembers) throw new Error(`project account visibility audit failed: ${JSON.stringify(projectAccountVisibility)}`);
+audits['project-account-visibility'] = await screenshot('project-account-visibility');
+
+await evaluate(`setWorkHubAccount('acct-boss');go('permissions');openSystemRoleEditor('管理员')`);
+const workhubPermissionModule = await evaluate(`(() => {const module=document.querySelector('#modal [data-permission-module="workhub"]');return{route:document.querySelector('.page.show')?.dataset.p,label:module?.textContent||'',actions:module?.querySelectorAll('.permission-child').length||0,checked:module?.querySelectorAll('.permission-child:checked').length||0}})()`);
+if (workhubPermissionModule.route !== 'permissions' || !workhubPermissionModule.label.includes('工作中枢') || workhubPermissionModule.actions !== 6 || workhubPermissionModule.checked !== 6) throw new Error(`workhub permission module audit failed: ${JSON.stringify(workhubPermissionModule)}`);
+audits['workhub-permission-module'] = await screenshot('workhub-permission-module');
+await evaluate(`closeModal()`);
+
 await evaluate(`document.querySelector('[data-nav-sub="kb"] [data-kbtab="memory"]')?.click();renderWorkHub()`);
 const memoryList = await evaluate(`(() => {const text=document.querySelector('[data-kbpanel="memory"]')?.textContent||'',names=[...document.querySelectorAll('#enterpriseMemoryList [data-meeting-id] h3')].map(node=>node.textContent||'');return{route:document.querySelector('.page.show')?.dataset.p,panelVisible:document.querySelector('[data-kbpanel="memory"]')?.classList.contains('show'),heading:document.querySelector('[data-p="kb"] > .lead .t')?.textContent||'',rows:names.length,onlyMeetingMedia:names.every(name=>/\.(mp3|wav|m4a|aac|flac|ogg|mp4|mov|mkv|webm)$/i.test(name)),detailButtons:document.querySelectorAll('#enterpriseMemoryList [data-act="open-enterprise-meeting-detail"]').length,demo:/原型演示/.test(text),meetingOnly:/只处理会议音频和视频/.test(text)}})()`);
 if (memoryList.route !== 'kb' || !memoryList.panelVisible || memoryList.heading !== '会议纪要' || memoryList.rows < 1 || !memoryList.onlyMeetingMedia || memoryList.detailButtons < 1 || !memoryList.demo || !memoryList.meetingOnly) throw new Error(`meeting minutes audit failed: ${JSON.stringify(memoryList)}`);
@@ -146,7 +202,7 @@ if (!employeeHome.role.includes('我的工作提醒') || !employeeHome.bossOnlyH
 audits['employee-home'] = await screenshot('employee-home');
 await evaluate(`document.querySelector('[data-nav-sub="kb"] [data-kbtab="memory"]')?.click();renderWorkHub()`);
 const privateMemory = await evaluate(`(() => ({hasPrivate:/林晓客户回访录音/.test(document.querySelector('#enterpriseMemoryList')?.textContent||''),hasEnterpriseMeeting:/客户需求沟通会议/.test(document.querySelector('#enterpriseMemoryList')?.textContent||''),onlyMedia:[...document.querySelectorAll('#enterpriseMemoryList [data-meeting-id] h3')].every(node=>/\.(mp3|wav|m4a|aac|flac|ogg|mp4|mov|mkv|webm)$/i.test(node.textContent||''))}))()`);
-if (!privateMemory.hasPrivate || privateMemory.hasEnterpriseMeeting || !privateMemory.onlyMedia) throw new Error(`employee private meeting audit failed: ${JSON.stringify(privateMemory)}`);
+if (!privateMemory.hasPrivate || !privateMemory.hasEnterpriseMeeting || !privateMemory.onlyMedia) throw new Error(`employee project-shared meeting audit failed: ${JSON.stringify(privateMemory)}`);
 audits['employee-private-memory'] = await screenshot('employee-private-memory');
 
 await evaluate(`setWorkHubAccount('acct-boss');openWorkCustomerProfile('cust-aurora');generateCustomerFollowupScript()`);

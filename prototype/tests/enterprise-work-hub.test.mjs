@@ -174,6 +174,13 @@ test('work hub browser capture honors verifier arguments and audits runtime stat
   assert.match(capture,/\$\{name\}-\$\{width\}x\$\{height\}\.png/);
 });
 
+test('work hub browser capture covers unified project workspace states',()=>{
+  for(const state of ['project-list','project-create','project-cockpit','project-materials','project-material-permission','project-meeting-recommendation','project-meeting-link','project-meeting-return','project-account-visibility','workhub-permission-module']) assert.match(capture,new RegExp(state));
+  assert.match(capture,/projectAccountVisibility\.hasBudget/);
+  assert.match(capture,/confirmedMeeting\.links !== 1/);
+  assert.match(capture,/workhubPermissionModule\.actions !== 6/);
+});
+
 test('full browser capture audits work hub routes as first-class pages',()=>{
   for(const state of ['workhub-tasks','workhub-customers','workhub-projects','kb-memory']) {
     assert.match(fullCapture,new RegExp(`\\['${state}'[^\\n]+`));
