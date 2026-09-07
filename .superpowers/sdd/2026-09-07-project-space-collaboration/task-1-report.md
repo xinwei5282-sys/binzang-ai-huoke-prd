@@ -35,3 +35,21 @@ GREEN：29 tests passed, 0 failed；`git diff --check` 无输出且退出码为 
 - 真源仍为 `prototype/index.html`，所有能力为本地原型演示数据，未接真实服务。
 - 本轮验证覆盖两套完整相关 Node 测试和脚本语法解析；未执行浏览器验收（本任务要求的相关测试范围未要求浏览器）。
 - 部分历史会议/任务 fixture 通过初始化阶段统一补 tenant/due 字段，而不是重复改写长对象字面量；运行时行为与租户边界一致。
+
+## 修正轮 2
+
+补齐周宁、陈默的稳定 `accountId` / `tenantId`；将项目成员与材料 fixture 放到项目 fixture 之后、任何工作中枢 helper/render 调用之前，并补齐材料来源、标题、状态、可用性和更新时间字段。
+
+新增可执行授权测试，实际调用抽取的授权函数覆盖：老板 `all` 访问两个项目、员工 `team_self` 仅访问参与项目、项目材料、selected-members/private ACL、租户不匹配隐藏，以及角色数据范围/工作中枢 grant 收紧后的即时拒绝。
+
+修正轮测试：
+
+```bash
+node --test --test-reporter=spec --test-name-pattern='authorization behavior' prototype/tests/enterprise-work-hub.test.mjs
+node --test --test-reporter=spec prototype/tests/enterprise-work-hub.test.mjs prototype/tests/ai-huoke-system-management.test.mjs
+git diff --check 4b5201e..HEAD
+```
+
+结果：行为测试 1/1 通过；相关套件 30/30 通过；diff check 退出码 0。
+
+报告路径被仓库规则忽略，本轮未修改 `.gitignore`；报告保留并通过 `git add -f` 继续跟踪。

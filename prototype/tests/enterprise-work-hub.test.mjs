@@ -8,6 +8,29 @@ const capture = readFileSync(resolve('prototype/scripts/capture-enterprise-work-
 const fullCapture = readFileSync(resolve('prototype/scripts/capture-v1-prototype.mjs'),'utf8');
 test('project access and material ACL are separate contracts',()=>{for(const token of ['WORK_HUB_PROJECT_MEMBERS','WORK_HUB_PROJECT_MATERIALS','currentSystemActions','hasSystemAction','currentWorkDataScope','currentWorkHubActions','hasWorkHubAction','canCurrentAccountAccessProject','canCurrentAccountSeeProjectMaterial','visibleProjectMaterials','selectedMemberIds','createdByAccountId','role.dataScope'])assert.match(html,new RegExp(token));for(const visibility of ['project','selected_members','private'])assert.match(html,new RegExp(`visibility:'${visibility}'`));});
 
+test('authorization behavior enforces tenant, scope, membership and material visibility',()=>{
+  const start=html.indexOf("const WORK_HUB_ACCOUNT_TEMPLATES=");
+  const end=html.indexOf('function renderWorkHomeSummaries',start);
+  const source=html.slice(start,end)+`\nreturn {WORK_HUB_ACCOUNT_TEMPLATES,WORK_HUB_PROJECTS,WORK_HUB_PROJECT_MATERIALS,workHubState,currentWorkDataScope,canCurrentAccountAccessProject,canCurrentAccountSeeProjectMaterial,visibleProjectMaterials};`;
+  const roleGrants={管理员:{dataScope:'all',grants:{workhub:['查看项目']}},运营编辑:{dataScope:'team_self',grants:{workhub:['查看项目']}}};
+  const auth=Function('AI_HUOKE_MEMBERS','AI_HUOKE_ROLE_GRANTS',source)([
+    {accountId:'acct-boss',tenantId:'tenant-weiran',roles:['管理员']},{accountId:'acct-employee-lin',tenantId:'tenant-weiran',roles:['运营编辑']}
+  ],roleGrants);
+  const growth=auth.WORK_HUB_PROJECTS.find(project=>project.id==='proj-growth');
+  const ops=auth.WORK_HUB_PROJECTS.find(project=>project.id==='proj-ops');
+  auth.workHubState.currentAccountId='acct-boss';
+  assert.equal(auth.currentWorkDataScope(),'all'); assert.equal(auth.canCurrentAccountAccessProject(growth),true); assert.equal(auth.canCurrentAccountAccessProject(ops),true);
+  auth.workHubState.currentAccountId='acct-employee-lin';
+  assert.equal(auth.currentWorkDataScope(),'team_self'); assert.equal(auth.canCurrentAccountAccessProject(growth),true); assert.equal(auth.canCurrentAccountAccessProject(ops),false);
+  const projectMaterial=auth.WORK_HUB_PROJECT_MATERIALS.find(item=>item.visibility==='project');
+  const selected=auth.WORK_HUB_PROJECT_MATERIALS.find(item=>item.visibility==='selected_members'&&item.ownerAccountId==='acct-boss');
+  const privateMaterial=auth.WORK_HUB_PROJECT_MATERIALS.find(item=>item.visibility==='private');
+  assert.equal(auth.canCurrentAccountSeeProjectMaterial(projectMaterial),true); assert.equal(auth.canCurrentAccountSeeProjectMaterial(selected),false); assert.equal(auth.canCurrentAccountSeeProjectMaterial(privateMaterial),true);
+  selected.tenantId='other-tenant'; assert.equal(auth.canCurrentAccountSeeProjectMaterial(selected),false);
+  roleGrants.运营编辑.dataScope='self'; roleGrants.运营编辑.grants.workhub=[];
+  assert.equal(auth.canCurrentAccountAccessProject(growth),false);
+});
+
 test('prototype inline scripts remain valid JavaScript',()=>{const scripts=[...html.matchAll(/<script(?:\s[^>]*)?>([\s\S]*?)<\/script>/gi)].map(match=>match[1]);scripts.forEach((source,index)=>assert.doesNotThrow(()=>new vm.Script(source,{filename:`prototype-inline-${index}.js`})));});
 
 test('work hub owns tasks customers projects and meeting minutes belongs to brain',()=>{
