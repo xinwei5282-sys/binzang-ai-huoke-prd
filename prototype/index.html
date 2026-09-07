@@ -3327,6 +3327,9 @@ document.addEventListener('click',e=>{
     case 'open-project-material-upload':openProjectMaterialUpload(el.dataset.projectId);break;
     case 'edit-project-material-permissions':openProjectMaterialPermissions(el.dataset.materialId);break;
     case 'open-project-material-source':openProjectMaterialSource(el.dataset.materialId);break;
+    case 'open-project-task-list':openProjectTaskList(el.dataset.projectId);break;
+    case 'open-project-deliverable':openProjectDeliverable(el.dataset.deliverableType,el.dataset.sourceId);break;
+    case 'retry-project-material':retryProjectMaterial(el.dataset.materialId);break;
     case 'create-project-commercial-document':createProjectCommercialDocument(el.dataset.deliverableType);break;
     case 'generate-customer-followup':generateCustomerFollowupScript();break;
     case 'adopt-followup':adoptCustomerFollowupScript();break;
@@ -4022,6 +4025,10 @@ function renderWorkHub(){
   const meetingHost=document.querySelector('#enterpriseMemoryList');
   if(meetingHost)meetingHost.innerHTML=WORK_HUB_MEETINGS.filter(canCurrentAccountSeeWorkItem).map(item=>'<article class="card pad" data-meeting-id="'+item.id+'"><div class="head"><h3>'+safeText(item.name)+'</h3><span class="bdg '+(item.stage==='ready'?'ok':item.stage==='failed'?'dng':'brd')+'">'+meetingStageLabel(item.stage)+'</span></div><div class="meeting-card-meta"><span>'+(item.mediaType==='video'?'视频':'音频')+'</span><span>时长 '+safeText(item.duration||'等待识别')+'</span><span>'+(item.visibility==='private'?'仅自己可见':'企业可见')+'</span><span>'+(item.actionItems?.length||0)+' 个行动项</span></div><p>'+safeText(item.summary)+'</p>'+(item.segmentProgress?'<div class="meeting-segment-progress"><b>'+item.segmentProgress.total+' 个分段 · 已完成 '+item.segmentProgress.completed+' 个</b><small>'+safeText(item.segmentProgress.current)+' · 结果生成后可查看 AI 总结与逐字稿</small></div>':'')+'<div class="rowact" style="margin-top:12px">'+(item.stage==='failed'?'<button class="btn sm" data-act="retry-work-meeting" data-meeting-id="'+item.id+'">重试解析</button>':'<button class="btn sm" data-act="open-enterprise-meeting-detail" data-meeting-id="'+item.id+'" '+(item.stage==='ready'?'':'disabled')+'>'+(item.stage==='ready'?'查看 AI 总结与逐字稿':'结果生成中')+'</button>')+'</div></article>').join('')||'<div class="card pad">当前账号暂无可见会议。</div>';
 }
+function openProjectTaskList(projectId){const project=WORK_HUB_PROJECTS.find(item=>item.id===projectId);if(!project||!canCurrentAccountAccessProject(project)){toast('当前账号无权查看该项目待办','warn');return;}workHubState.selectedProjectId=projectId;go('workhub');switchSubview('work-tasks');renderWorkTaskCenter();}
+function openProjectDeliverable(type,sourceId){const project=WORK_HUB_PROJECTS.find(item=>item.id===workHubState.selectedProjectId);if(!project||!canCurrentAccountAccessProject(project)){toast('当前账号无权查看该项目成果','warn');return;}if(type==='ppt'){if(!hasSystemAction('content','查看')){toast('当前账号没有营销物料查看权限','warn');return;}const task=WORK_HUB_TASKS.find(item=>item.projectId===project.id&&(item.resultId===sourceId||item.id===sourceId));if(task)openWorkTaskDeliverable(task.id);else toast('PPT 来源不可用，已保留项目操作记录','warn');return;}if(type==='script'){openWorkCustomerProfile(project.customerId);return;}openWorkProject(project.id,'deliverables');}
+function retryProjectMaterial(materialId){const material=WORK_HUB_PROJECT_MATERIALS.find(item=>item.id===materialId);if(!material||material.sourceAvailable===false){toast('来源不可用，无法重试','warn');return;}material.status='processing';renderWorkProjectDetail();setTimeout(()=>{material.status='ready';renderWorkProjectDetail();},450);}
+function renderProjectMaterialActions(material){const retry=material.status==='failed'&&material.sourceAvailable?'<button class="btn sm" data-act="retry-project-material" data-material-id="'+material.id+'">重试</button>':'';return '<div class="rowact"><button class="btn sm" data-act="open-project-material-source" data-material-id="'+material.id+'">查看</button>'+retry+'</div>';}
 renderWorkHub();
 renderWorkProjectList();
 renderWechatIntegration();
@@ -4030,5 +4037,5 @@ pruneRedundantSecondaryHeadings();
 applyContentHierarchy();
 syncPagePrdEntry($('.page.show')?.dataset.p||'home');
 </script>
-</body>
+ </body>
 </html>
