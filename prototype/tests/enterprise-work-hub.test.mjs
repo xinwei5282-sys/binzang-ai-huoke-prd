@@ -14,6 +14,12 @@ test('project materials support processing and scoped visibility',()=>{
  assert.equal(projectMaterialType({name:'方案.pptx'}),'ppt');assert.equal(projectMaterialType({name:'群聊.html'}),'chat');assert.equal(projectMaterialType({name:'会议.mp4',type:'video/mp4'}),'meeting');
 });
 test('material renderer only exposes authorized rows and permission actions',()=>{const source=html.match(/function renderProjectMaterials\(project\)\{[\s\S]*?\n\}/)?.[0]||'';for(const token of ['visibleProjectMaterials','projectMaterialTypeFilter','projectMaterialStatusFilter','open-project-material-source','edit-project-material-permissions','projectMaterialStatusLabel'])assert.match(source,new RegExp(token));assert.doesNotMatch(html,/PROJECT_.*CONTRACT|renderWorkHubLegacy|renderProjectOverviewContract/);});
+test('material ACL and source paths enforce real permission branches',()=>{
+ const permissions=sliceBetween('function openProjectMaterialPermissions','function renderProjectMeetings'),save=sliceBetween('function saveProjectMaterialPermissions','function openProjectMaterialSource'),source=sliceBetween('function openProjectMaterialSource','function renderProjectMeetings'),upload=sliceBetween('function submitProjectMaterialUpload','function renderProjectMaterials');
+ for(const token of ['editMaterialMembers','selectedMemberIds','checked'])assert.match(permissions,new RegExp(token));
+ for(const token of ['设置材料权限','canCurrentAccountAccessProject','editMaterialMembers','selected_members'])assert.match(save,new RegExp(token));
+ assert.match(source,/sourceAvailable/);assert.match(upload,/hasSystemAction\('knowledge','上传资料'\)/);assert.match(upload,/submitWorkMeetingUpload\(file/);
+});
 test('project function slices preserve complete workflow contracts',()=>{
  const create=sliceBetween('function openCreateWorkProject','function showProjectCreateStep'),advance=sliceBetween('function advanceProjectCreate','function saveWorkProject'),hub=sliceBetween('function renderWorkHub','function openWorkCustomerProfile'),overview=sliceBetween('function renderProjectOverview','function renderProjectMaterials'),detail=sliceBetween('function renderWorkProjectDetail','function openAddWorkProjectMember'),list=sliceBetween('function renderWorkProjectList','function openWorkTaskDeliverable');
  for(const token of ['WORK_HUB_CUSTOMERS.map','project-create-progress','项目名称','关联客户','项目状态','项目负责人','项目成员','data-step="1"','data-step="2"','data-step="3"'])assert.match(create,new RegExp(token));assert.match(advance,/newProjectName/);assert.match(advance,/newProjectOwner/);
