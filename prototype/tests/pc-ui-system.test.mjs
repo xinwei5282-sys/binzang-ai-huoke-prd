@@ -25,9 +25,10 @@ test('shared PC components and responsive workspaces remain available', () => {
   assert.match(html, /\.page\{[^}]*max-width:none/);
 });
 
-test('home is diagnosis-first while deeper operating tools remain reachable', () => {
-  assert.match(html, /经营总览/);
+test('workbench combines diagnosis priority with actionable tasks while deeper tools remain reachable', () => {
+  assert.match(html, /home:\['工作台','经营重点 · 我的待办 · 本周排期'\]/);
   assert.match(html, /补齐企业资料，生成可信的基础诊断/);
+  assert.match(html, /id="workTaskCenter"/);
   assert.doesNotMatch(html, /<div class="t">企业 Agent 经营驾驶舱<\/div>/);
   for (const page of ['plan', 'kb', 'acquisition']) assert.match(html, new RegExp(`data-p="${page}"`));
   for (const removed of ['tasks', 'review']) assert.doesNotMatch(html, new RegExp(`data-p="${removed}"`));

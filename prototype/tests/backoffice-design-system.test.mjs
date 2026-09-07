@@ -24,14 +24,16 @@ test('backoffice shell keeps the approved compact system', () => {
   assert.match(html, /PingFang SC.*HarmonyOS Sans SC.*Microsoft YaHei/);
 });
 
-test('home is result-first without a duplicate chat cockpit', () => {
+test('workbench is result-first and owns the actionable task workspace', () => {
   const home = html.match(/<section class="page show" data-p="home"([\s\S]*?)<section class="page" data-p="plan">/)?.[1] ?? '';
   for (const label of ['当前最重要', '需要老板审批', '本周期结果', '继续补充', '审核文章', '查看 VI']) {
     assert.match(home, new RegExp(label));
   }
   assert.doesNotMatch(home, /id="agentPrompt"|agent-command-bar|企业 Agent 学习建议/);
   assert.match(home, /home-priority-card/);
-  assert.equal((home.match(/class="card pad/g) || []).length, 7);
+  assert.match(home, /id="workTaskCenter"/);
+  assert.match(home, /id="workTaskFilter"/);
+  assert.equal((home.match(/class="card pad/g) || []).length, 4);
 });
 
 test('AI acquisition is a task workspace rather than a feature-card launcher', () => {

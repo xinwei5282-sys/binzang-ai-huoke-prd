@@ -12,7 +12,7 @@ test('prototype presents the general enterprise AI operating brain', () => {
 });
 
 test('customer navigation has exactly seven business entries', () => {
-  const entries = ['首页', '品牌与经营', '营销物料', 'AI 获客', '企业大脑', '设置'];
+  const entries = ['工作台', '客户管理', '品牌与经营', '营销物料', 'AI 获客', '企业大脑', '设置'];
   assert.equal((nav.match(/<button type="button" data-v=/g) || []).length, 7);
   for (const entry of entries) assert.match(nav, new RegExp(`>${entry}(?:<|$)`));
   for (const removed of ['企业档案', '成果中心', '作品库', '本地工作台']) assert.doesNotMatch(nav, new RegExp(`>${removed}<`));

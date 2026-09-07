@@ -87,7 +87,7 @@ const captures = [
   ['enterprise-brain-diagnosis', 'kb', null, 'diagnosis'],
   ['enterprise-brain-vi', 'kb', null, 'cognition'],
   ['brand-planning', 'brand-planning', 'brand-report'],
-  ['workhub-tasks', 'workhub', 'work-tasks'],
+  ['workbench-tasks', 'home'],
   ['workhub-customers', 'workhub', 'work-customers'],
   ['workhub-projects', 'workhub', 'work-projects'],
   ['marketing-materials-wechat', 'marketing-materials', 'material-wechat'],

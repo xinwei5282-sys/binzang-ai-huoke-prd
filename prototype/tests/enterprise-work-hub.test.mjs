@@ -25,8 +25,11 @@ test('meeting minutes link to projects only after explicit confirmation',()=>{fo
 test('project task entry keeps an exact selected-project filter',()=>{
  const renderer=sliceBetween('function renderWorkTaskCenter','function confirmWorkTask'),entry=sliceBetween('function openProjectTaskList','function openProjectDeliverable'),projectTasks=sliceBetween('function renderProjectTasks','function renderProjectDeliverables');
  assert.match(renderer,/f==='project'\?t\.projectId===workHubState\.selectedProjectId/);
- for(const token of ["workHubState.selectedProjectId=projectId","workHubState.taskFilter='project'","filter.value='project'","switchSubview('work-tasks')"])assert.match(entry,new RegExp(token.replace(/[.()']/g,'\\$&')));
- assert.match(projectTasks,/data-act="open-project-task-list"/);assert.match(projectTasks,/workTaskSourceLabel/);assert.match(projectTasks,/进入我的待办/);
+ const routes=[],subviews=[],renders=[],filter={value:'mine'},state={selectedProjectId:null,taskFilter:'mine'};
+ const openProjectTaskList=Function('WORK_HUB_PROJECTS','canCurrentAccountAccessProject','toast','workHubState','go','switchSubview','$','renderWorkTaskCenter',`${entry};return openProjectTaskList;`)([{id:'project-a'}],()=>true,()=>{},state,route=>routes.push(route),view=>subviews.push(view),()=>filter,()=>renders.push(true));
+ openProjectTaskList('project-a');
+ assert.equal(state.selectedProjectId,'project-a');assert.equal(state.taskFilter,'project');assert.equal(filter.value,'project');assert.deepEqual(routes,['home']);assert.deepEqual(subviews,[]);assert.equal(renders.length,1);
+ assert.match(projectTasks,/data-act="open-project-task-list"/);assert.match(projectTasks,/workTaskSourceLabel/);assert.match(projectTasks,/在工作台处理/);
 });
 test('my tasks can be summarized into project groups with an unassigned bucket',()=>{
  const grouping=sliceBetween('function groupWorkTasksByProject','function renderWorkTaskCenter');
@@ -46,15 +49,16 @@ test('weekly task calendar reschedules a task into a concrete time slot',()=>{
  reschedule('task-1','2026-09-11','14:00');
  assert.equal(tasks[0].dueAt,'9月11日 14:00');assert.equal(tasks[0].scheduledDate,'2026-09-11');assert.equal(tasks[0].scheduledTime,'14:00');assert.equal(renders.length,1);
 });
-test('workbench follows home and home reuses the same task aggregation and calendar',()=>{
+test('workbench is the home task surface while customer management has no standalone task page',()=>{
  const nav=sliceBetween('<section class="nav-group" data-nav-group="workspace">','</section>');
  assert.ok(nav.indexOf('data-v="home"')<nav.indexOf('data-v="workhub"'));
  assert.ok(nav.indexOf('data-v="workhub"')<nav.indexOf('data-v="brand-planning"'));
- assert.match(nav,/data-v="workhub"[\s\S]*?工作台/);
- assert.match(html,/['"]workhub['"]:\['工作台','我的待办 · 客户 · 项目'\]/);
- assert.match(html,/id="homeWorkTaskOverview"/);
- const home=sliceBetween('function renderHomeWorkTaskOverview','function setWorkHubAccount');
- for(const token of ['groupWorkTasksByProject','renderWorkTaskCalendar','homeWorkTaskOverview','今日待办','进入工作台'])assert.match(home,new RegExp(token));
+ assert.match(nav,/data-v="home"[\s\S]*?>工作台(?:<span[\s\S]*?<\/span>)?<\/button>/);assert.match(nav,/data-v="workhub"[\s\S]*?>客户管理<\/button>/);
+ assert.doesNotMatch(nav,/data-subview="work-tasks"/);
+ assert.match(html,/home:\['工作台','经营重点 · 我的待办 · 本周排期'\]/);assert.match(html,/['"]workhub['"]:\['客户管理','客户 · 项目'\]/);
+ const homePage=sliceBetween('<section class="page show" data-p="home"','<section class="page" data-p="plan">'),customerPage=sliceBetween('<section class="page" data-p="workhub"','<!-- KB -->');
+ for(const token of ['id="workTaskFilter"','id="workTaskGroupMode"','id="workTaskCenter"','按项目汇总','拖动待办'])assert.match(homePage,new RegExp(token));
+ assert.doesNotMatch(customerPage,/data-subview-panel="work-tasks"/);for(const view of ['work-customers','work-projects'])assert.match(customerPage,new RegExp(`data-subview-panel="${view}"`));
 });
 test('failed project material retry is authorized, recoverable and preserves unavailable sources',()=>{
  const retrySource=sliceBetween('function retryProjectMaterial','function renderProjectMaterialActions'),materials=[{id:'failed',status:'failed',sourceAvailable:true,errorReason:'解析失败'},{id:'archived',status:'ready',sourceAvailable:false}],messages=[];
@@ -74,7 +78,7 @@ test('project workspace PRDs define source ownership permissions recovery and ro
  for(const token of ['材料由上传账号拥有','selectedProjectId','sourceAvailable=false','PPT 跳转营销物料','不要求老板审批'])assert.match(project,new RegExp(token));
  for(const token of ['recommendedProjectId','重复确认不重复建材料','正文真源仍属于会议纪要'])assert.match(meeting,new RegExp(token));
  for(const token of ['项目空间复用系统权限','材料 ACL 是内容层约束','目标模块的查看权限'])assert.match(permission,new RegExp(token));
- for(const token of ['项目空间协作与来源基线','项目待办跳转携带','失败保留 `errorReason`','不设置老板审批门'])assert.match(baseline,new RegExp(token));
+ for(const token of ['项目空间协作与来源基线','项目待办跳转到工作台并携带','失败保留 `errorReason`','不设置老板审批门'])assert.match(baseline,new RegExp(token));
 });
 test('meeting project recommendation remains pending until confirmation and material linking is idempotent',()=>{
  const recommend=sliceBetween('function recommendMeetingProject','function ensureMeetingProjectMaterialLink'),ensure=sliceBetween('function ensureMeetingProjectMaterialLink','function confirmMeetingProjectLink'),confirm=sliceBetween('function confirmMeetingProjectLink','function renderMeetingProjectLink'),finalize=sliceBetween('function finalizeMeetingProjectLink','function submitWorkMeetingUpload');
@@ -124,9 +128,10 @@ test('authorization behavior enforces tenant, scope, membership and material vis
 
 test('prototype inline scripts remain valid JavaScript',()=>{const scripts=[...html.matchAll(/<script(?:\s[^>]*)?>([\s\S]*?)<\/script>/gi)].map(match=>match[1]);scripts.forEach((source,index)=>assert.doesNotThrow(()=>new vm.Script(source,{filename:`prototype-inline-${index}.js`})));});
 
-test('work hub owns tasks customers projects and meeting minutes belongs to brain',()=>{
+test('workbench owns tasks while customer management owns customers and projects',()=>{
  assert.match(html,/data-v="workhub"/); assert.match(html,/data-p="workhub"/);
- for(const view of ['work-tasks','work-customers','work-projects']) { assert.match(html,new RegExp(`data-subview="${view}"`)); assert.match(html,new RegExp(`data-subview-panel="${view}"`)); }
+ assert.match(html,/data-p="home"[\s\S]*id="workTaskCenter"/);assert.doesNotMatch(html,/data-subview-panel="work-tasks"/);
+ for(const view of ['work-customers','work-projects']) { assert.match(html,new RegExp(`data-subview="${view}"`)); assert.match(html,new RegExp(`data-subview-panel="${view}"`)); }
  assert.match(html,/data-kbtab="memory"/); assert.match(html,/data-kbpanel="memory"/); assert.doesNotMatch(html,/data-p="tasks"/);
 });
 test('prototype declares controlled account and conflict contracts',()=>{
@@ -210,7 +215,7 @@ test('work hub browser capture covers unified project workspace states',()=>{
 });
 
 test('full browser capture audits work hub routes as first-class pages',()=>{
-  for(const state of ['workhub-tasks','workhub-customers','workhub-projects','kb-memory']) {
+  for(const state of ['workbench-tasks','workhub-customers','workhub-projects','kb-memory']) {
     assert.match(fullCapture,new RegExp(`\\['${state}'[^\\n]+`));
   }
   assert.match(fullCapture,/data-v="system"/);

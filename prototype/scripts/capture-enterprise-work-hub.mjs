@@ -102,17 +102,17 @@ runtimeErrors.length = 0;
 const audits = {};
 
 await evaluate(`setWorkHubAccount('acct-boss');go('home')`);
-const bossHome = await evaluate(`(() => ({route:document.querySelector('.page.show')?.dataset.p,decisions:Boolean(document.querySelector('#homeDecisionQueue')),customers:Boolean(document.querySelector('#homeCustomerOpportunities')),tasks:Boolean(document.querySelector('#homeTaskTree')),role:document.querySelector('#homeDecisionQueue')?.textContent||''}))()`);
+const bossHome = await evaluate(`(() => ({route:document.querySelector('.page.show')?.dataset.p,decisions:Boolean(document.querySelector('#homeDecisionQueue')),customers:Boolean(document.querySelector('#homeCustomerOpportunities')),tasks:Boolean(document.querySelector('#workTaskCenter')),role:document.querySelector('#homeDecisionQueue')?.textContent||''}))()`);
 if (bossHome.route !== 'home' || !bossHome.decisions || !bossHome.customers || !bossHome.tasks || !bossHome.role.includes('老板决策')) throw new Error(`boss home audit failed: ${JSON.stringify(bossHome)}`);
 audits['boss-home'] = await screenshot('boss-home');
 
-const homeWorkbench = await evaluate(`(() => {const nav=[...document.querySelectorAll('[data-nav-group="workspace"]>button')].map(button=>button.textContent.trim()),host=document.querySelector('#homeWorkTaskOverview'),text=host?.textContent||'';return{nav,overview:Boolean(host),project:text.includes('极光科技增长项目'),calendar:Boolean(host?.querySelector('[data-task-calendar-date]')),today:text.includes('今日待办'),workbench:text.includes('进入工作台')}})()`);
-if (homeWorkbench.nav[0] !== '首页' || !homeWorkbench.nav[1]?.startsWith('工作台') || !homeWorkbench.overview || !homeWorkbench.project || !homeWorkbench.calendar || !homeWorkbench.workbench) throw new Error(`home workbench integration audit failed: ${JSON.stringify(homeWorkbench)}`);
+const homeWorkbench = await evaluate(`(() => {const nav=[...document.querySelectorAll('[data-nav-group="workspace"]>button')].map(button=>button.textContent.trim()),host=document.querySelector('#homeWorkTaskWorkspace'),text=host?.textContent||'';return{nav,overview:Boolean(host),project:text.includes('极光科技增长项目'),calendar:Boolean(host?.querySelector('[data-task-calendar-date]')),tasks:text.includes('我的待办'),workbench:document.querySelector('#ptitle')?.textContent==='工作台'}})()`);
+if (!homeWorkbench.nav[0]?.startsWith('工作台') || homeWorkbench.nav[1] !== '客户管理' || !homeWorkbench.overview || !homeWorkbench.project || !homeWorkbench.calendar || !homeWorkbench.tasks || !homeWorkbench.workbench) throw new Error(`home workbench integration audit failed: ${JSON.stringify(homeWorkbench)}`);
 audits['home-workbench-summary'] = await screenshot('home-workbench-summary');
 
-await evaluate(`go('workhub');switchSubview('work-tasks');setWorkTaskGroupMode('project')`);
-const projectTaskSummary = await evaluate(`(() => {const text=document.querySelector('#workTaskCenter')?.textContent||'';return{route:document.querySelector('.page.show')?.dataset.p,parentTitle:document.querySelector('#ptitle')?.textContent||'',pageTitle:document.querySelector('[data-p="workhub"]>.lead .t')?.textContent||'',groups:document.querySelectorAll('[data-task-project-group]').length,project:text.includes('极光科技增长项目'),calendar:Boolean(document.querySelector('#workTaskCenter [data-task-calendar-date]')),mode:document.querySelector('#workTaskGroupMode')?.value||''}})()`);
-if (projectTaskSummary.route !== 'workhub' || projectTaskSummary.parentTitle !== '工作台' || projectTaskSummary.pageTitle !== '我的待办' || projectTaskSummary.groups < 1 || !projectTaskSummary.project || !projectTaskSummary.calendar || projectTaskSummary.mode !== 'project') throw new Error(`project task summary audit failed: ${JSON.stringify(projectTaskSummary)}`);
+await evaluate(`go('home');setWorkTaskGroupMode('project')`);
+const projectTaskSummary = await evaluate(`(() => {const text=document.querySelector('#workTaskCenter')?.textContent||'';return{route:document.querySelector('.page.show')?.dataset.p,parentTitle:document.querySelector('#ptitle')?.textContent||'',pageTitle:document.querySelector('[data-p="home"]>.lead .t')?.textContent||'',groups:document.querySelectorAll('[data-task-project-group]').length,project:text.includes('极光科技增长项目'),calendar:Boolean(document.querySelector('#workTaskCenter [data-task-calendar-date]')),mode:document.querySelector('#workTaskGroupMode')?.value||''}})()`);
+if (projectTaskSummary.route !== 'home' || projectTaskSummary.parentTitle !== '工作台' || projectTaskSummary.groups < 1 || !projectTaskSummary.project || !projectTaskSummary.calendar || projectTaskSummary.mode !== 'project') throw new Error(`project task summary audit failed: ${JSON.stringify(projectTaskSummary)}`);
 audits['task-project-summary'] = await screenshot('task-project-summary');
 
 const calendarDrag = await evaluate(`(() => {const source=document.querySelector('#workTaskCenter [data-task-id="task-meeting-followup"][draggable="true"]'),slot=document.querySelector('#workTaskCenter [data-task-calendar-date="2026-09-11"][data-task-calendar-time="14:00"]'),transfer=new DataTransfer();source?.dispatchEvent(new DragEvent('dragstart',{bubbles:true,dataTransfer:transfer}));slot?.dispatchEvent(new DragEvent('dragover',{bubbles:true,cancelable:true,dataTransfer:transfer}));slot?.dispatchEvent(new DragEvent('drop',{bubbles:true,cancelable:true,dataTransfer:transfer}));const task=WORK_HUB_TASKS.find(item=>item.id==='task-meeting-followup'),newSlot=document.querySelector('#workTaskCenter [data-task-calendar-date="2026-09-11"][data-task-calendar-time="14:00"]');return{dueAt:task?.dueAt,scheduledDate:task?.scheduledDate,scheduledTime:task?.scheduledTime,rendered:newSlot?.textContent.includes('确认极光科技会议下一步')}})()`);
@@ -126,7 +126,7 @@ audits['task-schedule-fallback'] = await screenshot('task-schedule-fallback');
 await evaluate(`closeModal()`);
 
 await evaluate(`go('home')`);
-const homeTaskSync = await evaluate(`(() => {const slot=document.querySelector('#homeWorkTaskOverview [data-task-calendar-date="2026-09-11"][data-task-calendar-time="14:00"]'),task=WORK_HUB_TASKS.find(item=>item.id==='task-meeting-followup');return{route:document.querySelector('.page.show')?.dataset.p,dueAt:task?.dueAt,rendered:slot?.textContent.includes('确认极光科技会议下一步')}})()`);
+const homeTaskSync = await evaluate(`(() => {const slot=document.querySelector('#workTaskCenter [data-task-calendar-date="2026-09-11"][data-task-calendar-time="14:00"]'),task=WORK_HUB_TASKS.find(item=>item.id==='task-meeting-followup');return{route:document.querySelector('.page.show')?.dataset.p,dueAt:task?.dueAt,rendered:slot?.textContent.includes('确认极光科技会议下一步')}})()`);
 if (homeTaskSync.route !== 'home' || homeTaskSync.dueAt !== '9月11日 14:00' || !homeTaskSync.rendered) throw new Error(`home task sync audit failed: ${JSON.stringify(homeTaskSync)}`);
 audits['home-task-sync'] = await screenshot('home-task-sync');
 
@@ -182,7 +182,7 @@ audits['project-account-visibility'] = await screenshot('project-account-visibil
 
 await evaluate(`setWorkHubAccount('acct-boss');go('permissions');openSystemRoleEditor('管理员')`);
 const workhubPermissionModule = await evaluate(`(() => {const module=document.querySelector('#modal [data-permission-module="workhub"]');return{route:document.querySelector('.page.show')?.dataset.p,label:module?.textContent||'',actions:module?.querySelectorAll('.permission-child').length||0,checked:module?.querySelectorAll('.permission-child:checked').length||0}})()`);
-if (workhubPermissionModule.route !== 'permissions' || !workhubPermissionModule.label.includes('工作台') || workhubPermissionModule.actions !== 6 || workhubPermissionModule.checked !== 6) throw new Error(`workhub permission module audit failed: ${JSON.stringify(workhubPermissionModule)}`);
+if (workhubPermissionModule.route !== 'permissions' || !workhubPermissionModule.label.includes('客户管理') || workhubPermissionModule.actions !== 6 || workhubPermissionModule.checked !== 6) throw new Error(`workhub permission module audit failed: ${JSON.stringify(workhubPermissionModule)}`);
 audits['workhub-permission-module'] = await screenshot('workhub-permission-module');
 await evaluate(`closeModal()`);
 
@@ -240,16 +240,16 @@ if (conflict.route !== 'workhub' || conflict.choices < 3 || !conflict.hasEmploye
 audits['project-conflict'] = await screenshot('project-conflict');
 
 await evaluate(`document.querySelector('[data-act="create-project-commercial-document"][data-deliverable-type="contract"]')?.click()`);
-const commercialTask = await evaluate(`(() => {const task=[...WORK_HUB_TASKS].reverse().find(item=>item.deliverableType==='contract');return{taskId:task?.id||'',status:task?.status||'',owner:task?.ownerAccountId||'',taskPanel:document.querySelector('[data-subview-panel="work-tasks"]')?.classList.contains('show')}})()`);
-if (!commercialTask.taskId || commercialTask.status !== 'pending' || commercialTask.owner !== 'acct-employee-lin' || !commercialTask.taskPanel) throw new Error(`commercial task audit failed: ${JSON.stringify(commercialTask)}`);
+const commercialTask = await evaluate(`(() => {const task=[...WORK_HUB_TASKS].reverse().find(item=>item.deliverableType==='contract');return{taskId:task?.id||'',status:task?.status||'',owner:task?.ownerAccountId||'',route:document.querySelector('.page.show')?.dataset.p,taskVisible:Boolean(document.querySelector('#workTaskCenter [data-task-id="'+task?.id+'"]'))}})()`);
+if (!commercialTask.taskId || commercialTask.status !== 'pending' || commercialTask.owner !== 'acct-employee-lin' || commercialTask.route !== 'home' || !commercialTask.taskVisible) throw new Error(`commercial task audit failed: ${JSON.stringify(commercialTask)}`);
 await evaluate(`runWorkAgentTask('${commercialTask.taskId}')`);
 await new Promise(resolveWait => setTimeout(resolveWait, 850));
 const commercialResult = await evaluate(`(() => {const task=WORK_HUB_TASKS.find(item=>item.id==='${commercialTask.taskId}'),project=WORK_HUB_PROJECTS.find(item=>item.id==='proj-growth');return{status:task?.status||'',resultId:task?.resultId||'',projectHasResult:project?.commercialDocuments.includes('contract-draft · 合同草稿')||false}})()`);
 if (commercialResult.status !== 'ready' || !commercialResult.resultId || !commercialResult.projectHasResult) throw new Error(`commercial result audit failed: ${JSON.stringify(commercialResult)}`);
 
-await evaluate(`setWorkHubAccount('acct-boss');go('workhub');switchSubview('work-tasks');renderWorkTaskCenter()`);
+await evaluate(`setWorkHubAccount('acct-boss');go('home');renderWorkTaskCenter()`);
 const taskTree = await evaluate(`(() => ({route:document.querySelector('.page.show')?.dataset.p,rows:document.querySelectorAll('#workTaskCenter [data-task-id]').length,hasSource:Boolean(document.querySelector('#workTaskCenter [data-act="open-work-task-source"]')),hasChild:/↳/.test(document.querySelector('#workTaskCenter')?.textContent||'')}))()`);
-if (taskTree.route !== 'workhub' || taskTree.rows < 1 || !taskTree.hasSource || !taskTree.hasChild) throw new Error(`task tree audit failed: ${JSON.stringify(taskTree)}`);
+if (taskTree.route !== 'home' || taskTree.rows < 1 || !taskTree.hasSource || !taskTree.hasChild) throw new Error(`task tree audit failed: ${JSON.stringify(taskTree)}`);
 audits['task-tree'] = await screenshot('task-tree');
 
 await evaluate(`openWorkTaskDeliverable('task-agent-ppt')`);
