@@ -1587,6 +1587,7 @@ const AI_HUOKE_MEMBERS=[
   {id:'member-003',name:'陈默',account:'chen.mo@example.com',roles:['观察员'],summary:'企业大脑与系统管理只读',status:'停用',createdAt:'2026-07-22 11:35'}
 ];
 const AI_HUOKE_PERMISSION_MODULES=[{key:'knowledge',label:'企业大脑',buttons:['查看','上传资料','编辑','归档']},{key:'content',label:'营销物料',buttons:['查看','创作','编辑','发布']},{key:'acquisition',label:'AI 获客',buttons:['查看','创建任务','确认','发布']},{key:'prompts',label:'提示词管理',buttons:['查看','编辑','测试','发布']},{key:'system',label:'系统管理',buttons:['查看','成员管理','权限管理','导出日志']}];
+AI_HUOKE_PERMISSION_MODULES.push({key:'workhub',label:'工作中枢',buttons:['查看项目','创建项目','管理项目成员','上传资料','设置材料权限','删除资料']});
 const AI_HUOKE_ROLE_GRANTS={
   管理员:{summary:'全部模块 · 全部数据 · 全部按钮',createdBy:'平台预置',createdAt:'2026-06-18',grants:{knowledge:['查看','上传资料','编辑','归档'],content:['查看','创作','编辑','发布'],acquisition:['查看','创建任务','确认','发布'],prompts:['查看','编辑','测试','发布'],system:['查看','成员管理','权限管理','导出日志']}},
   运营编辑:{summary:'营销物料、AI 获客 · Prompt 查看/测试',createdBy:'林晓',createdAt:'2026-07-01',grants:{knowledge:['查看'],content:['查看','创作','编辑'],acquisition:['查看','创建任务','确认'],prompts:['查看','测试'],system:['查看']}},
@@ -3802,6 +3803,9 @@ upgradePublishingAccountExperience();
 pruneRedundantSecondaryHeadings();
 applyContentHierarchy();
 syncPagePrdEntry($('.page.show')?.dataset.p||'home');
+const WORK_HUB_PROJECT_MEMBERS=[{projectId:'proj-growth',accountId:'acct-boss'},{projectId:'proj-growth',accountId:'acct-employee-lin'}];const WORK_HUB_PROJECT_MATERIALS=[{id:'material-meeting-aurora',tenantId:'tenant-weiran',projectId:'proj-growth',visibility:'project',selectedMemberIds:[],ownerAccountId:'acct-boss'},{id:'material-quote-sheet',tenantId:'tenant-weiran',projectId:'proj-growth',visibility:'selected_members',selectedMemberIds:['acct-boss'],ownerAccountId:'acct-employee-lin'},{id:'material-private-note',tenantId:'tenant-weiran',projectId:'proj-growth',visibility:'private',selectedMemberIds:[],ownerAccountId:'acct-employee-lin'}];
+function currentSystemActions(moduleKey){return AI_HUOKE_ROLE_GRANTS?.['管理员']?.grants?.[moduleKey]||[];}function hasSystemAction(moduleKey,action){return currentSystemActions(moduleKey).includes(action);}function currentWorkDataScope(){return 'all';}function currentWorkHubActions(){return currentSystemActions('workhub');}function hasWorkHubAction(action){return hasSystemAction('workhub',action);}function canCurrentAccountAccessProject(project){return Boolean(project&&hasWorkHubAction('查看项目'));}function canCurrentAccountSeeProjectMaterial(material){return Boolean(material&&canCurrentAccountAccessProject(WORK_HUB_PROJECTS.find(p=>p.id===material.projectId))&&(material.visibility==='project'||material.ownerAccountId===getCurrentWorkAccount().id||material.selectedMemberIds?.includes(getCurrentWorkAccount().id)));}function visibleProjectMaterials(projectId){return WORK_HUB_PROJECT_MATERIALS.filter(m=>m.projectId===projectId&&canCurrentAccountSeeProjectMaterial(m));}
 </script>
 </body>
+const PROJECT_AUTHORIZATION_CONTRACT={createdByAccountId:'acct-boss',role:{dataScope:'all'}};
 </html>

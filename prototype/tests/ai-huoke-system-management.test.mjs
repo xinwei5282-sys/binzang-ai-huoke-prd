@@ -18,6 +18,7 @@ const pagePrdContexts = [
   'studio', 'tune', 'works',
   ...routes,
 ];
+test('system RBAC registers work hub project actions',()=>{const source=html.match(/const AI_HUOKE_PERMISSION_MODULES=\[[\s\S]*?\];/)?.[0]||'';assert.match(html,/key:'workhub'/);for(const action of ['查看项目','创建项目','管理项目成员','上传资料','设置材料权限','删除资料'])assert.match(html,new RegExp(action));});
 
 function pageRoutes() {
   return [...html.matchAll(/<section\s+class="page(?:\s+show)?"[^>]*data-p="([^"]+)"/g)].map(match => match[1]);

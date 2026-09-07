@@ -6,6 +6,7 @@ import vm from 'node:vm';
 const html = readFileSync(resolve('prototype/index.html'),'utf8');
 const capture = readFileSync(resolve('prototype/scripts/capture-enterprise-work-hub.mjs'),'utf8');
 const fullCapture = readFileSync(resolve('prototype/scripts/capture-v1-prototype.mjs'),'utf8');
+test('project access and material ACL are separate contracts',()=>{for(const token of ['WORK_HUB_PROJECT_MEMBERS','WORK_HUB_PROJECT_MATERIALS','currentSystemActions','hasSystemAction','currentWorkDataScope','currentWorkHubActions','hasWorkHubAction','canCurrentAccountAccessProject','canCurrentAccountSeeProjectMaterial','visibleProjectMaterials','selectedMemberIds','createdByAccountId','dataScope'])assert.match(html,new RegExp(token));for(const visibility of ['project','selected_members','private'])assert.match(html,new RegExp(`visibility:'${visibility}'`));});
 
 test('prototype inline scripts remain valid JavaScript',()=>{const scripts=[...html.matchAll(/<script(?:\s[^>]*)?>([\s\S]*?)<\/script>/gi)].map(match=>match[1]);scripts.forEach((source,index)=>assert.doesNotThrow(()=>new vm.Script(source,{filename:`prototype-inline-${index}.js`})));});
 
