@@ -106,6 +106,30 @@ const bossHome = await evaluate(`(() => ({route:document.querySelector('.page.sh
 if (bossHome.route !== 'home' || !bossHome.decisions || !bossHome.customers || !bossHome.tasks || !bossHome.role.includes('老板决策')) throw new Error(`boss home audit failed: ${JSON.stringify(bossHome)}`);
 audits['boss-home'] = await screenshot('boss-home');
 
+const homeWorkbench = await evaluate(`(() => {const nav=[...document.querySelectorAll('[data-nav-group="workspace"]>button')].map(button=>button.textContent.trim()),host=document.querySelector('#homeWorkTaskOverview'),text=host?.textContent||'';return{nav,overview:Boolean(host),project:text.includes('极光科技增长项目'),calendar:Boolean(host?.querySelector('[data-task-calendar-date]')),today:text.includes('今日待办'),workbench:text.includes('进入工作台')}})()`);
+if (homeWorkbench.nav[0] !== '首页' || !homeWorkbench.nav[1]?.startsWith('工作台') || !homeWorkbench.overview || !homeWorkbench.project || !homeWorkbench.calendar || !homeWorkbench.workbench) throw new Error(`home workbench integration audit failed: ${JSON.stringify(homeWorkbench)}`);
+audits['home-workbench-summary'] = await screenshot('home-workbench-summary');
+
+await evaluate(`go('workhub');switchSubview('work-tasks');setWorkTaskGroupMode('project')`);
+const projectTaskSummary = await evaluate(`(() => {const text=document.querySelector('#workTaskCenter')?.textContent||'';return{route:document.querySelector('.page.show')?.dataset.p,parentTitle:document.querySelector('#ptitle')?.textContent||'',pageTitle:document.querySelector('[data-p="workhub"]>.lead .t')?.textContent||'',groups:document.querySelectorAll('[data-task-project-group]').length,project:text.includes('极光科技增长项目'),calendar:Boolean(document.querySelector('#workTaskCenter [data-task-calendar-date]')),mode:document.querySelector('#workTaskGroupMode')?.value||''}})()`);
+if (projectTaskSummary.route !== 'workhub' || projectTaskSummary.parentTitle !== '工作台' || projectTaskSummary.pageTitle !== '我的待办' || projectTaskSummary.groups < 1 || !projectTaskSummary.project || !projectTaskSummary.calendar || projectTaskSummary.mode !== 'project') throw new Error(`project task summary audit failed: ${JSON.stringify(projectTaskSummary)}`);
+audits['task-project-summary'] = await screenshot('task-project-summary');
+
+const calendarDrag = await evaluate(`(() => {const source=document.querySelector('#workTaskCenter [data-task-id="task-meeting-followup"][draggable="true"]'),slot=document.querySelector('#workTaskCenter [data-task-calendar-date="2026-09-11"][data-task-calendar-time="14:00"]'),transfer=new DataTransfer();source?.dispatchEvent(new DragEvent('dragstart',{bubbles:true,dataTransfer:transfer}));slot?.dispatchEvent(new DragEvent('dragover',{bubbles:true,cancelable:true,dataTransfer:transfer}));slot?.dispatchEvent(new DragEvent('drop',{bubbles:true,cancelable:true,dataTransfer:transfer}));const task=WORK_HUB_TASKS.find(item=>item.id==='task-meeting-followup'),newSlot=document.querySelector('#workTaskCenter [data-task-calendar-date="2026-09-11"][data-task-calendar-time="14:00"]');return{dueAt:task?.dueAt,scheduledDate:task?.scheduledDate,scheduledTime:task?.scheduledTime,rendered:newSlot?.textContent.includes('确认极光科技会议下一步')}})()`);
+if (calendarDrag.dueAt !== '9月11日 14:00' || calendarDrag.scheduledDate !== '2026-09-11' || calendarDrag.scheduledTime !== '14:00' || !calendarDrag.rendered) throw new Error(`task calendar drag audit failed: ${JSON.stringify(calendarDrag)}`);
+audits['task-calendar-drag'] = await screenshot('task-calendar-drag');
+
+await evaluate(`document.querySelector('#workTaskCenter [data-act="schedule-work-task"][data-task-id="task-meeting-followup"]')?.click()`);
+const scheduleFallback = await evaluate(`(() => ({open:document.querySelector('#mask')?.classList.contains('show'),title:document.querySelector('#modalTitle')?.textContent||'',date:document.querySelector('#workTaskScheduleDate')?.value||'',time:document.querySelector('#workTaskScheduleTime')?.value||''}))()`);
+if (!scheduleFallback.open || scheduleFallback.title !== '调整待办时间' || scheduleFallback.date !== '2026-09-11' || scheduleFallback.time !== '14:00') throw new Error(`task schedule fallback audit failed: ${JSON.stringify(scheduleFallback)}`);
+audits['task-schedule-fallback'] = await screenshot('task-schedule-fallback');
+await evaluate(`closeModal()`);
+
+await evaluate(`go('home')`);
+const homeTaskSync = await evaluate(`(() => {const slot=document.querySelector('#homeWorkTaskOverview [data-task-calendar-date="2026-09-11"][data-task-calendar-time="14:00"]'),task=WORK_HUB_TASKS.find(item=>item.id==='task-meeting-followup');return{route:document.querySelector('.page.show')?.dataset.p,dueAt:task?.dueAt,rendered:slot?.textContent.includes('确认极光科技会议下一步')}})()`);
+if (homeTaskSync.route !== 'home' || homeTaskSync.dueAt !== '9月11日 14:00' || !homeTaskSync.rendered) throw new Error(`home task sync audit failed: ${JSON.stringify(homeTaskSync)}`);
+audits['home-task-sync'] = await screenshot('home-task-sync');
+
 await evaluate(`setWorkHubAccount('acct-boss');go('workhub');switchSubview('work-projects');renderWorkHub()`);
 const projectList = await evaluate(`(() => ({route:document.querySelector('.page.show')?.dataset.p,rows:document.querySelectorAll('#workProjectList > article').length,createVisible:document.querySelector('[data-act="create-work-project"]')?.hidden===false}))()`);
 if (projectList.route !== 'workhub' || projectList.rows < 2 || !projectList.createVisible) throw new Error(`project list audit failed: ${JSON.stringify(projectList)}`);
@@ -158,7 +182,7 @@ audits['project-account-visibility'] = await screenshot('project-account-visibil
 
 await evaluate(`setWorkHubAccount('acct-boss');go('permissions');openSystemRoleEditor('管理员')`);
 const workhubPermissionModule = await evaluate(`(() => {const module=document.querySelector('#modal [data-permission-module="workhub"]');return{route:document.querySelector('.page.show')?.dataset.p,label:module?.textContent||'',actions:module?.querySelectorAll('.permission-child').length||0,checked:module?.querySelectorAll('.permission-child:checked').length||0}})()`);
-if (workhubPermissionModule.route !== 'permissions' || !workhubPermissionModule.label.includes('工作中枢') || workhubPermissionModule.actions !== 6 || workhubPermissionModule.checked !== 6) throw new Error(`workhub permission module audit failed: ${JSON.stringify(workhubPermissionModule)}`);
+if (workhubPermissionModule.route !== 'permissions' || !workhubPermissionModule.label.includes('工作台') || workhubPermissionModule.actions !== 6 || workhubPermissionModule.checked !== 6) throw new Error(`workhub permission module audit failed: ${JSON.stringify(workhubPermissionModule)}`);
 audits['workhub-permission-module'] = await screenshot('workhub-permission-module');
 await evaluate(`closeModal()`);
 

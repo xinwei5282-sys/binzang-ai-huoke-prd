@@ -28,6 +28,34 @@ test('project task entry keeps an exact selected-project filter',()=>{
  for(const token of ["workHubState.selectedProjectId=projectId","workHubState.taskFilter='project'","filter.value='project'","switchSubview('work-tasks')"])assert.match(entry,new RegExp(token.replace(/[.()']/g,'\\$&')));
  assert.match(projectTasks,/data-act="open-project-task-list"/);assert.match(projectTasks,/workTaskSourceLabel/);assert.match(projectTasks,/进入我的待办/);
 });
+test('my tasks can be summarized into project groups with an unassigned bucket',()=>{
+ const grouping=sliceBetween('function groupWorkTasksByProject','function renderWorkTaskCenter');
+ assert.match(grouping,/function groupWorkTasksByProject/);
+ const groupWorkTasksByProject=Function('WORK_HUB_PROJECTS',`${grouping};return groupWorkTasksByProject;`)([{id:'project-a',name:'项目 A',customerId:'customer-a'},{id:'project-b',name:'项目 B',customerId:'customer-b'}]);
+ const groups=groupWorkTasksByProject([{id:'task-1',projectId:'project-a',status:'pending'},{id:'task-2',projectId:null,status:'ready'},{id:'task-3',projectId:'project-a',status:'running'}]);
+ assert.deepEqual(groups.map(group=>group.id),['project-a','unassigned']);
+ assert.equal(groups[0].tasks.length,2);assert.equal(groups[0].unfinishedCount,2);assert.equal(groups[1].name,'日常待办');
+ assert.match(html,/id="workTaskGroupMode"/);assert.match(html,/按项目汇总/);assert.match(html,/平铺列表/);
+});
+test('weekly task calendar reschedules a task into a concrete time slot',()=>{
+ const calendar=sliceBetween('const WORK_TASK_CALENDAR_DAYS','function confirmWorkTask');
+ for(const token of ['WORK_TASK_CALENDAR_DAYS','renderWorkTaskCalendar','startWorkTaskDrag','dropWorkTaskOnCalendar','data-task-calendar-date','data-task-calendar-time','draggable="true"','openWorkTaskSchedule','schedule-work-task'])assert.match(calendar,new RegExp(token));
+ const rescheduleSource=sliceBetween('function formatWorkTaskDueAt','function renderWorkTaskCalendar');
+ const tasks=[{id:'task-1',dueAt:'待确认'}],renders=[];
+ const reschedule=Function('WORK_HUB_TASKS','renderWorkTaskCenter','toast',`${rescheduleSource};return rescheduleWorkTask;`)(tasks,()=>renders.push('render'),()=>{});
+ reschedule('task-1','2026-09-11','14:00');
+ assert.equal(tasks[0].dueAt,'9月11日 14:00');assert.equal(tasks[0].scheduledDate,'2026-09-11');assert.equal(tasks[0].scheduledTime,'14:00');assert.equal(renders.length,1);
+});
+test('workbench follows home and home reuses the same task aggregation and calendar',()=>{
+ const nav=sliceBetween('<section class="nav-group" data-nav-group="workspace">','</section>');
+ assert.ok(nav.indexOf('data-v="home"')<nav.indexOf('data-v="workhub"'));
+ assert.ok(nav.indexOf('data-v="workhub"')<nav.indexOf('data-v="brand-planning"'));
+ assert.match(nav,/data-v="workhub"[\s\S]*?工作台/);
+ assert.match(html,/['"]workhub['"]:\['工作台','我的待办 · 客户 · 项目'\]/);
+ assert.match(html,/id="homeWorkTaskOverview"/);
+ const home=sliceBetween('function renderHomeWorkTaskOverview','function setWorkHubAccount');
+ for(const token of ['groupWorkTasksByProject','renderWorkTaskCalendar','homeWorkTaskOverview','今日待办','进入工作台'])assert.match(home,new RegExp(token));
+});
 test('failed project material retry is authorized, recoverable and preserves unavailable sources',()=>{
  const retrySource=sliceBetween('function retryProjectMaterial','function renderProjectMaterialActions'),materials=[{id:'failed',status:'failed',sourceAvailable:true,errorReason:'解析失败'},{id:'archived',status:'ready',sourceAvailable:false}],messages=[];
  const retry=Function('WORK_HUB_PROJECT_MATERIALS','canCurrentAccountSeeProjectMaterial','toast','renderWorkProjectDetail','setTimeout',`${retrySource};return retryProjectMaterial;`)(materials,()=>true,(message)=>messages.push(message),()=>{},callback=>callback());
@@ -170,7 +198,7 @@ test('work hub browser capture honors verifier arguments and audits runtime stat
   assert.match(capture,/Emulation\.setDeviceMetricsOverride/);
   assert.match(capture,/visiblePages/);
   assert.match(capture,/documentOverflow/);
-  for(const state of ['boss-home','enterprise-memory','meeting-detail','enterprise-knowledge','employee-private-memory','customer-followup','project-conflict','task-tree','ppt-routing']) assert.match(capture,new RegExp(state));
+  for(const state of ['boss-home','home-workbench-summary','task-project-summary','task-calendar-drag','task-schedule-fallback','home-task-sync','enterprise-memory','meeting-detail','enterprise-knowledge','employee-private-memory','customer-followup','project-conflict','task-tree','ppt-routing']) assert.match(capture,new RegExp(state));
   assert.match(capture,/\$\{name\}-\$\{width\}x\$\{height\}\.png/);
 });
 

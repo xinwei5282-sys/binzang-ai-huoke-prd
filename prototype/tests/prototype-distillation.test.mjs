@@ -13,8 +13,8 @@ test('primary navigation exposes only the seven approved business outcomes', () 
 
   assert.deepEqual(topLevelRoutes, [
     'home',
-    'brand-planning',
     'workhub',
+    'brand-planning',
     'marketing-materials',
     'acquisition',
     'kb',
