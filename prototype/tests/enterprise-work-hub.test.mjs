@@ -24,30 +24,36 @@ test('material ACL and source paths enforce real permission branches',()=>{
 test('meeting minutes link to projects only after explicit confirmation',()=>{for(const token of ['openWorkMeetingUpload','recommendMeetingProject','confirmMeetingProjectLink','renderMeetingProjectLink','openProjectMeeting','returnToMeetingProject','AI 推荐项目','待关联','返回项目'])assert.match(html,new RegExp(token));assert.match(html,/data-act="confirm-meeting-project-link"/);assert.match(html,/data-act="return-to-meeting-project"/);const links=html.match(/const WORK_HUB_PROJECT_MATERIALS=\[[\s\S]*?\];/)?.[0]||'';assert.doesNotMatch(links,/transcript|chapters|actionItems/);});
 test('project task entry keeps an exact selected-project filter',()=>{
  const renderer=sliceBetween('function renderWorkTaskCenter','function confirmWorkTask'),entry=sliceBetween('function openProjectTaskList','function openProjectDeliverable'),projectTasks=sliceBetween('function renderProjectTasks','function renderProjectDeliverables');
- assert.match(renderer,/f==='project'\?t\.projectId===workHubState\.selectedProjectId/);
+ assert.match(renderer,/selectWorkTasks/);assert.match(renderer,/projectId:workHubState\.taskContextProjectId/);
  const routes=[],subviews=[],renders=[],filter={value:'mine'},state={selectedProjectId:null,taskFilter:'mine'};
- const openProjectTaskList=Function('WORK_HUB_PROJECTS','canCurrentAccountAccessProject','toast','workHubState','go','switchSubview','$','renderWorkTaskCenter',`${entry};return openProjectTaskList;`)([{id:'project-a'}],()=>true,()=>{},state,route=>routes.push(route),view=>subviews.push(view),()=>filter,()=>renders.push(true));
+ const openProjectTaskList=Function('WORK_HUB_PROJECTS','canCurrentAccountAccessProject','toast','workHubState','go','switchSubview','$','renderWorkTaskCenter',`${entry};return openProjectTaskList;`)([{id:'project-a'}],()=>true,()=>{},state,route=>routes.push(route),view=>subviews.push(view),selector=>selector==='#homeWorkTaskWorkspace'?{scrollIntoView(){}}:filter,()=>renders.push(true));
  openProjectTaskList('project-a');
- assert.equal(state.selectedProjectId,'project-a');assert.equal(state.taskFilter,'project');assert.equal(filter.value,'project');assert.deepEqual(routes,['home']);assert.deepEqual(subviews,[]);assert.equal(renders.length,1);
+ assert.equal(state.selectedProjectId,'project-a');assert.equal(state.taskContextProjectId,'project-a');assert.equal(state.taskFilter,'team');assert.equal(filter.value,'team');assert.deepEqual(routes,['home']);assert.deepEqual(subviews,[]);assert.equal(renders.length,1);
  assert.match(projectTasks,/data-act="open-project-task-list"/);assert.match(projectTasks,/workTaskSourceLabel/);assert.match(projectTasks,/在工作台处理/);
 });
-test('my tasks can be summarized into project groups with an unassigned bucket',()=>{
- const grouping=sliceBetween('function groupWorkTasksByProject','function renderWorkTaskCenter');
- assert.match(grouping,/function groupWorkTasksByProject/);
- const groupWorkTasksByProject=Function('WORK_HUB_PROJECTS',`${grouping};return groupWorkTasksByProject;`)([{id:'project-a',name:'项目 A',customerId:'customer-a'},{id:'project-b',name:'项目 B',customerId:'customer-b'}]);
- const groups=groupWorkTasksByProject([{id:'task-1',projectId:'project-a',status:'pending'},{id:'task-2',projectId:null,status:'ready'},{id:'task-3',projectId:'project-a',status:'running'}]);
- assert.deepEqual(groups.map(group=>group.id),['project-a','unassigned']);
- assert.equal(groups[0].tasks.length,2);assert.equal(groups[0].unfinishedCount,2);assert.equal(groups[1].name,'日常待办');
- assert.match(html,/id="workTaskGroupMode"/);assert.match(html,/按项目汇总/);assert.match(html,/平铺列表/);
+test('workbench uses one flat task list and preserves project context per task',()=>{
+ const renderer=sliceBetween('function renderWorkTaskCenter','function confirmWorkTask'),card=sliceBetween('function renderWorkTaskCard','function openWorkTaskDetail');
+ assert.match(renderer,/work-task-flat-list/);assert.match(renderer,/visible\.map\(renderWorkTaskCard\)/);
+ assert.doesNotMatch(html,/id="workTaskGroupMode"|function setWorkTaskGroupMode|function renderWorkTaskGroups/);
+ assert.match(card,/project\?\.name/);assert.match(card,/日常待办/);
 });
 test('weekly task calendar reschedules a task into a concrete time slot',()=>{
  const calendar=sliceBetween('const WORK_TASK_CALENDAR_DAYS','function confirmWorkTask');
  for(const token of ['WORK_TASK_CALENDAR_DAYS','renderWorkTaskCalendar','startWorkTaskDrag','dropWorkTaskOnCalendar','data-task-calendar-date','data-task-calendar-time','draggable="true"','openWorkTaskSchedule','schedule-work-task'])assert.match(calendar,new RegExp(token));
  const rescheduleSource=sliceBetween('function formatWorkTaskDueAt','function renderWorkTaskCalendar');
- const tasks=[{id:'task-1',dueAt:'待确认'}],renders=[];
- const reschedule=Function('WORK_HUB_TASKS','renderWorkTaskCenter','toast',`${rescheduleSource};return rescheduleWorkTask;`)(tasks,()=>renders.push('render'),()=>{});
+ const milestone={dueDate:'2026-09-10'},projects=[{id:'project-1',milestones:[milestone]}];
+ const tasks=[{id:'task-1',tenantId:'tenant-1',projectId:'project-1',milestoneIndex:0,dueAt:'待确认'}],renders=[],saved=new Map();
+ let allowed=true;
+ const {rescheduleWorkTask:reschedule,restoreWorkTaskSchedule:restore}=Function('WORK_HUB_TASKS','WORK_HUB_PROJECTS','renderWorkTaskCenter','toast','canCurrentAccountSeeWorkItem','getCurrentWorkAccount','canManageProjectLifecycle','localStorage','$',`${rescheduleSource};return {rescheduleWorkTask,restoreWorkTaskSchedule};`)(tasks,projects,()=>renders.push('render'),()=>{},()=>true,()=>({id:'other-account'}),()=>allowed,{setItem:(key,value)=>saved.set(key,value),getItem:key=>saved.get(key)},()=>null);
  reschedule('task-1','2026-09-11','14:00');
  assert.equal(tasks[0].dueAt,'9月11日 14:00');assert.equal(tasks[0].scheduledDate,'2026-09-11');assert.equal(tasks[0].scheduledTime,'14:00');assert.equal(renders.length,1);
+ assert.equal(milestone.dueDate,'2026-09-11');
+ allowed=false;
+ assert.equal(reschedule('task-1','2026-09-12','09:00'),null);
+ assert.equal(milestone.dueDate,'2026-09-11');
+ const reloaded={id:'task-1',tenantId:'tenant-1',projectId:'project-1',milestoneIndex:0};
+ restore(reloaded);
+ assert.equal(reloaded.dueAt,'9月11日 14:00');
 });
 test('workbench is the home task surface while customer management has no standalone task page',()=>{
  const nav=sliceBetween('<section class="nav-group" data-nav-group="workspace">','</section>');
@@ -55,10 +61,11 @@ test('workbench is the home task surface while customer management has no standa
  assert.ok(nav.indexOf('data-v="workhub"')<nav.indexOf('data-v="brand-planning"'));
  assert.match(nav,/data-v="home"[\s\S]*?>工作台(?:<span[\s\S]*?<\/span>)?<\/button>/);assert.match(nav,/data-v="workhub"[\s\S]*?>客户管理<\/button>/);
  assert.doesNotMatch(nav,/data-subview="work-tasks"/);
- assert.match(html,/home:\['工作台','经营重点 · 我的待办 · 本周排期'\]/);assert.match(html,/['"]workhub['"]:\['客户管理','客户 · 项目'\]/);
+ assert.match(html,/titles\.home=\['工作台','[^']*项目总览[^']*'\]/);assert.match(html,/['"]workhub['"]:\['客户管理','客户 · 项目'\]/);
  const homePage=sliceBetween('<section class="page show" data-p="home"','<section class="page" data-p="plan">'),customerPage=sliceBetween('<section class="page" data-p="workhub"','<!-- KB -->');
- for(const token of ['id="workTaskFilter"','id="workTaskGroupMode"','id="workTaskCenter"','按项目汇总','拖动待办'])assert.match(homePage,new RegExp(token));
- assert.doesNotMatch(customerPage,/data-subview-panel="work-tasks"/);for(const view of ['work-customers','work-projects'])assert.match(customerPage,new RegExp(`data-subview-panel="${view}"`));
+ for(const token of ['id="workTaskFilter"','id="workTaskStatusFilter"','id="workTaskCenter"','时间可在详情中调整'])assert.match(homePage,new RegExp(token));
+ assert.match(html,/data-act="work-calendar-week"/);assert.match(html,/dropWorkTaskOnCalendar/);
+ assert.doesNotMatch(customerPage,/data-subview-panel="work-tasks"/);assert.match(customerPage,/data-subview-panel="work-customers"/);assert.doesNotMatch(customerPage,/data-subview-panel="work-projects"/);
 });
 test('failed project material retry is authorized, recoverable and preserves unavailable sources',()=>{
  const retrySource=sliceBetween('function retryProjectMaterial','function renderProjectMaterialActions'),materials=[{id:'failed',status:'failed',sourceAvailable:true,errorReason:'解析失败'},{id:'archived',status:'ready',sourceAvailable:false}],messages=[];
@@ -71,7 +78,7 @@ test('project sources and deliverables route by owning module after permission c
  const source=sliceBetween('function openProjectMaterialSource','function openWorkMeetingUpload'),deliverable=sliceBetween('function openProjectDeliverable','function retryProjectMaterial'),renderer=sliceBetween('function renderProjectDeliverables','function renderProjectMembers');
  for(const token of ['canCurrentAccountSeeProjectMaterial','canCurrentAccountAccessProject','hasSystemAction','openProjectMeeting',"go('marketing-materials')",'openProjectDeliverable','资料来源'])assert.match(source,new RegExp(token.replace(/[()']/g,'\\$&')));
  for(const token of ["type==='ppt'","type==='script'","['quote','contract']","openWorkTaskDeliverable","openWorkCustomerProfile","成果来源不可用"])assert.match(deliverable,new RegExp(token.replace(/[()'\[\]]/g,'\\$&')));
- for(const token of ['进入 PPT 生成','查看交付物','进入跟进助手','project.commercialDocuments','workTaskSourceLabel'])assert.match(renderer,new RegExp(token));
+ for(const token of ['阶段交付清单','查看验收','查看来源','project.commercialDocuments','workTaskSourceLabel'])assert.match(renderer,new RegExp(token));
 });
 test('project workspace PRDs define source ownership permissions recovery and routing',()=>{
  const project=readFileSync(resolve('prd/pages/工作中枢-项目.md'),'utf8'),meeting=readFileSync(resolve('prd/pages/企业大脑-会议纪要.md'),'utf8'),permission=readFileSync(resolve('prd/pages/设置-权限管理.md'),'utf8'),baseline=readFileSync(resolve('prd/PRD_企业AI经营大脑_当前开发基线.md'),'utf8');
@@ -90,17 +97,17 @@ test('meeting project recommendation remains pending until confirmation and mate
  const meetingDetail=sliceBetween('function openEnterpriseMeetingDetail','function confirmMeetingActionItems'),materialSource=sliceBetween('function openProjectMaterialSource','function openWorkMeetingUpload');assert.match(meetingDetail,/renderMeetingProjectLink\(meeting\)/);assert.match(materialSource,/openProjectMeeting\(material\.sourceId,material\.projectId\)/);
 });
 test('project function slices preserve complete workflow contracts',()=>{
- const create=sliceBetween('function openCreateWorkProject','function showProjectCreateStep'),advance=sliceBetween('function advanceProjectCreate','function saveWorkProject'),hub=sliceBetween('function renderWorkHub','function openWorkCustomerProfile'),overview=sliceBetween('function renderProjectOverview','function renderProjectMaterials'),detail=sliceBetween('function renderWorkProjectDetail','function openAddWorkProjectMember'),list=sliceBetween('function renderWorkProjectList','function openWorkTaskDeliverable');
- for(const token of ['WORK_HUB_CUSTOMERS.map','project-create-progress','项目名称','关联客户','项目状态','项目负责人','项目成员','data-step="1"','data-step="2"','data-step="3"'])assert.match(create,new RegExp(token));assert.match(advance,/newProjectName/);assert.match(advance,/newProjectOwner/);
+ const create=sliceBetween('function openCreateWorkProject','function showProjectCreateStep'),advance=sliceBetween('function advanceProjectCreate','function saveWorkProject'),hub=sliceBetween('function renderWorkHub','function openWorkCustomerProfile'),overview=sliceBetween('function renderProjectLifecycleSections','function projectMaterialType'),detail=sliceBetween('function renderWorkProjectDetail','function openAddWorkProjectMember'),list=sliceBetween('function renderWorkProjectList','function openWorkTaskDeliverable');
+ for(const token of ['WORK_HUB_CUSTOMERS.map','project-create-progress','项目名称','关联客户','各阶段负责人','项目负责人','data-new-stage-owner','data-step="1"','data-step="2"','data-step="3"'])assert.match(create,new RegExp(token));assert.match(advance,/newProjectName/);assert.match(advance,/newProjectOwner/);
  assert.match(hub,/renderWorkProjectList/);assert.match(hub,/renderWorkProjectDetail/);assert.doesNotMatch(hub,/WORK_HUB_PROJECTS\.map/);assert.match(hub,/createButton\.hidden/);assert.match(hub,/hasWorkHubAction\('创建项目'\)/);
- for(const token of ['客户意向','负责人','sourceMeetingId','sourceConflictId','open-project-meeting','intent','actionItems','visibilityLabel','ownerAccountId','AI 推断','待人工判断','renderProjectConflict'])assert.match(overview,new RegExp(token));
+ for(const token of ['milestones','items','acceptance','立项摘要','ownerAccountId','renderProjectConflict'])assert.match(overview,new RegExp(token));
  for(const token of ['memberAction=hasWorkHubAction','关联客户','负责人','成员','return-work-project-list','role=','tab','tabpanel'])assert.match(detail,new RegExp(token));
- assert.ok(list.includes('WORK_HUB_PROJECTS.filter(canCurrentAccountAccessProject)'));for(const token of ['ownerAccountId','customerId','memberIds','pending','updatedAt'])assert.match(list,new RegExp(token));assert.match(html,/data-act="return-work-project-list"/);
+ assert.ok(list.includes('WORK_HUB_PROJECTS.filter(canCurrentAccountAccessProject)'));for(const token of ['ownerAccountId','customerId','projectProgressDemo','当前阶段','下一里程碑','当前责任人','需关注事项'])assert.match(list,new RegExp(token));assert.match(html,/setDetailBreadcrumb\(workHubState\.projectDetailOrigin\?\.route==='home'\?'工作台':'项目列表'/);
  assert.doesNotMatch(html,/PROJECT_CREATE_FIELDS|PROJECT_CREATE_PROGRESS|PROJECT_DETAIL_CONTRACT|PROJECT_LIST_CONTRACT|renderProjectOverviewContract|renderWorkHubLegacy/);
 });
 test('project access and material ACL are separate contracts',()=>{for(const token of ['WORK_HUB_PROJECT_MEMBERS','WORK_HUB_PROJECT_MATERIALS','currentSystemActions','hasSystemAction','currentWorkDataScope','currentWorkHubActions','hasWorkHubAction','canCurrentAccountAccessProject','canCurrentAccountSeeProjectMaterial','visibleProjectMaterials','selectedMemberIds','createdByAccountId','role.dataScope'])assert.match(html,new RegExp(token));for(const visibility of ['project','selected_members','private'])assert.match(html,new RegExp(`visibility:'${visibility}'`));});
-test('project workspace creates projects and exposes the A1 cockpit',()=>{for(const token of ['openCreateWorkProject','showProjectCreateStep','advanceProjectCreate','saveWorkProject','renderWorkProjectDetail','switchWorkProjectTab','openAddWorkProjectMember','saveWorkProjectMembers','data-project-create-step="1"','data-project-create-step="2"','data-project-create-step="3"','PROJECT_TABS','data-project-panel="overview"','data-project-panel="materials"','data-project-panel="meetings"','data-project-panel="tasks"','data-project-panel="deliverables"','data-project-panel="members"','下一步工作','项目阻塞','最新会议','AI 项目判断','最近资料'])assert.match(html,new RegExp(token));assert.match(html,/data-act="create-work-project"/);assert.match(html,/data-act="add-work-project-member"/);});
-test('project cockpit keeps one detail implementation and preserves commercial actions',()=>{assert.equal((html.match(/function openWorkProject\(/g)||[]).length,1);assert.doesNotMatch(html,/openLegacyWorkProject/);assert.match(html,/id="newProjectName"/);assert.match(html,/id="newProjectCustomer"/);assert.match(html,/id="newProjectStatus"/);assert.match(html,/id="newProjectOwner"/);assert.match(html,/WORK_HUB_PROJECT_MEMBERS\.splice/);assert.match(html,/data-deliverable-type="quote"/);assert.match(html,/data-deliverable-type="contract"/);assert.match(html,/function renderProjectConflict/);assert.match(html,/renderProjectConflict\(project\)/);assert.match(html,/selectedProjectId=null/);assert.match(html,/aria-selected/);});
+test('project workspace creates projects and exposes the A1 cockpit',()=>{for(const token of ['openCreateWorkProject','showProjectCreateStep','advanceProjectCreate','saveWorkProject','renderWorkProjectDetail','switchWorkProjectTab','openAddWorkProjectMember','saveWorkProjectMembers','data-project-create-step="1"','data-project-create-step="2"','data-project-create-step="3"','PROJECT_TABS','data-project-panel="overview"','data-project-panel="reports"','data-project-panel="decisions"','data-project-panel="stage"','成果验收','项目成员','项目待办','关联会议','项目资料','其他项目待办','项目阻塞','项目风险提示'])assert.match(html,new RegExp(token));assert.match(html,/data-act="create-work-project"/);assert.match(html,/data-act="add-work-project-member"/);});
+test('project cockpit keeps one detail implementation and preserves commercial actions',()=>{assert.equal((html.match(/function openWorkProject\(/g)||[]).length,1);assert.doesNotMatch(html,/openLegacyWorkProject/);assert.match(html,/id="newProjectName"/);assert.match(html,/id="newProjectCustomer"/);assert.match(html,/data-new-stage-owner/);assert.match(html,/id="newProjectOwner"/);assert.match(html,/WORK_HUB_PROJECT_MEMBERS\.splice/);assert.match(html,/data-deliverable-type="quote"/);assert.match(html,/data-deliverable-type="contract"/);assert.match(html,/function renderProjectConflict/);assert.match(html,/renderProjectConflict\(project\)/);assert.match(html,/selectedProjectId=null/);assert.match(html,/aria-selected/);});
 test('project actions have paired handlers and delivery routing',()=>{for(const name of ['openWorkTaskDeliverable','returnToWorkProjectList','openWorkProject','switchWorkProjectTab'])assert.match(html,new RegExp(`function ${name}\\(`));assert.match(html,/case 'open-work-task-deliverable'/);assert.match(html,/case 'return-work-project-list'/);assert.match(html,/renderWorkProjectList/);assert.match(html,/WORK_HUB_CUSTOMERS\.map/);assert.match(html,/data-conflict-resolution="(?:adopt|keep|consult)"/);});
 
 test('authorization behavior enforces tenant, scope, membership and material visibility',()=>{
@@ -128,10 +135,10 @@ test('authorization behavior enforces tenant, scope, membership and material vis
 
 test('prototype inline scripts remain valid JavaScript',()=>{const scripts=[...html.matchAll(/<script(?:\s[^>]*)?>([\s\S]*?)<\/script>/gi)].map(match=>match[1]);scripts.forEach((source,index)=>assert.doesNotThrow(()=>new vm.Script(source,{filename:`prototype-inline-${index}.js`})));});
 
-test('workbench owns tasks while customer management owns customers and projects',()=>{
+test('workbench owns tasks and projects have a dedicated primary entry',()=>{
  assert.match(html,/data-v="workhub"/); assert.match(html,/data-p="workhub"/);
  assert.match(html,/data-p="home"[\s\S]*id="workTaskCenter"/);assert.doesNotMatch(html,/data-subview-panel="work-tasks"/);
- for(const view of ['work-customers','work-projects']) { assert.match(html,new RegExp(`data-subview="${view}"`)); assert.match(html,new RegExp(`data-subview-panel="${view}"`)); }
+ assert.match(html,/data-subview="work-customers"/);assert.match(html,/data-v="projects"/);assert.match(html,/data-p="projects"[\s\S]*?data-subview-panel="work-projects"/);assert.doesNotMatch(html,/data-subview="work-projects"/);
  assert.match(html,/data-kbtab="memory"/); assert.match(html,/data-kbpanel="memory"/); assert.doesNotMatch(html,/data-p="tasks"/);
 });
 test('prototype declares controlled account and conflict contracts',()=>{
@@ -152,7 +159,7 @@ test('meeting cards expose detail and retry controls',()=>{
   assert.match(html,/解析失败/);
 });
 test('meeting detail presents source transcript summary decisions actions and intent',()=>{
-  for(const label of ['音视频来源','说话人转写','会议总结','关键决策','行动项','客户意向']) assert.match(html,new RegExp(label));
+  for(const label of ['音视频来源','说话人转写','AI 总结','关键决策','行动项','客户意向']) assert.match(html,new RegExp(label));
   for(const status of ['extracting_audio','transcribing','diarizing','summarizing','ready','failed']) assert.match(html,new RegExp(`['"]${status}['"]`));
   assert.match(html,/sourceMeetingId/);
 });
@@ -162,7 +169,7 @@ test('meeting detail defaults to AI summary with independently switchable transc
 });
 test('meeting detail implementation contains real tab panels and segment progress contract',()=>{const fn=html.match(/function openEnterpriseMeetingDetail\([\s\S]*?\nfunction /)?.[0]||html;for(const token of ['data-meeting-tab="summary"','data-meeting-tab="transcript"','data-meeting-panel="summary"','data-meeting-panel="transcript"'])assert.match(fn,new RegExp(token));assert.match(html,/segmentProgress:\{total:4,completed:3,current:/);assert.match(capture,/transcriptTab/);});
 test('meeting detail owns the structured summary and evidence controls',()=>{const fn=html.match(/function openEnterpriseMeetingDetail\([\s\S]*?\nfunction /)?.[0]||'';for(const token of ['meeting.chapters','meeting.needs','meeting.objections','meeting.nextSteps','meeting.openQuestions','一句话结论','章节纪要','关键需求与异议','下一步建议','未决问题与风险','data-summary-section','data-act="open-meeting-evidence"','data-transcript-time'])assert.match(fn,new RegExp(token));assert.doesNotMatch(html,/meetingSummaryObserver/);});
-test('meeting detail keeps one implementation and preserves decisions actions and evidence',()=>{assert.equal((html.match(/function openEnterpriseMeetingDetail\(/g)||[]).length,1);const fn=html.match(/function openEnterpriseMeetingDetail\([\s\S]*?\nfunction /)?.[0]||'';for(const token of ['一句话结论','已确认决策','待办事项','客户意向','data-meeting-action','确认所选行动项'])assert.match(fn,new RegExp(token));for(const token of ['个分段 · 已完成','结果生成后可查看 AI 总结与逐字稿'])assert.match(html,new RegExp(token));});
+test('meeting detail keeps one implementation and preserves decisions actions and evidence',()=>{assert.equal((html.match(/function openEnterpriseMeetingDetail\(/g)||[]).length,1);const fn=html.match(/function openEnterpriseMeetingDetail\([\s\S]*?\nfunction /)?.[0]||'';for(const token of ['一句话结论','已确认决策','待办事项','客户意向','data-meeting-action','确认所选行动项'])assert.match(fn,new RegExp(token));const list=sliceBetween('function renderWorkMeetingList','function renderWorkHub');for(const token of ['meeting-list-table','item.segmentProgress.completed','item.segmentProgress.total','retry-work-meeting','open-enterprise-meeting-detail'])assert.ok(list.includes(token));});
 test('meeting and knowledge upload routes reject files that belong in the other entry',()=>{
   const source=html.match(/function isMeetingMedia\(file\)\{[^\n]+/)?.[0]||'';
   assert.ok(source,'isMeetingMedia is missing');
@@ -187,11 +194,16 @@ test('work hub detail rows stay readable and consultation becomes a task',()=>{
   assert.match(html,/task-conflict-consult-/);
   assert.match(html,/发起项目冲突协商/);
 });
-test('boss and employee receive distinct home summaries',()=>{
-  assert.match(html,/renderWorkHomeSummaries/);
-  assert.match(html,/老板决策/);
-  assert.match(html,/我的工作提醒/);
-  assert.match(capture,/employee home audit failed/);
+test('workbench progress is account scoped and decisions or approvals live in tasks',()=>{
+  const summary=sliceBetween('function getWorkProgressSnapshot','function setWorkHubAccount');
+  for(const token of ['getWorkProgressSnapshot','canCurrentAccountSeeWorkItem','canCurrentAccountAccessProject','processingMeetings','runningAgents','workbenchProgress'])assert.match(summary,new RegExp(token));
+  for(const kind of ["kind:'decision'","kind:'approval'",'workTaskKindLabel'])assert.match(html,new RegExp(kind));
+  assert.doesNotMatch(html,/id="homeDecisionQueue"|id="homeCustomerOpportunities"|data-home-boss-only/);
+  assert.match(capture,/workbench progress audit failed/);
+});
+test('workbench quick actions open real meeting task and project flows',()=>{
+  for(const token of ['openQuickWorkTask','saveQuickWorkTask','openCustomerManagementProjects',"case 'open-quick-work-task'","case 'open-customer-management-projects'"])assert.match(html,new RegExp(token));
+  for(const audit of ['quick task modal audit failed','quick task creation audit failed','project materials quick action audit failed'])assert.match(capture,new RegExp(audit));
 });
 test('page PRDs are concrete and differentiated',()=>{for(const key of ['work-tasks','work-customers','work-projects','kb-memory']){const m=html.match(new RegExp(`['"]${key}['"]:\\{([\\s\\S]*?)\\n  [a-z-]+:`));assert.ok(m,`${key} inline PRD`);for(const field of ['overview','rules','fields','actions','flows','logs','exceptions','acceptance','tech'])assert.match(m[1],new RegExp(`${field}:\\[?[^\\n]*(?!\\[\\])`),`${key} ${field}`);}const docs=['工作中枢-我的待办.md','工作中枢-客户.md','工作中枢-项目.md','企业大脑-会议纪要.md'];for(const d of docs){const s=readFileSync(resolve('prd/pages',d),'utf8');for(const h of ['问题','目标用户','用户流程','功能规则','异常与边界','字段交互','状态与权限','数据与接口','Skill / Prompt','埋点事件','验收标准','核心指标'])assert.match(s,new RegExp(`## ${h}`),`${d} ${h}`);}});
 

@@ -4,10 +4,12 @@ import { readFileSync } from 'node:fs';
 
 const html = readFileSync(new URL('../index.html', import.meta.url), 'utf8');
 
-test('enterprise operating tools preserve the complete loop behind the result-first home', () => {
-  for (const label of ['企业诊断', '经营计划', '需要老板审批', '本周期结果']) {
+test('enterprise operating tools preserve the complete loop behind the task-first workbench', () => {
+  for (const label of ['待办事项', '项目整体状态', '经营计划']) {
     assert.match(html, new RegExp(label));
   }
+  const visibleHome = html.match(/<section class="page show" data-p="home"([\s\S]*?)<section class="page" data-p="plan">/)?.[1] ?? '';
+  assert.doesNotMatch(visibleHome, /metric-line|home-grid/);
   for (const page of ['home', 'plan', 'kb', 'acquisition']) {
     assert.match(html, new RegExp(`data-p="${page}"`));
   }
@@ -23,7 +25,7 @@ test('operating accountability stays in deeper tools instead of a home chat cock
 
 test('execution is risk graded and high risk actions require approval', () => {
   assert.match(html, /发布、报价、客户外发和预算必须人工审批/);
-  assert.match(html, /对外发布/);
+  assert.match(html, /kind:'approval'/);
   assert.match(html, /价格与承诺需审核/);
   assert.doesNotMatch(html, /data-p="tasks"/);
 });

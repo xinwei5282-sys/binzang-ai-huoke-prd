@@ -70,10 +70,10 @@ test('historical plan details preserve execution results, review and evidence sn
     for (const entries of Object.values(plan.detail.review)) assert.ok(entries.length);
     assert.ok(plan.detail.evidenceSnapshot.length);
   }
-  for (const phrase of ['返回历史计划', '计划快照', '公司级优先事项', '八维执行对比', '周期复盘', '当时依据']) {
+  for (const phrase of ['计划快照', '公司级优先事项', '八维执行对比', '周期复盘', '当时依据']) {
     assert.match(html, new RegExp(phrase));
   }
-  assert.match(html, /data-act="back-to-operating-plan-history"/);
+  assert.match(html, /setDetailBreadcrumb\('历史经营计划'/);
   assert.match(html, /function renderHistoricalOperatingPlanDetail/);
   assert.match(html, /function showHistoricalOperatingPlanList/);
 });

@@ -16,6 +16,9 @@ export function parseVerificationOptions(args) {
   const focusIndex = args.indexOf('--focus');
   const captureIndex = args.indexOf('--capture');
   const portIndex = args.indexOf('--port');
+  const servePortIndex = args.indexOf('--serve-port');
+  const servePort = servePortIndex >= 0 ? Number(args[servePortIndex + 1]) : 8010;
+  if (!Number.isInteger(servePort) || servePort < 1 || servePort > 65535) throw new Error('--serve-port must be between 1 and 65535');
   const full = args.includes('--full');
   const focus = focusIndex >= 0 ? String(args[focusIndex + 1] || '') : '';
   if (full && focus) throw new Error('--full and --focus cannot be combined');
@@ -25,6 +28,7 @@ export function parseVerificationOptions(args) {
     browser: args.includes('--browser') || full,
     capture: captureIndex >= 0 ? String(args[captureIndex + 1] || '') : '',
     port: portIndex >= 0 ? Number(args[portIndex + 1]) : null,
+    servePort,
     allDiff: args.includes('--all-diff'),
     noServeCheck: args.includes('--no-serve-check'),
     listFocus: args.includes('--list-focus'),
@@ -39,7 +43,7 @@ export function selectVerificationProfile(manifest, options) {
       label: options.focus,
       tests: focus.tests || [],
       capture: options.capture || focus.capture || '',
-      browser: Boolean(options.browser),
+      browser: Boolean(options.browser || focus.requireBrowser),
     };
   }
   return {

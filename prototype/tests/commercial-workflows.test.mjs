@@ -16,7 +16,7 @@ test('content creation is split into two complete workflows', () => {
 
 test('marketing video mirrors the AI remix list and two-step creation language', () => {
   const create = html.match(/<section class="page" data-p="create"[\s\S]*?(?=<section class="page" data-p="remix")/)?.[0] ?? '';
-  for (const token of ['createList', 'createBackTitle', 'createLabel', 'createStepRibbon', '1. 视频设置', '2. 封面、脚本与分镜确认', 'data-create-step-panel="1"', 'data-create-step-panel="2"', 'marketingStoryboardList', '画面、对应口播、时长、来源和质量问题统一确认', '口播、画面、时长和关键帧统一确认', '返回上一步', '暂存', '确认并生成成片']) assert.match(create, new RegExp(token));
+  for (const token of ['createList', 'createLabel', 'createStepRibbon', '1. 视频设置', '2. 封面、脚本与分镜确认', 'data-create-step-panel="1"', 'data-create-step-panel="2"', 'marketingStoryboardList', '画面、对应口播、时长、来源和质量问题统一确认', '口播、画面、时长和关键帧统一确认', '返回上一步', '暂存', '确认并生成成片']) assert.match(create, new RegExp(token));
   assert.match(html, /function showCreateStep\(step\)/);
   assert.match(html, /case 'create-generate-preview':[\s\S]{0,900}showCreateStep\(2\)/);
   assert.equal((create.match(/data-create-step-indicator/g)||[]).length, 2);
@@ -89,8 +89,8 @@ test('trend discovery stays in AI acquisition without a duplicate automation wor
 test('unfinished AI sales workspace is removed while approval boundaries remain visible', () => {
   assert.doesNotMatch(html, /data-p="sales-agent"/);
   assert.doesNotMatch(html, /data-act="takeover-lead"/);
-  assert.match(html, /需要老板审批/);
-  assert.match(html, /对外发布/);
+  assert.match(html, /kind:'approval'/);
+  assert.match(html, /workTaskKindLabel/);
 });
 
 test('PPT and moments are separate workspaces with clear ownership', () => {

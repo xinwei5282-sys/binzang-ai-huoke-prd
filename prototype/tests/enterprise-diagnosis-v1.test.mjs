@@ -97,7 +97,7 @@ test('brand preferences are collected with the base profile', () => {
 });
 
 test('confirmed intake feeds automatic basic and manual deep diagnosis', () => {
-  assert.match(html, /case 'do-login': startKnowledgeOnboarding\(\)/);
+  assert.match(html, /case 'do-login':[\s\S]*?liOnboarding[\s\S]*?startKnowledgeOnboarding\(\)/);
   assert.match(html, /function setLicenseRecognitionState\(state,fileName/);
   assert.match(html, /case 'confirm-modal-profile':[\s\S]*go\('kb'\)[\s\S]*showKbTab\('diagnosis'\)[\s\S]*maybeStartBasicDiagnosis\(\)/);
   assert.match(html, /40% 自动生成基础诊断/);

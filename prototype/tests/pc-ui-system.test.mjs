@@ -14,7 +14,7 @@ test('PC shell keeps its established layout tokens', () => {
 test('navigation is grouped into seven customer outcomes', () => {
   for (const group of ['workspace', 'content', 'assets']) assert.match(html, new RegExp(`data-nav-group="${group}"`));
   const nav = html.match(/<nav>([\s\S]*?)<\/nav>/)?.[1] ?? '';
-  assert.equal((nav.match(/<button type="button" data-v=/g) || []).length, 7);
+  assert.equal((nav.match(/<button type="button" data-v=/g) || []).length, 8);
   assert.doesNotMatch(nav, /data-v="enterprise-profile"/);
   assert.doesNotMatch(nav, /<button type="button"[^>]*data-v="(?:review|agent-center|local-codex|artifacts)"/);
   assert.match(nav, /data-nav-sub="acquisition"[\s\S]*?数字人/);
@@ -25,10 +25,12 @@ test('shared PC components and responsive workspaces remain available', () => {
   assert.match(html, /\.page\{[^}]*max-width:none/);
 });
 
-test('workbench combines diagnosis priority with actionable tasks while deeper tools remain reachable', () => {
-  assert.match(html, /home:\['工作台','经营重点 · 我的待办 · 本周排期'\]/);
-  assert.match(html, /补齐企业资料，生成可信的基础诊断/);
+test('workbench combines business overview with actionable tasks while deeper tools remain reachable', () => {
+  assert.match(html, /titles\.home=\['工作台','[^']*项目总览[^']*'\]/);
+  assert.doesNotMatch(html, /id="workbenchQuickActions"/);
+  assert.match(html, /id="workbenchOverviewPanel"/);assert.match(html, /id="workbenchTasksPanel"/);assert.doesNotMatch(html, /id="workbenchBusinessOverview"/);
   assert.match(html, /id="workTaskCenter"/);
+  assert.match(html, /id="workbenchProgress"/);
   assert.doesNotMatch(html, /<div class="t">企业 Agent 经营驾驶舱<\/div>/);
   for (const page of ['plan', 'kb', 'acquisition']) assert.match(html, new RegExp(`data-p="${page}"`));
   for (const removed of ['tasks', 'review']) assert.doesNotMatch(html, new RegExp(`data-p="${removed}"`));

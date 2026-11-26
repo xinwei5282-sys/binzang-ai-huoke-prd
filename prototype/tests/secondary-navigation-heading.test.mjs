@@ -22,7 +22,7 @@ test('secondary navigation resolves to its own title without repeating the paren
 });
 
 test('secondary navigation keeps the parent in the top bar and writes the child into the content heading', () => {
-  const setNavigationHeading = html.match(/function setNavigationHeading\(route[^\n]*/)?.[0] || '';
+  const setNavigationHeading = html.match(/function setNavigationHeading\(route\)\{[\s\S]*?\n\}/)?.[0] || '';
   const setContentHeading = html.match(/function setContentHeading\([^\n]*/)?.[0] || '';
   const switchSubview = html.match(/function switchSubview\(name,trigger\)\{[\s\S]*?\n\}/)?.[0] || '';
   const showKbTab = html.match(/function showKbTab\(id='diagnosis'\)\{[\s\S]*?(?=\nfunction placeKbDataView)/)?.[0] || '';
@@ -59,10 +59,10 @@ test('secondary panels remove their internal duplicate heading while retaining t
   assert.equal(helpRemoved, true);
 });
 
-test('VI, intelligence, and evolution hide unrelated upload and agent actions', () => {
+test('VI, intelligence, evolution, and channels hide unrelated upload and agent actions', () => {
   assert.match(html, /data-kb-primary-actions/);
   const source = html.match(/function showKbTab\([\s\S]*?(?=\nfunction showKbDataView)/)?.[0] || '';
-  assert.match(source, /\['cognition','intelligence','evolution'\]/);
+  assert.match(source, /\['cognition','intelligence','evolution','channels'\]/);
   assert.match(source, /kbPrimaryActions/);
 });
 

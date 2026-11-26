@@ -73,14 +73,15 @@ export async function findFreePort() {
   });
 }
 
-export async function waitForPrototypeTarget(port, timeoutMs = 12000) {
+export async function waitForPrototypeTarget(port, timeoutMs = 12000, url = 'http://127.0.0.1:8010/index.html') {
+  const expected = new URL(url);
   const deadline = Date.now() + timeoutMs;
   let lastError = '';
   while (Date.now() < deadline) {
     try {
       const response = await fetch(`http://127.0.0.1:${port}/json`, { signal: AbortSignal.timeout(800) });
       const targets = await response.json();
-      const target = targets.find(item => item.type === 'page' && item.url.includes('127.0.0.1:8010/index.html'));
+      const target = targets.find(item => item.type === 'page' && item.url.split(/[?#]/)[0] === expected.origin + expected.pathname);
       if (target) return target;
       lastError = 'CDP is available but the prototype page is not open';
     } catch (error) {
@@ -98,7 +99,7 @@ export async function startManagedBrowser({ url = 'http://127.0.0.1:8010/index.h
   const browserProcess = spawn(plan.command, plan.args, managedBrowserSpawnOptions());
   browserProcess.unref();
   try {
-    const target = await waitForPrototypeTarget(selectedPort);
+    const target = await waitForPrototypeTarget(selectedPort, 12000, url);
     return { port: selectedPort, profileDir, browserProcess, target, managed: true };
   } catch (error) {
     browserProcess.kill('SIGTERM');

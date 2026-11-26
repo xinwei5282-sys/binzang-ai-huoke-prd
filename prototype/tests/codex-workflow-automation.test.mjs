@@ -2,6 +2,7 @@ import test from 'node:test';
 import assert from 'node:assert/strict';
 import { spawnSync } from 'node:child_process';
 import { resolve } from 'node:path';
+import { readFileSync } from 'node:fs';
 import {
   assessPreviewHealth,
   buildWorktreePlan,
@@ -38,7 +39,7 @@ test('worktree plan uses the ignored project directory and a codex branch', () =
 
 test('verification supports focused and full profiles without ambiguous combinations', () => {
   assert.deepEqual(parseVerificationOptions(['--focus', 'enterprise-vi', '--browser']), {
-    mode: 'focus', focus: 'enterprise-vi', browser: true, capture: '', port: null, allDiff: false, noServeCheck: false, listFocus: false,
+    mode: 'focus', focus: 'enterprise-vi', browser: true, capture: '', port: null, servePort: 8010, allDiff: false, noServeCheck: false, listFocus: false,
   });
   assert.equal(parseVerificationOptions(['--full']).mode, 'full');
   assert.throws(() => parseVerificationOptions(['--full', '--focus', 'enterprise-vi']), /cannot be combined/);
@@ -63,6 +64,16 @@ test('focused verification selects only mapped tests and its browser capture', (
   assert.equal(selectVerificationProfile(manifest, { mode: 'full', focus: '', browser: true, capture: '' }).capture, manifest.defaultFullCapture);
 });
 
+test('workspace style always runs in the browser and is part of full verification', () => {
+  const manifest = JSON.parse(readFileSync(resolve(root, 'prototype/verification-manifest.json'), 'utf8'));
+  const options = parseVerificationOptions(['--focus', 'workspace-style', '--serve-port', '8011']);
+  assert.equal(options.servePort, 8011);
+  assert.throws(() => parseVerificationOptions(['--serve-port', '0']), /--serve-port/);
+  const profile = selectVerificationProfile(manifest, options);
+  assert.equal(profile.browser, true);
+  assert.ok(manifest.requiredFullCaptures.includes(profile.capture));
+});
+
 test('preview health rejects blank or login-covered pages and accepts visible product content', () => {
   assert.deepEqual(assessPreviewHealth({ readyState: 'complete', bodyTextLength: 0, visiblePageCount: 0, loginCovered: false, runtimeErrors: [] }).ok, false);
   assert.match(assessPreviewHealth({ readyState: 'complete', bodyTextLength: 300, visiblePageCount: 1, loginCovered: true, runtimeErrors: [] }).reason, /login overlay/);
@@ -84,7 +95,7 @@ test('verification CLI lists available focus profiles without running the suite'
   const result = spawnSync(process.execPath, ['prototype/scripts/verify-prototype.mjs', '--list-focus'], { cwd: root, encoding: 'utf8' });
   assert.equal(result.status, 0, result.stderr);
   const output = JSON.parse(result.stdout.trim());
-  assert.deepEqual(output.focuses.sort(), ['content', 'diagnosis', 'enterprise-vi', 'enterprise-work-hub', 'knowledge', 'page-prd', 'system-management']);
+  assert.deepEqual(output.focuses.sort(), ['content', 'diagnosis', 'enterprise-vi', 'enterprise-work-hub', 'knowledge', 'page-prd', 'system-management', 'workspace-style']);
 });
 
 test('preview CLI exposes the same non-blank health gate used after opening Chrome', () => {

@@ -63,7 +63,7 @@ test('AI remix CTA is optional and only appears when configured', () => {
 });
 
 test('AI remix opens on a task list and enters settings only after create', () => {
-  for (const token of ['remixList', 'remixForm', 'new-remix', 'back-remix-list', '创建 AI 混剪', 'AI 混剪任务', '继续编辑']) {
+  for (const token of ['remixList', 'remixForm', 'new-remix', '创建 AI 混剪', 'AI 混剪任务', '继续编辑']) {
     assert.match(remix, new RegExp(token));
   }
   assert.match(remix, /id="remixForm" style="display:none"/);
@@ -153,11 +153,10 @@ test('captions are auto-aligned and expose a full timestamped review panel', () 
   assert.match(html, /时间轴保持自动对齐/);
 });
 
-test('creation header places back-to-list before the AI remix title', () => {
-  assert.match(remix, /class="remix-back-icon" id="remixBackTitle"[\s\S]*?<path d="M15 18l-6-6 6-6"\/><\/svg><\/button><div class="t">AI 混剪<\/div><b class="remix-create-label" id="remixCreateLabel" hidden>创建设置<\/b>/);
-  assert.match(html, /remixBackTitle'\)\.hidden=view!==?'form'/);
-  assert.match(html, /remixCreateLabel'\)\.hidden=view!==?'form'/);
-  assert.doesNotMatch(remix, />← 返回列表<\/button>/);
+test('AI remix creation uses the global detail breadcrumb', () => {
+  assert.match(html, /setDetailBreadcrumb\('AI 混剪','创建设置','back-remix-list'\)/);
+  assert.match(html, /remixCreateLabel'\)\.hidden=view!=='form'/);
+  assert.doesNotMatch(remix, /remix-back-icon/);
 });
 
 test('AI remix runs its quality gate in the background and marks scene-level issues', () => {
@@ -175,8 +174,9 @@ test('material review shows actual selected assets and editable scene controls',
   for (const token of ['分镜素材与首尾帧', 'remixMaterialList', 'remix-material-card', '对应口播', '需 10.0s · 可用 12.4s', '企业素材库', '人工上传', 'AI 生成', 'preview-remix-material', 'replace-remix-material', 'delete-remix-material', 'remixMainShot']) {
     assert.match(html, new RegExp(token));
   }
-  assert.match(remix, /<img src="\.\.\/remotion\/beauty-shoulder-relaxation\/public\/assets\/scene-01\.png"/);
-  assert.match(remix, /<video src="assets\/demo\/ai-gen\.mp4"/);
+  assert.match(remix, /视频素材待补/);
+  assert.match(remix, /收尾素材待补/);
+  assert.match(remix, /<img src="assets\/demo\/enterprise-vi\/scene-storefront\.png"/);
   assert.doesNotMatch(remix, /crop-remix-material|裁剪/);
   assert.doesNotMatch(remix, />已选分镜素材</);
 });

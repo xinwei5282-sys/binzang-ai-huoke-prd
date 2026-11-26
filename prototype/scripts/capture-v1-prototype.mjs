@@ -1,5 +1,6 @@
 import { mkdirSync, writeFileSync } from 'node:fs';
 import { resolve } from 'node:path';
+import { waitForPrototypeTarget } from './lib/managed-browser.mjs';
 
 const args = Object.fromEntries(process.argv.slice(2).reduce((all, item, index, list) => {
   if (item.startsWith('--')) all.push([item.slice(2), list[index + 1]]);
@@ -12,9 +13,7 @@ const height = Number(args.height || 900);
 const viewportName = `${width}x${height}`;
 mkdirSync(outDir, { recursive: true });
 
-const targets = await fetch(`http://127.0.0.1:${port}/json`).then(r => r.json());
-const target = targets.find(item => item.type === 'page' && /^http:\/\/127\.0\.0\.1:8010\/index\.html/.test(item.url));
-if (!target) throw new Error('No AI acquisition prototype page found at http://127.0.0.1:8010/index.html');
+const target = await waitForPrototypeTarget(port, 8000, args.url);
 
 const ws = new WebSocket(target.webSocketDebuggerUrl);
 await new Promise((ok, fail) => { ws.addEventListener('open', ok, { once: true }); ws.addEventListener('error', fail, { once: true }); });

@@ -22,6 +22,7 @@ if (options.listFocus) {
 
 const profile = selectVerificationProfile(manifest, options);
 const results = [];
+const pageUrl = `http://127.0.0.1:${options.servePort}/index.html`;
 let managedBrowser = null;
 
 function run(label, command, commandArgs) {
@@ -39,11 +40,11 @@ function selectedTests() {
 
 async function browserPort() {
   if (options.port) {
-    await waitForPrototypeTarget(options.port, 2500);
+    await waitForPrototypeTarget(options.port, 2500, pageUrl);
     results.push({ label: `existing browser CDP ${options.port}`, status: 'PASS' });
     return options.port;
   }
-  managedBrowser = await startManagedBrowser({ url: 'http://127.0.0.1:8010/index.html' });
+  managedBrowser = await startManagedBrowser({ url: pageUrl });
   results.push({ label: `isolated browser CDP ${managedBrowser.port}`, status: 'PASS' });
   return managedBrowser.port;
 }
@@ -55,16 +56,22 @@ try {
   if (options.noServeCheck) {
     results.push({ label: 'served source', status: 'SKIPPED (--no-serve-check)' });
   } else {
-    const server = await ensurePrototypeServer(root);
+    const server = await ensurePrototypeServer(root, { port: options.servePort });
     results.push({ label: 'served source matches prototype/index.html', status: 'PASS', sha256: server.sha256, server: server.server });
   }
 
   if (profile.browser) {
     if (!profile.capture) throw new Error(`browser verification has no capture script for profile ${profile.label}`);
     const port = await browserPort();
-    const script = resolve(root, profile.capture);
-    run('desktop browser capture 1440x900', process.execPath, [script, '--port', String(port), '--width', '1440', '--height', '900']);
-    run('mobile browser capture 390x844', process.execPath, [script, '--port', String(port), '--width', '390', '--height', '844']);
+    const captures = new Set([profile.capture, ...(options.mode === 'full' ? manifest.requiredFullCaptures || [] : [])]);
+    for (const capture of captures) {
+      const script = resolve(root, capture);
+      for (const [width, height] of [[1440, 900], [390, 844]]) {
+        const captureArgs = [script, '--port', String(port), '--width', String(width), '--height', String(height)];
+        if (options.servePort !== 8010) captureArgs.push('--url', pageUrl);
+        run(`${capture} ${width}x${height}`, process.execPath, captureArgs);
+      }
+    }
   } else {
     results.push({ label: 'real browser capture', status: options.mode === 'focus' ? 'NOT RUN (add --browser)' : 'NOT RUN (use --full, --browser, or --capture <script>)' });
   }

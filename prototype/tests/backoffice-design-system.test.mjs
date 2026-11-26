@@ -24,16 +24,19 @@ test('backoffice shell keeps the approved compact system', () => {
   assert.match(html, /PingFang SC.*HarmonyOS Sans SC.*Microsoft YaHei/);
 });
 
-test('workbench is result-first and owns the actionable task workspace', () => {
+test('workbench prioritizes business overview and actionable tasks', () => {
   const home = html.match(/<section class="page show" data-p="home"([\s\S]*?)<section class="page" data-p="plan">/)?.[1] ?? '';
-  for (const label of ['当前最重要', '需要老板审批', '本周期结果', '继续补充', '审核文章', '查看 VI']) {
+  for (const label of ['项目总览', '待办事项']) {
     assert.match(home, new RegExp(label));
   }
   assert.doesNotMatch(home, /id="agentPrompt"|agent-command-bar|企业 Agent 学习建议/);
-  assert.match(home, /home-priority-card/);
+  assert.doesNotMatch(home, /id="workbenchQuickActions"|workbench-quick-action/);
+  assert.match(home, /id="workbenchOverviewPanel"/);
+  assert.match(home, /id="workbenchProgress"/);
   assert.match(home, /id="workTaskCenter"/);
   assert.match(home, /id="workTaskFilter"/);
-  assert.equal((home.match(/class="card pad/g) || []).length, 4);
+  assert.match(home, /id="workbenchProgressItems"/);
+  assert.doesNotMatch(home, /metric-line|home-grid/);
 });
 
 test('AI acquisition is a task workspace rather than a feature-card launcher', () => {
@@ -50,7 +53,7 @@ test('AI acquisition is a task workspace rather than a feature-card launcher', (
 
 test('marketing material workspace keeps only channel work and honest delivery boundaries', () => {
   const section = html.match(/<section class="page" data-p="marketing-materials"([\s\S]*?)<section class="page" data-p="acquisition"/)?.[1] ?? '';
-  for (const label of ['PPT', '朋友圈图文', '海报', '公众号文章', '导出图文包', '审核并发布', '发布与数据回收']) assert.match(section, new RegExp(label));
+  for (const label of ['PPT', '朋友圈图文', '海报', '公众号文章', '导出图文包', '审核文章', '发布与数据回收']) assert.match(section, new RegExp(label));
   assert.doesNotMatch(section, /data-content-factory="shared"|统一内容底座|Content Factory V1/);
 });
 
@@ -120,6 +123,65 @@ test('standard drawer and interaction states are accessible', () => {
   assert.match(html, /data-act="open-drawer"/);
   assert.match(html, /@media\(prefers-reduced-motion:reduce\)/);
   assert.match(html, /\.inp:focus-visible/);
+});
+
+test('project and office workflow forms reuse the standard form controls', () => {
+  for (const file of ['project-reports-demo.js', 'office-workflow-demo.js', 'project-progress-demo.js', 'project-materials-demo.js']) {
+    const source = readFileSync(new URL('../assets/' + file, import.meta.url), 'utf8');
+    const controls = [...source.matchAll(/<(?:input|textarea|select)\b[^>]*>/g)]
+      .map(([control]) => control)
+      .filter(control => !/\btype="(?:checkbox|radio|hidden|file)"/.test(control));
+    assert.ok(controls.length, file + ' should contain form controls');
+    for (const control of controls) {
+      assert.match(control, /\bclass="[^"]*\binp\b/, file + ' should use the standard input class');
+    }
+    assert.doesNotMatch(source, /\.pr-field\s+(?:textarea|input)\b/);
+  }
+});
+
+test('workbench and project filters share the dropdown chrome and toolbar width', () => {
+  assert.match(html, /<select class="inp filter-width" id="workTaskFilter"/);
+  assert.match(html, /<details class="project-filter filter-width" id="projectFilterMenu"><summary class="inp dropdown-trigger"/);
+  assert.match(html, /:is\(select\.inp:not\(\[multiple\]\):not\(\[size\]\),summary\.inp\.dropdown-trigger\)\{[^}]*appearance:none[^}]*padding-inline-end:32px[^}]*background-image:url[^}]*background-position:right 11px center/);
+  assert.match(html, /\.filter-width\{width:160px/);
+  assert.doesNotMatch(html, /\.project-filter>summary::after/);
+});
+
+test('workbench project metrics are the sole filters above the project rows', () => {
+  assert.match(html, /id="projectOverviewMetrics"[^>]*><\/div>\s*<div[^>]*id="workbenchProjectRows"/);
+  assert.match(html, /data-act="filter-work-project-progress"[^>]*aria-controls="workbenchProjectRows"/);
+  assert.doesNotMatch(html, /workbenchProjectScope|workbenchProjectFilters/);
+});
+
+test('text buttons do not append decorative navigation arrows', () => {
+  assert.match(html, /<button class="btn" data-act="open-customer-management-projects">管理项目<\/button>/);
+  const projectProgress = readFileSync(new URL('../assets/project-progress-demo.js', import.meta.url), 'utf8');
+  for (const source of [html, projectProgress]) {
+    assert.doesNotMatch(source, /<button\b[^>]*>[^<]+\s[↗→↓]\s*<\/button>/);
+  }
+});
+
+test('desktop and mobile typography maintain separate size and leading values', () => {
+  assert.match(html, /--ui-title-size:24px;--ui-section-size:18px;--ui-body-size:14px;--ui-meta-size:12px/);
+  assert.match(html, /@media\(max-width:760px\)\{\s*:root\{\s*--ui-title-size:24px;--ui-section-size:18px;--ui-body-size:16px;--ui-meta-size:14px/);
+  assert.match(html, /--ui-body-leading:1\.55/);
+  assert.match(html, /--ui-body-leading:1\.6/);
+});
+
+test('work, schedule, project, and channel styles use semantic font sizes', () => {
+  assert.match(html, /\.page\[data-p="projects"\][^\n]*\s+\.mini,\.tm,\.bdg,\.perm,small[^{}]+\{font-size:var\(--ui-meta-size\)/);
+  const reports = readFileSync(new URL('../assets/project-reports-demo.js', import.meta.url), 'utf8');
+  const styles = [...html.matchAll(/<style>([\s\S]*?)<\/style>/g)].map(match => match[1]).join('\n');
+  const component = /\.(?:workbench-|home-workbench-|work-task-|work-calendar-|project-|schedule-|agenda-|gantt-|oa-|pf-|mat-|pr-|calendar-task-|calendar-navigation|week-calendar-note|customer-list-table|executive-project-)/;
+  for (const [, selector, declarations] of (styles + '\n' + reports).matchAll(/([^{}\n]+)\{([^{}\n]+)\}/g)) {
+    if (component.test(selector)) assert.doesNotMatch(declarations, /font-size:\s*[\d.]+(?:px|rem|em)\b/, selector);
+  }
+});
+
+test('project table headers, milestone dates, and row actions use body typography', () => {
+  assert.match(html, /\.project-list-table :is\(thead th,\.project-list-deadlines,\.rowact>\.btn\)[^{}]+\{\s*font-size:var\(--ui-body-size\)/);
+  assert.match(html, /<small class="project-list-deadlines">原定/);
+  assert.match(html, /<button class="btn" data-act="open-work-project"[^>]+>查看项目/);
 });
 
 test('primary navigation and form labels use native accessible semantics', () => {

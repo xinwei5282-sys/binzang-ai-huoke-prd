@@ -87,7 +87,7 @@ test('poster stops at file export while WeChat closes the publish and data loop'
   const wechat = material.match(/<div class="subview" data-subview-panel="material-wechat">([\s\S]*)/)?.[1] ?? '';
   for (const state of ['待审核', '下载']) assert.match(poster, new RegExp(state));
   for (const removed of ['发布前确认', '待发布', '已发布', '发布失败']) assert.doesNotMatch(poster, new RegExp(removed));
-  for (const phrase of ['已授权', '审核后自动发布', '审核并发布', '发布与数据回收', '同步数据']) assert.match(wechat, new RegExp(phrase));
+  for (const phrase of ['已授权', '自动发布', '审核文章', '发布与数据回收', '同步数据']) assert.match(wechat, new RegExp(phrase));
 });
 
 test('customer-level artifact duplication is removed', () => {

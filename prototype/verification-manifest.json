@@ -1,7 +1,13 @@
 {
   "defaultFullCapture": "prototype/scripts/capture-v1-prototype.mjs",
+  "requiredFullCaptures": ["prototype/scripts/check-workspace-style.mjs"],
   "focuses": {
-    "enterprise-work-hub": {"tests":["enterprise-work-hub.test.mjs"],"capture":"prototype/scripts/capture-enterprise-work-hub.mjs"},
+    "workspace-style": {
+      "tests": ["backoffice-design-system.test.mjs", "codex-workflow-automation.test.mjs"],
+      "capture": "prototype/scripts/check-workspace-style.mjs",
+      "requireBrowser": true
+    },
+    "enterprise-work-hub": {"tests":["enterprise-work-hub.test.mjs","project-lifecycle.test.mjs","project-item-task-linkage.test.mjs","workbench-project-progress.test.mjs","workbench-executive-actions.test.mjs","workbench-project-delay.test.mjs","workbench-gantt.test.mjs","workbench-calendar-week.test.mjs"],"capture":"prototype/scripts/capture-enterprise-work-hub.mjs"},
     "enterprise-vi": {
       "tests": [
         "enterprise-cognition-vi-v1.test.mjs",
